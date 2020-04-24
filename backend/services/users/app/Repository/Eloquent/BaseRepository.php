@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements DatabaseRepositoryInterface{
     protected $model;
+    protected $attributes;
     
     public function __construct(Model $model)
     {
@@ -32,18 +33,23 @@ class BaseRepository implements DatabaseRepositoryInterface{
       
     }
 
-    protected function set_property($key,$value){
-      $this->model->key = htmlspecialchars(trim($value));
+    protected function setProperty($key,$value){
+      $this->attributes[$key]= htmlspecialchars(trim($value));
     }
 
-    public function create()
+    public function create(array $attributes)
     {
-      return false;
+
+      $saved = $this->getModel()::create($attributes); 
+    
+      return $saved ? true : false;
     }
 
-    public function retrieveBy($property = "")
+    public function retrieveBy($property = "", $value = "")
     {
-      return $property;
+      if(!column_exists($property)){return false;}
+
+      return $this->getModel()->where($property , $value);
     }
 
     public function update()
@@ -53,6 +59,8 @@ class BaseRepository implements DatabaseRepositoryInterface{
 
     public function save()
     {
+      $model = $this->getModel();
+      $model::updateOrCreate($this->attributes);
       return false;
     }
 
