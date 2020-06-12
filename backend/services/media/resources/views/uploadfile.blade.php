@@ -64,9 +64,10 @@
         </style>
     </head>
     <body>
-       <form action ="http://ignmediaapi.ign.test/api/upload" method="post" enctype="x-www-form-urlencoded">
-         <input type ="file" name ="select_file" />
-         <input  type="button" value="send">
+       <form action ="http://ignmediaapi.ign.test/upload" method="post" enctype="multipart/form-data">
+        @csrf
+         <input type ="file" name ="image" />
+         <input  type="submit" value="send">
       </form>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))

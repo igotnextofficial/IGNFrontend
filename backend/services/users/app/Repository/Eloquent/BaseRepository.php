@@ -14,13 +14,15 @@ class BaseRepository implements DatabaseRepositoryInterface{
       $this->model = $model;
     }
 
-    protected function getModel(){
+    protected function getModel($add_plural = false){
       return $this->model;
     }
 
-    protected function get_model_name()
+    protected function get_model_name($add_plural = false)
     {
-      return strtolower(str_replace(["\\","App"],"",get_class($this->model)));
+      $classname = strtolower(str_replace(["\\","App"],"",get_class($this->model)));
+      $plural = !$add_plural ? "" : "s" ;
+      return $classname . $plural;
     }
 
     public function attach($attributes = array())
@@ -36,19 +38,10 @@ class BaseRepository implements DatabaseRepositoryInterface{
     protected function setProperty($key,$value){
       $this->attributes[$key]= htmlspecialchars(trim($value));
     }
-
-    public function create(array $attributes)
-    {
-
-      $saved = $this->getModel()::create($attributes); 
     
-      return $saved ? true : false;
-    }
-
     public function retrieveBy($property = "", $value = "")
     {
       if(!column_exists($property)){return false;}
-
       return $this->getModel()->where($property , $value);
     }
 
@@ -60,13 +53,22 @@ class BaseRepository implements DatabaseRepositoryInterface{
     public function save()
     {
       $model = $this->getModel();
-      $model::updateOrCreate($this->attributes);
-      return false;
+      $email = $this->attributes['email'];
+      try {
+        $model::updateOrCreate($this->attributes);
+        return true;
+      } catch (\Throwable $th) {
+         echo json_encode(["error" => "cannot save user [$email] already exists." ]);
+         return false;
+      }
+      
     }
 
     public function column_exists($column = "")
     {
-      return Schema::hasColumn($this->get_model_name_as_string(), $column) ? true : false;
+
+      
+      return Schema::hasColumn($this->get_model_name(true), $column) ? true : false;
     }
 }
 

@@ -4,7 +4,7 @@ namespace App;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Artist extends User
+class Artist extends Model
 {
     public function User()
     {

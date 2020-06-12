@@ -3,6 +3,7 @@
 namespace App\Providers;
 use App\Repository\Eloquent\UserRepository as UserRepository;
 use App\Repository\UserRepositoryInterface as UserRepositoryInterface;
+use Illuminate\Http\Request;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +16,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register() 
     {
+        $request = new Request();
         $this->app->bind('App\Repository\DatabaseRepositoryInterface', 'App\Repository\Eloquent\BaseRepository');
         $this->app->bind('App\Repository\UserRepositoryInterface', 'App\Repository\Eloquent\UserRepository');
            //

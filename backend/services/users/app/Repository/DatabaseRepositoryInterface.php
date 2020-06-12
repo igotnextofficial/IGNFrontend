@@ -7,12 +7,7 @@ interface DatabaseRepositoryInterface{
      * @return boolean
      */
     public function attach(array $attributes);
-    /**
-     * create a new dataset
-     * @return boolean
-     */
-    
-     public function create();
+
 
     /**
      * retrieves the data according to a searchable property

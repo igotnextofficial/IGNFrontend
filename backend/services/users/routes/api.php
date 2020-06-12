@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test',function(){
+    return json_encode(['test' => 'users']);
+});
 Route::get('/login/{userType}', 'UserController');
 
 Route::get('/sendemail','WelcomeController@sendMail');
 
 Route::post('/login','UserController@login');
-Route::post('/signup','UserController@sign_up');
+Route::post('/signup','UserController@signup');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
