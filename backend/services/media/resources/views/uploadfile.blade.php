@@ -64,7 +64,7 @@
         </style>
     </head>
     <body>
-       <form action ="http://ignmediaapi.ign.test/upload" method="post" enctype="multipart/form-data">
+       <form action ="http://ignmediaapi.ign.test/api/upload" method="post" enctype="multipart/form-data">
         @csrf
          <input type ="file" name ="image" />
          <input  type="submit" value="send">

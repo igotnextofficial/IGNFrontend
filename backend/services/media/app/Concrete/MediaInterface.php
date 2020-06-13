@@ -1,12 +1,12 @@
 <?php
   interface MediaInterface{
-       function upload();
-       function rename();
-       function getSize();
-       function retrieve();
-       function delete();
-       function validate();
-       function save();
+       public function upload();
+       public function rename();
+       public function getSize();
+       public function retrieve();
+       public function delete();
+       public function validate();
+       public function save();
   }
 
 ?>

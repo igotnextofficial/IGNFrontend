@@ -1,6 +1,7 @@
 <?php 
 namespace App\Concrete;
 use Illuminate\Support\Facades\Storage;
+use App\Concrete\MediaInterface;
 
 Abstract class MediaBase implements MediaInterface {
     private $name;
@@ -23,7 +24,9 @@ Abstract class MediaBase implements MediaInterface {
     }
     protected function upload(){} 
     
-
+ public static function test(){
+        return json_encode(["test"=>"testing"]);
+    }
     public function getSize(){
         return storage::size($this->media);
     }
