@@ -1,4 +1,5 @@
 <?php
+namespace App\Concrete;
   interface MediaInterface{
        public function upload();
        public function rename();

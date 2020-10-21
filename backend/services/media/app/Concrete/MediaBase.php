@@ -2,91 +2,108 @@
 namespace App\Concrete;
 use Illuminate\Support\Facades\Storage;
 use App\Concrete\MediaInterface;
+use App\Helpers\Bytes\Bytes;
+use App\Validation\Validator;
+use App\Errors\Errors;
 
-Abstract class MediaBase implements MediaInterface {
+class MediaBase implements   MediaInterface {
     private $name;
     private $size;
     private $maximumSize; //in bytes
     private $type;
     private $media;
     private $storage;
+    protected $directory;
 
-    public function __construct(){
-        $this->storage = new Storage();
+    public function __construct($useDefaults = false){
+        $this->storage = Storage::disk('s3');
+        $useDefaults ? $this->defaultSettings() : "";
+    }
+    
+    protected function getStorage(){
+      return $this->storage;
     }
 
     protected function defaultSettings(){
-
+      $this->setMaximumSize();
     }
     
-    public function process($mediaObject){
-        $this->setMedia($mediaObject)->validate()->save();
+    // public function process($mediaObject){
+    //     $this->setMedia($mediaObject)->validate()->save();
+    //     json_encode(["message" => "image was saved."]);
+    // }
+
+    // setters
+
+    public function setMedia($media = null){
+      if ($media !== null){
+        $this->setName($media->hashName());
+        $this->setType($media->extension());
+        $this->setSize(filesize($media->path()));
+        $this->media = $media;
+      }
+       return $this;
     }
-    protected function upload(){} 
     
- public static function test(){
-        return json_encode(["test"=>"testing"]);
+    protected function setSize($size){
+      $this->size = $size;
     }
-    public function getSize(){
-        return storage::size($this->media);
+    
+    protected function setMaximumSize(int $size = 3, $unitType = "mb"){
+         $byte = Bytes::getUnitTypeClass($unitType);
+         echo json_encode(["unit" => $unitType]);
+         $this->maximumSize = $byte->setUnitSize($size)->unitSizeInBytes();
     }
-
-    protected function setSize(){
-        $this->size = $this->media->getSize();
-    }
-
-    protected function validSize(){ 
-      return $this->size < $this->maximumSize;
-    }
-
-
-    protected function setMaximumSize(int $size){
-         $this->maximumSize = $this->convertToBytes($size);
-    }
-
-    protected function convertToBytes(int $size, $measurement = "kb"){
-        $validMeasurements = ["b","kb","mb","gb"]; 
-        if(!in_array(strtolower(trim($measurement)),$validMeasurements)){
-            //add error
-            return false;
-            
-        }
-
-        $position = array_search($measurement);
-        $bytes = pow(1024,$postiton);
-        return $bytes * $size;
-    }
-
-
-    protected function rename(){} // this is automatically done with laravel
 
     protected function setName(String $name){
       if(trim($name) !== ""){
-        $this->name = $name;
+        $positionOfDot = strrpos($name,".");
+        $newName = substr($name,0,$positionOfDot);
+        $this->name = $newName;
       }
     }
+
     protected function setType(String $type){
         $this->type = $type;
-    } // I don't currently see a need to explicitly set the type of a file. 
+    } 
     
+    protected function setDirectory(String $directory =""){
+      $this->directory = htmlspecialchars(trim($directory));
+    }
+    //getters
 
-    protected function retrieve($args = []){
-      $this->media->where($args)->get();
+    public function getMedia(){
+      return $this->media;
+    }
+    
+    public function getType(){
+      return $this->type;
+    }
+    
+    public function getSize(){
+      return $this->size;
     }
 
-    protected function validate(){
-        //check if name is valid
-        $this->validType()  ?  "" : $this->addError("type"," The fileis not a valid type"); //check if type is valid
-        $this->validSize()  ?  "" : $this->addError("size"," The file size is too large."); //check if size is valid
-        return $this;
-        
+    public function validSize(){  // done only in validation class
+      $sizeIsValid = $this->getSize() < $this->maximumSize ? true : false;
+      return json_encode(["size" => $this->getSize() . " < " . $this->maximumSize . ": " . $sizeIsValid]);
+    }
+    
+    public function retrieve(){}
+
+    public function rename(){}
+
+    public function validate(){}
+    
+    public function upload(){}
+
+    public function delete(){}
+    
+    public function save($directory = ""){
+      return "mediabase";
     }
 
-    protected function save(){
-        $this->storage->store($this->media);
-        return $this;
-    }
-    public abstract function getName();
+    public function update(){}
 }
 
 ?>

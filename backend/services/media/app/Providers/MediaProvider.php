@@ -2,7 +2,14 @@
 
 namespace App\Providers;
 
+use App\Concrete\MediaInterface;
+use App\ImageMedia;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\MediaController;
+
 use Illuminate\Support\ServiceProvider;
+
 
 class MediaProvider extends ServiceProvider
 {
@@ -13,7 +20,19 @@ class MediaProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->when(ImageController::class)
+        ->needs('App\Concrete\MediaInterface')
+        ->give(function(){
+            return new ImageMedia();
+        });
+
+        $this->app->when(MediaController::class)
+        ->needs('App\Concrete\MediaInterface')
+        ->give(function(){
+            return new ImageMedia();
+        });
+        // $this->app->bind('App\Concrete\MediaInterface', 'App\Concrete\MediaBase');
+        
     }
 
     /**
@@ -23,6 +42,7 @@ class MediaProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
     }
 }
+
