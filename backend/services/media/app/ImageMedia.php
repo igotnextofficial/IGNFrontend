@@ -12,7 +12,8 @@ class ImageMedia extends MediaGeneral{
     $this->setMaximumSize(3,'mb');
   }
 
-  public function save($directory = "images/avatar"){
+  public function save(){
+    $directory = $this->getDirectory();
     $filePath = $this->getMedia()->path();
     return $this->getStorage()->putFile($directory,new File($filePath));
   }

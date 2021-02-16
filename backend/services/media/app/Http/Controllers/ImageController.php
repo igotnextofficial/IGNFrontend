@@ -24,6 +24,11 @@ class ImageController extends Controller
     private $mediaSettings;
     private $mediaErrors;
     private $mediaValidation;
+    private $directoryLocations  = [
+        "avatar" => "images/avatar",
+        "album" => "images/album-cover",
+        "track" => "images/track-cover"
+      ];
     
     function __construct(BytesUnitInterface $Byte,MediaInterface $Media, Settings $Settings){
 
@@ -42,27 +47,46 @@ class ImageController extends Controller
         return view('uploadfile');
     }
     
-    public function upload(Request $request){
+    public function upload(Request $request,$item){
         // dd($this->mediaValidation);
         try {
-          $mediaFile = $request->file('image');
-          $this->media->setMedia($mediaFile);
-      
-          $prepMedia = new MediaStrategy($this->media,$this->mediaSettings,$this->mediaValidation,$this->mediaErrors);
-        
-             return  json_encode(["message" => $prepMedia->init()]);
-              
+          $mediaFile = $request->file("image");
+          return  $this->saveImage($mediaFile,$item);
         } catch (\Throwable $th) {
-            // dd($th->getTraceAsString());
-            dd($th->getTrace());
-          return json_encode(["error"=> $th->getTrace()]);
+          return json_encode(["error"=> $th->getMessage()]);
         }
 
     }
 
-    public function uploadAlbumCover(Request $request){}
+    private function getImage(Request $request, String $imageKey = "image"){
+       return $request->file($imageKey);
+    }
+    
+    private function saveImage($mediaFile = NULL,$item){
+        $this->media->setMedia($mediaFile);
+        
+        $this->media->setDirectory($this->directoryLocations[$item]);
+        $prepMedia = new MediaStrategy($this->media,$this->mediaSettings,$this->mediaValidation,$this->mediaErrors);
+        $saveImage = $prepMedia->init();
+        return  json_encode(["message" => $saveImage ]);
+    }
+    
+    public function uploadAvatar(Request $request,$item){
+        return $this->directoryLocations[$item];
+        $this->media->setDirectory("images/avatar");
+        return $this->media->getDirectory();   
+    }
 
-    public function uploadTrackCover(Request $request){}
+    public function uploadAlbumCover(Request $request){
+        $this->media->setDirectory("images/albumcovers");
+        return $this->media->getDirectory();
+    }
+
+    public function uploadTrackCover(Request $request){
+        $this->media->setDirectory("images/trackcovers");
+        return $this->media->getDirectory();
+        
+    }
 
 
     public function testing(){return false;}

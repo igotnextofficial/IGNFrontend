@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/upload', 'ImageController@index');
 Route::get("/testing",'ImageController@testing');
-Route::post('/upload', 'ImageController@upload');
+Route::post("/upload/{item}",'ImageController@upload');
+// Route::get("/upload/album-cover",'ImageController@uploadAlbumCover');
+// Route::get("/upload/track-cover",'ImageController@uploadTrackCover');
+// Route::post('/upload', 'ImageController@upload');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

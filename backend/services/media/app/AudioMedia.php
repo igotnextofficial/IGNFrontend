@@ -7,7 +7,7 @@ use App\Concrete\MediaBase;
       $this->setMaximumSize(3,'mb');
     }
   
-    public function save($directory = "audio"){
+    public function save(){
       $filePath = $this->getMedia()->path();
       return $this->getStorage()->putFile($directory,new File($filePath));
     }

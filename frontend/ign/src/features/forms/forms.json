@@ -1,0 +1,111 @@
+[
+    {
+        "options": 
+            {
+                "tagname" : "input"
+            ,
+            
+                "name": "username"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "dataSrc": "username"
+            ,
+            
+                "placeholder": "username"
+            ,
+            
+                "classnames": "one"
+            }
+        ,
+        "required": false,
+        "order": -1
+    },
+    {
+        "options": 
+            {
+                "tagname" : "input"
+            ,
+            
+                "name": "firstname"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "dataSrc": "firstname"
+            ,
+            
+                "placeholder": "first name"
+            ,
+            
+                "classnames": ""
+            }
+        ,
+        "required": false,
+        "order": -1
+    },
+    {
+        "options": 
+            {
+                "tagname" : "input"
+            ,
+            
+                "name": "lastname"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "dataSrc": "lastname"
+            ,
+            
+                "placeholder": "last name"
+            ,
+            
+                "classnames": ""
+            }
+        ,
+        "required": false,
+        "order": -1
+    },
+    {
+        "options": 
+            {
+                "tagname" : "input"
+            ,
+            
+                "name": "email"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "dataSrc": "email"
+            ,
+            
+                "placeholder": "email"
+            ,
+            
+                "classnames": ""
+            }
+        ,
+        "required": false,
+        "order": -1
+    }
+    
+]

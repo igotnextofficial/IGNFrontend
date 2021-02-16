@@ -5,6 +5,7 @@ use App\Concrete\MediaInterface;
 use App\Helpers\Bytes\Bytes;
 use App\Validation\Validator;
 use App\Errors\Errors;
+use App\Models\Media;
 
 class MediaBase implements   MediaInterface {
     private $name;
@@ -67,7 +68,7 @@ class MediaBase implements   MediaInterface {
         $this->type = $type;
     } 
     
-    protected function setDirectory(String $directory =""){
+    public function setDirectory(String $directory =""){
       $this->directory = htmlspecialchars(trim($directory));
     }
     //getters
@@ -82,6 +83,10 @@ class MediaBase implements   MediaInterface {
     
     public function getSize(){
       return $this->size;
+    }
+
+    public function getDirectory(String $directory =""){
+       return $this->directory;
     }
 
     public function validSize(){  // done only in validation class
@@ -99,10 +104,19 @@ class MediaBase implements   MediaInterface {
 
     public function delete(){}
     
-    public function save($directory = ""){
+    public function save(){
       return "mediabase";
     }
-
+    
+    public function saveToDatabase(){
+      $media = new Media;
+      $media->name = $this->name;
+      $media->type = $this->type;
+      $media->location = $this->directory;
+      $media->size = $this->size;
+      $media->user_id = 0;
+      $media->save();
+    }
     public function update(){}
 }
 

@@ -84,7 +84,17 @@ class MediaStrategy{
   }
 
   public function init(){
-     return !$this->ValidateSettings() ? json_encode(["Errors"=>$this->Validation->getErrors()]) : json_encode(["saved" => $this->Media->save()]) ;
+    $output = null;
+    if(!$this->ValidateSettings()){
+      $output = json_encode(["Errors"=>$this->Validation->getErrors()]);
+    }
+    else{
+      $output = json_encode(["saved" => $this->Media->save()]);
+      $this->Media->saveToDatabase();
+    }
+
+    return $output;
+    //  return !$this->ValidateSettings() ? json_encode(["Errors"=>$this->Validation->getErrors()]) : json_encode(["saved" => $this->Media->save()]) ;
     // $this->Validation->process($this->media,$this->Settings); // validate that media object abides by the settings
     //   $this->showErrorsOrPass();
   }

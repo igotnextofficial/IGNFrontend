@@ -45,7 +45,7 @@ class AudioController extends Controller
     public function upload(Request $request){
         // dd($this->mediaValidation);
         try {
-          $mediaFile = $request->file('image');
+          $mediaFile = $request->file('audio');
           $this->media->setMedia($mediaFile);
       
           $prepMedia = new MediaStrategy($this->media,$this->mediaSettings,$this->mediaValidation,$this->mediaErrors);
