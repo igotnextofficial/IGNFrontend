@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/upload', 'ImageController@index');
-Route::get("/testing",'ImageController@testing');
+Route::get('/test',function(){
+    return json_encode(['test' => 'media']);
+});
+
 Route::post("/upload/{item}",'ImageController@upload');
+
+
 // Route::get("/upload/album-cover",'ImageController@uploadAlbumCover');
 // Route::get("/upload/track-cover",'ImageController@uploadTrackCover');
 // Route::post('/upload', 'ImageController@upload');

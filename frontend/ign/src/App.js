@@ -1,30 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
-import {Request}  from './features/http/Request';
 
-import {Navigation}  from './features/navigation/Navigation';
+import './App.css';
+import { Request }  from './features/Http/Request';
+import { pages } from './features/Pages/page';
+
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+
+
 
 function App() {
-   Request.setDestination("http://ignuserapi.ign.test/api/test")
-;
+   Request.setDestination("http://ignuserapi.ign.test/api/test");
+   const routeComponents = pages.map(({slug,component},key) => <Route path={slug} exact component={component}/>)
   return (
+   
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Navigation/>
       
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+      <Switch>
+         {routeComponents}
+      </Switch>
+    </Router>
     </div>
   );
 }

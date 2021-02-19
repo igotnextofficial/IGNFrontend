@@ -43,9 +43,7 @@ class ImageController extends Controller
         new MediaStrategy($mechanisms['media'],$mechanisms['settings'],$mechanisms['validations'],$mechanisms['errors']);
     }
 
-    public function index(){
-        return view('uploadfile');
-    }
+
     
     public function upload(Request $request,$item){
         // dd($this->mediaValidation);
@@ -89,6 +87,6 @@ class ImageController extends Controller
     }
 
 
-    public function testing(){return false;}
+
 
 }
