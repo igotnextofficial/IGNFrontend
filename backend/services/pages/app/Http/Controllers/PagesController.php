@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
-    //
 
+    public function test(){
+        return json_encode(['test'=>'pages test']);
+    }
     public function create(Request $request){
         $adminInput = $request->all();
         return json_encode($adminInput);
@@ -16,3 +18,4 @@ class PagesController extends Controller
         //save information
     }
 }
+

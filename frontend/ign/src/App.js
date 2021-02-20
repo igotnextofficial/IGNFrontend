@@ -2,6 +2,7 @@
 import './App.css';
 import { Request }  from './features/Http/Request';
 import { pages } from './features/Pages/page';
+import  Navigation  from './features/Navigation/Navigation';
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -14,10 +15,12 @@ function App() {
   return (
    
     <div className="App">
-      
+       
       <Router>
+      <Navigation/>
       <Switch>
          {routeComponents}
+        
       </Switch>
     </Router>
     </div>

@@ -11,6 +11,13 @@ const Request = ( () =>{
     };
 
     return  {
+        init:function(url,method,data){
+          this.setDestination(url);
+          this.setMethod(method);
+          this.prepRequest(data)
+          this.makeConnection();
+        },
+
         getProperties:function(){
           return requestProperties
         },
@@ -23,9 +30,47 @@ const Request = ( () =>{
         setMethod:function (method){
           let validMethods = ["GET","POST","PUT","DELETE"];
           let chosenMethod = validMethods.find(validMethod => validMethod.toLowerCase() === method.toLowerCase().trim());
-          this.getProperties().method = Boolean(chosenMethod) ? chosenMethod : ""; 
+          this.getProperties().method = Boolean(chosenMethod) ? chosenMethod : validMethods[0]; 
           return this;
         },
+
+        prepRequest:function(dataToSend){
+          let methodChosen = null;
+          let httpClient = this.getClient();
+          let url = this.getDestination()
+
+          switch(this.getMethod()){
+            case "POST":
+         
+                
+                  methodChosen = httpClient.post(url,dataToSend);
+          
+                
+            break;
+       
+            case "GET":
+              methodChosen = httpClient.get(url)
+            break;
+
+            default: 
+             methodChosen =  httpClient.get(url)
+          }
+
+          return methodChosen
+      },
+
+
+      makeConnection:function(){
+       
+        this.prepRequest()
+        .then((response)=>{
+           this.setData(response.data);
+           console.log(response.data)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+      },
         
         setProcessing: function(){
           this.status = STATUS.PROCESSING;
@@ -35,7 +80,7 @@ const Request = ( () =>{
         setIdle: function(){
           this.getProperties().status = STATUS.IDLE;
           return this;    
-        },
+        }, 
         
         setFailed: function(){
           this.getProperties().status = STATUS.FAILED;
@@ -78,39 +123,21 @@ const Request = ( () =>{
             return this.getProperties().responseData;
         },
 
-        selectMethod:function(){
-            let methodChosen = null;
-            let httpClient = this.getClient();
-            let url = this.getDestination()
 
-            switch(this.getMethod()){
-              case "POST":
-                  methodChosen = httpClient.post(url)
-              break;
-
-              case "GET":
-                methodChosen = httpClient.get(url)
-              break;
-
-              default: 
-               methodChosen =  httpClient.get(url)
-            }
-
-            return methodChosen
-        },
-
-        makeConnection:function(){
-          this.selectMethod()
-          .then((response)=>{
-             this.setData(response.data);
-             console.log(response.data)
-          })
-          .catch()
-        }
         
       }
 })();
 
 
 
-export { Request};
+export { Request };
+
+
+/*
+ 1. set destination url
+ 2. choose method if not get method
+ 3. make connection
+ 4. send data
+ 5. handle response.
+ 
+ */
