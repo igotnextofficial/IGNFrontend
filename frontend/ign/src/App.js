@@ -4,14 +4,14 @@ import { Request }  from './features/Http/Request';
 import { pages } from './features/Pages/page';
 import  Navigation  from './features/Navigation/Navigation';
 
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 
 
 
 function App() {
    Request.setDestination("http://ignuserapi.ign.test/api/test");
-   const routeComponents = pages.map(({slug,component},key) => <Route path={slug} exact component={component}/>)
+   const routeComponents = pages.map(({slug,component},key) => <Route key={key} path={slug} exact component={component}/>)
   return (
    
     <div className="App">

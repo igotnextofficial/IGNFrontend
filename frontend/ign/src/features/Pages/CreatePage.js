@@ -1,43 +1,60 @@
 import {React} from 'react';
 import axios from 'axios';
 import '../../styles/form.css';
-let data={};
-let update = (e) =>{
-    let cleanValue = e.target.value.replace(/\s+/g," ").trim()
-    e.target.nextElementSibling.value = e.target.value.replace(/\s+/g," ").trim().replaceAll(" ","-")
-    e.target.addEventListener('blur',function(e){
-        console.log(e.target.name + " was focused out")
-        //update data object
-    })
-      
+let data={
+    title:'',
+    slug:'',
+    description:'',
+    display:false
+};
 
-  
-
-   data[e.target.name] = cleanValue
-    
-   console.log(data.title)
-
+let updateData = ()=>{
    const config = {
         headers: {
           "Access-Control-Allow-Origin": '*',
         }
       }
-
-    // axios({
-    //    method:"POST",
-    //    url:'http://pages.igotnext.test/api/',
-    //    headers:config,
-    //    data:data
+     console.log(data)
+    axios({
+       method:"POST",
+       url:'http://pages.igotnext.test/api/',
+   
+       data:data
  
-    // })
-    //   .then(function (response) {
-     
-    //   })
-    //   .catch(function (error) {
-    //     console.log("received one error try again");
-    //   });
+    })
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log("received one error try again");
+      });
 
-    //   return false;
+      return false;
+}
+
+
+let  sluggify = (data)=>{
+  return data.replace(/\s+/g," ").trim().replaceAll(" ","-");
+}
+
+let updateContent = (e) =>{
+    let cleanContent = e.target.value.replace(/\s+/g," ").trim();
+    data['description'] = cleanContent;
+}
+
+let updateDisplay = (e)=>{
+  data['display'] = e.target.value.toLowerCase() !=="hide" ? true: false;
+}
+
+let updateTitleAndSlug = (e) =>{
+    let cleanValue = e.target.value.replace(/\s+/g," ").trim()
+    let slug = sluggify(e.target.value)
+    e.target.nextElementSibling.value = slug
+    e.target.addEventListener('blur',function(e){
+        data['title'] = cleanValue;
+        data['slug'] = slug;
+        
+    })
 }
 
 let CreatePageForm = ()=>{
@@ -61,7 +78,7 @@ let CreatePageForm = ()=>{
       {
         name: 'display',
         type: 'checkbox',
-        options:['Show','Hide']
+        options:['Hide','Show']
       },
 
     ]
@@ -70,7 +87,7 @@ let CreatePageForm = ()=>{
         if(field.type === 'checkbox'){
          output.push( 
           <div className="select-holder">
-          <select  key={index}>
+          <select onChange={updateDisplay}  key={index}>
              {field.options.map(option => {return <option>{option}</option>} )}
           </select>
           </div>
@@ -78,19 +95,20 @@ let CreatePageForm = ()=>{
         }
         else if (field.type === 'textarea'){
           output.push( 
-              <textarea  key={index} resize='none' placeholder='content...'></textarea>
+              <textarea onBlur={updateContent}  key={index} resize='none' placeholder='content...'></textarea>
           )
         }
         else{
           let phrase = `enter ${field.name} ...`;
-          let inputData = field.name !== "slug" ? <input key={index} type='text' name={field.name} placeholder={phrase} onChange={update}/> : <input key={index} type='text' name={field.name} placeholder="slug"  readOnly/>
+          let inputData = field.name !== "slug" ? <input key={index} type='text' name={field.name} placeholder={phrase} onChange={updateTitleAndSlug}/> : <input key={index} type='text' name={field.name} placeholder="slug"  readOnly/>
           output.push( inputData )
         }
 
         return false;
     })
-    output.push(<button onClick={update}>Create Page</button>)
+    output.push(<button onClick={updateData}>Create Page</button>)
     return <div className="inner-form">{output}</div>;
+    
 }
 
 

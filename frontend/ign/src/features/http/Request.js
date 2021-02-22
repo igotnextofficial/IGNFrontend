@@ -6,16 +6,18 @@ const Request = ( () =>{
       status : STATUS.IDLE,
       method : 'GET',
       destination : "",
-      responseData: null
+      config:{},
+      responseData: null,
+      error:{}
 
     };
 
     return  {
         init:function(url,method,data){
           this.setDestination(url);
-          this.setMethod(method);
-          this.prepRequest(data)
-          this.makeConnection();
+          // this.setMethod(method);
+          // this.prepRequest(data)
+          // this.makeConnection();
         },
 
         getProperties:function(){
@@ -23,10 +25,37 @@ const Request = ( () =>{
         },
 
         setDestination:function (url){
-          this.getProperties().destination = url.trim() !== "" ? url.trim() : "";
-          return this;
+          if(!this.paramIsNotPassed(url)){return false;}
+          // let cleanUrl = url.trim() !== "" ? url.trim() : "";
+          // !this.validUrl(cleanUrl) ? this.addError("invalidUrl",`The url you entered ${url} is invalid`) : this.getProperties.destination = url;
+          // return this.getProperties().error["invalidUrl"]
         },
+
+        //validation on setDestination
+          paramIsNotPassed:function(param){
+            if(!param){return false;}
+          },
+
+          validUrl:function(url){
+             try {
+               let url = new URL(url); // this object is not supported in IE need to use polyfill
+               return url;
+             } catch (error) {
+               return false;
+             }
+          },
+        //end validation on setDestination
         
+
+        addError:function(key,message){
+          this.getProperties().error[key] = message;
+          return this.getErrorMessage(key)
+        
+        },
+
+        getErrorMessage:function(key){
+          return this.getProperties().error[key];
+        },
         setMethod:function (method){
           let validMethods = ["GET","POST","PUT","DELETE"];
           let chosenMethod = validMethods.find(validMethod => validMethod.toLowerCase() === method.toLowerCase().trim());
@@ -60,8 +89,20 @@ const Request = ( () =>{
       },
 
 
-      makeConnection:function(){
+      makeConnection:function(handleResponse,handleError){
+      
        
+      this.client({
+         method:this.method,
+         url:this.url,
+         data:this.data, // only if post request'
+         headers:this.config
+   
+      })
+        .then(handleResponse(response))
+        .catch(handleError(error));
+  
+        return false;
         this.prepRequest()
         .then((response)=>{
            this.setData(response.data);

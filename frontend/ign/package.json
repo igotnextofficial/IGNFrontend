@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "npx mocha \"src/features/**/*.test.js\" --recursive --require @babel/register",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -38,5 +38,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/register": "^7.12.13",
+    "chai": "^4.3.0",
+    "mocha": "^8.3.0"
   }
 }
