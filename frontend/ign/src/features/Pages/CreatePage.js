@@ -113,7 +113,9 @@ let CreatePageForm = ()=>{
 
 
 const createPage = ()=>{
+    console.log(process.env.NODE_ENV)
   return (
+     
     <div className='form-container' >
     <h1>Create Page</h1>
     <CreatePageForm/>

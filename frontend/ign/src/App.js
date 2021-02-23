@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 
 function App() {
-   Request.setDestination("http://ignuserapi.ign.test/api/test");
+ 
    const routeComponents = pages.map(({slug,component},key) => <Route key={key} path={slug} exact component={component}/>)
   return (
    
