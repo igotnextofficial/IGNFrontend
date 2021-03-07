@@ -1,0 +1,31 @@
+{
+	"TITLE": {
+		"MAXIMUM": {
+			"value": 60,
+			"errorMessage": ""
+		},
+		"MINIMUM": {
+			"value": 5,
+			"errorMessage": ""
+		},
+		"REQUIRED": {
+			"value": true,
+			"errorMessage": ""
+		}
+	},
+
+	"CONTENT": {
+		"MAXIMUM": {
+			"value": 400,
+			"errorMessage": ""
+		},
+		"MINIMUM": {
+			"value": 5,
+			"errorMessage": ""
+		},
+		"REQUIRED": {
+			"value": true,
+			"errorMessage": ""
+		}
+	}
+}

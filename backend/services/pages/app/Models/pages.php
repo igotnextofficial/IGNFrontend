@@ -10,4 +10,6 @@ class pages extends Model
     use HasFactory;
 
     protected $table = 'pages';
+
+    protected $fillable = ['title','slug','description','display'];
 }
