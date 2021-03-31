@@ -2,30 +2,30 @@
 	"TITLE": {
 		"MAXIMUM": {
 			"value": 60,
-			"errorMessage": ""
+			"errorMessage": "The Title cannot exceed 60 characters"
 		},
 		"MINIMUM": {
 			"value": 5,
-			"errorMessage": ""
+			"errorMessage": "The Title cannot be less than 5 characters"
 		},
 		"REQUIRED": {
 			"value": true,
-			"errorMessage": ""
+			"errorMessage": "The Title is required."
 		}
 	},
 
 	"CONTENT": {
 		"MAXIMUM": {
 			"value": 400,
-			"errorMessage": ""
+			"errorMessage": "The content cannot exceed 400 characters"
 		},
 		"MINIMUM": {
 			"value": 5,
-			"errorMessage": ""
+			"errorMessage": "The content cannot be less then 5 characters"
 		},
 		"REQUIRED": {
 			"value": true,
-			"errorMessage": ""
+			"errorMessage": "The content is required"
 		}
 	}
 }

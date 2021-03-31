@@ -1,24 +1,23 @@
 const Errors = (props)=>{
-  console.dir(props)
-  if( props.errors.length === 0 ){return ""}
+ 
+  if( Object.entries(props.errors).length === 0 ){return ""}
 
   let output = [];
+  
 
-  props.errors.map((error,index)=>{
-    console.log(error)
-    // console.dir(props.errors[1].new)
-     output.push(<li key={index}>{error}</li>);
-     return true;
- })
+  for (let error in props.errors){
+    output.push(<li>{ props.errors[error]}</li>);
+  }
 
   return( 
     <div>
 
-     <h1>you have errors</h1>
-     <ul>
+     <p className="errorHeader">Please Fix the following errors: </p>
+     <ul className="errors">
        {output}
      </ul>
     </div>
+   
     );
 }
 

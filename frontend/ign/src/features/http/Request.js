@@ -107,7 +107,6 @@ class IgnRequest {
  async makeConnection(){
    try {
     let response = await axios(this.getPayload)
-    console.log("the response would be")
     let data = await response.data;
     this.setResponseData(data)    
     return true;

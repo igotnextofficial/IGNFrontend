@@ -1,0 +1,10 @@
+.errorHeader {
+    font-size: 20px;
+    color: white;
+    text-decoration: underline;
+    margin-bottom: 10px;
+}
+
+.errors {
+    color: red;
+}

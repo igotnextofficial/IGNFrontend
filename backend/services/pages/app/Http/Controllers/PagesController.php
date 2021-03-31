@@ -15,7 +15,7 @@ class PagesController extends Controller
         $data = $request->all();
         $validated =  $this->validateData($request);
         $saved = $validated  ? Pages::create($data) : $validated ;
-        return $saved;
+        return [$saved];
     }
 
     public function retrieveData($Data = []){}
@@ -31,6 +31,7 @@ class PagesController extends Controller
       if (!$validated){
           return false;
       }
+      return true;
     }
 
     public function notEmpty($data){
