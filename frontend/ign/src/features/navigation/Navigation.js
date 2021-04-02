@@ -27,6 +27,14 @@ const Navigation = ()=>{
       
    },
 
+   {
+      name:'forms',
+      slug:'/forms',
+      hasChildren:false,
+    
+      
+   },
+
   ]
   pages.map(page =>{
       let link = <Link to={page.slug}><li>{page.name} </li></Link>;

@@ -20,7 +20,6 @@ function App() {
       <Navigation/>
       <Switch>
          {routeComponents}
-        
       </Switch>
     </Router>
     </div>

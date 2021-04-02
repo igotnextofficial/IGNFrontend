@@ -1,10 +1,8 @@
 [
     {
+        "tagname" : "input",
         "options": 
             {
-                "tagname" : "input"
-            ,
-            
                 "name": "username"
             ,
             
@@ -14,24 +12,22 @@
                 "value": ""
             ,
             
-                "dataSrc": "username"
+                "id": "username"
             ,
             
                 "placeholder": "username"
             ,
             
-                "classnames": "one"
+                "className": "one"
             }
         ,
         "required": false,
         "order": -1
     },
     {
+        "tagname" : "input",
         "options": 
             {
-                "tagname" : "input"
-            ,
-            
                 "name": "firstname"
             ,
             
@@ -41,24 +37,22 @@
                 "value": ""
             ,
             
-                "dataSrc": "firstname"
+                "id": "firstname"
             ,
             
                 "placeholder": "first name"
             ,
             
-                "classnames": ""
+                "className": ""
             }
         ,
         "required": false,
         "order": -1
     },
     {
+        "tagname" : "input",
         "options": 
             {
-                "tagname" : "input"
-            ,
-            
                 "name": "lastname"
             ,
             
@@ -68,24 +62,22 @@
                 "value": ""
             ,
             
-                "dataSrc": "lastname"
+                "id": "lastname"
             ,
             
                 "placeholder": "last name"
             ,
             
-                "classnames": ""
+                "className": ""
             }
         ,
         "required": false,
         "order": -1
     },
     {
+        "tagname" : "input",
         "options": 
             {
-                "tagname" : "input"
-            ,
-            
                 "name": "email"
             ,
             
@@ -95,13 +87,13 @@
                 "value": ""
             ,
             
-                "dataSrc": "email"
+                "id": "email"
             ,
             
                 "placeholder": "email"
             ,
             
-                "classnames": ""
+                "className": ""
             }
         ,
         "required": false,
