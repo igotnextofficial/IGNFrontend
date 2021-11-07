@@ -17,7 +17,7 @@ let selectTag = ()=>{
 };
 
 let EntryForm = ()=>{
-    console.log(formsData)
+    // console.log(formsData)
     
     let output = formsData.map(item => {
         let element = []
