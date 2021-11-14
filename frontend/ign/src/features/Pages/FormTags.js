@@ -12,7 +12,7 @@ const sluggify = (data) => {
 }
 
 const FormTags = (props)=>{
-  const  [formErrors, setFormErrors]  = useState({})
+  const  [formErrors, setFormErrors]  = useState({errors: ""})
   const {setHasErrors} = useContext(FormContext)
   let contentErrors = {errors:[]}
   let [manageInput,setManageInput] = useState('');
@@ -24,8 +24,16 @@ const FormTags = (props)=>{
    
   },[manageInput]);
 
+  useEffect(()=>{
+    setFormErrors(formErrors)
+   
+  },[formErrors]);
+  let checkValidLength = (currentLength,validLength,checkingForMin = false)=>{
+    return checkingForMin ? minLength(currentLength,validLength) : maxLength(currentLength,validLength)
+ }
   function updateContent(){
     let currentLength = inputel.current.value.length 
+     console.log("the value has changed and has a length of ", currentLength)
      if(!(isEmpty(currentLength))){
        checkValidLength(currentLength,props.info.rules.MAXIMUM.value,false)
        checkValidLength(currentLength,props.info.rules.MINIMUM.value,true)
@@ -43,40 +51,37 @@ const FormTags = (props)=>{
     }
    
   }
-  function addErrors(error){
+  function addErrors(error,errorType){
     console.log("adding error ... ")
-    console.dir(error)
-    setFormErrors({"errors":error})
+   console.dir(error)
+   let errorMessage = {errors:error}
+    setFormErrors(errorMessage)
     setHasErrors(true)
   }
   function clearErrors(){
-    setFormErrors({})
+    const clearedObj = {errors: ""}
+    setFormErrors(clearedObj)
     setHasErrors(false)
   }
   //error checking
-     let checkValidLength = (currentLength,validLength,checkingForMin = false)=>{
-      return checkingForMin ? minLength(currentLength,validLength) : maxLength(currentLength,validLength)
-   }
+
    let maxLength = (currentLength,validLength)=>{
       let message =props.info.rules.MAXIMUM.errorMessage
     //  clearErrors()
-     addErrors(message)
      if(currentLength > validLength){
-      console.log("adding max value errors")
-      console.log(message)
-      addErrors(message)
-      
-     }
+      addErrors(message,"max")
+      // setFormErrors({errors:message})
+    }
   }
    let minLength = (currentLength,validLength)=>{
     //  console.log("checking min length.",currentLength)
     //  console.log("the valid length length.",validLength)
      let message =props.info.rules.MINIMUM.errorMessage
-     clearErrors()
+    //  clearErrors()
      if(currentLength < validLength){
       //  console.log("not enough characters")
       //  console.dir()
-      addErrors(message)
+      addErrors(message,"min")
      }
   }
    let isEmpty = (currentLength)=>{
@@ -84,7 +89,7 @@ const FormTags = (props)=>{
     // console.log("isEmpty")
     // console.dir(props.info.rules.REQUIRED)
       if(currentLength < 1){
-        addErrors(props.info.rules.REQUIRED.errorMessage)
+        addErrors(props.info.rules.REQUIRED.errorMessage,"empty")
         return true
       }
       return false
