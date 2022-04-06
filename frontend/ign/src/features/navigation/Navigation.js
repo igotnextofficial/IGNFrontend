@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import uuid from '../helpers/generaterandom';
+
 const Navigation = ()=>{
    let links = [];
    let pages =[
@@ -36,15 +38,17 @@ const Navigation = ()=>{
    },
 
   ]
+
   pages.map(page =>{
-      let link = <Link to={page.slug}><li>{page.name} </li></Link>;
+     let link = <Link key={ uuid(page.name) } to={page.slug}><li>{page.name}</li></Link>;
       links.push(link);
+      return link 
    })
    
    return(
      <nav>
-       <h3>I got Next Magazine</h3>
-       <ul className="nav-links">{links}</ul>
+       <h3>I got Next Magazine </h3>
+       <ul  className="nav-links">{links}</ul>
       </nav>
    )
 

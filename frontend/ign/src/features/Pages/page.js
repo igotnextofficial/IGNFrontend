@@ -3,6 +3,8 @@ import About from './About';
 import createPage from './CreatePage';
 import FormDisplay from './FormDisplay';
 
+
+
 export const pages = [
     {
        title:'', 
@@ -28,6 +30,7 @@ export const pages = [
       slug:'/forms',
      component:FormDisplay
       
-   },
+   }
+   
 ]
 

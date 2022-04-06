@@ -102,3 +102,21 @@ button{
 .error{color:red}
 .valid{color:white;}
 .slow-down{color:#FFDB58}
+
+
+.FormInput {
+  max-width: 600px;
+  margin: 30px auto;
+  text-align: left;
+}
+
+.FormInput input{
+  padding: 8px;
+  font-size: 18px;
+}
+.FormInput label{
+  margin: 5px 0;
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
+}

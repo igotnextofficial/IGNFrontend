@@ -1,10 +1,11 @@
 {
-	"INPUTS":{
+	"INPUTS":
+	{
 		"TITLE": {
 			"options":{
 				"name":"title",
 				"type":"text",
-				"id":"",
+				"id":"pageName",
 				"placeholder":"enter title..." ,
 				"maxlengh":60,
 				"minLength":5,
@@ -32,7 +33,7 @@
 		"CONTENT": {
 			"options":{
 				"resize":"none",
-				"type": "text",
+				"type": "",
 				"value":"",
 				"placeholder":"page description...",
 				"className":"",
@@ -52,6 +53,22 @@
 				"REQUIRED": {
 					"value": true,
 					"errorMessage": "The content is required"
+				}
+			}
+	
+		},
+		"DISPLAY": {
+			"options":{
+				"type": "checkbox",
+				"id":"display"
+			},
+			"labelMessage":"Make Page Visible",
+			"hasSlug":false,
+			"tag":"input",
+			"rules":{
+				"REQUIRED": {
+					"value": false,
+					"errorMessage": ""
 				}
 			}
 	

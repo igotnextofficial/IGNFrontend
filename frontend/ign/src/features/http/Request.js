@@ -1,6 +1,5 @@
 import STATUS from './HttpEnv';
 import axios from 'axios';
-import validator from 'validator';
 class IgnRequest {
   constructor(){
     this.client  =  axios; //http client will be using axios;
@@ -86,9 +85,11 @@ class IgnRequest {
     let chosenMethod = validMethods[0];
     
     validMethods.find(validMethod => {
+      let chosenMethod = null;
       if ( validMethod.toLowerCase() === method.toLowerCase().trim() ){
         chosenMethod = validMethod;
       }
+      return chosenMethod
     });
 
     this.updateMethod = chosenMethod;

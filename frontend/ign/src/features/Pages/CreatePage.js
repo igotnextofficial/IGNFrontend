@@ -5,32 +5,57 @@ import {INPUTS} from './.settings.json'
 
 import IgnRequest from '../Http/Request';
 import Errors from '../Errors/display';
-import '../../styles/form.css';
+// import '../../styles/form.css';
 import FormTags from './FormTags.js';
 import { FormContext } from './FormContext'
+import uuid from '../helpers/generaterandom';
 
 
-let handleUpdate = (text)=>{
 
-}
 
-let OutputInput = (props)=>{
-  let output = [];
-  for(const input in props.inputs){
-    let inputObject = props.inputs[input];
-    output.push(<FormTags info={inputObject}  onInputUpdate={handleUpdate} createWithSlug = {inputObject.hasSlug} tag={inputObject.tag} />)
 
-  }
-  return output;
-}
 
 function CreatePage() {
-  const [hasErrors, setHasErrors] = useState(false)
-  let [hasErrorMsg,setHasErrorMsg] = useState("")
 
-  // useEffect(()=>{ 
-  //   hasErrors ? setHasErrorMsg("Please Fix errors below") :setHasErrorMsg("")
-  // },[hasErrors])
+  let formHasErrors = true
+  const FormContent =  {
+    pageName:"",
+    slug:"",
+    description:"",
+    display:true
+  }
+
+
+  let submitForm  = (e)=>
+  {
+    if(!formHasErrors){return false}
+    //submitForm  
+  }
+  let handleUpdate = (e = "")=>{
+        if(e.length > 0){
+
+          formHasErrors =  e.trim() != "" ? true : false;
+        }
+
+        console.log("Updated form values")
+        console.dir(FormContent)
+
+ }
+ 
+  let CreateFormTags = (props)=>{
+    let output = [];
+    for(const input in props.inputs){
+      let inputObject = props.inputs[input];
+      output.push(<FormTags key={uuid('links')} formContentValues={FormContent} info={inputObject} onInputUpdate={handleUpdate} createWithSlug = {inputObject.hasSlug} tag={inputObject.tag} />)
+  
+    }
+    return output;
+  }
+
+
+  useEffect(()=>{ 
+
+  },[FormContent])
   
   return (
   
@@ -38,10 +63,11 @@ function CreatePage() {
        
    
       <h1>Create Pages</h1>
-      <p className="errorHeader">{hasErrorMsg}</p>
-      <FormContext.Provider value = {{ hasErrors, setHasErrors }}>
-        <OutputInput inputs = {INPUTS} /> 
-        <button value="create page">Create Page</button>
+     
+      <FormContext.Provider value = {{}}>
+        <CreateFormTags inputs = {INPUTS} /> 
+        <button value="create page" onClick={handleUpdate(FormContent)}>Create Page</button>
+        
       </FormContext.Provider>
       {/* <FormTags info={INPUTS.TITLE.elementData}  onInputUpdate={handleUpdate} createWithSlug = {INPUTS.TITLE.hasSlug} /> */}
       

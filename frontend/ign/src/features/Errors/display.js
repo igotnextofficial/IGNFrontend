@@ -5,10 +5,14 @@ const Errors = (props)=>{
 
   let output = [];
   
-
+  const uuid = (word)=>{
+    let randomNumber = Math.floor(Math.random() * 1000) * Math.floor((Math.random() * 1000) * Date.now());
+      let uuid = Math.floor(Math.random() * 1000) + word[Math.floor(Math.random() * word.length)] + randomNumber + word[Math.floor(Math.random() * word.length)]
+      return uuid;
+   }
   for (let error in props.errors){
     // console.log("The error to display is ", props.errors[error])
-    output.push(<li>{ props.errors[error]}</li>);
+    output.push(<li key={ uuid("error") }>{ props.errors[error]}</li>);
   }
 
   return( 

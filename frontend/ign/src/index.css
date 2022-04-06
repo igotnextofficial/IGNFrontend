@@ -33,7 +33,7 @@ li{
   list-style-type: none;
 }
 
-p,a,li {
+p,a,li,label {
   font-size: 18px;
 }
 
