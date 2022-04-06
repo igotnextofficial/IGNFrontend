@@ -19,7 +19,7 @@ function CreatePage() {
 
   let formHasErrors = true
   const FormContent =  {
-    pageName:"",
+    pageName:" ",
     slug:"",
     description:"",
     display:true
