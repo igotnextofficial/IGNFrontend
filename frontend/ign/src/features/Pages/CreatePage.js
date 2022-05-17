@@ -8,6 +8,7 @@ import Errors from '../Errors/display';
 // import '../../styles/form.css';
 import FormTags from './FormTags.js';
 import { FormContext } from './FormContext'
+import  CreatePageForm  from '../forms/CreatePageForm';
 import uuid from '../helpers/generaterandom';
 
 
@@ -19,10 +20,10 @@ function CreatePage() {
 
   let formHasErrors = true
   const FormContent =  {
-    pageName:" ",
+    pageName:"",
     slug:"",
     description:"",
-    display:true
+    display:false
   }
 
 
@@ -32,13 +33,27 @@ function CreatePage() {
     //submitForm  
   }
   let handleUpdate = (e = "")=>{
+    let config = {
+      url:"",
+      method:"",
+      data:"",
+      headers:""
+    }
         if(e.length > 0){
 
           formHasErrors =  e.trim() != "" ? true : false;
         }
+        // config.url = "localhost:8000/api/";
+        // FormContent['display'] = Number(FormContent['display']);
+        // config.method = "POST";
+        // config.data = FormContent;
+        // console.log("sending");
+        // console.dir(config)
+        // let ign_request = new IgnRequest()
+        // ign_request.init(config)
 
-        console.log("Updated form values")
-        console.dir(FormContent)
+     
+       
 
  }
  
@@ -63,17 +78,7 @@ function CreatePage() {
        
    
       <h1>Create Pages</h1>
-     
-      <FormContext.Provider value = {{}}>
-        <CreateFormTags inputs = {INPUTS} /> 
-        <button value="create page" onClick={handleUpdate(FormContent)}>Create Page</button>
-        
-      </FormContext.Provider>
-      {/* <FormTags info={INPUTS.TITLE.elementData}  onInputUpdate={handleUpdate} createWithSlug = {INPUTS.TITLE.hasSlug} /> */}
-      
-       {/* <div> {test['input']} </div> */}
-     
-      {/* <CreatePageForm /> */}
+      <CreatePageForm></CreatePageForm>
 
  
     </div>

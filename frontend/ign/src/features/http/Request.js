@@ -16,14 +16,15 @@ class IgnRequest {
   init(configuration){// expects an object with the appropriate property names
     this.setDestination(configuration.url);
     this.setMethod(configuration.method);
-    this.setData(configuration.data)
+    this.setData(configuration.data);
     this.setHeader(configuration.headers);
     this.setPayload(); // combines the configurations that were passed into an object.
-    // this.makeConnection();
+    return this.makeConnection();
   }
   
   setDestination(url){
-    if ( !this.paramIsNotPassed(url) ){
+    console.log("attemped to add url "+ url)
+    if (!this.paramIsNotPassed(url) ){
       return false;
     }
     
@@ -35,6 +36,7 @@ class IgnRequest {
     }
     
     this.updateDestination = cleanUrl;
+    console.log("cleanurl 0" + this.getDestination)
     return this;
 
   }
@@ -49,13 +51,13 @@ class IgnRequest {
   }
 
   validUrl(url) {
-    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    var pattern = new RegExp('^(http?:\\/\\/)?'+ // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
       '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
       '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-    return pattern.test(url);
+    return true;
     
   }
   
@@ -82,16 +84,10 @@ class IgnRequest {
 
   setMethod(method){
     let validMethods = ["GET","POST","PUT","DELETE"];
-    let chosenMethod = validMethods[0];
+    let chosenMethod = validMethods.find(validMethod => validMethod === method) || validMethods[0];
     
-    validMethods.find(validMethod => {
-      let chosenMethod = null;
-      if ( validMethod.toLowerCase() === method.toLowerCase().trim() ){
-        chosenMethod = validMethod;
-      }
-      return chosenMethod
-    });
-
+    
+    console.log("updating method to  " + chosenMethod)
     this.updateMethod = chosenMethod;
     return this;
   }
@@ -126,7 +122,7 @@ class IgnRequest {
 
     
       // process by status codes 
-     this.addError("connecteion Failed", error.message)
+     this.addError("connection Failed", error.message)
      return false;
    }
 
@@ -163,6 +159,7 @@ class IgnRequest {
     if((data !== null || Object.entries(data).length > 0) && this.method !== "GET"){
       this.updateData = data;
     }
+ 
   }
 
   set updateData(data){

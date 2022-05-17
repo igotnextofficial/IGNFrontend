@@ -49,13 +49,26 @@ try {
  }
   function updateContent(){
     let currentLength = inputel.current.value.length
-    console.log("The Current Value is ",inputel.current.id )
+ 
     if(!(isEmpty(currentLength)) && inputel.current.type !== "checkbox"){
       checkValidLength(currentLength,props.info.rules.MAXIMUM.value,false)
       checkValidLength(currentLength,props.info.rules.MINIMUM.value,true)
     }
-    setManageInput(inputel.current.value)
-    props.formContentValues[inputel.current.id] = inputel.current.value
+
+    if(inputel.current.type == "checkbox"){
+      
+      let passedValue = inputel.current.checked ? "on" : "off";
+      
+      setManageInput(passedValue);
+      props.formContentValues[inputel.current.id] = inputel.current.checked;
+      console.dir(props.formContentValues)
+    }
+    else{
+      setManageInput(inputel.current.value)
+      props.formContentValues[inputel.current.id] = inputel.current.value
+    }
+    
+    
 
   
     
@@ -155,10 +168,11 @@ try {
    
   }
   function GenerateCheckbox(data){
+
     return (
       <div>
-          {/* <label htmlFor={data.props.info.options.id}>{data.props.info.labelMessage} </label>
-          <input {...data.props.info.options} ref={inputel} onChange={updateContent} style={{padding:"8px",width:"auto"}}  checked={FormContent[data.props.info.options.id]}/> */}
+          <label htmlFor={data.props.info.options.id}>{data.props.info.labelMessage} </label>
+          <input {...data.props.info.options} ref={inputel} onChange={updateContent} style={{padding:"8px",width:"auto",backgroundColor:"white"}}  checked={manageInput == "on"}/>
       </div>
       
       )
