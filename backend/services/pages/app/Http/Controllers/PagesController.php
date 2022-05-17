@@ -9,13 +9,17 @@ class PagesController extends Controller
 {
 
     public function test(){
-        return json_encode(['test'=>'pages test']);
+        return json_encode(['testddd'=>'pages test']);
     }
     public function create(Request $request){
-        $data = $request->all();
-        $validated =  $this->validateData($request);
-        $saved = $validated  ? Pages::create($data) : $validated ;
-        return [$saved];
+       
+        $data = $request->input('data');
+        return response()->json([$data],201);
+        // $data['display'] = $data['display'] ? (int) $data['display'] : 0;
+    
+        // $validated =  $this->validateData($request);
+        // $saved = $validated  ? Pages::create($data) : $validated ;
+        // return  response()->json(["data" => $saved],201);
     }
 
     public function retrieveData($Data = []){}
@@ -25,7 +29,7 @@ class PagesController extends Controller
           'title' => 'required|max:60|min:5|unique:pages',
           'slug' => 'required|max:120|min:5',
           'description' => 'required|max:400|min:5',
-          'display' => 'required|boolean'
+          'display' => 'required|int'
       ]);
 
       if (!$validated){

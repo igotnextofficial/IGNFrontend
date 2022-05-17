@@ -28,15 +28,17 @@ class PageTest extends TestCase
      */
     public function valid_data_is_saved_to_database()
     {
-        $data = [
+        $data = ["data"=>[
             'title' => 'who got next',
             'slug' => 'who-got-next',
             'description' => 'this is the descriptions of the page.',
-            'display' => false,
-        ];
-        $response = $this->post('/',$data);
+            'display' => false
+        ]];
+        $response = $this->post('/api',$data);
+        $response->dump();
 
         $response->assertStatus(201);
+        
     }
 
 
