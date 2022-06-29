@@ -109,13 +109,13 @@ class IgnRequest {
     return true;
    } catch (error) {
        let statusCode = error.response.status ;
-       if(statusCode === 422){
+      
         let errors = error.response.data.errors;
           for (error in errors){
            this.addError(error, errors[error].toString())
           }  
           return false;
-       }
+      
 
 
 
