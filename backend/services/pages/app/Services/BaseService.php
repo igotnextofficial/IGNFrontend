@@ -1,6 +1,6 @@
 <?php 
  namespace App\Services;
- use App\interfaces\ServiceInterface;
+ use App\Services\interfaces\ServiceInterface;
 
 
 
