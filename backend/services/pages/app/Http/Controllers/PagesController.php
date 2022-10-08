@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Jbuapim\Crudster\Crudster;
 use App\Models\Pages;
 
 class PagesController extends Controller
 {
 
     public function test(){
-        return json_encode(['testddd'=>'pages test']);
+        $crud = new Crudster();
+        return json_encode(['testddd'=>'pages test',"event" => $crud->event()]);
     }
     public function create(Request $request){
        
