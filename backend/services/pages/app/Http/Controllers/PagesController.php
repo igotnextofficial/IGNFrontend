@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Jbuapim\Crudster\Crudster;
+use App\Services\PageService;
 use App\Models\Pages;
 
 class PagesController extends Controller
 {
 
     public function test(){
-        $crud = new Crudster();
+        $crud = new PageService();
         return json_encode(['testddd'=>'pages test',"event" => $crud->event()]);
     }
     public function create(Request $request){
-       
+       $page_service = new PageService();
         $data = $request->input('data');
-        return response()->json([$data],201);
+        $results = $page_service->setData($data)->create();
+        return $results->display();
+        // return response()->json([$data],201);
         // $data['display'] = $data['display'] ? (int) $data['display'] : 0;
     
         // $validated =  $this->validateData($request);
