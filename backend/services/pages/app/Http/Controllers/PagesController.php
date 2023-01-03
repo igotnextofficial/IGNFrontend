@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\createPageRequest;
+use App\Http\Requests\updatePageRequest;
 use Illuminate\Http\Request;
 use App\Services\PageService;
 use App\Models\Pages;
@@ -13,7 +15,8 @@ class PagesController extends Controller
         $crud = new PageService();
         return json_encode(['testddd'=>'pages test',"event" => $crud->event()]);
     }
-    public function create(Request $request){
+
+    public function create(createPageRequest $request){
        $page_service = new PageService();
         $data = $request->input('data');
         $results = $page_service->setData($data)->create();
@@ -25,8 +28,11 @@ class PagesController extends Controller
         // $saved = $validated  ? Pages::create($data) : $validated ;
         // return  response()->json(["data" => $saved],201);
     }
+    public function update(updatePageRequest $request,Pages $page){}
+    public function index(Request $request){}
+    public function show(Request $request,Pages $page){}
+    public function delete(Request $request,Pages $page){}
 
-    public function retrieveData($Data = []){}
 
     public function validateData($request){
      $validated = $this->validate($request,[
