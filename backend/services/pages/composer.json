@@ -30,8 +30,8 @@
 
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/jbdesigns88/crudster"
+            "type": "path",
+            "url": "../../../../packages/crud/packages/jbuapim/crudster"
         }
     ],
     "config": {

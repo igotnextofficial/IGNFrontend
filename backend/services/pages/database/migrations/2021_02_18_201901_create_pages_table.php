@@ -17,8 +17,9 @@ class CreatePagesTable extends Migration
             $table->id();
             $table->string('title',25)->default('');
             $table->string('slug',30)->default('');
-            $table->char('description',200)->default('');
             $table->boolean('display')->default(false);
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('pages')->onDelete('set null');
             $table->timestamps();
         });
     }

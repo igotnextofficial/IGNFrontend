@@ -14,7 +14,7 @@ use App\Http\Controllers\PagesController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/', [PagesController::class,'index'])->name('getAllPages');
+Route::get('/', [PagesController::class,'test'])->name('getAllPages');
 Route::post('/',[PagesController::class,'create'])->name('createPage');
 
 Route::get('/{page}', [PagesController::class, 'show'])->name('getSpecificPage');

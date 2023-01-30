@@ -6,68 +6,35 @@ use App\Http\Requests\createPageRequest;
 use App\Http\Requests\updatePageRequest;
 use Illuminate\Http\Request;
 use App\Services\PageService;
-use App\Models\Pages;
+use App\Models\Page;
+use Illuminate\Support\Arr;
 
 class PagesController extends Controller
 {
 
     public function test(){
+        $model =new Page();
+
+        $relationships = $model->isRelation('content') ;
+        $relationship = 'content';
+        return ["lets" => $relationships, 'model' => $model,"rels" => get_class($model->{$relationship}()), 'belongs' => $model->{$relationship}() instanceof \Illuminate\Database\Eloquent\Relations\BelongsToMany] ;
         $crud = new PageService();
-        return json_encode(['testddd'=>'pages test',"event" => $crud->event()]);
+        return ['testddd'=>'pages test',"event" => $crud->event()];
     }
 
     public function create(createPageRequest $request){
        $page_service = new PageService();
-        $data = $request->input('data');
-        $results = $page_service->setData($data)->create();
-        return $results->display();
-        // return response()->json([$data],201);
-        // $data['display'] = $data['display'] ? (int) $data['display'] : 0;
-    
-        // $validated =  $this->validateData($request);
-        // $saved = $validated  ? Pages::create($data) : $validated ;
-        // return  response()->json(["data" => $saved],201);
+       $results = $page_service->attachData($request->input('data'))->create();
+       return $results;
     }
-    public function update(updatePageRequest $request,Pages $page){}
+    public function update(updatePageRequest $request,Page $page){}
     public function index(Request $request){}
-    public function show(Request $request,Pages $page){}
-    public function delete(Request $request,Pages $page){}
-
-
-    public function validateData($request){
-     $validated = $this->validate($request,[
-          'title' => 'required|max:60|min:5|unique:pages',
-          'slug' => 'required|max:120|min:5',
-          'description' => 'required|max:400|min:5',
-          'display' => 'required|int'
-      ]);
-
-      if (!$validated){
-          return false;
-      }
-      return true;
+    public function show(Request $request,Page $page){
+        $page_service = new PageService();
+        
     }
-
-    public function notEmpty($data){
-        return $data !== null || $data !==  "";
-    }
+    public function delete(Request $request,Page $page){}
 
 
-
-    public function validLength($min = 6, $max = 250, $data = ""){
-        return ($data >= $min) && ($data <= $max);
-    }
-
-    public function validSlug(){
-
-    }
-
-    public function validateDisplay($data){
-        return is_bool($data);
-    }
-
-    public function saveData($data = []){
-        Pages::create($data);
-    }
 }
 
