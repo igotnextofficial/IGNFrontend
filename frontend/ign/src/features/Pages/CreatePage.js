@@ -1,13 +1,13 @@
 //this wll be the form page
 import React, { useState, useEffect,useCallback,createContext } from 'react';
 
-import {INPUTS} from './.settings.json'
+// import {INPUTS} from './.settings.json'
 
-import IgnRequest from '../Http/Request';
-import Errors from '../Errors/display';
-// import '../../styles/form.css';
+// import IgnRequest from '../Http/Request';
+// import Errors from '../Errors/display';
+import '../../styles/form.css';
 import FormTags from './FormTags.js';
-import { FormContext } from './FormContext'
+// import { FormContext } from './FormContext'
 import  CreatePageForm  from '../forms/CreatePageForm';
 import uuid from '../helpers/generaterandom';
 
@@ -32,6 +32,7 @@ function CreatePage() {
     if(!formHasErrors){return false}
     //submitForm  
   }
+
   let handleUpdate = (e = "")=>{
     let config = {
       url:"",
@@ -80,7 +81,7 @@ function CreatePage() {
       <h1>Create Pages</h1>
       <CreatePageForm></CreatePageForm>
 
- 
+     
     </div>
     
   )

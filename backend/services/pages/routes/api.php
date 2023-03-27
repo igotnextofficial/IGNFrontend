@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ContentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,16 @@ use App\Http\Controllers\PagesController;
 |
 */
 Route::get('/', [PagesController::class,'test'])->name('getAllPages');
-Route::post('/',[PagesController::class,'create'])->name('createPage');
+Route::get('/pages', [PagesController::class, 'index'])->name('getAllPages');
+Route::post('/pages',[PagesController::class,'create'])->name('createPage');
+Route::get('/pages/{page_id}', [PagesController::class, 'show'])->name('getSpecificPage');
+Route::patch('/pages/{page}',[PagesController::class,'update'])->name('updateSpecifiedPage');
+Route::delete('/pages/{page}',[PagesController::class,'delete'])->name('deleteSpecifiedPage');
 
-Route::get('/{page}', [PagesController::class, 'show'])->name('getSpecificPage');
-Route::patch('/{page}',[PagesController::class,'update'])->name('updateSpecifiedPage');
-Route::delete('/{page}',[PagesController::class,'delete'])->name('deleteSpecifiedPage');
-
-
+Route::post('/content',[ContentController::class,'create'])->name('createContent');
+Route::get('/{content}', [ContentController::class, 'show'])->name('getSpecificContent');
+Route::patch('/{content}',[ContentController::class,'update'])->name('updateSpecifiedContent');
+Route::delete('/{content}',[ContentController::class,'delete'])->name('deleteSpecifiedContent');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

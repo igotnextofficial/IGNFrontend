@@ -15,8 +15,8 @@ class CreateContentTable extends Migration
     {
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
-            $table->text('description',200);
-            $table->enum('status',['draft','published'])->default('draft');
+            $table->text('description');
+            $table->enum('status',['draft','published','archived'])->default('draft');
             $table->foreignId('page_id')->nullable()->constrained('pages')->onDelete('set null');
             $table->timestamps();
         });
@@ -29,6 +29,13 @@ class CreateContentTable extends Migration
      */
     public function down()
     {
+
+        Schema::table('contents', function (Blueprint $table) {
+            $table->foreign('page_id')
+                ->references('id')
+                ->on('pages')
+                ->onDelete('set null');
+        });
         Schema::dropIfExists('content');
     }
 }

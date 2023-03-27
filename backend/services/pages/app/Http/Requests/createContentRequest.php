@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class createPageRequest extends FormRequest
+class createContentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +27,7 @@ class createPageRequest extends FormRequest
     public function rules()
     {
         return [
-            'data.title' => 'required|max:60|min:5|unique:pages,title',
-            'data.slug' => 'required|max:120|min:10|unique:pages,slug',
-            'data.display' => 'required|bool'
+           'data.description' => 'required'
         ];
     }
 
@@ -48,5 +47,4 @@ class createPageRequest extends FormRequest
             'data' => $newErrors
         ], 422));
     }
-
 }
