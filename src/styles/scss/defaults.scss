@@ -1,0 +1,13 @@
+$primary-orange-color:#f86e51;
+$primary-black-color: #1d1917; 
+$primary-yellow-color: #f2c85b;
+$primary-white-color:antiquewhite;
+
+body {
+    margin: 0;
+    background-color: $primary-black-color;
+    color: $primary-white-color;
+}
+
+.button{background-color: $primary-orange-color;}
+

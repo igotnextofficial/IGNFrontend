@@ -1,0 +1,146 @@
+form{
+  font-size: 1em;
+}
+select,input,textarea{
+    background-color: transparent;
+    border: none;
+    padding: 0 1em 0 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: 21px;
+    cursor: inherit;
+    line-height: inherit;
+    outline: none;
+    background: white;
+    padding: 5px 10px;
+}
+input[type="text"]{
+  margin:10px 0;
+  font-size: 21px;
+  color: #000000;
+  padding: 5px 10px;
+}
+
+textarea{
+  padding: 5px 10px;
+}
+
+input[type="checkbox"]{
+  appearance:checkbox;
+  margin:10px 0;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+}
+
+.select-holder{
+    position: relative;
+    display: grid;
+    grid-template-areas: "select";
+    align-items: center;
+    cursor: pointer;
+}
+.select-holder::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: #979393;
+    margin:0 10px;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    grid-area: select;
+    justify-self: end;
+  }
+  input[readonly] {
+    background-color: #a6a6a6;
+    border: 1px solid #a6a6a6;
+}
+
+  select{
+    grid-area: select;   
+  }
+option{
+    appearance: none;
+    font-size: 16px;
+    background-color: #fff;
+    background-image: none;
+}
+
+input:focus{
+    border: none;
+}
+
+
+.form-container{
+  width:100%;
+  max-width: 640px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  margin-top:30px;
+
+}
+
+.inner-form{
+  display:flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin:0 auto;
+}
+
+.inner-form input, .inner-form textarea,.inner-form select{
+    margin:10px 0;
+    padding:8px 10px;
+    font-size:16px;
+    border-radius: 3px;
+    border:1px solid #c7c7c7;
+}
+
+
+.inner-form textarea{
+    resize: none;
+    height: 200px;
+}
+button{
+  cursor: pointer;
+}
+.buttonNotReady{
+ color: #000000;
+ opacity: 0.5;
+}
+
+.buttonReady{
+
+  opacity: 1;
+}
+
+
+@keyframes buttonReadyAnimation {
+  from {opacity: 0.5;}
+  to {opacity: 1;}
+}
+
+@keyframes buttonNotReadyAnimation {
+  from {opacity: 1;}
+  to {opacity: 0.5;}
+}
+.error{color:red}
+.valid{color:white;}
+.slow-down{color:#FFDB58}
+
+
+.FormInput {
+  max-width: 600px;
+  margin: 30px auto;
+  text-align: left;
+}
+
+.FormInput input{
+  padding: 8px;
+  font-size: 18px;
+}
+.FormInput label{
+  margin: 5px 0;
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
+}

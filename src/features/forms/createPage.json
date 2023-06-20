@@ -1,0 +1,56 @@
+[
+
+    {
+      "tag":"input",
+      "options":{
+          "name": "title",
+          "type": "text",
+          "value":"",
+          "placeholder":"",
+          "className":"page-title",
+          "id":""
+      },
+      "required":false,
+      "order":-1
+    },
+
+    {
+        "tag":"input",
+        "options":{
+            "name": "slug",
+            "type": "text",
+            "value":"",
+            "placeholder":"",
+            "className":"page-slug",
+            "id":""
+        },
+        "readonly":true,
+        "required":false,
+        "order":-1
+      },
+
+    {
+        "tag":"textarea",
+        "options":{
+            "resize":"none",
+            "type": "text",
+            "value":"",
+            "placeholder":"page description...",
+            "className":"",
+            "id":"description"
+        },
+        "readonly":false,
+        "required":false,
+        "order":-1
+      },
+
+    {
+      "name": "",
+      "type": "",
+      "options": ["Hide", "Show"]
+    }
+
+  ]
+
+
+
