@@ -11,31 +11,36 @@ export const pages = [
     {
        title:'', 
       slug:'/home',
-       component:Home
+       component:Home,
+       useProtected: false
         
       },
      
    {
     
       slug:'/login',
-     component:Login
+     component:Login,
+     useProtected: false
       
    },
    {
     
     slug:'/register',
-   component:Register
+   component:Register,
+   useProtected: false
     
  },
  {   
     slug:'/test',
-    component:FormTest
+    component:FormTest,
+    useProtected: false
   
 },
 
 {   
     slug:'/dashboard',
-    component:Dashboard
+    component:Dashboard,
+    useProtected: true
   
 },
    

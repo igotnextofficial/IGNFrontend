@@ -1,6 +1,7 @@
 import './App.css';
 import { pages } from './routes/web';
 import  Navigation  from './features/Navigation/Navigation';
+import ProtectedRoutes from './utils/ProtectedRoute';
 
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -8,8 +9,14 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 
 function App() {
- 
-   const routeComponents = pages.map(({slug,component},key) => <Route key={key} path={slug} exact component={component}/>)
+    const isAuthenticated = true;
+   const routeComponents = pages.map(({slug,component,useProtected},key) =>
+   { 
+      return useProtected ? 
+      <ProtectedRoutes key={key} path={slug} exact component={component} isAuthenticated={isAuthenticated} /> : 
+      <Route key={key} path={slug} exact component={component} /> 
+    }
+   );
   return (
    
     <div className="App">

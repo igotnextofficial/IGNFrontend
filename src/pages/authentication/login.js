@@ -34,18 +34,24 @@ const Login = ()=>{
     const [errMessage,setErrMessage] = useState('');
     const [loading,setLoading] = useState(false);
     let history = useHistory();
+    const [userInfo,setUserInfo] = useState(null)
 
     const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
         return hasErrors ? <h3>{errorMessage}</h3> : null;
     }
     useEffect(()=>{
      if(successfulLogin){
+   
         setTimeout(()=> {
             history.push('/dashboard')
         },1000)
      }
        
     },[successfulLogin])
+
+    useEffect(() => {
+        localStorage.setItem("user",JSON.stringify(userInfo))
+    },[userInfo])
 
     useEffect(() =>{
         setLoading(false)
@@ -69,6 +75,7 @@ const Login = ()=>{
                 setErrMessage('The user is already logged in');
             }
             else if(response.status === 200){
+                setUserInfo(response.data);
                 setSuccessfulLogin(true);    
             }
             else{

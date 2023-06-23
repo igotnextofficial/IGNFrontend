@@ -46,9 +46,9 @@ p,a,li,label,input {
 
 
 
-body {
+body { 
 
-  /* background-color: #242424;
+  background-color: #242424;
   /* background-color: #242424;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -87,3 +87,5 @@ button{
   background-color: #f2c85b;
   color:#3A0751;
 }
+
+

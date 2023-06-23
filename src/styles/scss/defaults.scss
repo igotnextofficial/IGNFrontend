@@ -11,3 +11,11 @@ body {
 
 .button{background-color: $primary-orange-color;}
 
+/* Articles */
+#articleDisplayContainer{
+    background-color: $primary-white-color;
+    color: $primary-black-color;
+    border-radius: 5px 5px;
+    max-width:600px;
+    box-shadow: #1d1917 3px 3px 3px 3px ;
+  }
