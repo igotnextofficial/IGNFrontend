@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 const DisplayArticle: React.FC<ArticleDataType>  = ( article ) => {
     return article ? (
     <>
-        <List sx={{width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
+        <List sx={{width: '100%', maxWidth: 640, bgcolor: 'background.paper'}}>
             <ListItem >
                 <ListItemAvatar>
                     <Avatar alt={article.title} src={article.image}  />

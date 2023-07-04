@@ -2,7 +2,7 @@ import React from "react";
 import DisplayArticle from "./DisplayArticles";
 import { ArticleDataType } from "../types/DataTypes";
 
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography, Link } from "@mui/material";
 
 const ArticlesList = () => {
     let userArticles: ArticleDataType[]  = [
@@ -56,7 +56,7 @@ const ArticlesList = () => {
 
     const ListArticles: React.FC<{ articles: ArticleDataType[] }> = ({articles}) => {
         let output = articles.map((userArticle, index) => {
-            return <DisplayArticle key={index}  { ...userArticle }  />
+            return <a href=""><DisplayArticle key={index}  { ...userArticle }  /></a>
         })
        return  (
         <>
@@ -66,7 +66,7 @@ const ArticlesList = () => {
     }
     return (
         <>
-            <Box component={'div'} sx={{backgroundColor:'background.paper', maxWidth:'500px', padding:'5px'}}>
+            <Box  component={'div'} sx={{backgroundColor:'background.paper', maxWidth:'500px', padding:'5px'}}>
                 
                 <Typography
                        sx={{ display: 'block',color:'#1d1917', fontSize:'1.2em', padding:'10px', fontWeight:'bold' }}

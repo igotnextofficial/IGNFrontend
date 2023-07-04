@@ -1,8 +1,15 @@
 import React from "react";
 import DisplayArticle from "../../components/DisplayArticles";
 import { ArticleDataType } from "../../types/DataTypes";
-import { Box, Divider, Typography } from "@mui/material";
+import Editor from "../../components/Editor";
+
 import DashboardSectionComponent from "../../components/DashboardSectionComponent";
+import TaskList from "../../components/TaskList";
+import Grid from '@mui/material/Grid';
+
+import Scrollable from "../../components/Scrollable";
+import DisplayTasks from "../../components/DisplayTasks";
+import {tasksData}  from "../../data";
 
 const WriterDashboard = () => {
     let userArticles: ArticleDataType[]  = [
@@ -66,10 +73,52 @@ const WriterDashboard = () => {
     }
     return (
         <>
-                <DashboardSectionComponent title="Published  Articles" >
-                    <ListArticles articles={userArticles}/>
-                </DashboardSectionComponent>
+            <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+
+            <Grid className="add-shadow" item xs={6} md={6}>
+                    <DashboardSectionComponent  width={800} title="Compose Article" >
+                
+                        <Editor/>
+                 
+                    </DashboardSectionComponent>
+                </Grid>
+
+                <Grid className="add-shadow" item xs={6} md={6}>
+                    <DashboardSectionComponent title="Compose Article" >
+                
+                        <ListArticles articles={userArticles}/>
+                 
+                    </DashboardSectionComponent>
+                </Grid>
+
+                <Grid className="add-shadow" item xs={6} md={4}>
+                    <DashboardSectionComponent title="Published  Articles" >
+                       
+                            <ListArticles articles={userArticles}/>
+                      
+                    </DashboardSectionComponent>
+                </Grid>
+
+                <Grid sx={{border:'2px solid #f7f7f7', height:'auto'}} item xs={6} md={4}>
+                    <DashboardSectionComponent title="Tasks List" >
+                        <DisplayTasks tasks={tasksData} />
+                    </DashboardSectionComponent>
+                    
           
+                </Grid>
+                <Grid className="add-shadow" item xs={6} md={4}>
+                    <DashboardSectionComponent title="Tasks List" >
+                        {/* <DisplayTasks tasks={ tasksData } /> */}
+                    </DashboardSectionComponent>
+                    
+          
+                </Grid>
+
+            </Grid>
+            
+        
+
+            
 
             
         </>

@@ -19,7 +19,7 @@ import Loader from '../../components/Loader';
 import forms from '../../utils/forms';
 
 import axios from 'axios';
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -33,7 +33,7 @@ const Login = ()=>{
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
     const [loading,setLoading] = useState(false);
-    let history = useHistory();
+    let navigate = useNavigate();
     const [userInfo,setUserInfo] = useState(null)
 
     const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
@@ -43,7 +43,7 @@ const Login = ()=>{
      if(successfulLogin){
    
         setTimeout(()=> {
-            history.push('/dashboard')
+            navigate.push('/dashboard')
         },1000)
      }
        
