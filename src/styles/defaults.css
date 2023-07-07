@@ -1,3 +1,4 @@
+@import url(react-quill/dist/quill.snow.css);
 body {
   margin: 0;
   background-color: #ffffff;
@@ -20,3 +21,12 @@ body {
 
 a {
   cursor: pointer; }
+
+.max-point {
+  color: #f86e51; }
+
+.mid-point {
+  color: #f2c85b; }
+
+.safe-zone {
+  color: #5f9f00; }

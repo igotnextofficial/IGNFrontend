@@ -10,6 +10,8 @@ import Grid from '@mui/material/Grid';
 import Scrollable from "../../components/Scrollable";
 import DisplayTasks from "../../components/DisplayTasks";
 import {tasksData}  from "../../data";
+import Chart from "../../components/Charts";
+import ToDo from "../../components/ToDo";
 
 const WriterDashboard = () => {
     let userArticles: ArticleDataType[]  = [
@@ -84,9 +86,9 @@ const WriterDashboard = () => {
                 </Grid>
 
                 <Grid className="add-shadow" item xs={6} md={6}>
-                    <DashboardSectionComponent title="Compose Article" >
+                    <DashboardSectionComponent title="Most Popular Articles" >
                 
-                        <ListArticles articles={userArticles}/>
+                        <Chart/>
                  
                     </DashboardSectionComponent>
                 </Grid>
@@ -107,7 +109,8 @@ const WriterDashboard = () => {
           
                 </Grid>
                 <Grid className="add-shadow" item xs={6} md={4}>
-                    <DashboardSectionComponent title="Tasks List" >
+                    <DashboardSectionComponent title="To Do List" >
+                        <ToDo/>
                         {/* <DisplayTasks tasks={ tasksData } /> */}
                     </DashboardSectionComponent>
                     

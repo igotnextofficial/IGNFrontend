@@ -1,3 +1,5 @@
+@import 'react-quill/dist/quill.snow.css';
+
 $primary-orange-color:#f86e51;
 $primary-black-color: #1d1917; 
 $primary-yellow-color: #f2c85b;
@@ -28,3 +30,10 @@ body {
   a{
     cursor: pointer;
   }
+
+
+
+  .max-point{color:$primary-orange-color}
+  .mid-point{color:$primary-yellow-color}
+  .safe-zone{color:rgb(95, 159, 0)}
+
