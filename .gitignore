@@ -25,6 +25,5 @@ yarn-error.log*
 .env.development
 .eslintcache
 yarn.lock
-package.json
 public/manifest.json
 public/robots.txt
