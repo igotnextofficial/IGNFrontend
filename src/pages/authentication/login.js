@@ -19,34 +19,64 @@ import Loader from '../../components/Loader';
 import forms from '../../utils/forms';
 
 import axios from 'axios';
-import { useNavigate } from "react-router-dom"
+import IgnRequest from '../../features/Http/IgnRequest';
+import { Navigate } from "react-router-dom"
 
 
 
 
 const Login = ()=>{
-    
-    console.log(process.env.REACT_APP_USER_API_URI)
-    const loginUri = `https://shield.igotnext.local/api/login`;
+
+
+    const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [accessToken,setAccessToken] = useState('');
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
     const [loading,setLoading] = useState(false);
-    let navigate = useNavigate();
+
     const [userInfo,setUserInfo] = useState(null)
 
     const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
-        return hasErrors ? <h3>{errorMessage}</h3> : null;
+        return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
+    }
+
+    const userLogin = async (data) => {
+        // this should be more involved on error states , I should maybe log information and a user should never hit a 204 state.
+        let httpRequest = new IgnRequest({baseURL:loginUri})
+        try{
+            let response = await httpRequest.post('/login',data);
+            if(response.status === 200){
+                console.dir(response)
+                setSuccessfulLogin(true)
+            }
+            if(response.stats === 204){
+                console.log('This user should not be able to access this page something is wrong ... log this or handle somehow')
+            }
+
+        }
+        catch(error){
+            let responseStatus = error.response.status;
+
+            switch(responseStatus){
+                case 400:
+                    setErrMessage("Please ensure username and password matches.")
+                    console.log("should be displaying error " + errMessage)
+                    break;
+                case 404:
+                    setErrMessage("The user does not exist")
+                    break;
+                default:
+                    setErrMessage('something went wrong ')
+            }
+        }
+        finally{
+            setLoading(false)
+        }
+     
     }
     useEffect(()=>{
-     if(successfulLogin){
-   
-        setTimeout(()=> {
-            navigate.push('/dashboard')
-        },1000)
-     }
-       
+     console.log(`The login was successful? ${successfulLogin}`)
     },[successfulLogin])
 
     useEffect(() => {
@@ -66,42 +96,9 @@ const Login = ()=>{
         for(const [key,value] of data){
             wrappedData.data[key] = value;
         }
+        userLogin(wrappedData)
 
-        try {
-            let response = await axios.post(loginUri,wrappedData);
-            
-            if(response.status === 204){
-                setHasErrors(true);
-                setErrMessage('The user is already logged in');
-            }
-            else if(response.status === 200){
-                setUserInfo(response.data);
-                setSuccessfulLogin(true);    
-            }
-            else{
-                setErrMessage('user could not be logged in.')
-            }
-
-        } catch (error) {
-            setHasErrors(true);
-            
-            if(error.response){
-                if(error.response.status === 404){
-                    setErrMessage('The user does not exist');
-                 }
-     
-                 if(error.response.status === 400){
-                    setErrMessage('username/password is invalid...')
-                 }
-
-            }
-            else{
-                setErrMessage('Something went wrong...')
-            }
-           
-       
-  
-        }
+      
         //save access token
         
 
@@ -123,7 +120,11 @@ const Login = ()=>{
 
     return (
         <>
-            
+
+            {successfulLogin && (
+                <Navigate to="/dashboard" replace={true} />
+            )}
+
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>
                     <CssBaseline/>

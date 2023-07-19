@@ -5,6 +5,7 @@ import ProtectedRoutes from './utils/ProtectedRoute';
 
 import { BrowserRouter as Router, Switch, Route, Routes} from 'react-router-dom';
 import Dashboard from './pages/dashboards/Dashboard';
+import Login from './pages/authentication/Login';
 
 
 
@@ -26,6 +27,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/dashboard' element={<Dashboard/>} />
+          <Route path='/login' element={<Login/>} />
         {/* {routeComponents} */}
         </Routes>
       </Router>

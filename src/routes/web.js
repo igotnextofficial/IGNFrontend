@@ -1,5 +1,5 @@
 import Home from '../pages/home';
-import Login from '../pages/authentication/login';
+import Login from '../pages/authentication/Login'
 import Register from '../pages/authentication/register';
 import FormTest from '../pages/FormTest';
 import Dashboard from '../pages/dashboards/Dashboard';
