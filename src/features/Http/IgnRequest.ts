@@ -1,5 +1,6 @@
 import { HttpConfigurationType, httpDataObject } from "../../types/DataTypes";
 import axios, { AxiosInstance } from 'axios';
+import { wrappedData } from "../../utils/helpers";
 
 class IgnRequest{
     api: AxiosInstance;
@@ -18,9 +19,9 @@ class IgnRequest{
        }
     }
 
-    async post(endpoint:string, data:httpDataObject){
+    async post(endpoint:string, data:httpDataObject = {data:{}}){
         try{
-            const response = await this.api.post(endpoint,data)
+            const response = await this.api.post(endpoint,wrappedData(data))
             return response
         }
         catch(error){

@@ -16,6 +16,14 @@ export interface TaskDataType {
     type:string
 }
 
+export interface UserDataType {
+    id: string,
+    name:string,
+    email?:string,
+    username?:string,
+    role?:object
+}
+
 
 enum HttpMethods {
     GET="GET",

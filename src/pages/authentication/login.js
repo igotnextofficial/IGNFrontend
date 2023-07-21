@@ -21,6 +21,7 @@ import forms from '../../utils/forms';
 import axios from 'axios';
 import IgnRequest from '../../features/Http/IgnRequest';
 import { Navigate } from "react-router-dom"
+import User from '../../models/users/User';
 
 
 
@@ -30,58 +31,30 @@ const Login = ()=>{
 
     const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
     const [successfulLogin,setSuccessfulLogin] = useState(false);
-    const [accessToken,setAccessToken] = useState('');
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
     const [loading,setLoading] = useState(false);
-
-    const [userInfo,setUserInfo] = useState(null)
 
     const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
         return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
     }
 
     const userLogin = async (data) => {
-        // this should be more involved on error states , I should maybe log information and a user should never hit a 204 state.
-        let httpRequest = new IgnRequest({baseURL:loginUri})
-        try{
-            let response = await httpRequest.post('/login',data);
-            if(response.status === 200){
-                console.dir(response)
-                setSuccessfulLogin(true)
-            }
-            if(response.stats === 204){
-                console.log('This user should not be able to access this page something is wrong ... log this or handle somehow')
-            }
-
+        const user = new User();
+        let loggedIn = await user.login(data);
+        if(loggedIn){
+            setSuccessfulLogin(true);
         }
-        catch(error){
-            let responseStatus = error.response.status;
-
-            switch(responseStatus){
-                case 400:
-                    setErrMessage("Please ensure username and password matches.")
-                    console.log("should be displaying error " + errMessage)
-                    break;
-                case 404:
-                    setErrMessage("The user does not exist")
-                    break;
-                default:
-                    setErrMessage('something went wrong ')
-            }
+        else{
+            console.log(`The value of logeed in is this is error state : ${loggedIn}`)
+            setErrMessage('Username/Password does not match.')
         }
-        finally{
-            setLoading(false)
-        }
-     
+       
     }
-    useEffect(()=>{
-     console.log(`The login was successful? ${successfulLogin}`)
-    },[successfulLogin])
-
-    useEffect(() => {
-        localStorage.setItem("user",JSON.stringify(userInfo))
-    },[userInfo])
+    useEffect(() =>{
+      let user = new User()
+        user.logout()
+    },[])
 
     useEffect(() =>{
         setLoading(false)
@@ -89,34 +62,14 @@ const Login = ()=>{
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setLoading(true)
+        setLoading(true);
         
         let data = new FormData(event.currentTarget);
-        let wrappedData = {data:{}}
-        for(const [key,value] of data){
-            wrappedData.data[key] = value;
-        }
-        userLogin(wrappedData)
-
-      
-        //save access token
-        
-
+        userLogin(data);
     }
 
     const theme = createTheme()
-    const [formData,setFormData] = useState({});
     
-    const handleOnChange = (event) =>{
-        const { name, value} = event.target;
-        setFormData( (previousData)  => {
-            return { 
-                ...previousData,
-                [name] : value
-            }
-        })
-
-    }
 
     return (
         <>

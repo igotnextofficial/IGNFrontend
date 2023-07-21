@@ -1,11 +1,12 @@
 import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Route, Navigate, Outlet } from "react-router-dom";
+import Login from "../pages/authentication/Login";
 
-const ProtectedRoutes = ({key,path,component = null,isAuthenticated = false}) => {
-    console.log("passing")
-    console.log(path)
-    console.log(isAuthenticated);
-    return !isAuthenticated ?  <Route key={key} path="/login"component={component} exact/>: <Route key={key} path={path} component={component} exact/>;
+const ProtectedRoutes = ({redirectPath="/login",isAuthenticated = false, children}) => {
+   if(!isAuthenticated){
+      return <Navigate to={redirectPath} replace />
+   }
+   return children ? children : <Outlet/>
 }
 
 export default ProtectedRoutes;
