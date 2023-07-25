@@ -28,7 +28,7 @@ import User from '../../models/users/User';
 
 const Login = ()=>{
 
-
+    const user = new User()
     const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [hasErrors,setHasErrors] = useState(false);
@@ -44,6 +44,7 @@ const Login = ()=>{
         let loggedIn = await user.login(data);
         if(loggedIn){
             setSuccessfulLogin(true);
+        
         }
         else{
             console.log(`The value of logeed in is this is error state : ${loggedIn}`)
@@ -52,9 +53,8 @@ const Login = ()=>{
        
     }
     useEffect(() =>{
-      let user = new User()
-        user.logout()
-    },[])
+        <Navigate to="/dashboard" replace={true} />
+    },[successfulLogin])
 
     useEffect(() =>{
         setLoading(false)
@@ -74,9 +74,11 @@ const Login = ()=>{
     return (
         <>
 
-            {successfulLogin && (
+            {user.isLoggedIn() &&(
                 <Navigate to="/dashboard" replace={true} />
             )}
+
+            {console.log(user.isLoggedIn())}
 
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>

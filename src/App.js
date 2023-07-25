@@ -25,15 +25,11 @@ function App() {
   return (
 
     <div className="App">
-      <Button variant='contained'
-  onClick={() => {
-   user.logout()
-  }}
->
-  {user.isLoggedIn() ? 'logout': 'login'  } 
-</Button>
+    
+ 
 
         <Router>
+        {/* <Navigation/> */}
         <Routes>
            <Route path='' element={<ProtectedRoutes isAuthenticated={user.isLoggedIn()} />}>
               <Route path='/dashboard' element={<Dashboard/>}/>

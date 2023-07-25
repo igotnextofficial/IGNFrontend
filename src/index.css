@@ -76,7 +76,6 @@ nav{
 .nav-links{
   display: flex;
   justify-content: space-evenly;
-  width: 50%;
 }
 
 button{

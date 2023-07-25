@@ -7,9 +7,16 @@ $primary-white-color:antiquewhite;
 
 body {
     margin: 0;
-    background-color: #ffffff;
+    background-color: #f7f7f7;
     color: $primary-black-color;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+
+.App{
+  max-width: 1600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
 }
 
 .button{background-color: $primary-orange-color;}

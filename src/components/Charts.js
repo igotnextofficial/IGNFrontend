@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid,Tooltip } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid,Tooltip, ResponsiveContainer } from 'recharts';
 import { Avatar } from '@mui/material';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink'];
@@ -92,6 +92,7 @@ const renderCustomAxisTick = ({ x, y, payload }) => {
 
 export default function Chart() {
   return (
+    <ResponsiveContainer  width="100%" height={400}>
     <BarChart
    
       height={300}
@@ -115,6 +116,7 @@ export default function Chart() {
     
       </Bar>
     </BarChart>
+    </ResponsiveContainer>
   );
 }
 

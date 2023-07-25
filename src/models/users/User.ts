@@ -41,7 +41,8 @@ class User{
      
            localStorage.setItem(User.INFO,JSON.stringify(response.data['data']));
            document.cookie = `access_token=${response.data['access_token']}; Secure; HttpOnly`;
-           localStorage.setItem(User.ACCESS_TOKEN, JSON.stringify(response.data['access_token']));
+           localStorage.setItem(User.ACCESS_TOKEN, response.data['access_token']);
+           console.log(`setting access token: ${response.data['access_token']}`)
            localStorage.setItem("test","testing to login user")
            console.dir(response)
            return true;
@@ -58,7 +59,7 @@ class User{
     }
 
     async logout(){
-        let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{Authorization: 'Bearer ' + localStorage.getItem(User.ACCESS_TOKEN)}});
+        let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${localStorage.getItem(User.ACCESS_TOKEN)}`}});
 
         try{
             let response = await ignHttpRequest.post('/logout');
