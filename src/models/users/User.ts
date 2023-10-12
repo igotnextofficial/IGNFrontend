@@ -26,6 +26,10 @@ class User{
         return localStorage.getItem(User.INFO) ? JSON.parse(user) : this.default();
     }
 
+    show(){
+        return "The user account"
+    }
+
     isLoggedIn(){
         let user = this.get();
         console.log(`the user id is: ${user.id}`)

@@ -6,8 +6,10 @@ import ProtectedRoutes from './utils/ProtectedRoute';
 import { BrowserRouter as Router, Switch, Route, Routes, Link} from 'react-router-dom';
 import Dashboard from './pages/dashboards/Dashboard';
 import Login from './pages/authentication/Login';
+import Logout from './pages/authentication/Logout';
 import { Button } from '@mui/material';
 import User from './models/users/User';
+
 
 const user = new User();
 
@@ -27,14 +29,14 @@ function App() {
     <div className="App">
     
  
-
+    
         <Router>
-        {/* <Navigation/> */}
+        <Navigation/>
         <Routes>
            <Route path='' element={<ProtectedRoutes isAuthenticated={user.isLoggedIn()} />}>
               <Route path='/dashboard' element={<Dashboard/>}/>
-              
            </Route>
+           <Route path='/logout' element={<Logout/>}/>
            <Route path='/login' element={<Login/>}/>
         </Routes>
         </Router>

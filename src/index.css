@@ -3,15 +3,15 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  box-shadow: unset;
-  appearance: none;
+  /* box-shadow: unset;
+  appearance: none; */
 }
 body{
   font-size: 18px;
 }
 h1{
   font-size: 30px;
-  color:white;
+
 }
 
 h2{
@@ -35,7 +35,7 @@ li{
 }
 
 p,a,li,label,input {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 
@@ -48,7 +48,7 @@ p,a,li,label,input {
 
 body { 
 
-  background-color: #242424;
+  /* background-color: #242424; */
   /* background-color: #242424;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -64,19 +64,28 @@ code {
 }
 
 
-nav{
+
+
+.navigationContainer{
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 7vh;
-  background:#f86e51;
+  justify-content: space-between;
+  width: 100%;
+}
+
+ul.navbar-container a li{
   color: white;
 }
 
-.nav-links{
+ul.navbar-container{
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
+
+/* .nav-links{
+  display: flex;
+  justify-content: space-evenly;  
+} */
 
 button{
   font-size: 20px;

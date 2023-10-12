@@ -24,6 +24,12 @@ export const pages = [
       
    },
    {
+   slug:'/logout',
+   component:Login,
+   useProtected: true
+    
+ },
+   {
     
     slug:'/register',
    component:Register,
