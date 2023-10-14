@@ -15,6 +15,7 @@ import RootComponent from './components/RootComponent';
 import { useContext } from 'react';
 import { UserContext } from './Contexts/UserContext';
 import { useUser } from './Providers/UserProvider';
+import Home from './pages/home';
 
 
 const Testtwo = () =>{
@@ -48,6 +49,7 @@ function App() {
          <Router>
             <Navigation/>
             <Routes>
+            <Route path='/' element={<Home/>}/>
               <Route path='' element={<ProtectedRoutes isAuthenticated={false} />}>
                   <Route path='/dashboard' element={<Dashboard/>}/>
               </Route>

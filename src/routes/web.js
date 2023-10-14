@@ -3,6 +3,7 @@ import Login from '../pages/authentication/Login'
 import Register from '../pages/authentication/register';
 import FormTest from '../pages/FormTest';
 import Dashboard from '../pages/dashboards/Dashboard';
+import { Logout } from '@mui/icons-material';
 
 
 
@@ -25,7 +26,7 @@ export const pages = [
    },
    {
    slug:'/logout',
-   component:Login,
+   component:Logout,
    useProtected: true
     
  },
