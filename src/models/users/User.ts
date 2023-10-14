@@ -63,18 +63,23 @@ class User{
     }
 
     async logout(){
+        if(!localStorage.getItem(User.INFO)){
+            return false;
+        }
+        let success = false;
         let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${localStorage.getItem(User.ACCESS_TOKEN)}`}});
 
         try{
-            let response = await ignHttpRequest.post('/logout');
-            if(response.status !== 200 || (!localStorage.getItem(User.INFO))){return false}
-            localStorage.removeItem(User.INFO)
-            localStorage.removeItem(User.ACCESS_TOKEN)
-            return true; 
+             await ignHttpRequest.post('/logout');
+             success = true; 
         }
         catch(error){
-            return false;
+            //handle the error
         }
+        
+        localStorage.removeItem(User.INFO)
+        localStorage.removeItem(User.ACCESS_TOKEN)
+        return success;
  
     }
 

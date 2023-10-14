@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { createRoot } from 'react-dom/client';
 
 
@@ -7,12 +8,16 @@ import './styles/defaults.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 const container =  document.getElementById('root');
+
 const ROOT = createRoot(container);
 
 
 ROOT.render(
+
   <React.StrictMode>
-    <App />
+
+      <App />
+
   </React.StrictMode>
 
 );

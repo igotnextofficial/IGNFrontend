@@ -7,6 +7,10 @@ export interface ArticleDataType {
     author:string,
     published:string
 }
+export interface Settings {
+    title:string,
+    slug:string
+}
 
 export interface TaskDataType {
     title:string,

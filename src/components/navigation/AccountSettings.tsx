@@ -1,14 +1,23 @@
-import React from 'react';
-import { Avatar, Box, IconButton , Tooltip, Menu , MenuItem, Typography } from '@mui/material';
+import React,{useContext} from 'react';
+
+import { Avatar, Box, IconButton , Tooltip, Menu , MenuItem, Typography,Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import User from '../../models/users/User';
+import CreateLink from './CreateLink';
+
+import { Settings } from '../../types/DataTypes';
 
 const AccountSettings  = () => {
-    const settings = [{title:'Profile',slug:'/profile'}, {title:'Account',slug:'/account'}, {title:'Dashboard',slug:'/dashboard'}, {title:'Logout',slug:'/logout'}];
+
+  const settings:Settings[] = [
+      {
+        title:'Profile',
+        slug:'/profile'
+      }, {title:'Account',slug:'/account'}, {title:'Dashboard',slug:'/dashboard'}, {title:'Logout',slug:'/logout'}];
 
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const user = new User();
+
   
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,6 +29,9 @@ const AccountSettings  = () => {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
+    const user  = new User();
+
+    
   
     return (
        user.isLoggedIn() ? 
@@ -48,8 +60,8 @@ const AccountSettings  = () => {
             >
               {settings.map(({title,slug}) => (
                 <MenuItem key={slug} onClick={handleCloseUserMenu}>
-             
-                  <Link to={slug}><Typography sx={{color:'#1d1917'}} textAlign="center">{title}</Typography></Link>
+          
+                  <CreateLink title={title} slug={slug} />
                 </MenuItem>
               ))}
             </Menu>

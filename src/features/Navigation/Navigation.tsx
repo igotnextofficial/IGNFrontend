@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,17 +14,23 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Ignlogo from '../../components/Ignlogo';
 import { Link } from 'react-router-dom';
-import User from '../../models/users/User';
+
 import AccountSettings from '../../components/navigation/AccountSettings';
 
 
-const pages = [{title:'Who\'s Next',slug:'/whos-next'}, {title:'Featured Artists',slug:'/featured-artist'}, {title:'Music',slug:'/music'}];
-const settings = [{title:'Profile',slug:'/profile'}, {title:'Account',slug:'/account'}, {title:'Dashboard',slug:'/dashboard'}, {title:'Logout',slug:'/logout'}];
 
-function ResponsiveAppBar() {
+const pages = [{title:'Who\'s Next',slug:'/whos-next'}, {title:'Featured Artists',slug:'/featured-artist'}, {title:'Music',slug:'/music'}];
+
+
+
+
+const ResponsiveAppBar  = () => {
+
+
+  const userLoggedin = true;
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const user = new User();
+
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -40,6 +47,10 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+
+// if(userLoggedin === false){
+//   return null;
+// }
   return (
     <AppBar position="static"  sx={{backgroundColor:"#f86e51"}}>
       <Container maxWidth="xl">
