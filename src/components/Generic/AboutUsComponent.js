@@ -9,7 +9,7 @@ const AboutUsComponent = () => {
     return( 
       <SectionComponent>
         <Grid container spacing={2}>
-            <Grid item xs={5} sx={styles.contentInfoHolder}>
+            <Grid item md={5} sx={styles.contentInfoHolder}>
 
            <InformationComponent 
             title={AboutIGN.title}
@@ -19,7 +19,7 @@ const AboutUsComponent = () => {
             <TextContentComponent content={AboutIGN.content} />
             </InformationComponent>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item  md={7}>
                 <Box sx={{}}>
                     <img style={{width:"100%",boderRadius:"10%"}} src="https://png.pngtree.com/background/20230611/original/pngtree-artistic-abstract-music-concept-for-headphones-picture-image_3162681.jpg" alt="image" />
                 </Box>

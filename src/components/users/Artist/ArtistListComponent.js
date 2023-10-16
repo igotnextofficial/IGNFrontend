@@ -11,7 +11,7 @@ const ArtistListComponent = () => {
         return(
             <Grid container sx={styles.ArtistContainer}>
             {artists.map(artist => {
-                return <Grid Item><DisplayArtistComponent artist={artist} /></Grid>
+                return <Grid sx={{padding:"1rem"}} Item><DisplayArtistComponent artist={artist} /></Grid>
             })}
 
             </Grid>
@@ -30,7 +30,7 @@ const ArtistListComponent = () => {
 
 const styles = {
     ArtistContainer:{
-        justifyContent:"space-between",
+      
         marginTop: "3rem"
     }
     

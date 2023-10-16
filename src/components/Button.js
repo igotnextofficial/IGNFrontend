@@ -20,7 +20,7 @@ const theme = createTheme({
     
         return (
             <ThemeProvider theme={theme}>
-                <Button className="button" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2,color:'white' }} {...rest}> {buttonLabel} </Button>
+                <Button className="button" type="submit" variant="contained" sx={{ mt: 3, mb: 2,color:'white' }} {...rest}> {buttonLabel} </Button>
             </ThemeProvider>
         )
 }

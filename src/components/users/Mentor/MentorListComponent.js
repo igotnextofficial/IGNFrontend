@@ -14,7 +14,7 @@ const MentorListComponent = () => {
         
                 <Grid container sx={styles.Container}>
                 {mentors.map(mentor => {
-                    return <Grid Item><DisplayMentorCard mentor={mentor} /></Grid>
+                    return <Grid sx={{padding:"1rem"}} Item><DisplayMentorCard mentor={mentor} /></Grid>
                 })}
     
                 </Grid>
@@ -34,8 +34,8 @@ const MentorListComponent = () => {
 
 const styles = {
     Container:{
-        justifyContent:"space-between",
-        alignItems:"space-between",
+        
+        
         marginTop: "3rem"
     }
     

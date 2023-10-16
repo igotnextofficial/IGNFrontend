@@ -8,7 +8,7 @@ export default TextContentComponent;
 
 const styles={
     content:{
-        fontSize:"1.5rem",
+        fontSize:"1.2rem",
   
     }
 }

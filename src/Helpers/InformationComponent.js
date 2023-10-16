@@ -34,8 +34,8 @@ const styles={
     button:{
         margin:"15px 0",
         color:"white",
-        fontSize:"1.2rem", 
-        maxWidth:"200px"
+        fontSize:"1rem", 
+      
     }
 
 
