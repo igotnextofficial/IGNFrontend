@@ -52,10 +52,10 @@ const ResponsiveAppBar  = () => {
 //   return null;
 // }
   return (
-    <AppBar position="static"  sx={{backgroundColor:"#f86e51"}}>
+    <AppBar position="sticky"  sx={{backgroundColor:"#fd2f30"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Box sx={{ display: { xs: 'none', md:'block' } , backgroundColor:'#9b4331'}}>
+        <Box sx={{ display: { xs: 'none', md:'block' } , backgroundColor:'#cf1d1d'}}>
          <Link to={"/"}> <Ignlogo /></Link>
          </Box>
          

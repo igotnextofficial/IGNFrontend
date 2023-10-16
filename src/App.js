@@ -16,6 +16,7 @@ import { useContext } from 'react';
 import { UserContext } from './Contexts/UserContext';
 import { useUser } from './Providers/UserProvider';
 import Home from './pages/home';
+import FooterComponent from './components/Generic/FooterComponent';
 
 
 const Testtwo = () =>{
@@ -58,7 +59,8 @@ function App() {
             </Routes>
             </Router> 
  
- 
+
+        <FooterComponent/>
         </RootComponent>
 
       {/* <Navigation/> */} 

@@ -19,7 +19,19 @@ export interface TaskDataType {
     status:string,
     type:string
 }
+export interface ArtistDataType {
+    name:string,
+    image:string,
+    genre:string,
+    songs?:string[],
+    albums?:string[]
+}
 
+export interface MentorDataType {
+    name:string,
+    image:string,
+    bio:string,
+}
 export interface UserDataType {
     id: string,
     name:string,
