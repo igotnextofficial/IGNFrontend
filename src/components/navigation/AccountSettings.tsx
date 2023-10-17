@@ -2,7 +2,7 @@ import React,{useContext} from 'react';
 
 import { Avatar, Box, IconButton , Tooltip, Menu , MenuItem, Typography,Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import User from '../../models/users/User';
+import User from '../../Models/users/User';
 import CreateLink from './CreateLink';
 
 import { Settings } from '../../types/DataTypes';

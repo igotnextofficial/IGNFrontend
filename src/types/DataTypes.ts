@@ -2,10 +2,11 @@ import { EnumType } from "typescript"
 
 export interface ArticleDataType {
     title:string,
-    image:string,
+    image_url:string,
     content:string,
     author:string,
     published:string
+    category?:string
 }
 export interface Settings {
     title:string,

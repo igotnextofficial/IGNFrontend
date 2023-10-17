@@ -8,6 +8,7 @@ import Ignlogo from './components/Ignlogo';
 
 import { BrowserRouter as Router, Switch, Route, Routes, Link} from 'react-router-dom';
 import Dashboard from './pages/dashboards/Dashboard';
+import ComposeArticle from './pages/articles/ComposeArticle'
 import Login from './pages/authentication/Login';
 import Logout from './pages/authentication/Logout';
 
@@ -30,11 +31,11 @@ const Testtwo = () =>{
 
 function App() {
 
-  const isAuthenticated = false;
-  
+  const isAuthenticated = true;
+
   const routeComponents = pages.map(({slug,component,useProtected},key) =>
    { 
-   
+
       return useProtected ? 
       <ProtectedRoutes key={key} path={slug} exact element={component} isAuthenticated={isAuthenticated} /> : 
       <Route key={key} path={slug} exact element={component} /> 
@@ -51,8 +52,9 @@ function App() {
             <Navigation/>
             <Routes>
             <Route path='/' element={<Home/>}/>
-              <Route path='' element={<ProtectedRoutes isAuthenticated={false} />}>
+              <Route path='' element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
                   <Route path='/dashboard' element={<Dashboard/>}/>
+                  <Route path='/compose-article' element={<ComposeArticle/>}/>
               </Route>
               <Route path='/logout' element={<Logout/>}/>
               <Route path='/login' element={<Login/>}/>

@@ -2,11 +2,12 @@ import BackgroundCoverImage from "../BackgroundCoverImage";
 import { Box,Link,Typography } from "@mui/material";
 import { useState } from "react";
 import IgnPillComponent from "../../Helpers/IgnPillComponent";
+import { ArticleDataType } from "../../types/DataTypes";
 
-const DisplayArticleComponent = ({article, height=50,featured=false}) => {
+const DisplayArticleComponent = ({article, height=50,featured=false} : {article:ArticleDataType,height: number, featured:boolean}) => {
     
      return(
-        <BackgroundCoverImage xs={12} sm={12} md={12} sx={{height:height +"vh",position:"relative"}} url={article.image_url+".jpg"}>
+        <BackgroundCoverImage xs={12} sm={12} md={12} sx={{height:`${height} +vh`,position:"relative"}} url={`${article.image_url}.jpg`}>
         <Box sx={featured ? styles.featuredArticleHolder : styles.ArticleHolder}>
             <IgnPillComponent description={article.category} link="/" />
           

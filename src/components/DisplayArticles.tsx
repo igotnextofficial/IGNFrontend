@@ -17,7 +17,7 @@ const DisplayArticle: React.FC<ArticleDataType>  = ( article ) => {
         <List sx={{width: '100%', maxWidth: 640, bgcolor: 'background.paper'}}>
             <ListItem >
                 <ListItemAvatar>
-                    <Avatar alt={article.title} src={article.image}  />
+                    <Avatar alt={article.title} src={article.image_url}  />
                 </ListItemAvatar>
                 <ListItemText 
                 

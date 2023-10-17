@@ -21,7 +21,7 @@ import { Navigate } from 'react-router-dom';
 
 import axios from 'axios';
 import IgnRequest from '../../features/Http/IgnRequest';
-import User from '../../models/users/User';
+import User from '../../Models/users/User';
 
 
 
