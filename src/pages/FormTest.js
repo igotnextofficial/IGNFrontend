@@ -6,7 +6,7 @@ const FormTest = () => {
         const [username,setUsername] = useState('')
         const [firstname,setFirstname] = useState('')
         const [formData,setFormData] = useState({username:''});
-        useEffect(()=>{console.log(`The username is ${formData['username']}`)},[formData])      
+        useEffect(()=>{(`The username is ${formData['username']}`)},[formData])      
         return (
         <>
                 <input

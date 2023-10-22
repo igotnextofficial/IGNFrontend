@@ -2,7 +2,7 @@ import { ReactNode,useState,useEffect } from "react";
 import { ArticleDataType } from "../types/DataTypes";
 import Article from "../Models/users/Article";
 import { ArticleContext } from "../Contexts/ArticleContext";
-import FetchMode from "../types/ArticleFetchMode";
+import { FetchMode } from "../types/ArticleFetchMode";
 
 interface ArticleProviderProps {
     children: ReactNode;
@@ -10,7 +10,7 @@ interface ArticleProviderProps {
     id?: string; // Optional, required for SINGLE, USER, DRAFTS modes
   }
   
-  export const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id="" }) => {
+  const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id="" }) => {
     const [userArticles, setArticles] = useState<ArticleDataType[]>([]);
     const [error, setError] = useState<Error | null>(null); // To handle any errors during fetching
   
@@ -33,13 +33,13 @@ interface ArticleProviderProps {
               break;
             case FetchMode.DRAFTS:
               if (!id) throw new Error("A user ID is required to fetch drafts");
-              articles = await article.retrieveDraftsByUser(id);
+              articles = await article.retrieveDraftsByArticle(id);
               break;
             // Handle other cases as needed
             default:
               throw new Error("Invalid fetch mode");
           }
-          setArticles(articles);
+          articles ? setArticles(articles) : setArticles([Article.defaultResponse]);
         } catch (error) {
           if (error instanceof Error) {
             setError(error);
@@ -61,3 +61,4 @@ interface ArticleProviderProps {
     );
   };
   
+  export default ArticleProvider;

@@ -1,12 +1,15 @@
 import { EnumType } from "typescript"
 
 export interface ArticleDataType {
+    id?:""
     title:string,
     image_url:string,
     content:string,
     author:string,
     published:string
     category?:string
+    user_id?:string
+    drafts?:ArticleDataType[] 
 }
 export interface Settings {
     title:string,
@@ -53,7 +56,7 @@ export interface httpDataObject {
     data:object
 }
 
-export interface httpHeader {
+export interface HttpHeaders {
     "Access-Control-Allow-Origin"?:string,
     Authorization?:string,
     "Content-Type"?:string,
@@ -64,3 +67,21 @@ export interface HttpConfigurationType {
     timeout?: number,
     headers?:any
 }
+
+export interface EditorDataType {
+    height?:250,
+    article:ArticleDataType
+    handleDraft:(data:ArticleDataType)=>void,
+    handleReview:(status:string)=>void
+}
+
+export interface RangeLimitsDataType{
+    min:number,
+    max:number
+}
+export interface EditorRangeLimitsDataType {
+    title:RangeLimitsDataType
+    content:RangeLimitsDataType
+}
+
+export type EditorRangeSelectorDataType = "title" | "content"

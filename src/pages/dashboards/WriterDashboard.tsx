@@ -70,7 +70,7 @@ const WriterDashboard = () => {
 
             <Grid className="add-shadow" item xs={6} md={6}>
                     <DashboardSectionComponent  width={800} title="Compose Article" >
-                            <Editor/>
+                            {/* <Editor/> */}
                     </DashboardSectionComponent>
                 </Grid>
 

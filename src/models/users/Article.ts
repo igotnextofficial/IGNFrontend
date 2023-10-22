@@ -4,18 +4,32 @@ import IgnRequest from "../../features/Http/IgnRequest";
 class Article{
     endpoint: string
     baseURI: string
+    ignHttpRequest: IgnRequest;
+
+    static readonly defaultResponse:ArticleDataType = {
+        title:"",
+        image_url:"",
+        content:"",
+        author:"",
+        published:"",
+        drafts:[]
+    };
+
     static readonly TITLE = "title";
     static readonly CONTENT = "content";
     static readonly STORAGE_ACCESS_KEY: string = "articles";
     static readonly ACCESS_TOKEN: string = "accessToken";
 
     static readonly RANGE_LIMITS = {
-        TITLE:{MIN: 5,MAX: 20},
-        CONTENT:{MIN:10, MAX:500}
+        TITLE:{MIN: 5,MAX: 50},
+        CONTENT:{MIN:10, MAX:2000}
     }
     constructor(){
         this.endpoint = `https://${process.env.REACT_APP_ARTICLE_API_URI}/articles`;
         this.baseURI = `https://${process.env.REACT_APP_ARTICLE_API_URI}` || ""; 
+       this.ignHttpRequest = new IgnRequest({baseURL:this.baseURI})
+       this.ignHttpRequest.setHeaders();
+
     }
 
     DataArticles: ArticleDataType[]  = [
@@ -77,9 +91,24 @@ class Article{
             
         }
     }
-    
-    async get(article_id:string){
 
+    
+
+    
+    async get(article_id:string,withDrafts = false){
+        console.log("called to get articles")
+        let uri = withDrafts ? `/${article_id}/drafts` : `/${article_id}`
+  
+        try{
+         
+            let response = await this.ignHttpRequest.get(`${this.endpoint}${uri}`,{});
+            if(response.status !== 200){ return null}
+            return response;
+        }
+        catch(error){
+            console.error(error)
+            return null;
+        }
     }
 
     async getWithDrafts(article_id:string){
@@ -99,14 +128,18 @@ class Article{
         }
     }
 
-    async retrieveDraftsByUser(id:string){
-        try {
-            let userArticles = await this.getAll();
-            return userArticles;
-        } catch (error) {
-            console.error("Error retrieving articles:", error);
-            return []; // Return empty array in case of error, or handle it as per your requirement
-        }  
+    async retrieveDraftsByArticle(id:string){
+        try{
+            let response = await this.get(id,true);
+            if(!response){ return null}
+            return response.data;
+        }
+        catch(error){
+            console.error(error)
+            return null;
+        }
+       
+   
     }
     async retrieveByUser(id:string){
         try {
@@ -140,10 +173,73 @@ class Article{
 
 
     async update(article_id:string, Article:ArticleDataType){
+        const data = {"data":Article}
+        let token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+        const headers =  {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        
 
+        }
+        this.ignHttpRequest.setHeaders(headers);
+        try{
+         
+            let response = await this.ignHttpRequest.put(this.endpoint,data);
+            if(response.status !== 200){ return false}
+            return response;
+        }
+        catch(error){
+            console.error(error)
+            return null;
+        }
     }
 
-    async create(Article:ArticleDataType){}
+    async create(Article:ArticleDataType){
+        const data = {"data":Article}
+        let token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+        const headers =  {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        
+
+        }
+        this.ignHttpRequest.setHeaders(headers);
+        try{
+         
+            let response = await this.ignHttpRequest.post(this.endpoint,data);
+            if(response.status !== 201){ return false}
+            return response;
+        }
+        catch(error){
+            console.error(error)
+            return null;
+        }
+    }
+
+    async createOrUpdate(Article:ArticleDataType,article_id = ""){
+        try {
+            const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+            const headers = {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            };
+            const update = article_id !== ""
+          
+            this.ignHttpRequest.setHeaders(headers);
+          
+            const response = update
+              ? await this.ignHttpRequest.put(`${this.endpoint}/${article_id}`, { data: Article })
+              : await this.ignHttpRequest.post(this.endpoint, { data: Article });
+            if (response.status !== (update ? 200 : 201)) {
+              return false;
+            }
+          
+            return response;
+          } catch (error) {
+            console.error(error);
+            return null;
+          }
+    }
 
     async delete(article_id:string){
 

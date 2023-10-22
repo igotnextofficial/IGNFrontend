@@ -1,13 +1,31 @@
-import { Box,Typography,Divider } from "@mui/material";
+import { Box,Typography,Divider,List,ListItem,ListItemText, Button } from "@mui/material";
 import { ArticleDataType } from "../../types/DataTypes";
 import ArticlesList from "../ArticlesList";
 import ListArticlesComponent from "./ListAritclesComponent ";
-const DisplayArticleDrafts = ({article_drafts} :{article_drafts:ArticleDataType[]} ) => {
-    console.log("The data in here")
-    console.dir(article_drafts)
+const DisplayArticleDrafts = ({article_drafts = []} :{article_drafts:ArticleDataType[]} ) => {
     const Drafts = () => {
         let data = article_drafts.map(article => {
-            return <Typography component="h4">{article.title}</Typography>
+            return (<List key={article.id}>
+                <ListItem>
+                    
+                    <ListItemText primary={
+                        <Typography
+                            sx={{color:'#c7c7c7',fontSize:'1em'}}
+                        >{article.title} - </Typography> 
+                    } secondary={
+                        <Typography
+                        sx={{color:'#c7c7c7',fontSize:'1em'}}
+                        >{article.content.substring(0,50)}...</Typography>
+                    }/>
+                <Button>View</Button>
+                <Button>restore</Button>
+                
+                </ListItem>
+                <Divider></Divider>
+            </List>
+            
+            )          
+         
         })
 
         return (
@@ -17,7 +35,7 @@ const DisplayArticleDrafts = ({article_drafts} :{article_drafts:ArticleDataType[
         )
     }
     return (
-       article_drafts ? <>
+       article_drafts.length > 0 ? <>
         <Box  component={'div'} sx={{backgroundColor:'background.paper', maxWidth:'500px', padding:'5px'}}>
             
             <Typography
@@ -31,7 +49,7 @@ const DisplayArticleDrafts = ({article_drafts} :{article_drafts:ArticleDataType[
             <Divider></Divider>
             
             <Drafts/>
-            <ListArticlesComponent articles={article_drafts}/>
+            
         </Box>
       
     

@@ -66,8 +66,6 @@ const CustomToolTip = ({ payload, label, active }) =>{
 
 const getImage = (title)=>{
    const found = data.find(article =>  article.name === title ? article : null )
-   console.log("found")
-   console.dir(found)
     return found ? found.image : null
 }
 const renderCustomAxisTick = ({ x, y, payload }) => {

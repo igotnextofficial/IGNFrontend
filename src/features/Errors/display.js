@@ -1,5 +1,5 @@
 const Errors = (props)=>{
-//   console.log("the error props")
+//   ("the error props")
 //  console.dir(props)
   if( Object.entries(props.errors).length === 0 ){return ""}
 
@@ -11,7 +11,7 @@ const Errors = (props)=>{
       return uuid;
    }
   for (let error in props.errors){
-    // console.log("The error to display is ", props.errors[error])
+    // ("The error to display is ", props.errors[error])
     output.push(<li key={ uuid("error") }>{ props.errors[error]}</li>);
   }
 

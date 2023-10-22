@@ -23,7 +23,7 @@ class IgnRequest {
   }
   
   setDestination(url){
-    console.log("attemped to add url "+ url)
+    ("attemped to add url "+ url)
     if (!this.paramIsNotPassed(url) ){
       return false;
     }
@@ -36,7 +36,7 @@ class IgnRequest {
     }
     
     this.updateDestination = cleanUrl;
-    console.log("cleanurl 0" + this.getDestination)
+    ("cleanurl 0" + this.getDestination)
     return this;
 
   }
@@ -87,7 +87,7 @@ class IgnRequest {
     let chosenMethod = validMethods.find(validMethod => validMethod === method) || validMethods[0];
     
     
-    console.log("updating method to  " + chosenMethod)
+    ("updating method to  " + chosenMethod)
     this.updateMethod = chosenMethod;
     return this;
   }

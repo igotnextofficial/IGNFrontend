@@ -1,4 +1,4 @@
-enum FetchMode {
+export enum FetchMode {
     ALL,
     SINGLE,
     USER,

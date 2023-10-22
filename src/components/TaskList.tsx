@@ -7,7 +7,7 @@ import { TaskDataType } from '../types/DataTypes';
 
 const TaskList: React.FC<{task: TaskDataType, greyOut: boolean}> = ({ task }, greyOut=false ) => {
   let bg = greyOut ? '#f7f7f7':'#ffffff';
-  console.log(`bg : ${bg}`)
+
   return  task ? (
     <>
     <Box

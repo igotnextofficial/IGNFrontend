@@ -76,7 +76,7 @@ try {
     // const updatedFormContent = {...FormContent};
     // updatedFormContent[inputel.current.id] = updatedValue
     // setFormContent(updatedFormContent)
-    // console.log(`updating ${inputel.current.id} : ${updatedValue} ${typeof(updatedValue)} should be ${!(inputel.current.checked)} `)
+    // (`updating ${inputel.current.id} : ${updatedValue} ${typeof(updatedValue)} should be ${!(inputel.current.checked)} `)
     // props.info.name === "slug" ?  setManageInput(props.info.value) :  setManageInput(inputel.current.value)
   
   }
@@ -162,9 +162,9 @@ try {
   function handleCheckbox(){
    
     // let changedTo = !inputel.current.checked
-    // console.log(`The item changed to ${changedTo}`)
+    // (`The item changed to ${changedTo}`)
     // setManageCheckbox(!inputel.current.checked)
-    // console.log(inputel.current.checked)
+    // (inputel.current.checked)
    
   }
   function GenerateCheckbox(data){

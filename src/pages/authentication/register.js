@@ -25,8 +25,8 @@ const Register = ()=>{
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('The data is: ')
-        console.log(event.currentTarget)
+        ('The data is: ')
+        (event.currentTarget)
         let data = new FormData(event.currentTarget);
         if(true){ //send data successful
             //route to user dashboard
@@ -34,7 +34,7 @@ const Register = ()=>{
         else{
             // stay on page and show errors.
         }
-        console.log(data); //send data
+        (data); //send data
     }
     const props = 
     {

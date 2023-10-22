@@ -8,7 +8,8 @@ import Ignlogo from './components/Ignlogo';
 
 import { BrowserRouter as Router, Switch, Route, Routes, Link} from 'react-router-dom';
 import Dashboard from './pages/dashboards/Dashboard';
-import ComposeArticle from './pages/articles/ComposeArticle'
+import ComposeArticle from './pages/articles/ComposeArticle';
+import EditArticle from './pages/articles/EditArticle';
 import Login from './pages/authentication/Login';
 import Logout from './pages/authentication/Logout';
 
@@ -55,6 +56,7 @@ function App() {
               <Route path='' element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
                   <Route path='/dashboard' element={<Dashboard/>}/>
                   <Route path='/compose-article' element={<ComposeArticle/>}/>
+                  <Route path='/edit-article/:article_id' element={<EditArticle/>}/>
               </Route>
               <Route path='/logout' element={<Logout/>}/>
               <Route path='/login' element={<Login/>}/>
