@@ -5,18 +5,16 @@ import ArticleProvider from "../../Providers/ArticleProvider";
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
 import { FetchMode } from "../../types/ArticleFetchMode"; // types and enums
+import Article from "../../Models/users/Article";
+
 
 const EditArticle = () => {
     const{article_id} = useParams();
 
     const EditArticleComponent = ()=>{
 
-        const {articles,errors} = useContext(ArticleContext)
         return (
-            <DisplayTextEditor
-            editMode={true}
-            article={articles}
-        />
+            <DisplayTextEditor/>
         )
     }
 

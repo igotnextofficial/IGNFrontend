@@ -11,7 +11,7 @@ interface ArticleProviderProps {
   }
   
   const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id="" }) => {
-    const [userArticles, setArticles] = useState<ArticleDataType[]>([]);
+    const [userArticles, setArticles] = useState<ArticleDataType>(Article.defaultResponse);
     const [error, setError] = useState<Error | null>(null); // To handle any errors during fetching
   
     useEffect(() => {
@@ -39,7 +39,7 @@ interface ArticleProviderProps {
             default:
               throw new Error("Invalid fetch mode");
           }
-          articles ? setArticles(articles) : setArticles([Article.defaultResponse]);
+          articles ? setArticles(articles) : setArticles(Article.defaultResponse);
         } catch (error) {
           if (error instanceof Error) {
             setError(error);
@@ -55,7 +55,7 @@ interface ArticleProviderProps {
     // Depending on your design, you can either pass the articles down directly through the component's children or use a context to provide the articles deeper into the component tree.
   
     return (
-      <ArticleContext.Provider value={{ articles: userArticles, error }}>
+      <ArticleContext.Provider value={{ article: userArticles, error }}>
         {children}
       </ArticleContext.Provider>
     );

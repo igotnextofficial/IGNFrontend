@@ -230,9 +230,6 @@ class Article{
             const response = update
               ? await this.ignHttpRequest.put(`${this.endpoint}/${article_id}`, { data: Article })
               : await this.ignHttpRequest.post(this.endpoint, { data: Article });
-            if (response.status !== (update ? 200 : 201)) {
-              return false;
-            }
           
             return response;
           } catch (error) {

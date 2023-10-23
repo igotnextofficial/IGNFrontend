@@ -4,6 +4,9 @@ import ArticlesList from "../ArticlesList";
 import ListArticlesComponent from "./ListAritclesComponent ";
 const DisplayArticleDrafts = ({article_drafts = []} :{article_drafts:ArticleDataType[]} ) => {
     const Drafts = () => {
+        const clean_content = (content = "") => {
+            return content.replace(/<[^>]*>/g, '')
+        }
         let data = article_drafts.map(article => {
             return (<List key={article.id}>
                 <ListItem>
@@ -15,7 +18,7 @@ const DisplayArticleDrafts = ({article_drafts = []} :{article_drafts:ArticleData
                     } secondary={
                         <Typography
                         sx={{color:'#c7c7c7',fontSize:'1em'}}
-                        >{article.content.substring(0,50)}...</Typography>
+                        >{clean_content(article.content.substring(0,50))}...</Typography>
                     }/>
                 <Button>View</Button>
                 <Button>restore</Button>

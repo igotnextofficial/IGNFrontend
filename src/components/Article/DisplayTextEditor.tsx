@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { ArticleDataType } from "../../types/DataTypes";
 import ContentContainer from "../../utils/ContentContainer";
 import InformationComponent from "../../Helpers/InformationComponent";
@@ -8,87 +8,106 @@ import Editor from "./Editor";
 import Article from "../../Models/users/Article";
 import { useParams } from "react-router";
 import { Navigate } from "react-router";
-const DisplayTextEditor = (
-    {
-        editMode=false,
-        article=Article.defaultResponse
-        
-    }:
-    {
-        editMode?:boolean,
-        article?:ArticleDataType
-    })=> {
+import { ArticleContext } from "../../Contexts/ArticleContext";
+import { DnsTwoTone, Drafts } from "@mui/icons-material";
+const DisplayTextEditor = ({})=> {
+    
+    //shared between both composing and editing of articles
 
-    const [headline,setHeadline] = useState(editMode ? "Edit Article" : "Compose Article")
+     const {article} = useContext(ArticleContext)
+     const [editMode,setEditMode] = useState(false)     //
+     const currentArticleContext = useContext(ArticleContext); 
+     const [headline,setHeadline] = useState("Compose Article")
      const [updatedArticle, setUpdatedArticle] = useState<ArticleDataType>(Article.defaultResponse );
-     const [articleId,setArticleId] = useState("");
      const [willNeedRefresh,setWillNeedRefresh] = useState(false); 
      const {article_id} = useParams();
+     const [articleId,setArticleId] = useState();
      const [ignore,setIgnore] = useState(true);
      const [drafts,setDrafts] = useState<ArticleDataType[]>([])
 
      
      useLayoutEffect(()=>{
         if(article_id){
-            setArticleId(article_id);
+            let recentChanges = updatedArticle.content !== "" ? updatedArticle : article;
+
+            setEditMode(true)
+            setHeadline("Edit Article")
+            setUpdatedArticle(recentChanges);
+            
+            if(drafts.length === 0){
+                if(currentArticleContext){
+                    setDrafts(currentArticleContext.article.drafts || [])
+                }
+            
+            }
         }
+
+
        
      })
+
+     useEffect(()=>{
+
+     },[drafts])
 
       useEffect(()=>{
         const article = new Article();
         const makeUpdate = async ()=>{
             const response = editMode
-            ? await article.createOrUpdate(updatedArticle,articleId)
+            ? await article.createOrUpdate(updatedArticle,article_id)
             : await article.createOrUpdate(updatedArticle)
             
             if(response)
             {
              
-                setArticleId(response.data.id);
+                setArticleId(response.id);
                 if (!editMode) {
                     setWillNeedRefresh(true);
                   }
             }
-
-            const {content} = updatedArticle
-            const clean_content = content.replace(/<[^>]*>/g, '');
-            const copyDraft = {
-                ...updatedArticle,
-                content:clean_content
-            }
-            console.log("copied")
-            console.dir(copyDraft)
-            setDrafts([
-                ...drafts,
-               copyDraft,
-            
-            ])
+            else{
+                alert("there was an error,code to handle it please:")
+                console.dir(response)
+            } 
               
         }
         
         if (!ignore) {
+            let copiedDraft = [...drafts];
+            
+            if(drafts.length >= 10){
+                copiedDraft.pop()    
+            }
+
+            
+            setDrafts([
+               updatedArticle,
+                ...copiedDraft
+            ]);
             makeUpdate();
           }
           
-      
+          console.log(`Edit mode is: ${editMode}`)
    
         return ()=>{
             setIgnore(true)
         }
         
-      },[editMode,updatedArticle])
+      },[updatedArticle])
     
       const handleSaveDraft = (data:ArticleDataType)=>{
         setIgnore(false)
         setUpdatedArticle(data)
+
     }
+
+
     const handleReadyForReview = () => {}
     
     const ShowEditor = () => {
         return (
             <Editor
-                article = {article}
+                article = { updatedArticle }
                 handleDraft={handleSaveDraft}
                 handleReview={handleReadyForReview}
             />
@@ -107,11 +126,11 @@ const DisplayTextEditor = (
             <InformationComponent title={headline} ><></></InformationComponent>
             
             <Grid container spacing={3}  >
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={9}>
                     <ShowEditor/>
                 </Grid>
-                <Grid item xs={12} md={4}>
-                    <DisplayArticleDrafts article_drafts={article.drafts || []}/> 
+                <Grid item xs={12} md={3}>
+                    <DisplayArticleDrafts article_drafts={drafts || []}/> 
                 </Grid>
             </Grid>
         </ContentContainer>
