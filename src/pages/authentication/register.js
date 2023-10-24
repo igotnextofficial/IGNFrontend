@@ -34,7 +34,7 @@ const Register = ()=>{
         else{
             // stay on page and show errors.
         }
-        (data); //send data
+
     }
     const props = 
     {

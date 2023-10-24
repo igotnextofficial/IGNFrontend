@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 
-const DisplayArticle: React.FC<ArticleDataType>  = ( article ) => {
+const DisplayArticle = ( {article}:{article:ArticleDataType} ) => {
     return article ? (
     <>
         <List sx={{width: '100%', maxWidth: 640, bgcolor: 'background.paper'}}>

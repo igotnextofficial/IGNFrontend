@@ -1,16 +1,9 @@
 import { ArticleDataType } from "../../types/DataTypes"
 import DisplayArticle from "../DisplayArticles"
-const ListArticlesComponent = (
-    {
-        articles
-    }
-    :
-    {
-        articles:ArticleDataType[] | []
-    }
-    ) => {
-    let output = articles.map((userArticle, index) => {
-        return <a href=""><DisplayArticle key={index}  { ...userArticle }  /></a>
+const ListArticlesComponent = ({articles} :{ articles:ArticleDataType[]} ) => 
+{
+    let output = articles.map((userArticle:ArticleDataType ,index:number) => {
+        return <a href=""><DisplayArticle key={index}  article={userArticle}  /></a>
     })
    return  (
     <>
