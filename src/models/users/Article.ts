@@ -129,7 +129,6 @@ class Article{
     }
 
     async retrieveDraftsByArticle(id:string){
-        console.log(`making request for id: ${id}`)
         try{
             let response = await this.get(id,true);
             if(!response){ return null}
@@ -216,7 +215,7 @@ class Article{
             return null;
         }
     }
-
+    
     async createOrUpdate(Article:ArticleDataType,article_id = ""){
 
         try {
@@ -240,6 +239,24 @@ class Article{
           }
     }
 
+    async restore(article_id = ""){
+        try{
+            const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+            const headers = {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            };
+            
+            this.ignHttpRequest.setHeaders(headers);
+            let response = await this.ignHttpRequest.put(`${this.endpoint}/${article_id}/restore`);
+            return response;
+        }
+        catch(error){
+            console.error(error);
+            return null; 
+        }
+
+    }
     async delete(article_id:string){
 
     }

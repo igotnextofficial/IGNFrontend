@@ -63,14 +63,16 @@ class IgnRequest {
         }
     }
 
-    async put(endpoint: string, data: httpDataObject) {
+    async put(endpoint: string, data?: httpDataObject) {
         try {
             const config: AxiosRequestConfig = {};
             if (this.headers) {
                 config.headers = this.headers;
             }
 
-            const response = await this.api.put(endpoint, data, config); // corrected to 'put'
+            const response =  data 
+            ? await this.api.put(endpoint, data, config) // corrected to 'put'
+            : await this.api.put(endpoint, [], config)
             return response.data;
         } catch (error) {
             throw error;
