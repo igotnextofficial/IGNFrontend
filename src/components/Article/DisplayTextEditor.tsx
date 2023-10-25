@@ -156,7 +156,7 @@ const DisplayTextEditor = ({})=> {
                     <ShowEditor/>
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    <DisplayArticleDrafts article_drafts={drafts || []}/> 
+                    <DisplayArticleDrafts article_drafts={drafts || []} updatedArticle={setUpdatedArticle}/> 
                 </Grid>
             </Grid>
         </ContentContainer>
