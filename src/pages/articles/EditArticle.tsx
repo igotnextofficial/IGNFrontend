@@ -1,5 +1,5 @@
 import { useContext  } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 import ArticleProvider from "../../Providers/ArticleProvider"; 
 import { ArticleContext } from "../../Contexts/ArticleContext";
@@ -10,6 +10,7 @@ import Article from "../../Models/users/Article";
 
 const EditArticle = () => {
     const{article_id} = useParams();
+
 
     const EditArticleComponent = ()=>{
 
