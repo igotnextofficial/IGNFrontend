@@ -1,4 +1,4 @@
-import { ArticleDataType, UserDataType, httpDataObject } from "../../types/DataTypes";
+import { ArticleDataType} from "../../types/DataTypes";
 import IgnRequest from "../../features/Http/IgnRequest";
 
 class Article{
@@ -96,7 +96,7 @@ class Article{
 
     
     async get(article_id:string,withDrafts = false){
-        console.log("called to get articles")
+
         let uri = withDrafts ? `/${article_id}/drafts` : `/${article_id}`
   
         try{
@@ -129,6 +129,7 @@ class Article{
     }
 
     async retrieveDraftsByArticle(id:string){
+        console.log(`making request for id: ${id}`)
         try{
             let response = await this.get(id,true);
             if(!response){ return null}
@@ -217,6 +218,7 @@ class Article{
     }
 
     async createOrUpdate(Article:ArticleDataType,article_id = ""){
+
         try {
             const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
             const headers = {

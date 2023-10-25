@@ -16,7 +16,7 @@ interface ArticleProviderProps {
   
     useEffect(() => {
       const article = new Article();
-  
+      
       const fetchArticles = async () => {
         try {
           let articles;
@@ -39,7 +39,7 @@ interface ArticleProviderProps {
             default:
               throw new Error("Invalid fetch mode");
           }
-          articles ? setArticles(articles) : setArticles(Article.defaultResponse);
+          setArticles(articles);
         } catch (error) {
           if (error instanceof Error) {
             setError(error);

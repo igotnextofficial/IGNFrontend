@@ -1,4 +1,5 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useState,useContext,useEffect,useLayoutEffect } from "react";
+import { useParams,Navigate } from "react-router-dom";
 import { ArticleDataType } from "../../types/DataTypes";
 import ContentContainer from "../../utils/ContentContainer";
 import InformationComponent from "../../Helpers/InformationComponent";
@@ -6,10 +7,9 @@ import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";
 import Editor from "./Editor";
 import Article from "../../Models/users/Article";
-import { useParams } from "react-router";
-import { Navigate } from "react-router";
+
 import { ArticleContext } from "../../Contexts/ArticleContext";
-import { DnsTwoTone, Drafts } from "@mui/icons-material";
+
 const DisplayTextEditor = ({})=> {
     
     //shared between both composing and editing of articles
@@ -24,12 +24,26 @@ const DisplayTextEditor = ({})=> {
      const [articleId,setArticleId] = useState();
      const [ignore,setIgnore] = useState(true);
      const [drafts,setDrafts] = useState<ArticleDataType[]>([])
+     const [successfulUpdate,setSuccessfulUpdate] = useState(true)
+     const [intialLoad,setIntialLoad] = useState(true);
 
-     
+     const updateDraft = async() =>{
+        let copiedDraft = [...drafts];
+            
+        if(drafts.length >= 10){
+            copiedDraft.pop()    
+        }
+   
+        setDrafts([
+           updatedArticle,
+            ...copiedDraft
+        ]);
+     }     
+
      useLayoutEffect(()=>{
         if(article_id){
-            let recentChanges = updatedArticle.content !== "" ? updatedArticle : article;
 
+            let recentChanges = updatedArticle.content !== "" ? updatedArticle : article;
             setEditMode(true)
             setHeadline("Edit Article")
             setUpdatedArticle(recentChanges);
@@ -47,12 +61,30 @@ const DisplayTextEditor = ({})=> {
      })
 
      useEffect(()=>{
+        setIntialLoad(false)
+     },[])
+
+
+
+
+     useEffect(()=>{
+        if(!intialLoad){
+            if(!successfulUpdate){
+                let copiedDraft = [...drafts];
+                copiedDraft.shift();
+                setDrafts(copiedDraft);
+                setSuccessfulUpdate(true)
+            }
+        }
 
      },[drafts])
 
       useEffect(()=>{
         const article = new Article();
+
         const makeUpdate = async ()=>{
+
+            await updateDraft();
             const response = editMode
             ? await article.createOrUpdate(updatedArticle,article_id)
             : await article.createOrUpdate(updatedArticle)
@@ -60,44 +92,38 @@ const DisplayTextEditor = ({})=> {
             if(response)
             {
              
-                setArticleId(response.id);
+                setArticleId(response.data.id);
+
                 if (!editMode) {
                     setWillNeedRefresh(true);
                   }
+                  setSuccessfulUpdate(true)
             }
             else{
-                alert("there was an error,code to handle it please:")
-                console.dir(response)
+                   
+                setSuccessfulUpdate(false)
             } 
               
         }
+
+        
         
         if (!ignore) {
-            let copiedDraft = [...drafts];
-            
-            if(drafts.length >= 10){
-                copiedDraft.pop()    
-            }
-
-            
-            setDrafts([
-               updatedArticle,
-                ...copiedDraft
-            ]);
-            makeUpdate();
-          }
-          
-          console.log(`Edit mode is: ${editMode}`)
-   
+             makeUpdate();
+        }
+        
         return ()=>{
+  
             setIgnore(true)
         }
         
       },[updatedArticle])
     
+      
       const handleSaveDraft = (data:ArticleDataType)=>{
         setIgnore(false)
         setUpdatedArticle(data)
+
 
     }
 
