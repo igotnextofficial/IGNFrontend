@@ -1,7 +1,9 @@
 import { useContext  } from "react";
 import { useParams } from "react-router-dom";
 
-import ArticleProvider from "../../Providers/ArticleProvider"; 
+import { Box } from "@mui/material";
+import ArticleProvider from "../../Providers/ArticleProvider";
+import InformationComponent from "../../Helpers/InformationComponent"; 
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
 import { FetchMode } from "../../types/ArticleFetchMode"; // types and enums
@@ -15,7 +17,12 @@ const EditArticle = () => {
     const EditArticleComponent = ()=>{
 
         return (
-            <DisplayTextEditor/>
+            <>
+              <Box sx={{padding:"2rem 2rem 0"}}>
+                <InformationComponent title={"Edit Article"} ><></></InformationComponent>
+              </Box>
+                <DisplayTextEditor/>
+            </>
         )
     }
 
