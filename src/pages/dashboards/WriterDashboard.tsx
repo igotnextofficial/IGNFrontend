@@ -13,6 +13,7 @@ import {tasksData}  from "../../data";
 import Chart from "../../components/Charts";
 import ToDo from "../../components/ToDo";
 import ListArticlesComponent from "../../components/Article/ListAritclesComponent ";
+import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
 
 const WriterDashboard = () => {
     let userArticles: ArticleDataType[]  = [
@@ -70,16 +71,14 @@ const WriterDashboard = () => {
 
             <Grid className="add-shadow" item xs={6} md={6}>
                     <DashboardSectionComponent  width={800} title="Compose Article" >
-                            {/* <Editor/> */}
+                     <DisplayTextEditor/>
                     </DashboardSectionComponent>
                 </Grid>
 
                 <Grid className="add-shadow" item xs={6} md={6}>
                     <DashboardSectionComponent title="Most Popular Articles" >
-                
                         <Chart/>
-                 
-                    </DashboardSectionComponent>
+                        </DashboardSectionComponent>
                 </Grid>
 
                 <Grid className="add-shadow" item xs={6} md={4}>

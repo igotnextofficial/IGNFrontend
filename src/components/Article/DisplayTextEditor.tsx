@@ -17,7 +17,6 @@ const DisplayTextEditor = ({})=> {
      const {article} = useContext(ArticleContext)
      const [editMode,setEditMode] = useState(false)     //
      const currentArticleContext = useContext(ArticleContext); 
-     const [headline,setHeadline] = useState("Compose Article")
      const [updatedArticle, setUpdatedArticle] = useState<ArticleDataType>(Article.defaultResponse );
      const [willNeedRefresh,setWillNeedRefresh] = useState(false); 
      const {article_id} = useParams();
@@ -45,7 +44,6 @@ const DisplayTextEditor = ({})=> {
 
             let recentChanges = updatedArticle.content !== "" ? updatedArticle : article;
             setEditMode(true)
-            setHeadline("Edit Article")
             setUpdatedArticle(recentChanges);
             
             if(drafts.length === 0){
@@ -140,6 +138,14 @@ const DisplayTextEditor = ({})=> {
         )
     }
 
+    const ShowDrafts = () => {
+        return drafts.length === 0 ? <></> : (
+            <Grid item xs={12} md={3}>
+            <DisplayArticleDrafts article_drafts={drafts || []} updatedArticle={setUpdatedArticle} /> 
+        </Grid>
+        )
+    }
+
 
 
     return (
@@ -149,15 +155,13 @@ const DisplayTextEditor = ({})=> {
         )}
         <ContentContainer>
            
-            <InformationComponent title={headline} ><></></InformationComponent>
+          
             
             <Grid container spacing={3}  >
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={drafts.length === 0 ? 12 : 9}>
                     <ShowEditor/>
                 </Grid>
-                <Grid item xs={12} md={3}>
-                    <DisplayArticleDrafts article_drafts={drafts || []} updatedArticle={setUpdatedArticle}/> 
-                </Grid>
+            <ShowDrafts/>
             </Grid>
         </ContentContainer>
         </>

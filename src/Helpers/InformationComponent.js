@@ -27,7 +27,7 @@ const styles={
     seperator:{
         height:"3px" ,
         width:"20%", 
-        margin: "1rem 0 1.5rem", 
+        margin: "1rem 0  0.5rem", 
         backgroundImage: "linear-gradient(to right,#ebd805,#eee154 )",
     },
 
