@@ -32,13 +32,11 @@ class User{
 
     isLoggedIn(){
         let user = this.get();
-        console.log(`the user id is: ${user.id}`)
         return user.id === '' ? false : true
     }
 
     async login (data:httpDataObject){
         let ignHttpRequest = new IgnRequest({baseURL:this.baseURI});
-        console.log(`The base uri is ${this.baseURI}`)
         try{
            let response = await ignHttpRequest.post('/login',data);
            if(response.status !== 200){return false}
@@ -46,15 +44,11 @@ class User{
            localStorage.setItem(User.INFO,JSON.stringify(response.data['data']));
            document.cookie = `access_token=${response.data['access_token']}; Secure; HttpOnly`;
            localStorage.setItem(User.ACCESS_TOKEN, response.data['access_token']);
-           console.log(`setting access token: ${response.data['access_token']}`)
            localStorage.setItem("test","testing to login user")
            console.dir(response)
            return true;
         }
         catch(error){
-            console.log("We faced a login error ")
-       
-     
             console.dir(error)
             return false
         }
@@ -76,7 +70,7 @@ class User{
         catch(error){
             //handle the error
         }
-        
+
         localStorage.removeItem(User.INFO)
         localStorage.removeItem(User.ACCESS_TOKEN)
         return success;

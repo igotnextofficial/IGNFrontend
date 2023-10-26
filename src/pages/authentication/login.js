@@ -48,7 +48,6 @@ const Login = ()=>{
         
         }
         else{
-            console.log(`The value of logeed in is this is error state : ${loggedIn}`)
             setErrMessage('Username/Password does not match.')
         }
        
@@ -79,7 +78,7 @@ const Login = ()=>{
                 <Navigate to="/dashboard" replace={true} />
             )} */}
 
-            {console.log(user.isLoggedIn())}
+
 
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>
