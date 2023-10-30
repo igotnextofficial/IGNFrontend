@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
@@ -18,22 +18,32 @@ import Link from '@mui/material/Link';
 
 import Copyright from '../../components/Copyright';
 import IGNButton from '../../components/Button';
+import { UserContext } from '../../Contexts/UserContext';
+import { ErrorContext } from '../../Contexts/ErrorContext';
 
 
 
 const Register = ()=>{
+    const user = useContext(UserContext)
+    const {updateError} = useContext(ErrorContext)
+    const [data,setData] = useState(null);
+    const [registration,setAttemptRegistration] = useState(null);
+    
 
+    useEffect(()=> {
+        updateError("The account could not be created.")
+    },[registration])
     const handleSubmit = (event) => {
         event.preventDefault();
-        ('The data is: ')
-        (event.currentTarget)
-        let data = new FormData(event.currentTarget);
-        if(true){ //send data successful
-            //route to user dashboard
-        }
-        else{
-            // stay on page and show errors.
-        }
+        const formData = new FormData(event.currentTarget);
+
+        const userData = {
+            data: Object.fromEntries(formData.entries()),
+        };
+
+        setData(userData);
+        setAttemptRegistration(true)
+   
 
     }
     const props = 

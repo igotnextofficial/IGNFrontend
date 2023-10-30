@@ -31,6 +31,7 @@ class User{
     }
 
     isLoggedIn(){
+
         let user = this.get();
         return user.id === '' ? false : true
     }

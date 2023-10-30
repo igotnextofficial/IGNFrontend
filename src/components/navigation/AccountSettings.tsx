@@ -6,9 +6,10 @@ import User from '../../Models/users/User';
 import CreateLink from './CreateLink';
 
 import { Settings } from '../../types/DataTypes';
+import { UserContext } from '../../Contexts/UserContext';
 
 const AccountSettings  = () => {
-
+  const user = useContext(UserContext)
   const settings:Settings[] = [
       {
         title:'Profile',
@@ -29,12 +30,12 @@ const AccountSettings  = () => {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
-    const user  = new User();
+ 
 
     
   
     return (
-       user.isLoggedIn() ? 
+
     <>
      <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -66,7 +67,7 @@ const AccountSettings  = () => {
               ))}
             </Menu>
           </Box>
-    </> : null
+    </> 
     )
 }
 

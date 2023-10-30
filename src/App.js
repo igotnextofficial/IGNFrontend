@@ -12,30 +12,72 @@ import ComposeArticle from './pages/articles/ComposeArticle';
 import EditArticle from './pages/articles/EditArticle';
 import Login from './pages/authentication/Login';
 import Logout from './pages/authentication/Logout';
+import Register from './pages/authentication/register';
 
 import RootComponent from './components/RootComponent';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { UserContext } from './Contexts/UserContext';
 import { useUser } from './Providers/UserProvider';
+import { useLocation } from 'react-router-dom';
 import Home from './pages/home';
 import FooterComponent from './components/Generic/FooterComponent';
+import ErrorComponent from './components/Generic/ErrorComponent';
+import ErrorProvider from './Providers/ErrorProvider';
+import { ErrorContext } from './Contexts/ErrorContext';
+import DetectChange from './components/Generic/DetectPageChangeComponent';
 
 
-const Testtwo = () =>{
+
+
+const MainApplication = ()=> {
+  const User = useContext(UserContext);
+  const isAuthenticated = User.isLoggedIn()
   return (
-    <Box sx={{ display: { xs: 'none', md:'block' } , backgroundColor:'#9b4331'}}>
-      <Ignlogo/>
-    </Box>
-  )
-}
+    
+   
+    <>
+      
+         
+  
+    
+         <Router>
+            <DetectChange/>
+            <Navigation Authenticated={isAuthenticated}/>
+            <Routes>
+            <Route path='/' element={<Home/>}/>
+              <Route path='' element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
+                  <Route path='/dashboard' element={<Dashboard/>}/>
+                  <Route path='/compose-article' element={<ComposeArticle/>}/>
+                  <Route path='/edit-article/:article_id' element={<EditArticle/>}/>
+              </Route>
+              <Route path='/logout' element={<Logout/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/register' element={<Register/>}/>
+            </Routes>
+            </Router> 
+ 
 
+        <FooterComponent/>
+
+
+     
+ 
+   
+    </>
+   
+  );
+}
 
 function App() {
 
-  const isAuthenticated = true;
+  
+
+  const isAuthenticated = false;
 
   const routeComponents = pages.map(({slug,component,useProtected},key) =>
    { 
+
+   
 
       return useProtected ? 
       <ProtectedRoutes key={key} path={slug} exact element={component} isAuthenticated={isAuthenticated} /> : 
@@ -46,43 +88,18 @@ function App() {
   return (
 
     <div className="App">
-     
+        
+         
       <RootComponent>
-    
-         <Router>
-            <Navigation/>
-            <Routes>
-            <Route path='/' element={<Home/>}/>
-              <Route path='' element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
-                  <Route path='/dashboard' element={<Dashboard/>}/>
-                  <Route path='/compose-article' element={<ComposeArticle/>}/>
-                  <Route path='/edit-article/:article_id' element={<EditArticle/>}/>
-              </Route>
-              <Route path='/logout' element={<Logout/>}/>
-              <Route path='/login' element={<Login/>}/>
-            </Routes>
-            </Router> 
- 
+      <ErrorProvider>
+        <ErrorComponent/>
+          <MainApplication/>
+        </ErrorProvider>
+      </RootComponent>
 
-        <FooterComponent/>
-        </RootComponent>
-
-      {/* <Navigation/> */} 
-       
-      {/* <Router>
-            <Navigation/>
-            <Routes>
-              <Route path='' element={<ProtectedRoutes isAuthenticated={false} />}>
-                  <Route path='/dashboard' element={<Dashboard/>}/>
-              </Route>
-              <Route path='/logout' element={<Logout/>}/>
-              <Route path='/login' element={<Login/>}/>
-            </Routes>
-            </Router> */}
-     
- 
 
     </div>
+
   );
 }
 

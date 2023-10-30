@@ -9,21 +9,23 @@ import Editor from "./Editor";
 import Article from "../../Models/users/Article";
 
 import { ArticleContext } from "../../Contexts/ArticleContext";
+import { ErrorContext } from "../../Contexts/ErrorContext";
 
 const DisplayTextEditor = ({})=> {
     
     //shared between both composing and editing of articles
-
-     const {article} = useContext(ArticleContext)
+    const currentArticleContext = useContext(ArticleContext); 
+     const {updateError} = useContext(ErrorContext)
      const [editMode,setEditMode] = useState(false)     //
-     const currentArticleContext = useContext(ArticleContext); 
      const [updatedArticle, setUpdatedArticle] = useState<ArticleDataType>(Article.defaultResponse );
      const [willNeedRefresh,setWillNeedRefresh] = useState(false); 
+     const [successfulUpdate,setSuccessfulUpdate] = useState(true)
+    
      const {article_id} = useParams();
      const [articleId,setArticleId] = useState();
      const [ignore,setIgnore] = useState(true);
      const [drafts,setDrafts] = useState<ArticleDataType[]>([])
-     const [successfulUpdate,setSuccessfulUpdate] = useState(true)
+
      const [intialLoad,setIntialLoad] = useState(true);
 
      const updateDraft = async() =>{
@@ -42,7 +44,7 @@ const DisplayTextEditor = ({})=> {
      useLayoutEffect(()=>{
         if(article_id){
 
-            let recentChanges = updatedArticle.content !== "" ? updatedArticle : article;
+            let recentChanges = updatedArticle.content !== "" ? updatedArticle : currentArticleContext.article;
             setEditMode(true)
             setUpdatedArticle(recentChanges);
             
@@ -98,7 +100,7 @@ const DisplayTextEditor = ({})=> {
                   setSuccessfulUpdate(true)
             }
             else{
-                   
+                updateError("We ran into an error attempting to save your article, please try again.")
                 setSuccessfulUpdate(false)
             } 
               

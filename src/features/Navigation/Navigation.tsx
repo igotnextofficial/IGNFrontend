@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
+import { Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,6 +16,9 @@ import Ignlogo from '../../components/Ignlogo';
 import { Link } from 'react-router-dom';
 
 import AccountSettings from '../../components/navigation/AccountSettings';
+import BrowserNavigation from '../../components/navigation/BrowserNavigation';
+import SigninOrRegister from '../../components/navigation/SigninOrRegister';
+import { UserContext } from '../../Contexts/UserContext';
 
 
 
@@ -24,12 +27,13 @@ const pages = [{title:'Who\'s Next',slug:'/whos-next'}, {title:'Featured Artists
 
 
 
-const ResponsiveAppBar  = () => {
+const ResponsiveAppBar  = ({Authenticated=false}) => {
 
 
   const userLoggedin = true;
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
 
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -55,9 +59,9 @@ const ResponsiveAppBar  = () => {
     <AppBar position="sticky"  sx={{backgroundColor:"#fd2f30"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Box sx={{ display: { xs: 'none', md:'block' } , backgroundColor:'#cf1d1d'}}>
-         <Link to={"/"}> <Ignlogo /></Link>
-         </Box>
+
+          
+      
          
 
 
@@ -97,22 +101,28 @@ const ResponsiveAppBar  = () => {
               ))}
             </Menu>
           </Box>
+
+
+
           <Box sx={{ flexGrow: 1 ,display:{xs:'block',md:'none'}}}>
             <Ignlogo/>
+            
             </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map(({title,slug}) => (
-              <Button
-                key={slug}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                <Link to={slug}>{title}</Link>
-              </Button>
-            ))}
-          </Box>
+                <Box component={"span"}  sx={{ flexGrow:1, display: { xs: 'none', md:'block' }}}>
+                 
+             
+               <Grid container alignItems={"center"} >
+                  <Grid item md={8}> <BrowserNavigation/></Grid>
+                  <Grid  item md={4} >
+                    <Grid container justifyContent={"flex-end"}>
+                      <Grid item> {Authenticated ? <AccountSettings /> : <SigninOrRegister/>}</Grid>
+                    </Grid>
+                  </Grid>
+                 </Grid>
 
-         <AccountSettings />
+                 </Box>
+
+       
         </Toolbar>
       </Container>
     </AppBar>
