@@ -47,7 +47,7 @@ function PageManagement() {
         if (!response.ok) {
           throw new Error('Failed to submit article');
         }
-        console.log('Article submitted successfully');
+        ('Article submitted successfully');
       })
       .catch((error) => {
         console.error(error);

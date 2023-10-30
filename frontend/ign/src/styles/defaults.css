@@ -1,4 +1,32 @@
+@import url(react-quill/dist/quill.snow.css);
 body {
   margin: 0;
-  background-color: #1d1917;
-  color: antiquewhite; }
+  background-color: #ffffff;
+  color: #1d1917;
+  font-family: "Roboto","Helvetica","Arial",sans-serif; }
+
+.button {
+  background-color: #f86e51; }
+
+/* Articles */
+#articleDisplayContainer {
+  background-color: antiquewhite;
+  color: #1d1917;
+  border-radius: 5px 5px;
+  max-width: 600px;
+  box-shadow: #1d1917 3px 3px 3px 3px; }
+
+.add-shadow {
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1); }
+
+a {
+  cursor: pointer; }
+
+.max-point {
+  color: #f86e51; }
+
+.mid-point {
+  color: #f2c85b; }
+
+.safe-zone {
+  color: #5f9f00; }

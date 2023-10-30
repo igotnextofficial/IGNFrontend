@@ -45,7 +45,7 @@ const CreatePageForm = () => {
 
   const updateDisplay = (e) => {
     setDisplay(e.target.checked);
-    console.log(`should i display: ${e.target.checked}`);
+    (`should i display: ${e.target.checked}`);
   };
 
   const updateDescription = (e) => {

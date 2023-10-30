@@ -48,7 +48,7 @@ function CreatePage() {
         // FormContent['display'] = Number(FormContent['display']);
         // config.method = "POST";
         // config.data = FormContent;
-        // console.log("sending");
+        // ("sending");
         // console.dir(config)
         // let ign_request = new IgnRequest()
         // ign_request.init(config)

@@ -1,3 +1,5 @@
+@import 'react-quill/dist/quill.snow.css';
+
 $primary-orange-color:#f86e51;
 $primary-black-color: #1d1917; 
 $primary-yellow-color: #f2c85b;
@@ -5,7 +7,44 @@ $primary-white-color:antiquewhite;
 
 body {
     margin: 0;
-    background-color: $primary-black-color;
-    color: $primary-white-color;
+    background-color: #f7f7f7;
+    color: $primary-black-color;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
+
+.App{
+  max-width: 1600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+}
+
+.button{background-color: $primary-orange-color;}
+
+/* Articles */
+#articleDisplayContainer{
+    background-color: $primary-white-color;
+    color: $primary-black-color;
+    border-radius: 5px 5px;
+    max-width:600px;
+    box-shadow: #1d1917 3px 3px 3px 3px ;
+  }
+
+  .add-shadow {
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+  }
+
+  a{
+    cursor: pointer;
+  }
+
+
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionStatic.mainNavigation.css-hip9hq-MuiPaper-root-MuiAppBar-root{
+    background-color: $primary-orange-color;
+  }
+
+
+  .max-point{color:$primary-orange-color}
+  .mid-point{color:$primary-yellow-color}
+  .safe-zone{color:rgb(95, 159, 0)}
 
