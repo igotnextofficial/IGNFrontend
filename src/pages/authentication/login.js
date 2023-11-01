@@ -23,6 +23,7 @@ import axios from 'axios';
 import IgnRequest from '../../features/Http/IgnRequest';
 import User from '../../Models/users/User';
 import { UserContext } from '../../Contexts/UserContext';
+import { ErrorContext } from '../../Contexts/ErrorContext';
 
 
 
@@ -31,8 +32,12 @@ import { UserContext } from '../../Contexts/UserContext';
 const Login = ()=>{
 
     const {user,isLoggedin,attemptLoginOrLogout }= useContext(UserContext)
-    const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
-    const [successfulLogin,setSuccessfulLogin] = useState(false);
+    const {updateError} = useContext(ErrorContext);
+
+    const [attemptLogin,setAttemptLogin] = useState(false)
+    const [successfulLogin,setSuccessfulLogin]  = useState(false)
+    const [data,setData] = useState(null)
+    const [ignore,setIgnore] = useState(true)
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
     const [loading,setLoading] = useState(false);
@@ -42,30 +47,35 @@ const Login = ()=>{
     }
 
     const userLogin = async (data) => {
-        attemptLoginOrLogout(true,data)
-        // if(loggedIn){
-           
+        let response  = await attemptLoginOrLogout(true,data);
         
-        // }
-        // else{
-        //     setErrMessage('Username/Password does not match.')
-        // }
+        if(!response){ // attempting to log user in
+            updateError("User not found or incorrect credentials. Please try again.")
+        }
        
     }
-    useEffect(() =>{
-        // <Navigate to="/dashboard" replace={true} />
-    },[successfulLogin])
+
 
     useEffect(() =>{
-        setLoading(false)
-    },[hasErrors])
+        if(!ignore){
+           userLogin(data);
+        }
+       
+        
+        return (()=>{
+           setIgnore(true)
+           setAttemptLogin(false)
+        })
+    },[attemptLogin])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setLoading(true);
+        // setLoading(true);// trigger loading 
         
-        let data = new FormData(event.currentTarget);
-        userLogin(data);
+        let formData = new FormData(event.currentTarget);
+        setData(formData);
+        setIgnore(false)
+        setAttemptLogin(true)
     }
 
     const theme = createTheme()
