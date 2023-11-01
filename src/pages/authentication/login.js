@@ -1,50 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
+
+import { Navigate } from 'react-router-dom';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
-
+import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
 import BackgroundCoverImage from '../../components/BackgroundCoverImage';
-import Copyright from '../../components/Copyright';
 import IGNButton from '../../components/Button';
+import Copyright from '../../components/Copyright';
 import IgnForm from '../../components/IgnForm';
 import Loader from '../../components/Loader';
-import forms from '../../utils/forms';
-import { Navigate } from 'react-router-dom';
 
-import axios from 'axios';
-import IgnRequest from '../../features/Http/IgnRequest';
-import User from '../../Models/users/User';
+import forms from '../../utils/forms';
+
 import { UserContext } from '../../Contexts/UserContext';
 import { ErrorContext } from '../../Contexts/ErrorContext';
 
-
-
-
-
 const Login = ()=>{
 
-    const {user,isLoggedin,attemptLoginOrLogout }= useContext(UserContext)
+    const {isLoggedin,attemptLoginOrLogout }= useContext(UserContext)
     const {updateError} = useContext(ErrorContext);
-
+    const [loading,setLoading] = useState(false); // this will be moved to a context
+    
     const [attemptLogin,setAttemptLogin] = useState(false)
-    const [successfulLogin,setSuccessfulLogin]  = useState(false)
     const [data,setData] = useState(null)
     const [ignore,setIgnore] = useState(true)
-    const [hasErrors,setHasErrors] = useState(false);
-    const [errMessage,setErrMessage] = useState('');
-    const [loading,setLoading] = useState(false);
 
-    const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
-        return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
-    }
+
 
     const userLogin = async (data) => {
         let response  = await attemptLoginOrLogout(true,data);
@@ -70,7 +59,7 @@ const Login = ()=>{
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setLoading(true);// trigger loading 
+        //trigger loading...
         
         let formData = new FormData(event.currentTarget);
         setData(formData);
@@ -80,16 +69,13 @@ const Login = ()=>{
 
     const theme = createTheme()
     
-
     return (
         <>
 
             {isLoggedin &&(
                 <Navigate to="/dashboard" replace={true} />
             )}
-
-
-
+            
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>
                     <CssBaseline/>
@@ -106,7 +92,7 @@ const Login = ()=>{
                                 Sign in
                             </Typography>
                             <Box component="form" noValidate sx={{mt:1}} onSubmit={handleSubmit}>
-                            <DisplayErrors hasErrors={hasErrors} errorMessage={errMessage}/>
+                     
                             <IgnForm formProperties={forms.login}  />
                                 <IGNButton buttonLabel='Sign in'/>
                                  
