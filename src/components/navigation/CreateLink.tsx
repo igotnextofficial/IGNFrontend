@@ -8,14 +8,12 @@ import { UserContext } from '../../Contexts/UserContext';
 // Make sure 'user' is defined or imported in your component if it's used
 
 const CreateLink = ({ title, slug }: { title: string; slug: string }) => {
-    const user = useContext(UserContext);
-  const handleLogout = async () => {
+    const {user,attemptLoginOrLogout }= useContext(UserContext);
+  const handleLogout = () => {
     try {
-      let success = await user.logout();
-      success ? alert("successful") : alert("unsuccessful");
+      attemptLoginOrLogout();// need to be able to 
     } catch (error) {
-      console.error("Logout error: ", error);
-      alert("unsuccessful");
+      alert("something went wrong with logout")
     }
   };
 

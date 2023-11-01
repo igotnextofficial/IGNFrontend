@@ -56,6 +56,18 @@ class User{
 
        
     }
+    async Register (data:httpDataObject){
+        let ignHttpRequest = new IgnRequest({baseURL:this.baseURI});
+        try{
+           let response = await ignHttpRequest.post(this.endpoint,data);
+           if(response.status !== 201){return false}
+           return true;
+        }
+        catch(error){
+            console.dir(error)
+            return false
+        }
+    }
 
     async logout(){
         if(!localStorage.getItem(User.INFO)){

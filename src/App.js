@@ -12,7 +12,7 @@ import ComposeArticle from './pages/articles/ComposeArticle';
 import EditArticle from './pages/articles/EditArticle';
 import Login from './pages/authentication/Login';
 import Logout from './pages/authentication/Logout';
-import Register from './pages/authentication/register';
+import Register from './pages/authentication/Register';
 
 import RootComponent from './components/RootComponent';
 import { useContext, useEffect } from 'react';
@@ -30,8 +30,8 @@ import DetectChange from './components/Generic/DetectPageChangeComponent';
 
 
 const MainApplication = ()=> {
-  const User = useContext(UserContext);
-  const isAuthenticated = User.isLoggedIn()
+  const {isLoggedin}= useContext(UserContext);
+  const isAuthenticated = isLoggedin;
   return (
     
    

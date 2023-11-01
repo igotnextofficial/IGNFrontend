@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
@@ -22,6 +22,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import IgnRequest from '../../features/Http/IgnRequest';
 import User from '../../Models/users/User';
+import { UserContext } from '../../Contexts/UserContext';
 
 
 
@@ -29,7 +30,7 @@ import User from '../../Models/users/User';
 
 const Login = ()=>{
 
-    const user = new User();
+    const {user,isLoggedin,attemptLoginOrLogout }= useContext(UserContext)
     const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [hasErrors,setHasErrors] = useState(false);
@@ -41,15 +42,14 @@ const Login = ()=>{
     }
 
     const userLogin = async (data) => {
-        const user = new User();
-        let loggedIn = await user.login(data);
-        if(loggedIn){
-            setSuccessfulLogin(true);
+        attemptLoginOrLogout(true,data)
+        // if(loggedIn){
+           
         
-        }
-        else{
-            setErrMessage('Username/Password does not match.')
-        }
+        // }
+        // else{
+        //     setErrMessage('Username/Password does not match.')
+        // }
        
     }
     useEffect(() =>{
@@ -74,9 +74,9 @@ const Login = ()=>{
     return (
         <>
 
-            {/* {user.isLoggedIn() &&(
+            {isLoggedin &&(
                 <Navigate to="/dashboard" replace={true} />
-            )} */}
+            )}
 
 
 
