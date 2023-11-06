@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import WriterDashboard from "./WriterDashboard";
 import User from "../../Models/users/User";
 import TemporaryDrawer from '../../components/navigation/LeftDrawer';
 import ContentContainer from "../../utils/ContentContainer";
-import { UserContext } from "../../Contexts/UserContext";
 
 const Dashboard = () => {
-    const {user} = useContext(UserContext)
+    const user = new User()
     return(
        <ContentContainer>
             <TemporaryDrawer/>

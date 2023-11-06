@@ -1,81 +1,85 @@
-import React, { useContext, useEffect, useState } from 'react';
-
-import { Navigate } from 'react-router-dom';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+
+import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+
 import Link from '@mui/material/Link';
 
 import BackgroundCoverImage from '../../components/BackgroundCoverImage';
-import IGNButton from '../../components/Button';
 import Copyright from '../../components/Copyright';
+import IGNButton from '../../components/Button';
 import IgnForm from '../../components/IgnForm';
 import Loader from '../../components/Loader';
-
 import forms from '../../utils/forms';
+import { Navigate } from 'react-router-dom';
 
-import { UserContext } from '../../Contexts/UserContext';
-import { ErrorContext } from '../../Contexts/ErrorContext';
+import axios from 'axios';
+import IgnRequest from '../../features/Http/IgnRequest';
+import User from '../../Models/users/User';
+
+
+
+
 
 const Login = ()=>{
 
-    const {isLoggedin,attemptLoginOrLogout }= useContext(UserContext)
-    const {updateError} = useContext(ErrorContext);
-    const [loading,setLoading] = useState(false); // this will be moved to a context
-    
-    const [attemptLogin,setAttemptLogin] = useState(false)
-    const [data,setData] = useState(null)
-    const [ignore,setIgnore] = useState(true)
+    const user = new User();
+    const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
+    const [successfulLogin,setSuccessfulLogin] = useState(false);
+    const [hasErrors,setHasErrors] = useState(false);
+    const [errMessage,setErrMessage] = useState('');
+    const [loading,setLoading] = useState(false);
 
-
+    const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
+        return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
+    }
 
     const userLogin = async (data) => {
-        let response  = await attemptLoginOrLogout(true,data);
+        const user = new User();
+        let loggedIn = await user.login(data);
+        if(loggedIn){
+            setSuccessfulLogin(true);
         
-        if(!response){ // attempting to log user in
-            updateError("User not found or incorrect credentials. Please try again.")
+        }
+        else{
+            setErrMessage('Username/Password does not match.')
         }
        
     }
-
+    useEffect(() =>{
+        // <Navigate to="/dashboard" replace={true} />
+    },[successfulLogin])
 
     useEffect(() =>{
-        if(!ignore){
-           userLogin(data);
-        }
-       
-        
-        return (()=>{
-           setIgnore(true)
-           setAttemptLogin(false)
-        })
-    },[attemptLogin])
+        setLoading(false)
+    },[hasErrors])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        //trigger loading...
+        setLoading(true);
         
-        let formData = new FormData(event.currentTarget);
-        setData(formData);
-        setIgnore(false)
-        setAttemptLogin(true)
+        let data = new FormData(event.currentTarget);
+        userLogin(data);
     }
 
     const theme = createTheme()
     
+
     return (
         <>
 
-            {isLoggedin &&(
+            {/* {user.isLoggedIn() &&(
                 <Navigate to="/dashboard" replace={true} />
-            )}
-            
+            )} */}
+
+
+
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>
                     <CssBaseline/>
@@ -92,7 +96,7 @@ const Login = ()=>{
                                 Sign in
                             </Typography>
                             <Box component="form" noValidate sx={{mt:1}} onSubmit={handleSubmit}>
-                     
+                            <DisplayErrors hasErrors={hasErrors} errorMessage={errMessage}/>
                             <IgnForm formProperties={forms.login}  />
                                 <IGNButton buttonLabel='Sign in'/>
                                  

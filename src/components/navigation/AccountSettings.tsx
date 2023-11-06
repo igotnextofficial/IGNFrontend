@@ -9,7 +9,7 @@ import { Settings } from '../../types/DataTypes';
 import { UserContext } from '../../Contexts/UserContext';
 
 const AccountSettings  = () => {
-  const {user} = useContext(UserContext)
+  const user = useContext(UserContext)
   const settings:Settings[] = [
       {
         title:'Profile',

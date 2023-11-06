@@ -20,81 +20,32 @@ import Copyright from '../../components/Copyright';
 import IGNButton from '../../components/Button';
 import { UserContext } from '../../Contexts/UserContext';
 import { ErrorContext } from '../../Contexts/ErrorContext';
-import { Roles } from '../../types/Roles';
-import { Navigate } from 'react-router-dom';
-
 
 
 
 const Register = ()=>{
-    const {user, isLoggedin }= useContext(UserContext)
+    const user = useContext(UserContext)
     const {updateError} = useContext(ErrorContext)
     const [data,setData] = useState(null);
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
-    const [role,setRole] = useState(Roles.DEFAULT)
     const [registration,setAttemptRegistration] = useState(null);
-    const [ignore,setIgnore] = useState(true)
-    const [redirectToDashboard,setRedirectToDashboard] = useState(false)
     
 
     useEffect(()=> {
-        if(!ignore){
-            
-      
-            const RegisterUser = async() => {
-                const response =  await user.Register(data);
-                if(response){
-                    
-                    const successful = await user.login({data:{
-                        email:email,
-                        password:password
-                    }})
-
-                    if(successful){
-                        setRedirectToDashboard(true)
-                    }
-                    else{
-                        updateError(`The User ${email} could not be logged in. `)
-                    }
-                }
-                else{
-                    updateError(`We could not create account for ${email}`)
-                }
-
-                setRedirectToDashboard(true)
-            }
-
-            RegisterUser();
-        }
-
-
-        return (() =>{
-            setIgnore(true)
-        })
-       
+        updateError("The account could not be created.")
     },[registration])
-
-    const handleChange = (event)  =>{
-        setRole(event.target.value)
-    }
     const handleSubmit = (event) => {
         event.preventDefault();
-        
         const formData = new FormData(event.currentTarget);
+
         const userData = {
             data: Object.fromEntries(formData.entries()),
         };
-        userData.data.role = role;
-        setEmail(userData.data.email)
-        setPassword(userData.data.password)
+
         setData(userData);
-        setIgnore(false);
         setAttemptRegistration(true)
    
 
     }
-
     const props = 
     {
             email:
@@ -127,20 +78,8 @@ const Register = ()=>{
                 fullWidth:true,
                 name:'username',
                 label:'username',
-                type:'text',
+                type:'username',
                 id:'username',
-                variant:'filled',
-                margin: 'normal'
-            },
-
-           name:
-            {
-                required:true,
-                fullWidth:true,
-                name:'name',
-                label:'fullname',
-                type:'text',
-                id:'fullname',
                 variant:'filled',
                 margin: 'normal'
             }
@@ -149,10 +88,7 @@ const Register = ()=>{
     const theme = createTheme()
     return (
         <>
-             {isLoggedin &&(
-                <Navigate to="/dashboard" replace={true} />
-            )}
-
+        
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>
                     <CssBaseline/>
@@ -180,21 +116,15 @@ const Register = ()=>{
                                Register Account
                             </Typography>
                             <Box component="form" noValidate sx={{mt:1}} onSubmit={handleSubmit}>
-                                <TextField {...props.name}></TextField>
+                            
                                 <TextField {...props.email}></TextField>
                                 <TextField {...props.password}></TextField>
                                 <TextField {...props.username}></TextField>
                                 <FormControl fullWidth variant='filled'>
                                     <InputLabel id="role-label">Role</InputLabel> 
-                                    <Select
-                                    value={role}
-                                    onChange={handleChange}
-                                    labelId='role-label'>
-                                    <MenuItem  value={Roles.ADMIN}>{Roles.ADMIN}</MenuItem>
-                                    <MenuItem  value={Roles.WRITER}>{Roles.WRITER}</MenuItem>
-                                    <MenuItem  value={Roles.ARTIST}>{Roles.ARTIST}</MenuItem>
-                                    <MenuItem value={Roles.SUBSCRIBER}>{Roles.SUBSCRIBER}</MenuItem>
-                                    <MenuItem value={Roles.DEFAULT}>{Roles.DEFAULT}</MenuItem>
+                                    <Select labelId='role-label'>
+                                    <MenuItem value={'Artist'}>Artist</MenuItem>
+                                    <MenuItem value={'Listener'}>Listener</MenuItem>
                                     </Select>
                                 </FormControl>
                                 <IGNButton buttonLabel='Register'/>
