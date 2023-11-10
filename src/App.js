@@ -30,8 +30,8 @@ import DetectChange from './components/Generic/DetectPageChangeComponent';
 
 
 const MainApplication = ()=> {
-  const User = useContext(UserContext);
-  const isAuthenticated = User.isLoggedIn()
+  const {user,isLoggedin} = useContext(UserContext);
+  const isAuthenticated = isLoggedin
   return (
     
    

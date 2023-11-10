@@ -1,5 +1,5 @@
 import { UserDataType, httpDataObject } from "../../types/DataTypes";
-import IgnRequest from "../../features/Http/IgnRequest";
+import IgnRequest from "../../features/http/IgnRequest";
 
 class Artist{
     data = [

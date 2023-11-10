@@ -20,7 +20,7 @@ import forms from '../../utils/forms';
 import { Navigate } from 'react-router-dom';
 
 import axios from 'axios';
-import IgnRequest from '../../features/Http/IgnRequest';
+import IgnRequest from "../../features/http/IgnRequest";
 import User from '../../Models/users/User';
 
 
