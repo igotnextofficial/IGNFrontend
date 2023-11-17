@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import { UserContext } from "../Contexts/UserContext";
-import User from "../Models/users/User";
+import User from "../Models/Users/User";
 
 
 export const UserProvider = ({children}) =>{

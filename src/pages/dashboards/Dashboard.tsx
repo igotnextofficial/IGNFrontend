@@ -1,6 +1,6 @@
 import React from "react";
 import WriterDashboard from "./WriterDashboard";
-import User from "../../Models/users/User";
+import User from "../../Models/Users/User";
 import TemporaryDrawer from '../../components/navigation/LeftDrawer';
 import ContentContainer from "../../utils/ContentContainer";
 

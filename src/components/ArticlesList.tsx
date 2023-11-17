@@ -3,7 +3,7 @@ import DisplayArticle from "./DisplayArticles";
 import { ArticleDataType } from "../types/DataTypes";
 
 import { Box, Divider, Typography, Link } from "@mui/material";
-import Article from "../Models/users/Article";
+import Article from "../Models/Users/Article";
 import ListArticlesComponent from "./Article/ListAritclesComponent ";
 import { useEffect, useState } from "react";
 

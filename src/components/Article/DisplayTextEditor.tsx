@@ -6,7 +6,7 @@ import InformationComponent from "../../Helpers/InformationComponent";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";
 import Editor from "./Editor";
-import Article from "../../Models/users/Article";
+import Article from "../../Models/Users/Article";
 
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import { ErrorContext } from "../../Contexts/ErrorContext";

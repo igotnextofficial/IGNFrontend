@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { ArticleDataType } from "../types/DataTypes";
-import Article from "../Models/users/Article";
+import Article from "../Models/Users/Article";
 interface ArticleContextState {
     article: ArticleDataType;
     error: Error | null;

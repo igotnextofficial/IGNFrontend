@@ -1,5 +1,5 @@
 import { UserDataType, httpDataObject } from "../../types/DataTypes";
-import IgnRequest from "../../features/http/IgnRequest";
+import IgnRequest from "../../Features/Http/IgnRequest";
 
 class User{
     endpoint: string
@@ -7,7 +7,7 @@ class User{
     static readonly INFO: string = "userInfo"
     static readonly ACCESS_TOKEN: string = "accessToken"
     constructor(){
-        this.endpoint = `https://${process.env.REACT_APP_USER_API_URI}/users`;
+        this.endpoint = `https://${process.env.REACT_APP_USER_API_URI}/Users`;
         this.baseURI = `https://${process.env.REACT_APP_USER_API_URI}` || ""; 
     }
 

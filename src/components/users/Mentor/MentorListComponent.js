@@ -2,7 +2,7 @@ import React from "react";
 import SectionComponent from "../../../Helpers/SectionComponent";
 import InformationComponent from "../../../Helpers/InformationComponent";
 import DisplayMentorCard from "./DisplayMentorCard";
-import Mentor from "../../../Models/users/Mentor";
+import Mentor from "../../../Models/Users/Mentor";
 import { Grid } from "@mui/material";
 
 const MentorListComponent = () => {

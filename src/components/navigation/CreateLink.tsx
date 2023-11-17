@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import User from '../../Models/users/User';
+import User from '../../Models/Users/User';
 import { UserContext } from '../../Contexts/UserContext';
 
 // Make sure 'user' is defined or imported in your component if it's used

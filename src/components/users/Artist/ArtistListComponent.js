@@ -2,7 +2,7 @@ import React from "react";
 import SectionComponent from "../../../Helpers/SectionComponent";
 import InformationComponent from "../../../Helpers/InformationComponent";
 import { Grid } from "@mui/material";
-import Artist from "../../../Models/users/Artist";
+import Artist from "../../../Models/Users/Artist";
 import DisplayArtistComponent from "./DisplayArtistComponent";
 const ArtistListComponent = () => {
     const ShowArtists = () =>{

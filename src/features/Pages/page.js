@@ -1,6 +1,6 @@
 import Home from './Home';
 import About from './About';
-import Login from '../Pages/';
+import Login from '.';
 import createPage from './CreatePage';
 import FormDisplay from './FormDisplay';
 

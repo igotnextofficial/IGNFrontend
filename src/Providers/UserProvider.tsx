@@ -2,7 +2,7 @@ import React,{useState,ReactNode} from "react";
 
 import { UserContext } from "../Contexts/UserContext";
 
-import User from "../Models/users/User";
+import User from "../Models/Users/User";
 
 import { httpDataObject } from "../types/DataTypes";
 

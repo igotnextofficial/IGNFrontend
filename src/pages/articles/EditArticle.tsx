@@ -7,7 +7,7 @@ import InformationComponent from "../../Helpers/InformationComponent";
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
 import { FetchMode } from "../../types/ArticleFetchMode"; // types and enums
-import Article from "../../Models/users/Article";
+import Article from "../../Models/Users/Article";
 
 
 const EditArticle = () => {

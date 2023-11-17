@@ -2,7 +2,7 @@ import './App.css';
 import { pages } from './routes/web';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
-import  Navigation  from './features/Navigation/Navigation';
+import  Navigation  from './Features/Navigation/Navigation';
 import ProtectedRoutes from './utils/ProtectedRoute';
 import Ignlogo from './components/Ignlogo';
 

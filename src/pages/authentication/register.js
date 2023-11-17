@@ -31,7 +31,11 @@ const Register = ()=>{
     
 
     useEffect(()=> {
-        updateError("The account could not be created.")
+        if(registration !== null){
+            updateError("The account could not be created.")
+        }
+       
+
     },[registration])
     const handleSubmit = (event) => {
         event.preventDefault();

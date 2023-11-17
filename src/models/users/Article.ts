@@ -1,5 +1,5 @@
 import { ArticleDataType} from "../../types/DataTypes";
-import IgnRequest from '../../features/http/IgnRequest';
+import IgnRequest from '../../Features/Http/IgnRequest';
 
 class Article{
     endpoint: string

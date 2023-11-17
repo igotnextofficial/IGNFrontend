@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect,useRef, useContext }  from 'react';
 import Errors from '../Errors/display'
-import { FormContext } from '../Pages/FormContext'
+import { FormContext } from './FormContext'
 
 
 let defaultStyles = {margin:"20px", padding:"8px",fontSize:"20px"}

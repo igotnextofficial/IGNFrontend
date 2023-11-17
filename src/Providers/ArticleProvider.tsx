@@ -1,6 +1,6 @@
 import { ReactNode,useState,useEffect } from "react";
 import { ArticleDataType } from "../types/DataTypes";
-import Article from "../Models/users/Article";
+import Article from "../Models/Users/Article";
 import { ArticleContext } from "../Contexts/ArticleContext";
 import { FetchMode } from "../types/ArticleFetchMode";
 

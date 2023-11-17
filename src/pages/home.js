@@ -1,7 +1,7 @@
 import React from "react"
 import MainNavigation from "../components/navigation/MainNavigation";
-import ArtistListComponent from "../components/users/Artist/ArtistListComponent";
-import MentorListComponent from "../components/users/Mentor/MentorListComponent";
+import ArtistListComponent from "../components/Users/Artist/ArtistListComponent";
+import MentorListComponent from "../components/Users/Mentor/MentorListComponent";
 import FeatureArticleComponent from "../components/Article/FeatureArticleComponent";
 import AboutUsComponent from "../components/Generic/AboutUsComponent";
 
