@@ -1,30 +1,30 @@
 import './App.css';
-import { pages } from './routes/web';
+import { pages } from './Routes/web';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
 import  Navigation  from './Features/Navigation/Navigation';
-import ProtectedRoutes from './utils/ProtectedRoute';
-import Ignlogo from './components/Ignlogo';
+import ProtectedRoutes from './Utils/ProtectedRoute';
+import Ignlogo from './Components/Ignlogo';
 
 import { BrowserRouter as Router, Switch, Route, Routes, Link} from 'react-router-dom';
-import Dashboard from './pages/dashboards/Dashboard';
-import ComposeArticle from './pages/articles/ComposeArticle';
-import EditArticle from './pages/articles/EditArticle';
-import Login from './pages/authentication/Login';
-import Logout from './pages/authentication/Logout';
-import Register from './pages/authentication/register';
+import Dashboard from './Pages/Dashboards/Dashboard';
+import ComposeArticle from './Pages/Articles/ComposeArticle';
+import EditArticle from './Pages/Articles/EditArticle';
+import Login from './Pages/Authentication/Login';
+import Logout from './Pages/Authentication/Logout';
+import Register from './Pages/Authentication/register';
 
-import RootComponent from './components/RootComponent';
+import RootComponent from './Components/RootComponent';
 import { useContext, useEffect } from 'react';
 import { UserContext } from './Contexts/UserContext';
 import { useUser } from './Providers/UserProvider';
 import { useLocation } from 'react-router-dom';
-import Home from './pages/home';
-import FooterComponent from './components/Generic/FooterComponent';
-import ErrorComponent from './components/Generic/ErrorComponent';
+import Home from './Pages/home';
+import FooterComponent from './Components/Generic/FooterComponent';
+import ErrorComponent from './Components/Generic/ErrorComponent';
 import ErrorProvider from './Providers/ErrorProvider';
 import { ErrorContext } from './Contexts/ErrorContext';
-import DetectChange from './components/Generic/DetectPageChangeComponent';
+import DetectChange from './Components/Generic/DetectPageChangeComponent';
 
 
 

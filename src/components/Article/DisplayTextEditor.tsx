@@ -1,7 +1,7 @@
 import { useState,useContext,useEffect,useLayoutEffect } from "react";
 import { useParams,Navigate } from "react-router-dom";
-import { ArticleDataType } from "../../types/DataTypes";
-import ContentContainer from "../../utils/ContentContainer";
+import { ArticleDataType } from "../../Types/DataTypes";
+import ContentContainer from "../../Utils/ContentContainer";
 import InformationComponent from "../../Helpers/InformationComponent";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";

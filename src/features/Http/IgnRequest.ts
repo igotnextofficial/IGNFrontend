@@ -1,6 +1,6 @@
-import { HttpConfigurationType, HttpHeaders, httpDataObject } from "../../types/DataTypes";
+import { HttpConfigurationType, HttpHeaders, httpDataObject } from "../../Types/DataTypes";
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { wrappedData } from "../../utils/helpers";
+import { wrappedData } from "../../Utils/helpers";
 
 
 class IgnRequest {

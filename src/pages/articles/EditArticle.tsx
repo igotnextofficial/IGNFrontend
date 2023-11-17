@@ -5,8 +5,8 @@ import { Box } from "@mui/material";
 import ArticleProvider from "../../Providers/ArticleProvider";
 import InformationComponent from "../../Helpers/InformationComponent"; 
 import { ArticleContext } from "../../Contexts/ArticleContext";
-import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
-import { FetchMode } from "../../types/ArticleFetchMode"; // types and enums
+import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
+import { FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
 import Article from "../../Models/Users/Article";
 
 

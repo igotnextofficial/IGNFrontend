@@ -1,4 +1,4 @@
-import { TaskDataType } from "./types/DataTypes";
+import { TaskDataType } from "./Types/DataTypes";
 
 const tasksData: TaskDataType[] = [
     {

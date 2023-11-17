@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Grid, ListItemIcon } from "@mui/material";
-import { ArticleDataType, TaskDataType } from "../types/DataTypes";
+import { ArticleDataType, TaskDataType } from "../Types/DataTypes";
 import TaskList from "./TaskList";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';

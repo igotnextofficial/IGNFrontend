@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, ListItemIcon } from "@mui/material";
-import { ArticleDataType } from "../types/DataTypes";
+import { ArticleDataType } from "../Types/DataTypes";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';

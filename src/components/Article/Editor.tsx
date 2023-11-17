@@ -5,10 +5,10 @@ import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
 import ReactQuill, { UnprivilegedEditor } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import WordCount from "../../utils/WordCount";
+import WordCount from "../../Utils/WordCount";
 import Article from "../../Models/Users/Article";
 import { ArticleContext } from "../../Contexts/ArticleContext";
-import { ArticleDataType, EditorDataType, EditorRangeLimitsDataType, EditorRangeSelectorDataType } from "../../types/DataTypes";
+import { ArticleDataType, EditorDataType, EditorRangeLimitsDataType, EditorRangeSelectorDataType } from "../../Types/DataTypes";
 import { DeltaStatic, Sources } from "quill";
 
 const RANGE_LIMITS: EditorRangeLimitsDataType = {

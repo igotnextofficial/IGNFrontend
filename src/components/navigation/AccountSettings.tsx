@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import User from '../../Models/Users/User';
 import CreateLink from './CreateLink';
 
-import { Settings } from '../../types/DataTypes';
+import { Settings } from '../../Types/DataTypes';
 import { UserContext } from '../../Contexts/UserContext';
 
 const AccountSettings  = () => {

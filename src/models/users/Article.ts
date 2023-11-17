@@ -1,4 +1,4 @@
-import { ArticleDataType} from "../../types/DataTypes";
+import { ArticleDataType} from "../../Types/DataTypes";
 import IgnRequest from '../../Features/Http/IgnRequest';
 
 class Article{

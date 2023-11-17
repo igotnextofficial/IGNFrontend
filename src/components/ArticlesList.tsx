@@ -1,6 +1,6 @@
 import React from "react";
 import DisplayArticle from "./DisplayArticles";
-import { ArticleDataType } from "../types/DataTypes";
+import { ArticleDataType } from "../Types/DataTypes";
 
 import { Box, Divider, Typography, Link } from "@mui/material";
 import Article from "../Models/Users/Article";

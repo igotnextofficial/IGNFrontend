@@ -1,7 +1,7 @@
 import { Box,Button } from "@mui/material";
-import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
+import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
 import InformationComponent from "../../Helpers/InformationComponent";
-import ErrorComponent from "../../components/Generic/ErrorComponent";
+import ErrorComponent from "../../Components/Generic/ErrorComponent";
 import { useContext, useEffect } from "react";
 import { ErrorContext } from "../../Contexts/ErrorContext";
 

@@ -1,5 +1,5 @@
 import { Box, Typography} from "@mui/material";
-import IGNButton from "../components/Button";
+import IGNButton from "../Components/Button";
 
 const InformationComponent = ({buttonLink = "",buttonLabel="",title="", children}) => {
     const ShowButton = () => {

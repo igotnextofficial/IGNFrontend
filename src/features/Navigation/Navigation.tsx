@@ -12,12 +12,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import Ignlogo from '../../components/Ignlogo';
+import Ignlogo from '../../Components/Ignlogo';
 import { Link } from 'react-router-dom';
 
-import AccountSettings from '../../components/navigation/AccountSettings';
-import BrowserNavigation from '../../components/navigation/BrowserNavigation';
-import SigninOrRegister from '../../components/navigation/SigninOrRegister';
+import AccountSettings from '../../Components/Navigation/AccountSettings';
+import BrowserNavigation from '../../Components/Navigation/BrowserNavigation';
+import SigninOrRegister from '../../Components/Navigation/SigninOrRegister';
 import { UserContext } from '../../Contexts/UserContext';
 
 

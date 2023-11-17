@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Grid, Typography } from "@mui/material"
-import Ignlogo from '../../components/Ignlogo';
+import Ignlogo from '../Ignlogo';
 import { Link } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import MainPageList from "./MainPageList";

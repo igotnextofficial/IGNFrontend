@@ -4,7 +4,7 @@ import { UserContext } from "../Contexts/UserContext";
 
 import User from "../Models/Users/User";
 
-import { httpDataObject } from "../types/DataTypes";
+import { httpDataObject } from "../Types/DataTypes";
 
 export const UserProvider = ({children}:{children:ReactNode}) =>{
     const [user,setUser] = useState(new User())

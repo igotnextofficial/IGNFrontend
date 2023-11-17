@@ -1,8 +1,8 @@
 import React from "react";
 import WriterDashboard from "./WriterDashboard";
 import User from "../../Models/Users/User";
-import TemporaryDrawer from '../../components/navigation/LeftDrawer';
-import ContentContainer from "../../utils/ContentContainer";
+import TemporaryDrawer from '../../Components/Navigation/LeftDrawer';
+import ContentContainer from "../../Utils/ContentContainer";
 
 const Dashboard = () => {
     const user = new User()

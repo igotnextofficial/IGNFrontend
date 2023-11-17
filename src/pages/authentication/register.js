@@ -16,8 +16,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 
-import Copyright from '../../components/Copyright';
-import IGNButton from '../../components/Button';
+import Copyright from '../../Components/Copyright';
+import IGNButton from '../../Components/Button';
 import { UserContext } from '../../Contexts/UserContext';
 import { ErrorContext } from '../../Contexts/ErrorContext';
 

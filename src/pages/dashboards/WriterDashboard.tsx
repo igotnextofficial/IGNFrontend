@@ -1,19 +1,19 @@
 import React from "react";
-import DisplayArticle from "../../components/DisplayArticles";
-import { ArticleDataType } from "../../types/DataTypes";
-import Editor from "../../components/Article/Editor";
+import DisplayArticle from "../../Components/DisplayArticles";
+import { ArticleDataType } from "../../Types/DataTypes";
+import Editor from "../../Components/Article/Editor";
 
-import DashboardSectionComponent from "../../components/DashboardSectionComponent";
-import TaskList from "../../components/TaskList";
+import DashboardSectionComponent from "../../Components/DashboardSectionComponent";
+import TaskList from "../../Components/TaskList";
 import Grid from '@mui/material/Grid';
 
-import Scrollable from "../../components/Scrollable";
-import DisplayTasks from "../../components/DisplayTasks";
+import Scrollable from "../../Components/Scrollable";
+import DisplayTasks from "../../Components/DisplayTasks";
 import {tasksData}  from "../../data";
-import Chart from "../../components/Charts";
-import ToDo from "../../components/ToDo";
-import ListArticlesComponent from "../../components/Article/ListAritclesComponent ";
-import DisplayTextEditor from "../../components/Article/DisplayTextEditor";
+import Chart from "../../Components/Charts";
+import ToDo from "../../Components/ToDo";
+import ListArticlesComponent from "../../Components/Article/ListAritclesComponent ";
+import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
 
 const WriterDashboard = () => {
     let userArticles: ArticleDataType[]  = [

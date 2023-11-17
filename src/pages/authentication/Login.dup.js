@@ -11,12 +11,12 @@ import Typography from '@mui/material/Typography';
 
 import Link from '@mui/material/Link';
 
-import BackgroundCoverImage from '../../components/BackgroundCoverImage';
-import Copyright from '../../components/Copyright';
-import IGNButton from '../../components/Button';
-import IgnForm from '../../components/IgnForm';
-import Loader from '../../components/Loader';
-import forms from '../../utils/forms';
+import BackgroundCoverImage from '../../Components/BackgroundCoverImage';
+import Copyright from '../../Components/Copyright';
+import IGNButton from '../../Components/Button';
+import IgnForm from '../../Components/IgnForm';
+import Loader from '../../Components/Loader';
+import forms from '../../Utils/forms';
 import { Navigate } from 'react-router-dom';
 
 import axios from 'axios';

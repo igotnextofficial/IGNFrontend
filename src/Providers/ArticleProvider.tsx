@@ -1,8 +1,8 @@
 import { ReactNode,useState,useEffect } from "react";
-import { ArticleDataType } from "../types/DataTypes";
+import { ArticleDataType } from "../Types/DataTypes";
 import Article from "../Models/Users/Article";
 import { ArticleContext } from "../Contexts/ArticleContext";
-import { FetchMode } from "../types/ArticleFetchMode";
+import { FetchMode } from "../Types/ArticleFetchMode";
 
 interface ArticleProviderProps {
     children: ReactNode;

@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
-import { MentorDataType } from '../../../types/DataTypes';
+import { MentorDataType } from '../../../Types/DataTypes';
 
  function DisplayMentorCard({mentor} : {mentor:MentorDataType}) {
   return (
