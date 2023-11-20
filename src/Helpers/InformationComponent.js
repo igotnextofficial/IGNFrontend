@@ -15,7 +15,7 @@ const InformationComponent = ({buttonLink = "",buttonLabel="",title="", children
     return(
         <>
              <Typography variant="h4">{title}</Typography>
-                <Box sx={styles.seperator}></Box>
+                {/* <Box sx={styles.seperator}></Box> */}
                 {children}
                
                <ShowButton/>

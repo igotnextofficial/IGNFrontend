@@ -85,3 +85,10 @@ export interface EditorRangeLimitsDataType {
 }
 
 export type EditorRangeSelectorDataType = "title" | "content"
+
+export interface ListDataType {
+    id?:string
+    title:string,
+    image_url:string,
+    content:string,
+}

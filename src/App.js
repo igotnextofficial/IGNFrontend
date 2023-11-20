@@ -25,6 +25,7 @@ import ErrorComponent from './Components/Generic/ErrorComponent';
 import ErrorProvider from './Providers/ErrorProvider';
 import { ErrorContext } from './Contexts/ErrorContext';
 import DetectChange from './Components/Generic/DetectPageChangeComponent';
+import WhosNextPage from './Pages/Articles/WhosNext';
 
 
 
@@ -50,6 +51,7 @@ const MainApplication = ()=> {
                   <Route path='/compose-article' element={<ComposeArticle/>}/>
                   <Route path='/edit-article/:article_id' element={<EditArticle/>}/>
               </Route>
+              <Route path='/Whos-Next' element={<WhosNextPage/>}/>
               <Route path='/logout' element={<Logout/>}/>
               <Route path='/login' element={<Login/>}/>
               <Route path='/register' element={<Register/>}/>
