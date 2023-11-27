@@ -93,4 +93,5 @@ export interface ListDataType {
     content:string,
     author?:string,
     link?:string
+    category?:string
 }

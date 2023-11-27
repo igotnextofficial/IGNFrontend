@@ -26,12 +26,12 @@ const PaginatedPageComponent = ({ initialData }: PaginatedPageProps) => {
             <ListLayoutComponent data={currentItems} />
             
             {/* Material-UI Pagination */}
-            <Pagination
+            {/* <Pagination
                 count={Math.ceil(initialData.length / itemsPerPage)}
                 page={currentPage}
                 onChange={handlePageChange}
                 color="primary"
-            />
+            /> */}
         </div>
     );
 };

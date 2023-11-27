@@ -29,6 +29,7 @@ import WhosNextPage from './Pages/Articles/WhosNext';
 import EntertainmentNewsPage from './Pages/Articles/EntertainmentNews';
 import ArtistOfThelMonthPage from './Pages/Articles/ArtistOfTheMonth';
 import FeaturedArtistPage from './Pages/Articles/FeaturedArtist';
+import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 
 
 
@@ -55,11 +56,11 @@ const MainApplication = ()=> {
                   <Route path='/edit-article/:article_id' element={<EditArticle/>}/>
               </Route>
               <Route path='/Whos-Next' element={<WhosNextPage/>}/>
-
               <Route path='/featured-artists' element={<FeaturedArtistPage/>}/>
-    
               <Route path='/entertainment-news' element={<EntertainmentNewsPage/>}/>
               <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage/>}/>
+              <Route path='/:category/:article_id' element={<ArticlePageComponent/>}/>
+
               <Route path='/logout' element={<Logout/>}/>
               <Route path='/login' element={<Login/>}/>
               <Route path='/register' element={<Register/>}/>

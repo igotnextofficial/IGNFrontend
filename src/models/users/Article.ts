@@ -131,10 +131,9 @@ class Article{
         try {
             
             let myendpoint = category !== "" ? `${this.endpoint}/${category}` : this.endpoint 
-
             this.addToken()
             let userArticles = await this.ignHttpRequest.get( myendpoint);
-            console.log(`got backkkkk ${JSON.stringify(userArticles.data)}`)
+            userArticles.data['data']['link']=`${category}/${userArticles.data['data']['id']}`
             return userArticles.data['data'];
         } catch (error) {
             console.error("Error retrieving articles:", error);
@@ -166,8 +165,9 @@ class Article{
     }
     async retrieveById(id:string){
         try {
-            let userArticles = await this.getAll();
-            return userArticles;
+            let response = await this.get(id);
+            if(!response){return null}
+            return response.data;
         } catch (error) {
             console.error("Error retrieving articles:", error);
             return []; // Return empty array in case of error, or handle it as per your requirement
