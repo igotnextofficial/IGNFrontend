@@ -40,13 +40,13 @@ const sampleData:ListDataType[] = [
 
 
 
-const WhosNextPage = () => {
+const EntertainmentNewsPage = () => {
 
     return (
     
     <>
-    <ArticleProvider mode={FetchMode.ALL} category={Categories.WHOS_NEXT}>
-        <ArticleCategoryDisplay title="whos next"/>
+    <ArticleProvider mode={FetchMode.ALL} category={Categories.ENTERTAINMENT_NEWS}>
+        <ArticleCategoryDisplay title="entertainment news"/>
 
     </ArticleProvider>
 
@@ -54,4 +54,4 @@ const WhosNextPage = () => {
     );
 };
 
-export default WhosNextPage;
+export default EntertainmentNewsPage;

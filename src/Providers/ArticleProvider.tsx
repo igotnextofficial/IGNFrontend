@@ -2,16 +2,19 @@ import { ReactNode,useState,useEffect } from "react";
 import { ArticleDataType } from "../Types/DataTypes";
 import Article from "../Models/Users/Article";
 import { ArticleContext } from "../Contexts/ArticleContext";
-import { FetchMode } from "../Types/ArticleFetchMode";
+import { FetchMode,Categories } from "../Types/ArticleFetchMode";
+
 
 interface ArticleProviderProps {
     children: ReactNode;
     mode: FetchMode;
     id?: string; // Optional, required for SINGLE, USER, DRAFTS modes
+    category?:Categories
   }
   
-  const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id="" }) => {
-    const [userArticles, setArticles] = useState<ArticleDataType>(Article.defaultResponse);
+  const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id="",category="" }) => {
+    const [userArticles, setArticles] = useState<ArticleDataType >(Article.defaultResponse);
+    const [articleList,setArticleList] = useState<ArticleDataType[]>([])
     const [error, setError] = useState<Error | null>(null); // To handle any errors during fetching
   
     useEffect(() => {
@@ -22,7 +25,8 @@ interface ArticleProviderProps {
           let articles;
           switch (mode) {
             case FetchMode.ALL:
-              articles = await article.retreiveAll();
+              articles = await article.retreiveAll(category);
+              setArticleList(articles)
               break;
             case FetchMode.SINGLE:
               if (!id) throw new Error("An ID is required to fetch a single article");
@@ -39,7 +43,8 @@ interface ArticleProviderProps {
             default:
               throw new Error("Invalid fetch mode");
           }
-          setArticles(articles);
+          if(articles !== null){ setArticles(articles) }
+          
         } catch (error) {
           if (error instanceof Error) {
             setError(error);
@@ -55,7 +60,7 @@ interface ArticleProviderProps {
     // Depending on your design, you can either pass the articles down directly through the component's children or use a context to provide the articles deeper into the component tree.
   
     return (
-      <ArticleContext.Provider value={{ article: userArticles, error }}>
+      <ArticleContext.Provider value={{ article: userArticles, error ,allArticles: articleList }}>
         {children}
       </ArticleContext.Provider>
     );

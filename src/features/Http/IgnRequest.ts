@@ -29,7 +29,7 @@ class IgnRequest {
         this.requestInProgress = inProgress;
     }
 
-    async get(endpoint: string, params: object) {
+    async get(endpoint: string, params?: object) {
         if(this.requestInProgress === true){throw new Error("Request in progress")}
         try {
             this.setRequstInProgress(true);

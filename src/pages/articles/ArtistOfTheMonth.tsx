@@ -40,13 +40,13 @@ const sampleData:ListDataType[] = [
 
 
 
-const WhosNextPage = () => {
+const ArtistOfThelMonthPage = () => {
 
     return (
     
     <>
-    <ArticleProvider mode={FetchMode.ALL} category={Categories.WHOS_NEXT}>
-        <ArticleCategoryDisplay title="whos next"/>
+    <ArticleProvider mode={FetchMode.ALL} category={Categories.ARTIST_OF_THE_MONTH}>
+        <ArticleCategoryDisplay title="artist of the month"/>
 
     </ArticleProvider>
 
@@ -54,4 +54,4 @@ const WhosNextPage = () => {
     );
 };
 
-export default WhosNextPage;
+export default ArtistOfThelMonthPage;

@@ -92,7 +92,15 @@ class Article{
         }
     }
 
-    
+    addToken(){
+        const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+        console.log(`adding token: ${JSON.stringify(headers)}`)
+        this.ignHttpRequest.setHeaders(headers);
+    }
 
     
     async get(article_id:string,withDrafts = false){
@@ -118,13 +126,19 @@ class Article{
     async getAll(){
         return this.DataArticles;
     }
-    async retreiveAll() {
+
+    async retreiveAll(category="") {
         try {
-            let userArticles = await this.getAll();
-            return userArticles;
+            
+            let myendpoint = category !== "" ? `${this.endpoint}/${category}` : this.endpoint 
+
+            this.addToken()
+            let userArticles = await this.ignHttpRequest.get( myendpoint);
+            console.log(`got backkkkk ${JSON.stringify(userArticles.data)}`)
+            return userArticles.data['data'];
         } catch (error) {
             console.error("Error retrieving articles:", error);
-            return []; // Return empty array in case of error, or handle it as per your requirement
+            return null; // Return empty array in case of error, or handle it as per your requirement
         }
     }
 

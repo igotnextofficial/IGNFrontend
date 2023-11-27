@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import ListLayoutComponent from './ListLayoutComponent';
 import Pagination from '@mui/material/Pagination';
-import { ListDataType } from '../../Types/DataTypes'
+import { ArticleDataType, ListDataType } from '../../Types/DataTypes'
 
 interface PaginatedPageProps {
-    initialData: ListDataType[];
+    initialData: ListDataType[] | ArticleDataType[];
 }
 
 const PaginatedPageComponent = ({ initialData }: PaginatedPageProps) => {

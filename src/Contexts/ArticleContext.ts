@@ -2,7 +2,8 @@ import { createContext } from "react";
 import { ArticleDataType } from "../Types/DataTypes";
 import Article from "../Models/Users/Article";
 interface ArticleContextState {
-    article: ArticleDataType;
+    article: ArticleDataType ;
+    allArticles?:ArticleDataType[] | null
     error: Error | null;
     id?: string
 }

@@ -91,4 +91,6 @@ export interface ListDataType {
     title:string,
     image_url:string,
     content:string,
+    author?:string,
+    link?:string
 }
