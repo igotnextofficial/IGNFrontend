@@ -68,3 +68,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## Components
+ ###  Generics
+ #### Detect Page Component
+ ##### The purpose
+ -  This component is used to detect if a page has been changed, currently it is used to make sure that the error component is cleared on each page change so that errors are only showing on  their corresponding page.

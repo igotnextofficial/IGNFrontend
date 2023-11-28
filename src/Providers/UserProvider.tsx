@@ -12,16 +12,12 @@ export const UserProvider = ({children}:{children:ReactNode}) =>{
     
     const attemptLoginOrLogout  = async (login = false,data?:httpDataObject) => {
         const response = await (login && data ? user.login(data) : user.logout());
-
-        if(response){
-            if(login)(setIsLoggedin(true))
+        if(response === null){return false}
+            if( login ) {
+                setUser(response.data)
+                setIsLoggedin( true )
+            }
             return true;
-        }
-        else{
-         
-            return false
-        }
-
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
@@ -21,15 +21,15 @@ import { Navigate } from 'react-router-dom';
 
 import axios from 'axios';
 import IgnRequest from "../../Features/Http/IgnRequest";
-import User from '../../Models/Users/User';
+import { UserContext } from '../../Contexts/UserContext';
+
 
 
 
 
 
 const Login = ()=>{
-
-    const user = new User();
+    const {user,isLoggedin }= useContext(UserContext);
     const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [hasErrors,setHasErrors] = useState(false);
@@ -41,7 +41,7 @@ const Login = ()=>{
     }
 
     const userLogin = async (data) => {
-        const user = new User();
+   
         let loggedIn = await user.login(data);
         if(loggedIn){
             setSuccessfulLogin(true);
@@ -74,9 +74,9 @@ const Login = ()=>{
     return (
         <>
 
-            {/* {user.isLoggedIn() &&(
+            {isLoggedin &&(
                 <Navigate to="/dashboard" replace={true} />
-            )} */}
+            )}
 
 
 

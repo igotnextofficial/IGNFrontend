@@ -14,7 +14,7 @@ import Login from './Pages/Authentication/Login';
 import Logout from './Pages/Authentication/Logout';
 import Register from './Pages/Authentication/register';
 
-import RootComponent from './Components/RootComponent';
+import RootComponent from './Components/Generic/RootComponent';
 import { useContext, useEffect } from 'react';
 import { UserContext } from './Contexts/UserContext';
 import { useUser } from './Providers/UserProvider';
@@ -35,14 +35,14 @@ import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 
 
 const MainApplication = ()=> {
-  const {user,isLoggedin} = useContext(UserContext);
+  const {isLoggedin} = useContext(UserContext);
   const isAuthenticated = isLoggedin
   return (
     
    
     <>
       
-         
+
   
     
          <Router>
@@ -101,12 +101,10 @@ function App() {
     <div className="App">
         
          
-      <RootComponent>
-      <ErrorProvider>
+   
         <ErrorComponent/>
           <MainApplication/>
-        </ErrorProvider>
-      </RootComponent>
+     
 
 
     </div>

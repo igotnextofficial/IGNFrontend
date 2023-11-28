@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -8,11 +8,14 @@ import { UserContext } from '../../Contexts/UserContext';
 // Make sure 'user' is defined or imported in your component if it's used
 
 const CreateLink = ({ title, slug }: { title: string; slug: string }) => {
-    const user = new User()
+    const {user } =  useContext(UserContext)
+    const [refresh, setRefresh] = useState(false)
   const handleLogout = async () => {
     try {
       let success = await user.logout();
-      success ? alert("successful") : alert("unsuccessful");
+      if(success){
+        setRefresh(refresh)
+      }
     } catch (error) {
       console.error("Logout error: ", error);
       alert("unsuccessful");

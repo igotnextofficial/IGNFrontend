@@ -6,6 +6,7 @@ export interface userContextType{
     user: User,
     isLoggedin:boolean,
     attemptLoginOrLogout: () => void,
+    test?: String
 
 }
 export const UserContext = createContext<userContextType>({
