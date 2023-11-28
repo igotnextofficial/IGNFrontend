@@ -72,6 +72,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## Components
  ###  Generics
+ #### Root Page Component
+ ##### The purpose
+ - This component is designed to serve as a wrapper for the entire application, encapsulating it within various context providers that are utilized across the application's architecture. Specifically, it integrates essential providers like UserProvider and ErrorProvider. This encapsulation facilitates a centralized and efficient management of shared states and functionalities, such as user information and error handling, ensuring their accessibility and consistency throughout the entire application.
+ 
  #### Detect Page Component
  ##### The purpose
- -  This component is used to detect if a page has been changed, currently it is used to make sure that the error component is cleared on each page change so that errors are only showing on  their corresponding page.
+ -  This component functions as a change detection mechanism, monitoring for alterations in the page's state or content. Its primary role is to ensure the initialization of the error-handling process upon each transition between pages. This process includes the clearance of any pre-existing error notifications, thereby confining the display of error messages exclusively to the page where they are contextually relevant. This strategy enhances user experience by maintaining error message visibility strictly within their pertinent page scopes.
