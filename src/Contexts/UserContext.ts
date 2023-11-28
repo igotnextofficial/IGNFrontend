@@ -1,16 +1,18 @@
 import { createContext } from "react";
 import User from "../Models/Users/User";
+import { httpDataObject } from "../Types/DataTypes";
 
 
 export interface userContextType{
     user: User,
     isLoggedin:boolean,
-    attemptLoginOrLogout: () => void,
-    test?: String
+    attemptLoginOrLogout: (login:boolean,data?:httpDataObject,) => Promise<boolean>,
 
 }
 export const UserContext = createContext<userContextType>({
-    isLoggedin:false,
+    isLoggedin: false,
     user: new User(),
-    attemptLoginOrLogout: () => {},
+    attemptLoginOrLogout: async (): Promise<boolean> => {
+        return false;
+    },
 });

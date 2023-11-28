@@ -8,11 +8,11 @@ import { UserContext } from '../../Contexts/UserContext';
 // Make sure 'user' is defined or imported in your component if it's used
 
 const CreateLink = ({ title, slug }: { title: string; slug: string }) => {
-    const {user } =  useContext(UserContext)
+    const {user,attemptLoginOrLogout } =  useContext(UserContext)
     const [refresh, setRefresh] = useState(false)
   const handleLogout = async () => {
     try {
-      let success = await user.logout();
+      let success = await attemptLoginOrLogout(false);
       if(success){
         setRefresh(refresh)
       }

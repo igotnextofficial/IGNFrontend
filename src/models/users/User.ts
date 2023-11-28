@@ -4,11 +4,14 @@ import IgnRequest from "../../Features/Http/IgnRequest";
 class User{
     endpoint: string
     baseURI: string
+    ignHttpRequest: IgnRequest;
     static readonly INFO: string = "userInfo"
     static readonly ACCESS_TOKEN: string = "accessToken"
     constructor(){
-        this.endpoint = `https://${process.env.REACT_APP_USER_API_URI}/Users`;
+        this.endpoint = `https://${process.env.REACT_APP_USER_API_URI}/users`;
         this.baseURI = `https://${process.env.REACT_APP_USER_API_URI}` || ""; 
+        this.ignHttpRequest = new IgnRequest({baseURL:this.baseURI})
+        this.ignHttpRequest.setHeaders();
     }
 
     default(){
@@ -24,6 +27,10 @@ class User{
     get(){
         let user = localStorage.getItem(User.INFO) || '{}' ;
         return localStorage.getItem(User.INFO) ? JSON.parse(user) : this.default();
+    }
+
+    isLoggedin(){
+        return localStorage.getItem(User.INFO) !== null; // and also check if token is valid
     }
 
     show(){
@@ -70,6 +77,18 @@ class User{
 
  
     }
+
+    async register(data:httpDataObject){
+        try{
+           const response = await this.ignHttpRequest.post(`${this.endpoint}`,data)
+           return response.data
+        }
+        catch{
+            return null
+        }
+    }
+
+
 
 }
 

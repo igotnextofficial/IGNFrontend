@@ -30,7 +30,6 @@ import { UserContext } from '../../Contexts/UserContext';
 
 const Login = ()=>{
     const {user,isLoggedin }= useContext(UserContext);
-    const loginUri = `https://${process.env.REACT_APP_USER_API_URI}`;
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
