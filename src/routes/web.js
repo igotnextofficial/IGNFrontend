@@ -1,6 +1,6 @@
 import Home from '../Pages/home';
 import Login from '../Pages/Authentication/Login'
-import Register from '../Pages/Authentication/register';
+import Register from '../Pages/Authentication/Register';
 import FormTest from '../Pages/FormTest';
 import Dashboard from '../Pages/Dashboards/Dashboard';
 import { Logout } from '@mui/icons-material';

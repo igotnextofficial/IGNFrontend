@@ -9,8 +9,9 @@ const Dashboard = () => {
     const{ user }= useContext(UserContext)
     return(
        <ContentContainer>
-            <TemporaryDrawer/>
+            
             <h1>Welcome, {user.get()['name']}</h1>
+            <TemporaryDrawer/>
             <p>{document.cookie}</p>
 
             <WriterDashboard/>

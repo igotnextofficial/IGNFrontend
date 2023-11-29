@@ -4,6 +4,7 @@ import { Avatar, Box, IconButton , Tooltip, Menu , MenuItem, Typography,Button }
 import { Link } from 'react-router-dom';
 import User from '../../Models/Users/User';
 import CreateLink from './CreateLink';
+import TemporaryDrawer from '../../Components/Navigation/LeftDrawer';
 
 import { Settings } from '../../Types/DataTypes';
 import { UserContext } from '../../Contexts/UserContext';
@@ -59,12 +60,14 @@ const AccountSettings  = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+           
               {settings.map(({title,slug}) => (
                 <MenuItem key={slug} onClick={handleCloseUserMenu}>
           
                   <CreateLink title={title} slug={slug} />
                 </MenuItem>
               ))}
+             
             </Menu>
           </Box>
     </> 

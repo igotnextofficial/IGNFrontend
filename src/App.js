@@ -11,8 +11,7 @@ import Dashboard from './Pages/Dashboards/Dashboard';
 import ComposeArticle from './Pages/Articles/ComposeArticle';
 import EditArticle from './Pages/Articles/EditArticle';
 import Login from './Pages/Authentication/Login';
-import Logout from './Pages/Authentication/Logout';
-import Register from './Pages/Authentication/register';
+import Register from './Pages/Authentication/Register';
 
 import RootComponent from './Components/Generic/RootComponent';
 import { useContext, useEffect } from 'react';
@@ -61,7 +60,6 @@ const MainApplication = ()=> {
               <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage/>}/>
               <Route path='/:category/:article_id' element={<ArticlePageComponent/>}/>
 
-              <Route path='/logout' element={<Logout/>}/>
               <Route path='/login' element={<Login/>}/>
               <Route path='/register' element={<Register/>}/>
             </Routes>

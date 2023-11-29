@@ -13,11 +13,11 @@ const BackgroundCoverImage = (
     }: 
     {
         url:string,
-        xs: false | number,
-        sm: false | number,
-        md: false | number,
-        sx:object,
-        children:ReactNode | string  
+        xs?: false | number,
+        sm?: false | number,
+        md?: false | number,
+        sx?:object,
+        children?:ReactNode | string  
     }
     
     ) => {

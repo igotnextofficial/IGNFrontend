@@ -22,6 +22,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import IgnRequest from "../../Features/Http/IgnRequest";
 import { UserContext } from '../../Contexts/UserContext';
+import { httpDataObject } from '../../Types/DataTypes';
 
 
 
@@ -29,7 +30,7 @@ import { UserContext } from '../../Contexts/UserContext';
 
 
 const Login = ()=>{
-    const {user,isLoggedin }= useContext(UserContext);
+    const {user,isLoggedin,attemptLoginOrLogout }= useContext(UserContext);
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
@@ -39,9 +40,9 @@ const Login = ()=>{
         return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
     }
 
-    const userLogin = async (data) => {
+    const userLogin = async (data:httpDataObject) => {
    
-        let loggedIn = await user.login(data);
+        let loggedIn = await attemptLoginOrLogout(true,data);
         if(loggedIn){
             setSuccessfulLogin(true);
         
@@ -59,12 +60,13 @@ const Login = ()=>{
         setLoading(false)
     },[hasErrors])
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
         
-        let data = new FormData(event.currentTarget);
-        userLogin(data);
+        const formData = new FormData(event.currentTarget);
+        const data =Object.fromEntries(formData.entries())
+        userLogin({"data":data});
     }
 
     const theme = createTheme()
