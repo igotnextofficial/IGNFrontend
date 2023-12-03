@@ -59,6 +59,10 @@ class User{
        
     }
 
+    getUserAccessToken(){
+        return localStorage.getItem(User.ACCESS_TOKEN)
+    }
+
     async logout(){
         if(!localStorage.getItem(User.INFO)){
             return null;

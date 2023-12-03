@@ -96,14 +96,5 @@ export interface ListDataType {
     category?:string
 }
 
-export interface FormInputField{
-    required?: boolean,
-    fullWidth?: boolean,
-    name?: string,
-    label?: string,
-    type?: string,
-    id?: string,
-    variant?: ' "filled" | "outlined" | "standard" | undefined',
-    margin?: string,
-    autoComplete?: string,
-}
+
+

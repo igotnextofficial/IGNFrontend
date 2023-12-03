@@ -1,5 +1,6 @@
 import { ArticleDataType} from "../../Types/DataTypes";
 import IgnRequest from '../../Features/Http/IgnRequest';
+import User from "./User";
 
 class Article{
     endpoint: string
@@ -92,8 +93,13 @@ class Article{
         }
     }
 
+    getUserAccessToken(){
+        let user = new User()
+        return user.getUserAccessToken()
+    }
+
     addToken(){
-        const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+        const token = this.getUserAccessToken();
         const headers = {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -188,7 +194,7 @@ class Article{
 
     async update(article_id:string, Article:ArticleDataType){
         const data = {"data":Article}
-        let token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+        let token = this.getUserAccessToken();
         const headers =  {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -210,7 +216,7 @@ class Article{
 
     async create(Article:ArticleDataType){
         const data = {"data":Article}
-        let token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+        let token = this.getUserAccessToken();
         const headers =  {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -233,7 +239,7 @@ class Article{
     async createOrUpdate(Article:ArticleDataType,article_id = ""){
 
         try {
-            const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+            const token = this.getUserAccessToken();
             const headers = {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
@@ -255,7 +261,7 @@ class Article{
 
     async restore(article_id = ""){
         try{
-            const token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+            const token = this.getUserAccessToken();
             const headers = {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
