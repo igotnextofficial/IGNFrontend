@@ -60,7 +60,7 @@ class User{
     }
 
     getUserAccessToken(){
-        return localStorage.getItem(User.ACCESS_TOKEN)
+        return localStorage.getItem(User.ACCESS_TOKEN) || ""
     }
 
     async logout(){

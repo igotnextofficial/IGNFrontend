@@ -1,6 +1,7 @@
 import { HttpConfigurationType, HttpHeaders, httpDataObject } from "../../Types/DataTypes";
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { wrappedData } from "../../Utils/helpers";
+import User from "../../Models/Users/User";
 
 
 class IgnRequest {
@@ -15,7 +16,8 @@ class IgnRequest {
     }
 
     setHeaders(passedHeaders?:HttpHeaders,needsAuth = true) {
-        let token = process.env.REACT_APP_DEV_ACCESS_TOKEN;
+      
+        let token = localStorage.getItem(User.ACCESS_TOKEN);
         const headers:HttpHeaders =  {'Content-Type': 'application/json'}
 
         if(needsAuth){
