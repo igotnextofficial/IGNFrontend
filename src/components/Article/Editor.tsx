@@ -8,6 +8,7 @@ import Article from '../../Models/Users/Article';
 import { ArticleCategories } from '../../Types/ArticleCategories';
 import { EditorDataType, EditorRangeLimitsDataType, EditorRangeSelectorDataType } from '../../Types/DataTypes';
 import { DeltaStatic, Sources } from 'quill';
+import UploadImageComponent from '../UploadImageComponent';
 
 const RANGE_LIMITS: EditorRangeLimitsDataType = {
   title: {
@@ -23,6 +24,7 @@ const RANGE_LIMITS: EditorRangeLimitsDataType = {
 const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, handleReview }: EditorDataType) => {
   const [title, setTitle] = useState(article.title || "");
   const [content, setContent] = useState(article.content || "");
+  const [image,setImage] = useState()
   const [contentWithoutTags, setContentWithoutTags] = useState('');
   const [status, setStatus] = useState('draft');
   const [errors, setErrors] = useState({ message: "" });
@@ -52,6 +54,8 @@ const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, 
   }
 
   const saveDraft = () => {
+    //update the draft content
+    //update with image
     handleDraft({ ...Article.defaultResponse, title, content,category });
   }
 
@@ -71,48 +75,6 @@ const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, 
   );
 
 
-const ImageUpload: React.FC = () => {
-
-  
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files ? event.target.files[0] : null;
-      setSelectedFile(file);
-  
-      if (file) {
-        const url = URL.createObjectURL(file);
-        setPreviewUrl(url);
-      } else {
-        setPreviewUrl(null);
-      }
-    };
-  
-    const handleUpload = () => {
-      // Code to handle the file upload
-      // Example: You can send the 'selectedFile' to a server or process it as needed
-    };
-    return (
-      <div>
-         <FormLabel id="radio-buttons-group-label">Upload an image:</FormLabel>
-        <TextField
-          type="file"
-          onChange={handleFileChange}
-          inputProps={{ accept: 'image/*' }} // Accept only images
-        />
-          {previewUrl && <img src={previewUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px' }} />}
-      {selectedFile && (
-        <div>
-          <p>Filename: {selectedFile.name}</p>
-          <Button variant="contained" color="primary" onClick={handleUpload}>
-            Upload
-          </Button>
-        </div>
-      )}
-      </div>
-    );
-  }
 
   const Categories = () => (
     <FormControl>
@@ -138,7 +100,7 @@ const ImageUpload: React.FC = () => {
         <WordCount word={title} maxCount={RANGE_LIMITS.title.max} />
       </Box>
       <Box component='div' sx={{ margin: '30px 0' }}>
-        <ReactQuill theme="snow" value={content || ""} onChange={updateContent} style={{ height: `${height}px` }} />
+        <ReactQuill theme="snow" value={content || ""} onChange={updateContent} style={{ height: `${height}px` }} /> 
       </Box>
       <Box component={"div"} sx={{mt:'3em'}}>
         <WordCount word={contentWithoutTags} maxCount={RANGE_LIMITS.content.max} />
@@ -148,7 +110,7 @@ const ImageUpload: React.FC = () => {
     <Grid item xs={12} md={3}>
       <Categories />
       <Divider sx={{mt:'2em',mb:'2em'}}/>
-      <ImageUpload/>
+       <UploadImageComponent/>
     </Grid>
 
   </Grid>

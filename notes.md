@@ -1,8 +1,9 @@
 ## Current To do List
-- Add categories to article creation pages.
-- on Dashboard page remove drafts from side of compose or when saved redirect page
-- add an image upload feature for the articles
-- upload and streaming music.
+- [x] Add categories to article creation pages. 
+- [] update backend to receive categories
+- [] on Dashboard page remove drafts from side of compose or when saved redirect page
+- [] add an image upload feature for the articles
+- [] upload and streaming music.
 ## Upcoming updates
 ### Authentication
 - Most Important circle back around to authentication process and storing of toekens

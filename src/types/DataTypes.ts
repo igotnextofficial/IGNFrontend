@@ -45,12 +45,7 @@ export interface UserDataType {
 }
 
 
-enum HttpMethods {
-    GET="GET",
-    POST="POST",
-    PUT="PUT",
-    DELETE="DELETE"
-}
+
 
 export interface httpDataObject {
     data:object
@@ -96,5 +91,26 @@ export interface ListDataType {
     category?:string
 }
 
+export enum ByteType{
+    Bytes = "b",
+    KiloBytes = "kb",
+    MegaBytes = "mb",
+    GigaBytes = "gb"
+}
+
+enum HttpMethods {
+    GET="GET",
+    POST="POST",
+    PUT="PUT",
+    DELETE="DELETE"
+}
+
+export enum ValidFileTypes {
+    MP3 = "mp3",
+    MP4 = "mp4",
+    JPEG = "jpeg",
+    JPG = "jpg",
+
+}
 
 
