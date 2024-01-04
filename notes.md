@@ -1,5 +1,6 @@
 ## Current To do List
 - [x] Add categories to article creation pages. 
+- [] Add an Editor Context &amp; provider for forms to use.
 - [] update backend to receive categories
 - [] on Dashboard page remove drafts from side of compose or when saved redirect page
 - [] add an image upload feature for the articles
@@ -33,3 +34,5 @@
 - should be able to subscribe to an artist page
 - will get updates  if subscribed to artist page.
 
+### Editor Component
+- Should be an Editor context that will wrap around the component this will allow the various seperate components to access and set the data it needs to set accordingly. 

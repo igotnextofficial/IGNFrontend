@@ -1,4 +1,5 @@
 import { EnumType } from "typescript"
+import { ArticleCategories } from "./ArticleCategories"
 
 export interface ArticleDataType {
     id?:""
@@ -10,6 +11,13 @@ export interface ArticleDataType {
     category?:string
     user_id?:string
     drafts?:ArticleDataType[] 
+}
+
+export interface ArticleSavedDataType {
+    title:string,
+    content:string,
+    category:ArticleCategories,
+    image:File,
 }
 export interface Settings {
     title:string,
