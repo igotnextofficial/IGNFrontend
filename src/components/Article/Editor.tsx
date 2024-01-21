@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel, Divider } from '@mui/material';
 import ReactQuill, { UnprivilegedEditor } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -9,6 +9,9 @@ import { ArticleCategories } from '../../Types/ArticleCategories';
 import { EditorDataType, EditorRangeLimitsDataType, EditorRangeSelectorDataType } from '../../Types/DataTypes';
 import { DeltaStatic, Sources } from 'quill';
 import UploadImageComponent from '../UploadImageComponent';
+
+import EditorProvider from '../../Providers/EditorProvider'
+import { useEditorFormContext } from '../../Contexts/EditorFormContext';
 
 const RANGE_LIMITS: EditorRangeLimitsDataType = {
   title: {
@@ -21,7 +24,21 @@ const RANGE_LIMITS: EditorRangeLimitsDataType = {
   }
 };
 
+const WrappedEditor = () => {
+  return (
+    <EditorProvider>
+      <Editor article = {Article.defaultResponse} 
+      handleDraft={ () => {}}
+      handleReview={ () => {}}
+      />
+    </EditorProvider>
+  )
+}
+
+
+
 const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, handleReview }: EditorDataType) => {
+  const { retrieveData,updateData } = useEditorFormContext()
   const [title, setTitle] = useState(article.title || "");
   const [content, setContent] = useState(article.content || "");
   const [image,setImage] = useState()
@@ -39,8 +56,9 @@ const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, 
   }
 
   const updateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  }
+      setTitle(e.target.value);
+      updateData('title',e.target.value)
+    }
 
   const updateContent = (value: string, delta: DeltaStatic, source: Sources, editor: UnprivilegedEditor) => {
     const contents = editor.getContents();
@@ -65,7 +83,9 @@ const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, 
   }
 
   useEffect(() => {
+    console.table(retrieveData('title'))
     setCanPublish(withinRange(Article.TITLE) && withinRange(Article.CONTENT));
+    
   }, [title, content]);
 
   const Errors = () => (
@@ -96,7 +116,7 @@ const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, 
   <Grid container spacing={3}>
     <Grid item xs={12} md={9}>
       <Box component='div'>
-        <TextField id="article_title" label="Title" variant="outlined" fullWidth onChange={updateTitle} value={title} />
+        <TextField id="article_title" label="Title" variant="outlined" fullWidth onChange={updateTitle} value={title ? title : ""} />
         <WordCount word={title} maxCount={RANGE_LIMITS.title.max} />
       </Box>
       <Box component='div' sx={{ margin: '30px 0' }}>
@@ -133,4 +153,4 @@ const Editor = ({ height = 250, article = Article.defaultResponse, handleDraft, 
   )
 }
 
-export default Editor;
+export default WrappedEditor;

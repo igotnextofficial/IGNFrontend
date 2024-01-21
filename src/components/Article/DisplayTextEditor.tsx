@@ -5,7 +5,7 @@ import ContentContainer from "../../Utils/ContentContainer";
 import InformationComponent from "../../Helpers/InformationComponent";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";
-import Editor from "./Editor";
+import WrappedEditor from "./Editor";
 import Article from "../../Models/Users/Article";
 
 import { ArticleContext } from "../../Contexts/ArticleContext";
@@ -132,10 +132,8 @@ const DisplayTextEditor = ({})=> {
     
     const ShowEditor = () => {
         return (
-            <Editor
-                article = { updatedArticle }
-                handleDraft={handleSaveDraft}
-                handleReview={handleReadyForReview}
+            <WrappedEditor
+
             />
         )
     }

@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react";
 import { ArticleCategories } from "../Types/ArticleCategories";
 import { ArticleSavedDataType } from "../Types/DataTypes";
+
+
 interface EditorFormContextState {
-    title:string;
-    content:string;
-    category:ArticleCategories;
-    image:File | null;
-    updateData:(data:ArticleSavedDataType) => void
+
+    updateData:(key:string,value:string | File) => void
+    retrieveData:(key:string) => string
 }
 
 export const EditorFormContext = createContext<EditorFormContextState | null>(null) 

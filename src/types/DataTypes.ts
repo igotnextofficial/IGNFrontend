@@ -17,7 +17,7 @@ export interface ArticleSavedDataType {
     title:string,
     content:string,
     category:ArticleCategories,
-    image:File,
+    image:File | null,
 }
 export interface Settings {
     title:string,
