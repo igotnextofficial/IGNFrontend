@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {  Button, TextField,  FormLabel } from '@mui/material';
 import { useFileUploadContext } from '../Contexts/FileUploadContext';
 import FileUploadProvider from '../Providers/FileUploadProvider';
 import { UploadFile } from '@mui/icons-material';
+import { useEditorFormContext } from '../Contexts/EditorFormContext';
 
 
 const UploadImageComponent = () => {
+  const {updateData} = useEditorFormContext()
   const [uploadedFile,setUploadedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -20,6 +22,7 @@ const UploadImageComponent = () => {
     const handleFileChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files ? event.target.files[0] : null;
         if (file) {
+          updateData('image',file)
           setUploadedFile(file)
         } 
       };

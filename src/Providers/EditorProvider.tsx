@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { ArticleCategories } from "../Types/ArticleCategories"
 import { EditorFormContext } from "../Contexts/EditorFormContext"
 import { ArticleSavedDataType } from "../Types/DataTypes"
+import Article from '../Models/Users/Article'
 interface EditorProviderProps {
     children:ReactNode
 }
@@ -10,11 +11,12 @@ interface formData {
    [key:string]: any
 }
 const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
-    const [data,setData] = useState<formData>({title:""})
+    const [data,setData] = useState<ArticleSavedDataType>(Article.defaultEmptyArticle)
 
     
     useEffect(() => {
-
+        console.log("The data was updated")
+        console.table(data)
     },[data])
 
 
@@ -42,13 +44,9 @@ const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
       }
 
 
-      const retrieveData = (key:string) => {
-        if(! (key in data)){return ""}
-        return data[key];
-      }
 
     return (
-        <EditorFormContext.Provider value={{retrieveData:retrieveData,updateData:updateData}}>
+        <EditorFormContext.Provider value={{data,updateData:updateData}}>
             { children }
         </EditorFormContext.Provider>
     )

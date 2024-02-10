@@ -1,16 +1,25 @@
-import { ArticleDataType} from "../../Types/DataTypes";
+import { ArticleDataType, ArticleSavedDataType} from "../../Types/DataTypes";
 import IgnRequest from '../../Features/Http/IgnRequest';
 import User from "./User";
+import { ArticleCategories } from "../../Types/ArticleCategories";
 
 class Article{
     endpoint: string
     baseURI: string
     ignHttpRequest: IgnRequest;
 
+
+    static readonly defaultEmptyArticle:ArticleSavedDataType = {
+        title:"",
+        content:"",
+        category:ArticleCategories.DEFAULT,
+        image:null,
+    }
     static readonly defaultResponse:ArticleDataType = {
         title:"",
         image_url:"",
         content:"",
+        category:ArticleCategories.DEFAULT,
         author:"",
         published:"",
         drafts:[]

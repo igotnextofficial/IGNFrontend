@@ -6,7 +6,7 @@ import { ArticleSavedDataType } from "../Types/DataTypes";
 interface EditorFormContextState {
 
     updateData:(key:string,value:string | File) => void
-    retrieveData:(key:string) => string
+    data:ArticleSavedDataType
 }
 
 export const EditorFormContext = createContext<EditorFormContextState | null>(null) 

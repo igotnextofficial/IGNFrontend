@@ -5,7 +5,7 @@ import ContentContainer from "../../Utils/ContentContainer";
 import InformationComponent from "../../Helpers/InformationComponent";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";
-import WrappedEditor from "./Editor";
+import Editor from "./Editor";
 import Article from "../../Models/Users/Article";
 
 import { ArticleContext } from "../../Contexts/ArticleContext";
@@ -130,13 +130,7 @@ const DisplayTextEditor = ({})=> {
 
     const handleReadyForReview = () => {}
     
-    const ShowEditor = () => {
-        return (
-            <WrappedEditor
 
-            />
-        )
-    }
 
     const ShowDrafts = () => {
         return drafts.length === 0 ? <></> : (
@@ -159,7 +153,8 @@ const DisplayTextEditor = ({})=> {
             
             <Grid container spacing={3}  >
                 <Grid item xs={12} md={drafts.length === 0 ? 12 : 9}>
-                    <ShowEditor/>
+                <Editor />
+
                 </Grid>
             <ShowDrafts/>
             </Grid>
