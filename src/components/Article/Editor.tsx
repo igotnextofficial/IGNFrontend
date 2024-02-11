@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useParams,Navigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -43,11 +44,12 @@ const RANGE_LIMITS: EditorRangeLimitsDataType = {
   },
 };
 
-const Editor = () => {
+const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) => {
   const { data, updateData } = useEditorFormContext();
 
   const [content, setContent] = useState("");
   const [contentWithoutTags, setContentWithoutTags] = useState("");
+  const {article_id} = useParams();
   const [status, setStatus] = useState("draft");
   const [errors, setErrors] = useState({ message: "" });
   const [canPublish, setCanPublish] = useState(false);
@@ -94,10 +96,13 @@ const Editor = () => {
   };
 
   const saveDraft = () => {
-    //update the draft content
+      handleDraft(data)
+
+      //TODO: remove this functions. not needed
+    //update the draft contenßt
     //update with image
     // handleDraft({ ...Article.defaultResponse, title, content,category });
-  };
+  }
 
   const ReadyForReview = () => {
     setStatus("pending");

@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react";
 import { ArticleCategories } from "../Types/ArticleCategories";
-import { ArticleSavedDataType } from "../Types/DataTypes";
+import { ArticleDataType } from "../Types/DataTypes";
 
 
 interface EditorFormContextState {
 
     updateData:(key:string,value:string | File) => void
-    data:ArticleSavedDataType
+    data:ArticleDataType
 }
 
 export const EditorFormContext = createContext<EditorFormContextState | null>(null) 

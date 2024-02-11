@@ -11,11 +11,14 @@ import Article from "../../Models/Users/Article";
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import { ErrorContext } from "../../Contexts/ErrorContext";
 
+import { useEditorFormContext } from "../../Contexts/EditorFormContext";
+
 const DisplayTextEditor = ({})=> {
     
     //shared between both composing and editing of articles
     const currentArticleContext = useContext(ArticleContext); 
      const {updateError} = useContext(ErrorContext)
+     const { data } = useEditorFormContext();
      const [editMode,setEditMode] = useState(false)     //
      const [updatedArticle, setUpdatedArticle] = useState<ArticleDataType>(Article.defaultResponse );
      const [willNeedRefresh,setWillNeedRefresh] = useState(false); 
@@ -83,7 +86,7 @@ const DisplayTextEditor = ({})=> {
         const article = new Article();
 
         const makeUpdate = async ()=>{
-
+            console.log("makinng an update Saving the drafts");
             await updateDraft();
             const response = editMode
             ? await article.createOrUpdate(updatedArticle,article_id)
@@ -121,6 +124,8 @@ const DisplayTextEditor = ({})=> {
     
       
       const handleSaveDraft = (data:ArticleDataType)=>{
+        console.log(`handling saved data from display editor`)
+        console.table(data)
         setIgnore(false)
         setUpdatedArticle(data)
 
@@ -153,7 +158,7 @@ const DisplayTextEditor = ({})=> {
             
             <Grid container spacing={3}  >
                 <Grid item xs={12} md={drafts.length === 0 ? 12 : 9}>
-                <Editor />
+                <Editor handleDraft={handleSaveDraft} />
 
                 </Grid>
             <ShowDrafts/>

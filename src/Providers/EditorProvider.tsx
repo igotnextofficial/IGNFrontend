@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react"
 import { ArticleCategories } from "../Types/ArticleCategories"
 import { EditorFormContext } from "../Contexts/EditorFormContext"
-import { ArticleSavedDataType } from "../Types/DataTypes"
+import { ArticleDataType } from "../Types/DataTypes"
 import Article from '../Models/Users/Article'
 interface EditorProviderProps {
     children:ReactNode
@@ -11,12 +11,11 @@ interface formData {
    [key:string]: any
 }
 const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
-    const [data,setData] = useState<ArticleSavedDataType>(Article.defaultEmptyArticle)
+    const [data,setData] = useState<ArticleDataType>(Article.defaultResponse)
 
     
     useEffect(() => {
-        console.log("The data was updated")
-        console.table(data)
+
     },[data])
 
 
