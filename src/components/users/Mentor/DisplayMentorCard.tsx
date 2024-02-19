@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Grid ,Button, CardActionArea, CardActions } from '@mui/material';
 import { MentorDataType } from '../../../Types/DataTypes';
 
  function DisplayMentorCard({mentor} : {mentor:MentorDataType}) {
@@ -26,9 +26,20 @@ import { MentorDataType } from '../../../Types/DataTypes';
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
+        <Grid container>
+            <Grid item>
+            <Button size="small" color="primary" data-src="">
+              Book Mentor
+            </Button>
+            </Grid>
+            <Grid item>
+            <Button size="small" color="primary">
+              Learn More
+            </Button>
+            </Grid>
+        </Grid>
+
+   
       </CardActions>
     </Card>
   );

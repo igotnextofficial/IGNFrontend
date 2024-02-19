@@ -1,6 +1,12 @@
 import { EnumType } from "typescript"
 import { ArticleCategories } from "./ArticleCategories"
 
+export interface MentorDataType {
+    id:string,
+    name:string,
+    image:string,
+    bio:string
+}
 export interface ArticleDataType {
     id?:""
     title:string,
@@ -120,5 +126,6 @@ export enum ValidFileTypes {
     JPG = "jpg",
 
 }
+
 
 
