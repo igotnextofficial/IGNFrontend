@@ -1,0 +1,103 @@
+[
+    {
+        "tagname" : "input",
+        "options": 
+            {
+                "name": "username"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "id": "username"
+            ,
+            
+                "placeholder": "username"
+            ,
+            
+                "className": "one"
+            }
+        ,
+        "required": false,
+        "order": -1
+    },
+    {
+        "tagname" : "input",
+        "options": 
+            {
+                "name": "firstname"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "id": "firstname"
+            ,
+            
+                "placeholder": "first name"
+            ,
+            
+                "className": ""
+            }
+        ,
+        "required": false,
+        "order": -1
+    },
+    {
+        "tagname" : "input",
+        "options": 
+            {
+                "name": "lastname"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "id": "lastname"
+            ,
+            
+                "placeholder": "last name"
+            ,
+            
+                "className": ""
+            }
+        ,
+        "required": false,
+        "order": -1
+    },
+    {
+        "tagname" : "input",
+        "options": 
+            {
+                "name": "email"
+            ,
+            
+                "type": "text"
+            ,
+            
+                "value": ""
+            ,
+            
+                "id": "email"
+            ,
+            
+                "placeholder": "email"
+            ,
+            
+                "className": ""
+            }
+        ,
+        "required": false,
+        "order": -1
+    }
+    
+]

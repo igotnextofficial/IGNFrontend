@@ -1,0 +1,41 @@
+import { Box,Avatar } from "@mui/material";
+import IgnPillComponent from "../../../Helpers/IgnPillComponent";
+import TextContentComponent from "../../../Helpers/TextContentComponent";
+import { ArtistDataType } from "../../../Types/DataTypes";
+const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
+    return (
+        <>
+        <Box sx={styles.mainContainer} >
+                <Box sx={styles.container}>
+                    <Avatar src={artist.image} alt={artist.name} sx={{width:250, height:250}} />
+                    <Box sx={styles.pillHolder}>
+                        <IgnPillComponent description={artist.genre} />
+                    </Box>
+                </Box>
+                <Box>
+                    <TextContentComponent content={artist.name} />
+                </Box>
+        
+            </Box>
+        </>
+    )
+}
+
+const styles = {
+    mainContainer:{
+        maxWidth:"250px",
+        textAlign:"center"
+    },
+    container:{
+        position:"relative"
+    },
+    pillHolder:{
+        position: "absolute",
+        left:"50%",
+        bottom: "0",
+        transform:"translate(-50%)"
+    },
+    
+}
+
+export default DisplayArtistComponent;

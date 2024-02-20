@@ -1,0 +1,79 @@
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Link from '@mui/material/Link';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
+import Box from '@mui/material/Box';
+import { ListDataType } from '../../Types/DataTypes';
+import { useLoaderData, useParams } from "react-router-dom";
+
+interface ListLayoutComponentProps {
+    data: ListDataType[];
+}
+
+const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
+    console.log(`The data is ${JSON.stringify(data)}`)
+    const [page, setPage] = React.useState<number>(1);
+    const itemsPerPage = 5;
+    const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number): void => {
+        setPage(newPage);
+    };
+
+    console.log("the params")
+    console.dir(useParams)
+    const output = paginatedData.map((list, index) => {
+        const { id,title, image_url, content, author,link,category } = list;
+        return (
+            <React.Fragment key={index}>
+            <Link  sx={{ textDecoration: "none" }} color="inherit" href={`${category}/${id}`}>
+
+                <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                        <Avatar alt={title.replace(/\s/g, "_")} src={image_url} variant="square" />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={title}
+                        secondary={
+                            <React.Fragment>
+                                <Typography
+                                    sx={{ display: 'inline' }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                >
+                                    {content.slice(0,200)}
+                                </Typography>
+                                {author && ` - Author: ${author}`}
+                            </React.Fragment>
+                        }
+                    />
+                </ListItem>
+                </Link>
+                <Divider variant="inset" component="li" />
+            </React.Fragment>
+        );
+    });
+
+    return (
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <List sx={{ width: '100%', maxWidth: 1600, bgcolor: 'background.paper' }}>
+                {output}
+            </List>
+            <Pagination
+                count={Math.ceil(data.length / itemsPerPage)}
+                page={page}
+                onChange={handleChangePage}
+                sx={{ marginY: 2 }}
+            />
+        </Box>
+    );
+}
+
+export default ListLayoutComponent;
