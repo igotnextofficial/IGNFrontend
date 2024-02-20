@@ -1,5 +1,5 @@
 import './App.css';
-import { pages } from './Routes/web';
+import { pages } from './routes/web';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography'
 import  Navigation  from './Features/Navigation/Navigation';
