@@ -13,10 +13,20 @@ body {
 }
 
 .App{
-  max-width: 1600px;
+  max-width: 100%;
   margin: 0 auto;
   background-color: white;
+  padding: 0;
+}
+
+.pageContainer{
   padding: 20px;
+}
+
+.listSelection:hover{
+  background-color: #f2c85b;
+  cursor: pointer;
+  color:#f7f7f7;
 }
 
 .button{background-color: $primary-orange-color;}

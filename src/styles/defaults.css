@@ -1,9 +1,23 @@
 @import url(react-quill/dist/quill.snow.css);
 body {
   margin: 0;
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   color: #1d1917;
   font-family: "Roboto","Helvetica","Arial",sans-serif; }
+
+.App {
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: white;
+  padding: 0; }
+
+.pageContainer {
+  padding: 20px; }
+
+.listSelection:hover {
+  background-color: #f2c85b;
+  cursor: pointer;
+  color: #f7f7f7; }
 
 .button {
   background-color: #f86e51; }
@@ -21,6 +35,9 @@ body {
 
 a {
   cursor: pointer; }
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionStatic.mainNavigation.css-hip9hq-MuiPaper-root-MuiAppBar-root {
+  background-color: #f86e51; }
 
 .max-point {
   color: #f86e51; }

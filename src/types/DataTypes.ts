@@ -5,7 +5,8 @@ export interface MentorDataType {
     id:string,
     name:string,
     image:string,
-    bio:string
+    bio:string,
+    specialties:string[]
 }
 export interface ArticleDataType {
     id?:""

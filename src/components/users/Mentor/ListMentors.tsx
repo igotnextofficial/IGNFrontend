@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect
+import React, { useState, useEffect } from 'react';
 import Mentor from '../../../Models/Users/Mentor';
 import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
 import { MentorDataType } from '../../../Types/DataTypes';
 
-const ListMentors = () => {
-    const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
+const ListMentors = ({paramMentors} : {paramMentors?: MentorDataType[]}) => {
+    const [mentors, setMentors] = useState<MentorDataType[]>([]);
 
     useEffect(() => {
-        const mentorsInit = new Mentor();
-        const loadedMentors = mentorsInit.getAll(); // Assume this is synchronous; adjust if it's async
-        setMentors(loadedMentors);
-    }, []); // Empty dependency array means this effect runs once on mount
+        async function fetchMentors() {
+            if(paramMentors){
+                setMentors(paramMentors);
+            } else {
+                const mentorsInit = new Mentor();
+                const loadedMentors = await mentorsInit.getAll();
+                setMentors(loadedMentors);
+            }
+        }
+        fetchMentors();
+    }, [paramMentors]); // Consider if paramMentors should trigger a re-fetch
 
     return (
         <Grid container sx={styles.Container}>
-            {mentors.map((mentor, index) => ( // Use index as a fallback key; ideally use mentor.id or similar
-                <Grid item sx={{ padding: "1rem" }} key={mentor.id || index}> 
+            {mentors.map((mentor, index) => (
+                <Grid item sx={{ padding: "1rem" }} key={mentor.id || index}>
                     <DisplayMentorCard mentor={mentor} />
                 </Grid>
             ))}
