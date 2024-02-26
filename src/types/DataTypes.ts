@@ -1,4 +1,3 @@
-import { EnumType } from "typescript"
 import { ArticleCategories } from "./ArticleCategories"
 
 export interface MentorDataType {
