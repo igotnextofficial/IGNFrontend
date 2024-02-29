@@ -14,7 +14,7 @@ interface ArticleProviderProps {
   
   const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id="",category="" }) => {
     const [userArticles, setArticles] = useState<ArticleDataType >(Article.defaultResponse);
-    const [articleList,setArticleList] = useState<ArticleDataType[]>([])
+    const [articleList,setArticleList] = useState<ArticleDataType[] | null>(null)
     const [error, setError] = useState<Error | null>(null); // To handle any errors during fetching
   
     useEffect(() => {
@@ -34,6 +34,7 @@ interface ArticleProviderProps {
               break;
             case FetchMode.USER:
               articles = await article.retrieveByUser(id); 
+              setArticleList(articles)
               break;
             case FetchMode.DRAFTS:
               if (!id) throw new Error("A user ID is required to fetch drafts");

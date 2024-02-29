@@ -1,11 +1,40 @@
-import { EnumType } from "typescript"
 import { ArticleCategories } from "./ArticleCategories"
+export interface AlbumDataType{
+    title:string,
+    duration:number,
+}
 
+export interface SongDataType{
+    title:string,
+    duration: number
+}
+
+export interface UserDataType {
+    id:string,
+    name:string,
+    image?:string,
+    bio?:string,
+    Genre: string,
+    songs?:SongDataType[]
+    albums?:AlbumDataType[]
+}
 export interface MentorDataType {
     id:string,
     name:string,
     image:string,
-    bio:string
+    bio:string,
+    specialties:string[]
+}
+
+export interface ArtistDataType {
+    id:string,
+    name:string,
+    username:string,
+    image:string,
+    genre:string,
+    bio:string,
+    songs?:string[],
+    albums?:string[]
 }
 export interface ArticleDataType {
     id?:""
@@ -37,13 +66,7 @@ export interface TaskDataType {
     status:string,
     type:string
 }
-export interface ArtistDataType {
-    name:string,
-    image:string,
-    genre:string,
-    songs?:string[],
-    albums?:string[]
-}
+
 
 export interface MentorDataType {
     name:string,

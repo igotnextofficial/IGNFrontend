@@ -91,6 +91,55 @@ class Article{
 
 ]
 
+TempArticles: ArticleDataType[]  = [
+    {
+        title: 'Colla he Got Next',
+        image_url: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg',
+        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
+        dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
+        Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
+        author: 'Cierra Bellamy',
+        published: "06/21/2023"
+    },
+    {
+        title: 'Colla: The Legacy of a Family',
+        image_url: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg',
+        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
+    dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
+    Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
+        author: 'Cierra Bellamy',
+        published: "06/23/2023"
+    },
+    {
+        title: 'Colla: Navigating faith in the industry',
+        image_url: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg',
+        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
+    dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
+    Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
+        author: 'Cierra Bellamy',
+        published: "06/23/2023"
+    },
+    {
+        title: 'Colla Featured Artist of the Month',
+        image_url: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg',
+        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
+    dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
+    Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
+        author: 'Cierra Bellamy',
+        published: "06/23/2023"
+    },
+    {
+        title: 'Colla: Latest Album - Love',
+        image_url: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg',
+        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
+    dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
+    Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
+        author: 'Cierra Bellamy',
+        published: "06/23/2023"
+    },
+
+]
+
     default(){
         return {
             id: '',
@@ -171,11 +220,11 @@ class Article{
     }
     async retrieveByUser(id:string){
         try {
-            let userArticles = await this.getAll();
+            let userArticles = this.TempArticles;
             return userArticles;
         } catch (error) {
             console.error("Error retrieving articles:", error);
-            return []; // Return empty array in case of error, or handle it as per your requirement
+            return null; // Return empty array in case of error, or handle it as per your requirement
         }  
     }
     async retrieveById(id:string){

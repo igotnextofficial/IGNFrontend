@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Grid,  Radio, RadioGroup, FormControlLabel, FormLabel, SelectChangeEvent } from "@mui/material"
+import { Grid, Radio, RadioGroup, FormControlLabel, FormLabel, SelectChangeEvent } from "@mui/material"
 
 import { MentorDataType } from "../../Types/DataTypes"
 import Mentor from "../../Models/Users/Mentor"
@@ -49,7 +49,8 @@ const SearchInputField = ({ handleChange }: { handleChange: (data: string) => vo
 const DisplaySearchField = ({ byCategory = false }) => {
     const [mentorsList, setMentorsList] = useState<MentorDataType[]>([]);
     const [specialtySelection, setSpecialtySelection] = useState<string[]>([]);
-     useEffect(() => {
+
+    useEffect(() => {
         let mentorListSet: MentorDataType[] = []
         allMentors.filter((mentor) => {
             for (const specialty of mentor.specialties) {
@@ -69,7 +70,7 @@ const DisplaySearchField = ({ byCategory = false }) => {
     }, [specialtySelection])
 
     const handleChangeForMentorList = (data: string) => {
-        let searchedMentorList = allMentors.filter((mentor) => {
+        let searchedMentorList = data.trim().length === 0 ? [] : allMentors.filter((mentor) => {
             return mentor.name.toLowerCase().startsWith(data.toLowerCase())
         })
 
@@ -93,6 +94,7 @@ const DisplaySearchField = ({ byCategory = false }) => {
 
 
             <DisplayMentorDropdown mentorList={mentorsList} />
+
 
         </>
     )

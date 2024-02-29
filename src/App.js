@@ -31,6 +31,7 @@ import FeaturedArtistPage from './Pages/Articles/FeaturedArtist';
 import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
+import ArtistDashboard from './Pages/Dashboards/ArtistDashboard';
 
 
 
@@ -55,8 +56,9 @@ const MainApplication = () => {
           <Route path='/Whos-Next' element={<WhosNextPage />} />
           <Route path='/featured-artists' element={<FeaturedArtistPage />} />
           <Route path='/entertainment-news' element={<EntertainmentNewsPage />} />
+          <Route path='/artist' element={<ArtistDashboard />} />
           {/* <Route path='/artist-of-the-month' element={<ArtistOfTheMonthPage />} /> */}
-          <Route path='/find-a-mentor' element={<FindMentorPage />} />
+          <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
           <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} />
 
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>

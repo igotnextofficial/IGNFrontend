@@ -1,4 +1,4 @@
-import { UserDataType, httpDataObject } from "../../Types/DataTypes";
+import { ArtistDataType, UserDataType, httpDataObject } from "../../Types/DataTypes";
 import IgnRequest from '../../Features/Http/IgnRequest';
 
 class Artist{
@@ -56,8 +56,20 @@ class Artist{
         return this.data         
     }
 
-    get(){
+    get():ArtistDataType{
+      const currentUser = {
+        id: "1",
+        name: "Reuben Buapim",
+        username: "Colla",
+        genre:"hip/hop",
+        image: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg",
+        bio: `Colla, a rapper hailing from the Bronx, New York, has carved a niche for himself in the hip-hop world with his vivid storytelling and authentic lyrical prowess. Born and raised in the Soundview Projects, his music is a raw and unfiltered chronicle of life in one of the city's most notorious neighborhoods. Drawing from his personal experiences, Colla's lyrics paint a vivid picture of the struggles, triumphs, and realities of growing up in an environment marked by poverty, violence, and the unyielding hope of making it out.
     
+    His journey into music began at a young age, finding solace and expression through writing rhymes that reflected his day-to-day life. Inspired by the gritty narratives of classic New York rappers, Colla has developed a style that's both reflective and forward-thinking, combining the hard-hitting beats of traditional East Coast hip-hop with a modern twist. His storytelling ability has garnered him respect not only among fans of the genre but also among critics who appreciate his authenticity and commitment to preserving the essence of hip-hop culture.
+    
+    Despite the challenges of emerging from a place where opportunities are scarce, Colla's music serves as a beacon of hope for many, illustrating the power of resilience and the possibility of transcendence through art. His work not only entertains but also provides a voice for the voiceless, sharing stories of the Soundview Projects that might otherwise go unheard. Through his art, Colla continues to contribute to the rich tapestry of hip-hop, ensuring that the real stories of the Bronx are told with integrity and passion.`
+    };
+      return currentUser    
     }
 
     show(){

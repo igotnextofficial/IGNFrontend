@@ -5,7 +5,7 @@ const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
     return (
         <>
         
-        <Link href={`mentors/book-a-mentor/${mentor.id}`}>
+        <Link href={`book-a-mentor/${mentor.id}`}>
             <ListItem className="listSelection" sx={styles.mentorListView} alignItems="center">
                 <ListItemAvatar>
                     <Avatar alt={mentor.name} src={mentor.image} />

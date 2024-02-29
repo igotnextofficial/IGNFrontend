@@ -24,7 +24,7 @@ import { ErrorContext } from '../../Contexts/ErrorContext';
 import { Navigate } from 'react-router-dom';
 
 import { SelectChangeEvent } from '@mui/material/Select';
-
+import User from '../../Models/Users/User';
 
 
 
@@ -53,8 +53,8 @@ const Register = ()=>{
             }
 
             try {
-    
-                const response = await user?.register(data);
+                const userObj = new User()
+                const response = await userObj.register(data);
                 if (!response) {
                     isMounted && updateError?.("The account could not be created.");
                     return;
