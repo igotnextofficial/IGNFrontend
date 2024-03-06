@@ -1,30 +1,21 @@
 import { ReactNode, useEffect, useState } from "react"
 import { DataSubmitContext } from "../Contexts/DataSubmitContext"
 import axios, { AxiosError } from "axios"
-import { httpDataObject } from "../Types/DataTypes"
+import { httpDataObject,HttpMethods } from "../Types/DataTypes"
 
-enum httpMethods {
-    GET= "get",
-    POST= "post",
-    PUT= "put"
-
-}
 interface axiosDataObject{
-    method:httpMethods,
+    method:HttpMethods,
     url:string,
     data?: object
 }
 interface dataProviderType{
     children:ReactNode,
-    httpMethod:httpMethods,
+    httpMethod:HttpMethods,
     dataUrl:string
 }
 
-const DataSubmissionProvider = (
-    {children,httpMethod=httpMethods.GET,dataUrl}
-    :   
-    {children:ReactNode,httpMethod:httpMethods,dataUrl:string}
-    )=>{
+const DataSubmissionProvider: React.FC<dataProviderType> = (
+    {children,httpMethod=HttpMethods.GET,dataUrl})=>{
     const [data,setData] = useState({data:{}})
     const [error,setErrorMessage] = useState("")
     const [url,setUrl] = useState("")

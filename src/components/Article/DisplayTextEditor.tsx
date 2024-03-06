@@ -86,7 +86,7 @@ const DisplayTextEditor = ({})=> {
         const article = new Article();
 
         const makeUpdate = async ()=>{
-            console.log("makinng an update Saving the drafts");
+        
             await updateDraft();
             const response = editMode
             ? await article.createOrUpdate(updatedArticle,article_id)
@@ -124,8 +124,6 @@ const DisplayTextEditor = ({})=> {
     
       
       const handleSaveDraft = (data:ArticleDataType)=>{
-        console.log(`handling saved data from display editor`)
-        console.table(data)
         setIgnore(false)
         setUpdatedArticle(data)
 

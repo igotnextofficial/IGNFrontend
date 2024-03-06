@@ -17,7 +17,7 @@ interface ListLayoutComponentProps {
 }
 
 const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
-    console.log(`The data is ${JSON.stringify(data)}`)
+ 
     const [page, setPage] = React.useState<number>(1);
     const itemsPerPage = 5;
     const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
@@ -26,8 +26,8 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
         setPage(newPage);
     };
 
-    console.log("the params")
-    console.dir(useParams)
+  
+
     const output = paginatedData.map((list, index) => {
         const { id,title, image_url, content, author,link,category } = list;
         return (

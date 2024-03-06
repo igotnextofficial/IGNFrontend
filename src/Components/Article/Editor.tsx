@@ -58,9 +58,7 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
   );
 
   const withinRange = (medium: EditorRangeSelectorDataType = "title") => {
-    console.log(`the medium : ${medium}`)
     if (!(Object.keys(RANGE_LIMITS).includes(medium))) return false;
-    console.log(`checking if ${medium} is within range ${RANGE_LIMITS[medium].min} and ${RANGE_LIMITS[medium].max}`)
     const mediumLength =
       medium === Article.TITLE ? data.title.length : content.length;
 
@@ -111,7 +109,7 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
 
   useEffect(() => {
     
-    console.log("The data changed so lets check " + withinRange(data.title as EditorRangeSelectorDataType))
+  
     setCanPublish(withinRange(Article.TITLE) && withinRange(Article.CONTENT));
   }, [data]);
 

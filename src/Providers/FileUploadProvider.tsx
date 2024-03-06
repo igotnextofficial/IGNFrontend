@@ -46,8 +46,7 @@ import { error } from "console";
     }
 
     useEffect(() => {
-        console.log(`changed file`)
-        console.log(myFile)
+
         if(myFile){
             uploadFile(myFile)
         }
@@ -59,8 +58,7 @@ import { error } from "console";
     useEffect( () => {
         if(!ignore){
             if(!validateFile()){
-                console.log("found some errors")
-             console.log(Errors)
+          
             }
             else{
                 if(selectedFiles ){

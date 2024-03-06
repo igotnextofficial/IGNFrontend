@@ -36,7 +36,7 @@ class MediaSource implements Media {
    isValidFileType = () => {
          const onlyLetters = /^[A-Za-z/s]+$/;
         if(onlyLetters.test(this.fileType)){
-            console.log(`supported types ${this.supportedTypes} and the file type is ${this.fileType}`)
+           
           return this.supportedTypes.includes(this.fileType as ValidFileTypes)
         } 
         return false;
@@ -44,7 +44,7 @@ class MediaSource implements Media {
 
     isValidFileName = () => {
         let regex = /^[A-Za-z/s]+$/
-        console.log("testing the filename "+ this.filename.slice(0,this.filename.indexOf('.')))
+     
         return regex.test(this.filename.slice(0,this.filename.indexOf('.')));
     }
 

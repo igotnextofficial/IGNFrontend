@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import User from "../Models/Users/User";
 import { ArtistDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
 
@@ -16,3 +16,13 @@ export const UserContext = createContext<userContextType>({
         return false;
     },
 });
+
+export const useUser = () => {
+    const user = useContext(UserContext)
+    if(!user){
+        throw Error("user context needs to be wrapped in a provider.")
+    }
+    return user
+}
+
+

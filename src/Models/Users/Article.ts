@@ -162,7 +162,7 @@ TempArticles: ArticleDataType[]  = [
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         };
-        console.log(`adding token: ${JSON.stringify(headers)}`)
+     
         this.ignHttpRequest.setHeaders(headers);
     }
 

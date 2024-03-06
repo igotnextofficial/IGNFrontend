@@ -32,6 +32,7 @@ import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
 import ArtistDashboard from './Pages/Dashboards/ArtistDashboard';
+import EditProfile from './Pages/EditProfile';
 
 
 
@@ -53,11 +54,12 @@ const MainApplication = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/Whos-Next' element={<WhosNextPage />} />
+          <Route path='/whos-next' element={<WhosNextPage />} />
+          <Route path='/edit-profile' element={<EditProfile />} />
           <Route path='/featured-artists' element={<FeaturedArtistPage />} />
           <Route path='/entertainment-news' element={<EntertainmentNewsPage />} />
           <Route path='/artist' element={<ArtistDashboard />} />
-          {/* <Route path='/artist-of-the-month' element={<ArtistOfTheMonthPage />} /> */}
+          <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage />} />
           <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
           <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} />
 

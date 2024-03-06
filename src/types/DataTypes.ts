@@ -15,7 +15,7 @@ export interface UserDataType {
     image?:string,
     bio?:string,
     Genre: string,
-    songs?:SongDataType[]
+    songs?:SongDataType[],
     albums?:AlbumDataType[]
 }
 export interface MentorDataType {
@@ -42,9 +42,9 @@ export interface ArticleDataType {
     image_url:string,
     content:string,
     author:string,
-    published:string
-    category?:string
-    user_id?:string
+    published:string,
+    category?:string,
+    user_id?:string,
     drafts?:ArticleDataType[] 
 }
 
@@ -68,22 +68,6 @@ export interface TaskDataType {
 }
 
 
-export interface MentorDataType {
-    name:string,
-    image:string,
-    bio:string,
-}
-export interface UserDataType {
-    id: string,
-    name:string,
-    email?:string,
-    username?:string,
-    role?:object
-}
-
-
-
-
 export interface httpDataObject {
     data:object
 }
@@ -101,8 +85,8 @@ export interface HttpConfigurationType {
 }
 
 export interface EditorDataType {
-    height?:250,
-    article:ArticleDataType
+    height?:number,
+    article:ArticleDataType,
     handleDraft:(data:ArticleDataType)=>void,
     handleReview:(status:string)=>void
 }
@@ -112,7 +96,7 @@ export interface RangeLimitsDataType{
     max:number
 }
 export interface EditorRangeLimitsDataType {
-    title:RangeLimitsDataType
+    title:RangeLimitsDataType,
     content:RangeLimitsDataType
 }
 
@@ -124,7 +108,7 @@ export interface ListDataType {
     image_url:string,
     content:string,
     author?:string,
-    link?:string
+    link?:string,
     category?:string
 }
 
@@ -135,7 +119,7 @@ export enum ByteType{
     GigaBytes = "gb"
 }
 
-enum HttpMethods {
+export enum HttpMethods {
     GET="GET",
     POST="POST",
     PUT="PUT",
@@ -147,6 +131,24 @@ export enum ValidFileTypes {
     MP4 = "mp4",
     JPEG = "jpeg",
     JPG = "jpg",
+
+}
+
+export enum displayType {
+    InputValue = "input-value",
+    TextValue = "text-value",
+    MultiChoiceList = "multi-choice-list",
+    ChoiceList = "choice-list"
+}
+
+export interface structureDataType{
+    label:string,
+    visibility:boolean,
+    display:displayType, // multiChoiceList,choiceList,string,text
+    placeholder?:string,
+    props:object,
+    order: number,
+    options?: string[]
 
 }
 

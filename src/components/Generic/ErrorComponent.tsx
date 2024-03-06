@@ -7,7 +7,7 @@ import { ErrorContext } from "../../Contexts/ErrorContext";
 
 const ErrorComponent = () =>{
        const{ error } =  useContext(ErrorContext);
-       console.log(`The error is : ${error}`)
+  
   
     return error.length > 0 ? (
         
