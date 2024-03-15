@@ -1,4 +1,4 @@
-import {  useEffect } from "react"
+import {  useCallback, useEffect } from "react"
 import { useUser } from "../Contexts/UserContext"
 import { useDataSubmitContext } from "../Contexts/DataSubmitContext";
 import DataSubmissionProvider from "../Providers/DataSubmissionProvider";
@@ -14,28 +14,30 @@ const Profile = () => {
     const { user } = useUser();
     const { updateData } = useDataSubmitContext()
     const { data, updateFormData } = useFormDataContext()
-    const currentUser = new Artist();
+    const formStructure = new Artist().structure;
 
-    useEffect(() => {
-        const exclusion = ['id']; // will pull this from model or somewhere else.
-        if (user) {
-            for (const key in user) {
-                const value = (user as any)[key]
-                if (!exclusion.includes(key)) {
-                    updateFormData(key, value);
+useEffect(() => {
+    const exclusion = ['id']; // will pull this from model or somewhere else.
+            if (user) {
+                for (const key in user) {
+                    const value = (user as any)[key]
+                    if (!exclusion.includes(key)) {
+                        updateFormData(key, value);
+                    }
                 }
             }
-        }
-    }, [user, updateFormData])
+},[user,updateFormData])
+
 
     const handleSubmit = ()=>{
-        console.log(`submitting the data ${JSON.stringify(data)}`)
+        let submitData = JSON.stringify({data:data})
+        console.log(`submitting the data ${submitData}`)
     }
 
     return (
         <>
             <Grid item xs={12}> <Typography variant="h4" sx={{ color: "black" ,paddingBottom:2}}> Edit {user?.name}'s Profile</Typography></Grid>
-            <IgnFormGenerate formStructures={currentUser.structure} />
+            <IgnFormGenerate formStructures={ formStructure } />
             <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={handleSubmit}>Update</Button>
 
         </>

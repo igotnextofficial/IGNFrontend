@@ -1,26 +1,24 @@
 import React, { useContext } from 'react'
-import { Grid, Typography, Avatar, Divider } from '@mui/material'
+import { Grid, Typography, Avatar} from '@mui/material'
 import ArticleProvider from '../../Providers/ArticleProvider'
 import ListArticlesComponent from '../../Components/Article/ListAritclesComponent '
 import { FetchMode } from '../../Types/ArticleFetchMode'
 import { ArticleContext } from '../../Contexts/ArticleContext'
 import { UserContext } from '../../Contexts/UserContext'
 import DashboardSectionComponent from '../../Components/DashboardSectionComponent'
-import { ArticleDataType } from '../../Types/DataTypes'
 import ContentContainer from '../../Utils/ContentContainer'
-import Artist from '../../Models/Users/Artist'
+
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import TextContentComponent from '../../Helpers/TextContentComponent'
+import { ArtistDataType } from '../../Types/DataTypes'
 
 
 
-let artist = new Artist();
-const currentUser = artist.get()
-const RecentArticles = () => {
+const RecentArticles = ({currentUser}: {currentUser:ArtistDataType}) => {
     const { allArticles } = useContext(ArticleContext);
 
     return (
@@ -32,7 +30,7 @@ const RecentArticles = () => {
 }
 
 
-const CurrentUserTopSection = () => {
+const CurrentUserTopSection = ({currentUser}: {currentUser:ArtistDataType}) => {
     return (
         <List sx={{ width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
             <ListItem >
@@ -48,7 +46,7 @@ const CurrentUserTopSection = () => {
                                 component="h2"
                                 variant="body2"
                             >
-                                {currentUser.username}'s Profile
+                                {currentUser.username ?? currentUser.name}'s Profile
                             </Typography>
                         </React.Fragment>
                     }
@@ -75,16 +73,18 @@ const CurrentUserTopSection = () => {
 
 const ArtistDashboard = () => {
     const { user } = useContext(UserContext)
-
-    return (
+    if (!user) {
+        return <div>User not found or not logged in</div>;
+    }
+    return  (
         <ContentContainer>
 
-            <CurrentUserTopSection />
+            <CurrentUserTopSection currentUser={user as ArtistDataType} />
 
             <ArticleProvider mode={FetchMode.USER} id={user?.id}>
 
-                <Grid sx={{ backgroundColor: "lightgrey", padding: 2, borderRadius: "5px", marginTop: 2, MarginBottom: 2 }} xs={12}>
-                    <TextContentComponent content={currentUser.bio} />
+                <Grid sx={{ backgroundColor: "lightgrey", padding: 2, borderRadius: "5px", marginTop: 2, MarginBottom: 2 }}>
+            <TextContentComponent content={user?.bio || ""} />
                 </Grid>
 
                 <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -96,7 +96,7 @@ const ArtistDashboard = () => {
 
                     <Grid item xs={4}>
                         <DashboardSectionComponent title="Most Recent Articles" >
-                            <RecentArticles />
+                            <RecentArticles currentUser={user as ArtistDataType} />
                         </DashboardSectionComponent>
                     </Grid>
 

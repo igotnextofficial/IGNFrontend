@@ -15,7 +15,7 @@ const AccountSettings  = () => {
       {
         title:'Profile',
         slug:'/profile'
-      }, {title:'Account',slug:'/account'}, {title:'Dashboard',slug:'/dashboard'}, {title:'Logout',slug:'/logout'}];
+      }, {title:'Account',slug:'/account'}, {title:'Dashboard',slug:`dashboard/${user?.role}`}, {title:'Logout',slug:'/logout'}];
 
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);

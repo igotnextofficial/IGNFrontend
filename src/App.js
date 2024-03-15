@@ -1,10 +1,9 @@
 import './App.css';
 import { pages } from './Routes/web';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography'
+
 import Navigation from './Features/Navigation/Navigation';
 import ProtectedRoutes from './Utils/ProtectedRoute';
-import Ignlogo from './Components/Ignlogo';
+
 
 import { BrowserRouter as Router, Switch, Route, Routes, Link } from 'react-router-dom';
 import Dashboard from './Pages/Dashboards/Dashboard';
@@ -13,16 +12,14 @@ import EditArticle from './Pages/Articles/EditArticle';
 import Login from './Pages/Authentication/Login';
 import Register from './Pages/Authentication/Register';
 
-import RootComponent from './Components/Generic/RootComponent';
-import { useContext, useEffect } from 'react';
+
+import { useContext} from 'react';
 import { UserContext } from './Contexts/UserContext';
-import { useUser } from './Providers/UserProvider';
-import { useLocation } from 'react-router-dom';
+
 import Home from './Pages/home';
 import FooterComponent from './Components/Generic/FooterComponent';
 import ErrorComponent from './Components/Generic/ErrorComponent';
-import ErrorProvider from './Providers/ErrorProvider';
-import { ErrorContext } from './Contexts/ErrorContext';
+
 import DetectChange from './Components/Generic/DetectPageChangeComponent';
 import WhosNextPage from './Pages/Articles/WhosNext';
 import EntertainmentNewsPage from './Pages/Articles/EntertainmentNews';
@@ -56,15 +53,18 @@ const MainApplication = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/whos-next' element={<WhosNextPage />} />
           <Route path='/edit-profile' element={<EditProfile />} />
+         
           <Route path='/featured-artists' element={<FeaturedArtistPage />} />
           <Route path='/entertainment-news' element={<EntertainmentNewsPage />} />
-          <Route path='/artist' element={<ArtistDashboard />} />
+          <Route path='/profile/:role' element={< Dashboard />} />
           <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage />} />
           <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
           <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} />
 
+
+
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
-            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/dashboard/:role' element={<Dashboard />} />
             <Route path='/compose-article' element={<ComposeArticle />} />
             <Route path='/edit-article/:article_id' element={<EditArticle />} />
           </Route>

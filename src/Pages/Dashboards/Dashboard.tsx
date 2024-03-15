@@ -4,18 +4,40 @@ import User from "../../Models/Users/User";
 import TemporaryDrawer from '../../Components/Navigation/LeftDrawer';
 import ContentContainer from "../../Utils/ContentContainer";
 import { UserContext } from "../../Contexts/UserContext";
+import { useParams } from "react-router-dom";
+import MentorDashboard from "./MentorDashboard";
+import ArtistDashboard from "./ArtistDashboard";
+
+// const isCorrectRole = (role,user) => {
+//     return user.role === role
+// }
+// Define the dashboards object with specific components for each role
+const dashboards = {
+    mentor: <MentorDashboard/>,
+    artist: <ArtistDashboard/>,
+    writer: <WriterDashboard/>
+};
+
+// Define a type for the role keys
+type DashboardRole = keyof typeof dashboards;
+
+// Adjust the DisplayDashboard component to use DashboardRole for the role prop
+const DisplayDashboard: React.FC<{role: DashboardRole}> = ({role}) => {
+    return <>{dashboards[role]}</>;
+}
 
 const Dashboard = () => {
     const{ user }= useContext(UserContext)
+    const {role} = useParams()
 
     return(
        <ContentContainer>
             
-            <h1>Welcome, {user?.name}</h1>
+            {/* <h1>Welcome, {user?.name} role: {role}</h1>
             <TemporaryDrawer/>
-            <p>{document.cookie}</p>
-
-            <WriterDashboard/>
+            <p>{document.cookie}</p> */}
+            
+            {role && <DisplayDashboard role={role as DashboardRole} />}
         </ContentContainer>
     )
 }

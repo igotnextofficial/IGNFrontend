@@ -3,8 +3,10 @@ import { UserContext } from "../Contexts/UserContext";
 import User from "../Models/Users/User";
 import { ArtistDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
 import Artist from "../Models/Users/Artist";
+import Mentor from "../Models/Users/Mentor";
 
-const tempUser = new Artist();
+const tempUser = [new Artist(),new Mentor()];
+const currentTempId = 1
 const UserObj = new User()
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | null>(null);
@@ -12,7 +14,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     useLayoutEffect( ()=>{
         setIsLoggedin(true)
-        setUser(tempUser.get());
+        setUser(tempUser[currentTempId].get());
     },[] )
 
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
@@ -21,7 +23,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         if (login && data) {
             response = await UserObj.login(data);
             if (response) {
-                setUser(tempUser.get()); // Assuming response.data is the user data
+                setUser(tempUser[currentTempId].get()); // Assuming response.data is the user data
                 setIsLoggedin(true);
                 return true;
             }

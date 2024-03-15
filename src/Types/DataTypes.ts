@@ -1,4 +1,5 @@
 import { ArticleCategories } from "./ArticleCategories"
+import { Roles } from "./Roles"
 export interface AlbumDataType{
     title:string,
     duration:number,
@@ -12,18 +13,22 @@ export interface SongDataType{
 export interface UserDataType {
     id:string,
     name:string,
+    role:Roles
     image?:string,
     bio?:string,
-    Genre: string,
-    songs?:SongDataType[],
-    albums?:AlbumDataType[]
+
+    genre: string,
+
 }
 export interface MentorDataType {
     id:string,
     name:string,
+    username?:string
     image:string,
+    role:Roles
     bio:string,
-    specialties:string[]
+    specialties:string[],
+    mentees:ArtistDataType[]
 }
 
 export interface ArtistDataType {
@@ -31,6 +36,7 @@ export interface ArtistDataType {
     name:string,
     username:string,
     image:string,
+    role:Roles
     genre:string,
     bio:string,
     songs?:string[],
@@ -153,4 +159,11 @@ export interface structureDataType{
 }
 
 
+
+export interface listDisplayDataType{
+    title:string,
+    image_url:string,
+    subtitle:string
+    meta?:string
+}
 

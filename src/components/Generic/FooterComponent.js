@@ -11,12 +11,12 @@ const FooterComponent = () => {
     return(
         <Box sx={styles.container}>
             <Grid container justifyContent={"center"} alignItems={"center"}>
-                <Grid Item xs={4}><Ignlogo/></Grid>
-                <Grid Item xs={8}>
+                <Grid item xs={4}><Ignlogo/></Grid>
+                <Grid item xs={8}>
                     <Grid container justifyContent={"flex-end"}>
-                        <Grid Item><TwitterIcon fontSize="large" htmlColor="white"/></Grid>
-                        <Grid Item><InstagramIcon fontSize="large" htmlColor="white"/></Grid>
-                        <Grid Item> <FacebookIcon fontSize="large" htmlColor="white"/></Grid>
+                        <Grid item><TwitterIcon fontSize="large" htmlColor="white"/></Grid>
+                        <Grid item><InstagramIcon fontSize="large" htmlColor="white"/></Grid>
+                        <Grid item> <FacebookIcon fontSize="large" htmlColor="white"/></Grid>
                     </Grid>
                 </Grid>
             </Grid>

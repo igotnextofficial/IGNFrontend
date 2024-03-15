@@ -48,10 +48,10 @@ const MainPageList = ()=>{
 
         const visibleLinks = sortedLinks.filter(link => link.display);
 
-        const linkElements = visibleLinks.map(linkItem => {
-            return <Grid className="ign-links" item><Link to={linkItem.slug}>{linkItem.name}</Link></Grid>
+        const linkElements = visibleLinks.map((linkItem,index) => {
+            return <Grid key={index} className="ign-links" item><Link to={linkItem.slug}>{linkItem.name}</Link></Grid>
         })
-        console.dir(linkElements   )
+
 
         return(
             <>

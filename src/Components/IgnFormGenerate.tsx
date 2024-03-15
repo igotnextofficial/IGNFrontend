@@ -1,14 +1,14 @@
-import React, { useEffect } from "react"
+import React, { useEffect,useState } from "react"
 import { structureDataType, displayType } from "../Types/DataTypes"
 import { Typography, RadioGroup, Radio, Grid, TextField, Checkbox, FormControlLabel, FormLabel, FormGroup, FormControl } from "@mui/material"
 import { useFormDataContext } from "../Contexts/FormContext"
 
 const Generate = ({ formStructures }: { formStructures: structureDataType[] }) => {
     let sortedFields = [...formStructures].sort((a, b) => a.order - b.order)
-    let output = sortedFields.map(formStructure => {
+    let output = sortedFields.map((formStructure,index) => {
 
         if (formStructure.visibility) {
-            return <DisplayFormField structure={formStructure} />
+            return <DisplayFormField key={index} structure={formStructure} />
         }
         return null
     })
@@ -22,38 +22,41 @@ const Generate = ({ formStructures }: { formStructures: structureDataType[] }) =
 
 const FieldOutput = ({ structure }: { structure: structureDataType }) => {
     const { data, updateFormData } = useFormDataContext()
-
+    const [dataValue,setDataValue] = useState("")
+    useEffect(() => {
+        if(data[structure.label]){
+            setDataValue(data[structure.label])
+        }
+    },[data,structure.label])
+    
     if (structure.display === displayType.InputValue) {
 
         return (
             <TextField
-                id={"name"}
                 label={structure.label}
                 {...structure.props}
-                fullWidth
                 onChange={(event) => { updateFormData(structure.label, event.target.value) }}
-                value={data[structure.label]}
+                value={dataValue}
                 variant="outlined"
-
+                fullWidth
             />
         )
     }
 
-    if (structure.display === displayType.TextValue) {
+     if (structure.display === displayType.TextValue) {
 
-        return (<TextField
-            {...structure.props}
-            multiline
-            rows={12}
-            defaultValue=""
-            onChange={(event) => { updateFormData(structure.label, event.target.value) }}
-            value={data[structure.label]}
-            label={structure.label}
-            fullWidth
+         return (<TextField
+             {...structure.props}
+             multiline
+             rows={12}
+             onChange={(event) => { updateFormData(structure.label, event.target.value) }}
+             value={dataValue}
+             label={structure.label}
+             fullWidth
 
-        />)
+         />)
 
-    }
+     }
 
     //     if (display === displayType.MultiChoiceList) {
 
@@ -66,11 +69,11 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
         return (
             <Grid container>
                 <FormControl>
-                    <FormLabel id="demo-row-radio-buttons-group-label">{structure.label}</FormLabel>
-                    <RadioGroup row value={data[structure.label]} onChange={(event) => { updateFormData(structure.label, event.target.value) }}>
+                    <FormLabel id="row-radio-buttons-group-label">{structure.label}</FormLabel>
+                    <RadioGroup row value={dataValue} onChange={(event) => { updateFormData(structure.label, event.target.value) }}>
                         {structure.options?.map((option, index) => (
-                            <Grid item xs={3}>
-                                <FormControlLabel key={index} value={option} control={<Radio />} label={option} />
+                            <Grid key={index} item xs={3}>
+                                <FormControlLabel  value={option} control={<Radio />} label={option} />
                             </Grid>
                         ))}
                     </RadioGroup>
