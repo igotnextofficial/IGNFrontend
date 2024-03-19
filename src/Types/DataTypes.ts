@@ -28,7 +28,17 @@ export interface MentorDataType {
     role:Roles
     bio:string,
     specialties:string[],
-    mentees:ArtistDataType[]
+    mentees:MenteeDataType[]
+}
+
+export interface CalendarDataType{
+    month:string,
+    day:string,
+    time:string
+}
+export interface MenteeDataType extends ArtistDataType {
+    progress:number,
+    nextSession:CalendarDataType
 }
 
 export interface ArtistDataType {

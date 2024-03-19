@@ -1,80 +1,37 @@
 import React, { useState,useEffect } from "react"
-import { Link } from "react-router-dom"
-import { MentorDataType } from "../../Types/DataTypes"
+
+import { MentorDataType,CalendarDataType } from "../../Types/DataTypes"
 import { useUser } from "../../Contexts/UserContext"
 import { listDisplayDataType } from "../../Types/DataTypes"
 import TopProfileSectionComponent from "../../Helpers/TopProfileSectionComponent"
-import ListDisplayComponent from "../../Helpers/ListDisplayComponent"
-import { Grid, Typography } from "@mui/material"
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import { Avatar} from "@mui/material"
-import SectionComponent from "../../Helpers/SectionComponent"
-import DashboardSectionComponent from "../../Components/DashboardSectionComponent"
+import {Grid, Typography } from "@mui/material"
 
-const UpcomingSessions =  ({user}: {user:MentorDataType}) => {
-    return <>
-            <DashboardSectionComponent title="Upcoming Session(s)">
-                {user.mentees.length > 0 ?  user.mentees.map(mentee => {
-                    const data:listDisplayDataType = {
-                        title:mentee.username,
-                        image_url:mentee.image,
-                        subtitle:`${mentee.bio.substring(0,200)} ${mentee.bio.length > 200 ? "..." : ""}` 
-                    }
+import ListMentees from "../../Components/Users/Mentor/ListMentees"
 
-                   
-                    return <Link to={`mentee/${user.id}/notes`}>  <ListDisplayComponent data={data} /></Link>
-                }) : <NoMentees/>}
-            </DashboardSectionComponent>
-  
+import {Box} from "@mui/material"
 
-      
+import UpcomingSessions from "../../Components/Users/Mentor/UpcomingSessions"
+
+import RequestMenteeComponent from "../../Components/Users/Mentor/RequestMenteeComponent"
+import OpenUpForSessions from "../../Components/Users/Mentor/OpenUpForSessions"
+
+
+const ScheduledDate = ({date} : {date:CalendarDataType}) => {
+    return (<>
+            <Box  sx={{backgroundColor:'grey', borderRadius:"5px", border:" 1px solid #1d1917"}}>
+                <Grid sx={{textAlign:"center"}} container justifyContent={"center"} alignContent={"center"}>
+                    <Grid item xs={12} sx={{backgroundColor:"#03a0b0", color:"white",borderRadius:"3px", padding:" 5px 10px"}}> <Typography sx={{fontSize:"1.2em"}}> {date.month}</Typography></Grid>
+                    <Grid item xs={12} sx={{backgroundColor:"#03a0b0", color:"white"}}> <Typography sx={{fontSize:"2em"}}>{date.day}</Typography></Grid>
+                    <Grid item xs={12} sx={{backgroundColor:"#ffffff"}}> <Typography sx={{fontSize:"1.3em",color:"#1d1917"}}> {date.time}</Typography></Grid>
+                </Grid>
+            </Box>
     </>
+    )
 }
 
-const MenteeRequests =  ({user}: {user:MentorDataType}) => {
-    return <>
-            <DashboardSectionComponent title="Request(s) For Mentorship">
-                {user.mentees.length > 0 ?  user.mentees.map(mentee => {
-                    const data:listDisplayDataType = {
-                        title:mentee.username,
-                        image_url:mentee.image,
-                        subtitle:`${mentee.bio.substring(0,200)} ${mentee.bio.length > 200 ? "..." : ""}` 
-                    }
+ 
 
-                   
-                    return <Link to={`mentee/${user.id}/notes`}>  <ListDisplayComponent data={data} /></Link>
-                }) : <NoMentees/>}
-            </DashboardSectionComponent>
-  
 
-      
-    </>
-       
-
-}
-
-const ListMentees =  ({user}: {user:MentorDataType}) => {
-    return <>
-            <DashboardSectionComponent title="Mentees">
-                {user.mentees.length > 0 ?  user.mentees.map(mentee => {
-                    const data:listDisplayDataType = {
-                        title:mentee.username,
-                        image_url:mentee.image,
-                        subtitle:`${mentee.bio.substring(0,200)} ${mentee.bio.length > 200 ? "..." : ""}` 
-                    }
-
-                   
-                    return <Link to={`mentee/${user.id}/notes`}>  <ListDisplayComponent data={data} /></Link>
-                }) : <NoMentees/>}
-            </DashboardSectionComponent>
-  
-
-      
-    </>
-}
 
 const NoMentees = () => {
 
@@ -93,7 +50,7 @@ const MentorDashboard = ()=>{
     useEffect(()=>{
         if(user && 'specialties' in user){
             setData({
-                title:user?.name,
+                title:`${user?.name}'s Mentor Dashboard`,
                 image_url:user?.image ?? "",
                 subtitle: "", 
                 meta:`specialties: ${user.specialties.join(",")}` 
@@ -107,28 +64,43 @@ const MentorDashboard = ()=>{
 
         return  user && ( 
             <>
-            <Grid container spacing={4} justifyContent={"center"}>
-                <Grid item xs={8}>
+            <Grid container spacing={8} justifyContent={"center"}>
+              <Grid item xs={12}>
+              {   data &&
+               <Box sx={{border:"1px solid rgba(0,0,0,0.1)", padding:"8px 20px" , borderRadius:"5px",backgroundColor:"white",maxWidth:"640px"}}>
+             
+                       <TopProfileSectionComponent user={data}  />
+                       <OpenUpForSessions/>
+
+               </Box>
+               }
+                </Grid>  
+            <Grid item xs={12}>
+                 <Box sx={{border:"1px solid rgba(0,0,0,0.1)", padding:"8px 20px" , borderRadius:"5px",backgroundColor:"white"}}>
+                    <UpcomingSessions user={user as MentorDataType} />
+                    </Box>
+                </Grid>
+            <Grid item xs={8}>
+                    <ListMentees user={user as MentorDataType} />
+                </Grid>
+
+                         
+                <Grid item xs={4}>
+                    <RequestMenteeComponent user={user as MentorDataType}/>
+                </Grid>
+
+                {/* <Grid item xs={6}>
                  {   data && <TopProfileSectionComponent user={data} bio={user.bio} />}
                 </Grid>
 
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                     <ListMentees user={user as MentorDataType} />
-                </Grid>
+                </Grid> */}
 
                 
-                <Grid item xs={4}>
-                    <ListMentees user={user as MentorDataType} />
-                </Grid>
-                
-                <Grid item xs={4}>
-                    <MenteeRequests user={user as MentorDataType} />
-                </Grid>
 
                 
-                <Grid item xs={4}>
-                    <UpcomingSessions user={user as MentorDataType} />
-                </Grid>
+       
             </Grid>
               
                 

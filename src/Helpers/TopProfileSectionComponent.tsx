@@ -17,7 +17,7 @@ const TopProfileSectionComponent = ({user,bio = ""}:{user:listDisplayDataType,bi
     return (
         <>
             <ListDisplayComponent data={user} size="large"/>
-            <Bio bio={bio} />
+            {bio.trim() !== "" && <Bio bio={bio} />}
         </>
     )
 }

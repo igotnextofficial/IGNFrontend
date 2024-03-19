@@ -20,7 +20,7 @@ export const ArtistFake =[
       username: "MysticLila",
       role: Roles.ARTIST,
       genre: "Indie Pop",
-      image: "https://is2-ssl.mzstatic.com/image/thumb/Music/v4/22/b3/ce/22b3ce8b-7d0e-7f4d-37b3-2d8a7d3e6f2f/artwork.jpg/1200x630bb.jpg",
+      image: "https://images.saymedia-content.com/.image/t_share/MTg2MTA4Njk5MDQxODY2ODgx/top-5-hottest-young-singers-today.jpg",
       bio: "Lila Hart, an indie pop singer-songwriter from Portland, Oregon, has quickly made a name for herself with her captivating melodies and deeply personal lyrics. Her music, often inspired by the lush landscapes and vibrant culture of her hometown, explores themes of love, loss, and self-discovery. Lila's journey into music began in her teenage years, playing in local coffee shops and small venues, where she honed her craft and developed a loyal following. Her debut album, 'Echoes of the Heart,' showcases her ability to blend ethereal soundscapes with poignant storytelling, earning her acclaim from fans and critics alike. With her unique voice and emotive performances, Lila Hart is a rising star in the indie music scene, offering a fresh perspective and authentic sound that resonates with a wide audience."
     },
     {
@@ -29,7 +29,7 @@ export const ArtistFake =[
       username: "DJReed",
       role: Roles.ARTIST,
       genre: "Electronic",
-      image: "https://is3-ssl.mzstatic.com/image/thumb/Music118/v4/33/f9/59/33f95952-3d6b-5a19-9a8e-52e480850b67/artwork.jpg/1200x630bb.jpg",
+      image: "https://static01.nyt.com/images/2023/11/14/multimedia/08wegz-03-gzcp/08wegz-03-gzcp-superJumbo.jpg",
       bio: "Marcus Reed, better known by his stage name DJReed, is a pioneering DJ and electronic music producer from Berlin, Germany. With a passion for both classic and contemporary electronic beats, DJReed has carved out a niche in the dance music scene with his innovative sound and dynamic live performances. From techno to house, his tracks are a testament to his versatility as a producer, seamlessly blending genres to create a unique and immersive experience for his listeners. His energetic sets are a fixture in clubs and festivals around the world, where he captivates audiences with his skillful mixing and unmatched vibe. DJReed's influence extends beyond the dance floor, with several chart-topping albums and collaborations with other artists in the electronic music community. His work not only entertains but also pushes the boundaries of what electronic music can be, making him a respected figure in the global music scene."
     },
     {
@@ -38,7 +38,7 @@ export const ArtistFake =[
       username: "ElenaT",
       role: Roles.ARTIST,
       genre: "Classical",
-      image: "https://is4-ssl.mzstatic.com/image/thumb/Music128/v4/5f/a3/2b/5fa32b9c-ff55-0710-1c8f-2d25b8f3477f/artwork.jpg/1200x630bb.jpg",
+      image: "https://static.standard.co.uk/2021/04/07/14/BreeRunway_CR_2Z8A3017B%20-%20lead.jpg?crop=8:5,smart&quality=75&auto=webp&width=1024",
       bio: "Elena Torres is a virtuoso violinist whose mastery of the instrument has captivated audiences around the world. Born in Madrid, Spain, Elena's musical journey began at a young age, nurtured by a family deeply rooted in classical music traditions. Her profound connection with the violin has led her to perform with some of the world's leading orchestras, delivering performances that are both technically flawless and emotionally stirring. Elena's repertoire spans from baroque to contemporary, showcasing her versatility and deep understanding of the violin's capabilities. Beyond the concert stage, she is dedicated to music education, working with young musicians to inspire the next generation of classical talent. Elena Torres is not just a performer but an ambassador for classical music, bringing its timeless beauty to new audiences and ensuring its continued relevance in the modern world."
     },
     {
@@ -47,8 +47,53 @@ export const ArtistFake =[
       username: "RhythmToby",
       role: Roles.ARTIST, 
       genre: "Rock",
-      image: "https://is5-ssl.mzstatic.com/image/thumb/Music122/v4/6b/94/65/6b946556-2b9d-9a2b-e7f7-2f973a3c7b3e/artwork.jpg/1200x630bb.jpg",
+      image: "https://imgix.ranker.com/list_img_v2/12226/2672226/original/2672226-u1",
       bio: "Toby Greene, known on stage as RhythmToby, is a powerhouse drummer renowned for his explosive energy and intricate rhythms. Hailing from Sydney, Australia"
+    },
+    {
+      id: "6",
+      name: "Elena Thompson",
+      username: "VocalVortex",
+      role: Roles.ARTIST,
+      genre: "Pop",
+      image: "https://i.scdn.co/image/ab6761610000e5eb21eef00843268128c0daa7bb",
+      bio: "Elena Thompson, known to her fans as VocalVortex, is an up-and-coming pop sensation hailing from the vibrant city of Toronto, Canada. With a voice that captivates and lyrics that resonate, Elena has quickly risen in the ranks of the pop world. Her chart-topping singles and emotionally rich performances have garnered a dedicated following. Elena's style is a refreshing blend of pop with hints of indie and soul, showcasing her versatility and depth as an artist. Her live shows are known for their high energy and personal touch, making every concert an unforgettable experience."
+    },
+    {
+      id: "7",
+      name: "Liam Echos",
+      username: "EchoBass",
+      role: Roles.ARTIST,
+      genre: "Reggae",
+      image: "https://media.npr.org/assets/img/2013/12/21/chronixx-promo-1_wide-1573f327aae2e0a88ff01a7277012eef1af2ff3a.jpg",
+      bio: "Liam Echos, stage name EchoBass, brings a new flavor to reggae music with his deep bass lines and rhythmic grooves. Originating from Kingston, Jamaica, EchoBass's sound is rooted in traditional reggae but infused with elements of modern jazz and dub. His performances are a celebration of reggae culture and its enduring message of peace and love. With his band, The Groove Makers, EchoBass has become a beloved act at music festivals, leaving audiences swaying and singing along to his soul-stirring tunes."
+    },
+    {
+      id: "8",
+      name: "Sophie Lune",
+      username: "LunarNotes",
+      role: Roles.ARTIST,
+      genre: "Indie Folk",
+      image: "https://miro.medium.com/v2/resize:fit:1400/1*vJf2EH8wZYRn0M1fAZRpEQ.png",
+      bio: "Sophie Lune, the voice behind LunarNotes, is an indie folk artist whose melodies are as haunting as the name suggests. Her music, often accompanied by the acoustic guitar, carries the spirit of the folk revival with a modern twist. Based in the Appalachian Mountains, her songs are inspired by the beauty of nature and the complexities of the human spirit. Sophie's storytelling is powerful and intimate, inviting listeners into a world of reflection and serenity."
+    },
+    {
+      id: "9",
+      name: "Cedric Blaze",
+      username: "CeeBlaze",
+      role: Roles.ARTIST,
+      genre: "Hip Hop",
+      image: "https://imgix.ranker.com/user_node_img/4269/85373679/original/85373679-photo-u6",
+      bio: "Cedric Blaze, or CeeBlaze as he is known on stage, is a dynamic force in the hip hop community. Hailing from Atlanta, his music is a mix of sharp lyrical prowess and beats that hit hard. CeeBlaze is not just a rapper; he's a storyteller whose narratives are vivid and gripping. His albums do more than entertain; they challenge and inspire, pushing the envelope of hip hop while staying true to its roots. Onstage, CeeBlaze is a powerhouse, delivering performances that are both electrifying and thought-provoking."
+    },
+    {
+      id: "10",
+      name: "Ava Harmony",
+      username: "MelodyCraft",
+      role: Roles.ARTIST,
+      genre: "R&B",
+      image: "https://storage.googleapis.com/pr-newsroom-wp/1/2021/02/Ava-DuVernay-Credit-ARRAY.jpg",
+      bio: "Ava Clarkson, known in the music world as AvaC, is a virtuoso violinist whose classical crossover style has captivated audiences worldwide. Her performances are a symphony of emotion, as she deftly weaves classical techniques with modern melodies. Ava's music transcends boundaries, bringing the grandeur of the orchestra to the mainstream audience. With each bow stroke, she tells a story, bringing a cinematic quality to her music that is both enchanting and breathtaking."
     }
 ]
 

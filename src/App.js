@@ -48,29 +48,35 @@ const MainApplication = () => {
         <DetectChange />
         <Navigation Authenticated={isAuthenticated} />
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<Home />} /> 
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+
+          {/* Articles */}
           <Route path='/whos-next' element={<WhosNextPage />} />
-          <Route path='/edit-profile' element={<EditProfile />} />
-         
+          <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage />} />
           <Route path='/featured-artists' element={<FeaturedArtistPage />} />
           <Route path='/entertainment-news' element={<EntertainmentNewsPage />} />
+          <Route path='article/:category/:article_id' element={<ArticlePageComponent />} />
+          
           <Route path='/profile/:role' element={< Dashboard />} />
-          <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage />} />
+
+          {/* Profile */}
+
           <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
           <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} />
-
-
-
+          
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
+          <Route path='/edit-profile' element={<EditProfile />} />
             <Route path='/dashboard/:role' element={<Dashboard />} />
+
+
             <Route path='/compose-article' element={<ComposeArticle />} />
             <Route path='/edit-article/:article_id' element={<EditArticle />} />
           </Route>
 
 
-          <Route path='/:category/:article_id' element={<ArticlePageComponent />} />
+         
         </Routes>
       </Router>
 

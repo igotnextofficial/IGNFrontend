@@ -1,4 +1,4 @@
-import { MentorDataType, UserDataType, httpDataObject,structureDataType } from "../../Types/DataTypes";
+import { MentorDataType, MenteeDataType,structureDataType } from "../../Types/DataTypes";
 import IgnRequest from "../../Features/Http/IgnRequest";
 import Model from "../Model";
 import { mentorsFake } from "../../fake-data/mentorsFake";

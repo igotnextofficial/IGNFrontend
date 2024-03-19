@@ -23,7 +23,7 @@ export default function LinearProgressBar({userProgress}: {userProgress:number})
 
   React.useEffect(() => {
     const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + userProgress));
+      setProgress((prevProgress) => (prevProgress >= userProgress ? userProgress : prevProgress + userProgress));
     }, 800);
     return () => {
       clearInterval(timer);
@@ -32,7 +32,7 @@ export default function LinearProgressBar({userProgress}: {userProgress:number})
 
   return (
     <Box sx={{ width: '100%' }}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel color={"primary"} value={progress} sx={{height:"20px" ,borderRadius:"15px"}} />
     </Box>
   );
 }

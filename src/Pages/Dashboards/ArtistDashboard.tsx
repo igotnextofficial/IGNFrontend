@@ -84,7 +84,7 @@ const ArtistDashboard = () => {
             <ArticleProvider mode={FetchMode.USER} id={user?.id}>
 
                 <Grid sx={{ backgroundColor: "lightgrey", padding: 2, borderRadius: "5px", marginTop: 2, MarginBottom: 2 }}>
-            <TextContentComponent content={user?.bio || ""} />
+                         <TextContentComponent content={user?.bio || ""} />
                 </Grid>
 
                 <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>

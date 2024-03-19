@@ -1,14 +1,14 @@
 @import url(react-quill/dist/quill.snow.css);
 body {
   margin: 0;
-  background-color: #f7f7f7;
+  background-color: #FBFAF9;
   color: #1d1917;
   font-family: "Roboto","Helvetica","Arial",sans-serif; }
 
 .App {
   max-width: 100%;
   margin: 0 auto;
-  background-color: white;
+  background-color: #FBFAF9;
   padding: 0; }
 
 .pageContainer {

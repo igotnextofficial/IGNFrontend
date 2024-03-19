@@ -28,7 +28,7 @@ useEffect(() => {
             }
 },[user,updateFormData])
 
-
+ 
     const handleSubmit = ()=>{
         let submitData = JSON.stringify({data:data})
         console.log(`submitting the data ${submitData}`)
