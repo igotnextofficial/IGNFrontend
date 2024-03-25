@@ -12,10 +12,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
 
-    useLayoutEffect( ()=>{
-        setIsLoggedin(true)
-        setUser(tempUser[currentTempId].get());
-    },[] )
+    // useLayoutEffect( ()=>{
+    //     setIsLoggedin(true)
+    //     setUser(tempUser[currentTempId].get());
+    // },[] )
 
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
         let response;

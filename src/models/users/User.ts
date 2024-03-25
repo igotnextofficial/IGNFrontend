@@ -8,8 +8,9 @@ class User{
     static readonly INFO: string = "userInfo"
     static readonly ACCESS_TOKEN: string = "accessToken"
     constructor(){
-        this.endpoint = `https://${process.env.REACT_APP_USER_API_URI}/users`;
-        this.baseURI = `https://${process.env.REACT_APP_USER_API_URI}` || ""; 
+        this.baseURI = process.env.REACT_APP_ENVIRONMENT === "development" ? `${process.env.REACT_APP_TEST_API}` : `https://${process.env.REACT_APP_USER_API_URI}`; 
+        this.endpoint = `http://${this.baseURI}/users`;
+  
         this.ignHttpRequest = new IgnRequest({baseURL:this.baseURI})
         this.ignHttpRequest.setHeaders();
     }

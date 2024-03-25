@@ -1,11 +1,14 @@
 ## Current To do List
+- [] setup http request provider
+- [] make sure all forms are submitting their data correctly
+- [] set up 404 page
+
+
 - [] Add calendly or some sort of scheduling system for mentors, check google api 
 - [] Zoom API or the like for video calls.
 - [] Add Fake Data, Articles,admin 
-- [] setup http request provider
-- [] make sure all forms are submitting their data correctly
 - [] make sure pagination is setup
-- [] set up 404 page
+
  
 
 
@@ -26,8 +29,7 @@
 #### Artist Dashboard
 
 #### Mentor Dashboard 
-- [] should be able to toggle between being open or closed to accepting new clients.
-- [x]  Page to Leave Notes for mentee 
+
 
 ### Editor Component
 
@@ -46,6 +48,9 @@
 
 ## Completed
 #### FBFAF9 BG Color
+
+- [x] should be able to toggle between being open or closed to accepting new clients.
+- [x]  Page to Leave Notes for mentee 
 - [x] Add categories to article creation pages.
 - [x] add an image upload feature for the articles 
 - [x] Add an Editor Context &amp; provider for forms to use.

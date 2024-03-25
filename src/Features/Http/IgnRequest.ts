@@ -58,6 +58,7 @@ class IgnRequest {
                 config.headers = this.headers;
             }
 
+            console.log(`Valid: ${JSON.stringify(wrappedData(data))}`)
             const response = await this.api.post(endpoint, wrappedData(data), config);
             return response;
         } catch (error) {
