@@ -220,7 +220,7 @@ TempArticles: ArticleDataType[]  = [
     }
     async retrieveByUser(id:string){
         try {
-            let userArticles = this.TempArticles;
+            let userArticles = null;
             return userArticles;
         } catch (error) {
             console.error("Error retrieving articles:", error);

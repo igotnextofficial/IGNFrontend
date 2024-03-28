@@ -1,37 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { httpDataObject } from '../../Types/DataTypes';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Checkbox from '@mui/material/Checkbox';
+import { Avatar,Box,Select,MenuItem,CssBaseline,Grid,InputLabel,FormControl,Paper,Typography,TextField,Link,SelectChangeEvent} from '@mui/material'
+
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Paper } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
+
 
 import Copyright from '../../Components/Copyright';
 import IGNButton from '../../Components/Button';
-import { UserContext } from '../../Contexts/UserContext';
+
+import { useUser } from '../../Contexts/UserContext';
 import { ErrorContext } from '../../Contexts/ErrorContext';
 import { Navigate } from 'react-router-dom';
 
-import { SelectChangeEvent } from '@mui/material/Select';
 import User from '../../Models/Users/User';
+
 
 
 
 
 const Register = ()=>{
 
-    const {user,isLoggedin,attemptLoginOrLogout }= useContext(UserContext)
+    const {user,isLoggedin,attemptLoginOrLogout } = useUser()
+    const [login,setLogin] = useState(false)
     const [role, setRole] = useState('');
 
 
@@ -39,54 +30,72 @@ const Register = ()=>{
     const [data,setData] = useState<httpDataObject | null>(null);
     const [registration,setAttemptRegistration] = useState(false);
     
-
-    const [hasEffectRun, setHasEffectRun] = useState(false);
     const handleRoleChange = (event: SelectChangeEvent<typeof role>) => {
         setRole(event.target.value as typeof role);
     };
+    
+
+
+
+    useEffect(() => {
+        const loginUser = async ( ) => {
+            const { email, password } = data?.data as { email?: string, password?: string };
+            const loginData = {
+                'data':{
+                    'email':email,
+                    'password':password
+                }
+            }
+            const loginResponse = await attemptLoginOrLogout(true,loginData);
+            if (!loginResponse) {
+                updateError?.("The user could not be logged in");
+                return false
+            }
+    
+            return true
+        }
+        if(login){
+            loginUser()
+        }
+
+        return () => {
+            setLogin(false)
+        }
+    },[login,attemptLoginOrLogout,updateError,data])
+
     useEffect(() => {
         let isMounted = true; // flag to track if the component is mounted
 
         const registerUser = async () => {
-            if (!data || !hasEffectRun) {
-                return;
-            }
-
             try {
                 const userObj = new User()
-                const response = await userObj.register(data);
-                if (!response) {
+                const response = data !== null ? await userObj.register(data) : null;
+                if (!response ) {
                     isMounted && updateError?.("The account could not be created.");
                     return;
                 }
-                const { email, password } = data.data as { email?: string, password?: string };
-                const loginData = {
-                    'data':{
-                        'email':email,
-                        'password':password
-                    }
-                }
-                const loginResponse = await attemptLoginOrLogout(true,loginData);
-                if (!loginResponse && isMounted) {
-                    updateError?.("The user could not be logged in");
-                }
+
+                setLogin(true)
+            
+                
             } catch (error) {
                 // Handle or log error
                 isMounted && updateError?.("An error occurred during registration or login.");
             }
         };
 
-        registerUser();
+        if(data !== null){
+            registerUser();
+        }
 
-        // Set hasEffectRun to true after first execution
-        setHasEffectRun(true);
+
 
         // Cleanup function
         return () => {
             isMounted = false;
         };
 
-    }, [data, user, updateError, registration]);
+    }, [registration,data,updateError]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -152,8 +161,8 @@ const Register = ()=>{
     const theme = createTheme()
     return (
         <>
-              {isLoggedin &&(
-                <Navigate to="/dashboard" replace={true} />
+              {isLoggedin && user &&(
+                <Navigate to={`/dashboard/${user.role || role}`} replace={true} />
             )}
 
             <ThemeProvider theme={theme}>

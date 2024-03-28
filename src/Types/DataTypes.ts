@@ -13,6 +13,7 @@ export interface SongDataType{
 export interface UserDataType {
     id:string,
     name:string,
+    fullname?:string,
     role:Roles
     image?:string,
     bio?:string,
@@ -23,6 +24,7 @@ export interface UserDataType {
 export interface MentorDataType {
     id:string,
     name:string,
+    fullname?:string,
     username?:string
     image:string,
     role:Roles
@@ -44,6 +46,7 @@ export interface MenteeDataType extends ArtistDataType {
 export interface ArtistDataType {
     id:string,
     name:string,
+    fullname?:string,
     username:string,
     image:string,
     role:Roles

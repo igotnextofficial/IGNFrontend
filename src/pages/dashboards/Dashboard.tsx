@@ -29,11 +29,11 @@ const DisplayDashboard: React.FC<{role: DashboardRole}> = ({role}) => {
 const Dashboard = () => {
     const{ user }= useContext(UserContext)
     const {role} = useParams()
-
+        console.log(`the user role is ${user?.role}`)
     return(
        <ContentContainer>
             
-            {/* <h1>Welcome, {user?.name} role: {role}</h1>
+            {/* <h1>Welcome, {user?.fullname} role: {role}</h1>
             <TemporaryDrawer/>
             <p>{document.cookie}</p> */}
             

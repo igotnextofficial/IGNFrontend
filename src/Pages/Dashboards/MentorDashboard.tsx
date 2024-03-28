@@ -50,7 +50,7 @@ const MentorDashboard = ()=>{
     useEffect(()=>{
         if(user && 'specialties' in user){
             setData({
-                title:`${user?.name}'s Mentor Dashboard`,
+                title:`${user?.fullname}'s Mentor Dashboard`,
                 image_url:user?.image ?? "",
                 subtitle: "", 
                 meta:`specialties: ${user.specialties.join(",")}` 

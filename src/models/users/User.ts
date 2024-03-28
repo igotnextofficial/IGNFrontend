@@ -5,12 +5,16 @@ class User{
     endpoint: string
     baseURI: string
     ignHttpRequest: IgnRequest;
+    loginEndpoint:string;
+    logoutEndpoint:string;
     static readonly INFO: string = "userInfo"
     static readonly ACCESS_TOKEN: string = "accessToken"
     constructor(){
         this.baseURI = process.env.REACT_APP_ENVIRONMENT === "development" ? `${process.env.REACT_APP_TEST_API}` : `https://${process.env.REACT_APP_USER_API_URI}`; 
         this.endpoint = `http://${this.baseURI}/users`;
-  
+        this.loginEndpoint = `http://${this.baseURI}/login`
+        this.logoutEndpoint = `http://${this.baseURI}/logout`
+   
         this.ignHttpRequest = new IgnRequest({baseURL:this.baseURI})
         this.ignHttpRequest.setHeaders();
     }
@@ -42,7 +46,8 @@ class User{
     async login (data:httpDataObject){
         let ignHttpRequest = new IgnRequest({baseURL:this.baseURI});
         try{
-           let response = await ignHttpRequest.post('/login',data);
+            
+           let response = await ignHttpRequest.post(`${this.loginEndpoint}`,data);
            if(response.status !== 200){return null}
      
            localStorage.setItem(User.INFO,JSON.stringify(response.data['data']));
@@ -53,7 +58,8 @@ class User{
            return response;
         }
         catch(error){
-            
+            console.log('could not login')
+            console.log(JSON.stringify(error))
             return null
         }
 
@@ -71,12 +77,13 @@ class User{
         let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${localStorage.getItem(User.ACCESS_TOKEN)}`}});
 
         try{
-            const response = await ignHttpRequest.post('/logout');
+            const response = await ignHttpRequest.post(this.logoutEndpoint);
              localStorage.removeItem(User.INFO)
              localStorage.removeItem(User.ACCESS_TOKEN)
              return response
         }
         catch(error){
+            console.log(JSON.stringify(error))
             return null
         }
 

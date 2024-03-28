@@ -34,7 +34,7 @@ class Artist extends Model {
     super()
     this.structure = [
       {
-        label: "name",
+        label: "fullname",
         visibility: true,
         display: displayType.InputValue,
 

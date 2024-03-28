@@ -1,16 +1,16 @@
 import React,{useContext} from 'react';
 
-import { Avatar, Box, IconButton , Tooltip, Menu , MenuItem, Typography,Button } from '@mui/material';
+import { Avatar, Box, IconButton , Tooltip, Menu , MenuItem, Typography,Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import User from '../../Models/Users/User';
 import CreateLink from './CreateLink';
 import TemporaryDrawer from '../../Components/Navigation/LeftDrawer';
 
 import { Settings } from '../../Types/DataTypes';
-import { UserContext } from '../../Contexts/UserContext';
+import { useUser } from '../../Contexts/UserContext';
 
 const AccountSettings  = () => {
-  const {user} = useContext(UserContext)
+  const {user} = useUser()
   const settings:Settings[] = [
       {
         title:'Profile',
@@ -39,10 +39,17 @@ const AccountSettings  = () => {
 
     <>
      <Box sx={{ flexGrow: 0 }}>
+
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user?.name} src={user?.image} />
+              <Grid container spacing={2} alignItems={"center"}>
+                  <Grid item>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt={user?.fullname} src={user?.image} />
               </IconButton>
+                  </Grid>
+                  <Grid item> <Typography>Welcome, {user?.fullname} </Typography></Grid>
+              </Grid>
+      
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}

@@ -36,7 +36,7 @@ useEffect(() => {
 
     return (
         <>
-            <Grid item xs={12}> <Typography variant="h4" sx={{ color: "black" ,paddingBottom:2}}> Edit {user?.name}'s Profile</Typography></Grid>
+            <Grid item xs={12}> <Typography variant="h4" sx={{ color: "black" ,paddingBottom:2}}> Edit {user?.fullname}'s Profile</Typography></Grid>
             <IgnFormGenerate formStructures={ formStructure } />
             <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={handleSubmit}>Update</Button>
 

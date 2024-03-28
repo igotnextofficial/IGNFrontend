@@ -12,10 +12,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
 
-    // useLayoutEffect( ()=>{
-    //     setIsLoggedin(true)
-    //     setUser(tempUser[currentTempId].get());
-    // },[] )
+    useLayoutEffect( ()=>{
+        let found_user = localStorage.getItem('userInfo')
+        if(found_user){
+            setIsLoggedin(true)
+            setUser(JSON.parse(found_user));
+        }
+ 
+ 
+    },[] )
 
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
         let response;
@@ -23,7 +28,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         if (login && data) {
             response = await UserObj.login(data);
             if (response) {
-                setUser(tempUser[currentTempId].get()); // Assuming response.data is the user data
+                const user_data = {...response.data}
+                setUser(user_data as UserDataType); // Assuming response.data is the user data
                 setIsLoggedin(true);
                 return true;
             }
