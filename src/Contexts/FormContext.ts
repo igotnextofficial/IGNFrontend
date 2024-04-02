@@ -1,7 +1,9 @@
 import { createContext,useContext } from "react";
 
 interface FormDataContextState {
-    updateFormData:(key:string,value:string)=> void,
+    updateFormData:(key:string,value:any )=> void,
+    updateFileData:(key:string,value:File )=> void,
+
     data: any
 }
 

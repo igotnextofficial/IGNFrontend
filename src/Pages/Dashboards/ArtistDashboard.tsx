@@ -17,6 +17,7 @@ import TextContentComponent from '../../Helpers/TextContentComponent'
 import { ArtistDataType } from '../../Types/DataTypes'
 import Artist from '../../Models/Users/Artist'
 import { Link } from 'react-router-dom'
+import ProfileTopSection from '../../Components/Users/ProfileTopSection'
 
 
 
@@ -57,7 +58,7 @@ const CurrentUserTopSection = ({currentUser}: {currentUser:ArtistDataType}) => {
                                 component="h2"
                                 variant="body2"
                             >
-                                {currentUser.username ?? currentUser.fullname}'s Profile
+                                {currentUser.fullname ?? currentUser.fullname}'s Profile
                             </Typography>
                         </React.Fragment>
                     }
@@ -76,7 +77,7 @@ const CurrentUserTopSection = ({currentUser}: {currentUser:ArtistDataType}) => {
                     </React.Fragment>
                     }
                 />
-                   <ModeEditIcon sx={{alignSelf:"flex-start",opacity:"0.5"}}/>
+                   <ModeEditIcon sx={{alignSelf:"flex-start",opacity:1}}/>
             </ListItem>
         </List>
         </Link>
@@ -106,7 +107,8 @@ const ArtistDashboard = () => {
 
                 <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={12}>
-                    <CurrentUserTopSection currentUser={user as ArtistDataType} />
+                        <ProfileTopSection/>
+                 
            
                     </Grid>
 

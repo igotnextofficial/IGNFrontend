@@ -6,12 +6,14 @@ import { ArtistDataType, MentorDataType, UserDataType, httpDataObject } from "..
 export interface userContextType{
     user: UserDataType | ArtistDataType | MentorDataType | null,
     isLoggedin:boolean,
+    updateUser:(user:UserDataType)=>void
     attemptLoginOrLogout: (login:boolean,data?:httpDataObject,) => Promise<boolean>,
 
 }
 export const UserContext = createContext<userContextType>({
     isLoggedin: false,
     user:  null,
+    updateUser: () => {},
     attemptLoginOrLogout: async (): Promise<boolean> => {
         return false;
     },

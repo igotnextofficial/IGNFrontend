@@ -2,6 +2,7 @@ import React, { useEffect,useState } from "react"
 import { structureDataType, displayType } from "../Types/DataTypes"
 import { Typography, RadioGroup, Radio, Grid, TextField, Checkbox, FormControlLabel, FormLabel, FormGroup, FormControl } from "@mui/material"
 import { useFormDataContext } from "../Contexts/FormContext"
+import { Input } from '@mui/material';
 
 const Generate = ({ formStructures }: { formStructures: structureDataType[] }) => {
     let sortedFields = [...formStructures].sort((a, b) => a.order - b.order)
@@ -21,7 +22,7 @@ const Generate = ({ formStructures }: { formStructures: structureDataType[] }) =
 }
 
 const FieldOutput = ({ structure }: { structure: structureDataType }) => {
-    const { data, updateFormData } = useFormDataContext()
+    const { data, updateFormData,updateFileData } = useFormDataContext()
     const [dataValue,setDataValue] = useState("")
     useEffect(() => {
         if(data[structure.label]){
@@ -29,13 +30,31 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
         }
     },[data,structure.label])
     
+    if (structure.display === displayType.Image) {
+
+        return (
+            <TextField
+            type="file"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if(event.target.files){
+                    updateFileData('image',event.target.files[0])}
+                }
+           
+            }
+            inputProps={{ accept: 'image/*' }} // Accept only images
+          />
+        )
+    }
+
+
     if (structure.display === displayType.InputValue) {
 
         return (
             <TextField
                 label={structure.label}
                 {...structure.props}
-                onChange={(event) => { updateFormData(structure.label, event.target.value) }}
+                onChange={(event) => {
+                    updateFormData(structure.label, event.target.value) }}
                 value={dataValue}
                 variant="outlined"
                 fullWidth
@@ -99,6 +118,7 @@ const DisplayFormField = ({ structure }: { structure: structureDataType }) => {
 const IgnFormGenerate = ({ formStructures }: { formStructures: structureDataType[] }) => {
     return (
         <>
+        
             <Grid container spacing={2}><Generate formStructures={formStructures} /></Grid>
         </>
     )

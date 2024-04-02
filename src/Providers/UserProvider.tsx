@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useLayoutEffect } from "react";
+import React, { useState, ReactNode, useLayoutEffect, useEffect, useCallback } from "react";
 import { UserContext } from "../Contexts/UserContext";
 import User from "../Models/Users/User";
 import { ArtistDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
@@ -11,9 +11,10 @@ const UserObj = new User()
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
+    const [refresh,setRefresh] = useState(false)
 
     useLayoutEffect( ()=>{
-        let found_user = localStorage.getItem('userInfo')
+        let found_user = localStorage.getItem('userInfo') // never
         if(found_user){
             setIsLoggedin(true)
             setUser(JSON.parse(found_user));
@@ -22,13 +23,25 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
  
     },[] )
 
+    useEffect(() => {
+        console.log(`updated`)
+    },[refresh])
+
+    const updateUser = useCallback((user: UserDataType) => {
+        console.log(`let us update`);
+        setUser((currentUser) => ({
+            ...currentUser,
+            ...user
+        }));
+    }, []); // Assuming setUser doesn't need external dependencies
+    
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
         let response;
         
         if (login && data) {
             response = await UserObj.login(data);
             if (response) {
-                const user_data = {...response.data}
+                const user_data = {...response.data['data']}
                 setUser(user_data as UserDataType); // Assuming response.data is the user data
                 setIsLoggedin(true);
                 return true;
@@ -45,8 +58,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         return false; // Return false if login or logout fails
     };
 
+
+    const getUsername = () => {}
+    const getFullName = () => { return user?.fullname || ""}
     return (
-        <UserContext.Provider value={{ user, isLoggedin, attemptLoginOrLogout }}>
+        <UserContext.Provider value={{ user, isLoggedin, attemptLoginOrLogout, updateUser }}>
             {children}
         </UserContext.Provider>
     );

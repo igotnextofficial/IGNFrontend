@@ -58,12 +58,12 @@ class Artist extends Model {
       {
 
         label: "image",
-        visibility: false,
-        display: displayType.InputValue,
-        placeholder: "",
+        visibility: true,
+        display: displayType.Image,
+      
         props:{
-          id:"fullname",
-          placeholder:"fullname"
+          id:"image",
+      
         },
         order:4
 

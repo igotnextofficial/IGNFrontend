@@ -4,9 +4,9 @@ import Login from "../Pages/Authentication/Login";
 
 const ProtectedRoutes = ({redirectPath="/login",isAuthenticated = false, children}) => {
 
-   // if(!isAuthenticated){
-   //    return <Navigate to={redirectPath} replace />
-   // }
+   if(!isAuthenticated){
+      return <Navigate to={redirectPath} replace />
+   }
    return children ? children : <Outlet/>
 }
 

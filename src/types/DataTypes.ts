@@ -17,9 +17,6 @@ export interface UserDataType {
     role:Roles
     image?:string,
     bio?:string,
-
-    genre: string,
-
 }
 export interface MentorDataType {
     id:string,
@@ -157,7 +154,8 @@ export enum displayType {
     InputValue = "input-value",
     TextValue = "text-value",
     MultiChoiceList = "multi-choice-list",
-    ChoiceList = "choice-list"
+    ChoiceList = "choice-list",
+    Image = "image"
 }
 
 export interface structureDataType{

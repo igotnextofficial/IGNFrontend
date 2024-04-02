@@ -21,7 +21,7 @@ import { Navigate } from 'react-router-dom';
 
 import axios from 'axios';
 import IgnRequest from "../../Features/Http/IgnRequest";
-import { UserContext } from '../../Contexts/UserContext';
+import { UserContext, useUser } from '../../Contexts/UserContext';
 import { httpDataObject } from '../../Types/DataTypes';
 
 
@@ -30,7 +30,7 @@ import { httpDataObject } from '../../Types/DataTypes';
 
 
 const Login = ()=>{
-    const {user,isLoggedin,attemptLoginOrLogout }= useContext(UserContext);
+    const {user,isLoggedin,attemptLoginOrLogout }= useUser();
     const [successfulLogin,setSuccessfulLogin] = useState(false);
     const [hasErrors,setHasErrors] = useState(false);
     const [errMessage,setErrMessage] = useState('');
@@ -63,11 +63,12 @@ const Login = ()=>{
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
-        
         const formData = new FormData(event.currentTarget);
-        const data =Object.fromEntries(formData.entries())
-        userLogin({"data":data});
+        const data = Object.fromEntries(formData.entries())
+        await attemptLoginOrLogout(true,{"data":data})
     }
+       
+   
 
     const theme = createTheme()
     
@@ -75,10 +76,9 @@ const Login = ()=>{
     return (
         <>
 
-            {isLoggedin &&(
-                <Navigate to="/dashboard" replace={true} />
+{isLoggedin && user  &&(
+                <Navigate to={`/dashboard/${user.role}`} replace={true} />
             )}
-
 
 
             <ThemeProvider theme={theme}>

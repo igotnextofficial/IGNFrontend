@@ -19,6 +19,10 @@ class User{
         this.ignHttpRequest.setHeaders();
     }
 
+    getEndpoint() {
+        return this.endpoint
+    }
+
     default(){
         return {
             id: '',

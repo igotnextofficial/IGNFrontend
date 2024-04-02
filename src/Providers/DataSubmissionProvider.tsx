@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import { DataSubmitContext } from "../Contexts/DataSubmitContext"
 import axios, { AxiosError } from "axios"
 import { httpDataObject,HttpMethods } from "../Types/DataTypes"
@@ -14,42 +14,66 @@ interface dataProviderType{
     dataUrl:string
 }
 
+async function submit(submissionData: axiosDataObject, updatedData: FormData) {
+    try {
+      const response = await axios({
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: submissionData.method,
+        url: submissionData.url,
+        data: updatedData,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Axios error:", error);
+      return null;
+    }
+  }
+  
+  const getFormData = (data: Record<string, any>) => {
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    return formData;
+  };
+
 const DataSubmissionProvider: React.FC<dataProviderType> = (
     {children,httpMethod=HttpMethods.GET,dataUrl})=>{
-    const [data,setData] = useState({data:{}})
+    const [data,setData] = useState<Record<string, any>>({})
     const [error,setErrorMessage] = useState("")
-    const [url,setUrl] = useState("")
-    const [response,setResponse] = useState({})
+    const [response,setResponse] = useState<httpDataObject | null>(null)
+    const [canSubmitData,setcanSubmitData] = useState(false)
     
     useEffect(()=>{
-        submit({method:httpMethod,data:data,url:dataUrl})
-    },[data,dataUrl,httpMethod]) 
+      
+       
+        const fetchData = async () => {
+            if (canSubmitData) {
+              const updatedData = getFormData(data);
+              const responseData = await submit({ method: httpMethod, url: dataUrl }, updatedData);
+              if (responseData !== null) {
+                setResponse(responseData);
+              } else {
+                setErrorMessage("An error occurred while submitting data.");
+              }
+            }
+          };
+          fetchData();
     
-    function submit(submissionData:axiosDataObject) {
-      axios({
-        method:submissionData.method,
-        url:submissionData.url,
-        data:submissionData.data
-      })
-      .then((response) => {
-        setResponse(response)
-            //set response for user of this to handle
-      })
-      .catch((error:AxiosError)=>{
-            setErrorMessage(error.message)
-      })
-    }
+    },[data,dataUrl,httpMethod,canSubmitData]) 
 
+    useEffect(() => {
+    },[response])
 
-
+    
+    
 
     function updateData(dataObj:httpDataObject){
-        if(!('data' in dataObj)){
-           throw new Error("Wrap object in a data object")
-        }
-         setData(dataObj)
 
-    }
+         setData(dataObj)
+         setcanSubmitData(true)
+
+    }               
     
     return (
         <DataSubmitContext.Provider value={{data ,response, updateData:updateData}}>

@@ -13,8 +13,7 @@ import Login from './Pages/Authentication/Login';
 import Register from './Pages/Authentication/Register';
 
 
-import { useContext} from 'react';
-import { UserContext } from './Contexts/UserContext';
+import { useUser } from './Contexts/UserContext';
 
 import Home from './Pages/home';
 import FooterComponent from './Components/Generic/FooterComponent';
@@ -28,14 +27,13 @@ import FeaturedArtistPage from './Pages/Articles/FeaturedArtist';
 import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
-import ArtistDashboard from './Pages/Dashboards/ArtistDashboard';
 import EditProfile from './Pages/EditProfile';
 
 
 
 
 const MainApplication = () => {
-  const { isLoggedin } = useContext(UserContext);
+  const { isLoggedin } = useUser();
   const isAuthenticated = isLoggedin
   return (
 
