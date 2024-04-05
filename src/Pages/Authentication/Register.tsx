@@ -36,17 +36,11 @@ const Register = ()=>{
     
 
 
-
     useEffect(() => {
         const loginUser = async ( ) => {
-            const { email, password } = data?.data as { email?: string, password?: string };
-            const loginData = {
-                'data':{
-                    'email':email,
-                    'password':password
-                }
-            }
-            const loginResponse = await attemptLoginOrLogout(true,loginData);
+   
+        
+            const loginResponse = data !== null ? await attemptLoginOrLogout(true,data) : null;
             if (!loginResponse) {
                 updateError?.("The user could not be logged in");
                 return false
@@ -117,11 +111,11 @@ const Register = ()=>{
     type TextFieldMargin = "normal" | "none" | "dense" ;
     const props = 
     {
-       name  : {
+       fullname  : {
             required: true,
             fullWidth: true,
-            id: 'name',
-            name: 'name',
+            id: 'fullname',
+            name: 'fullname',
             label: "fullname",
             variant: "filled" as TextFieldVariant  ,
             margin: 'normal' as TextFieldMargin
@@ -190,7 +184,7 @@ const Register = ()=>{
                                 Register Account
                             </Typography>
                             <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
-                            <TextField {...props.name} />
+                            <TextField {...props.fullname} />
                                 <TextField {...props.email} />
                                 <TextField {...props.password} />
                                 <TextField {...props.username} />

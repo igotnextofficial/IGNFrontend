@@ -11,7 +11,7 @@ const ArtistListComponent = () => {
         return(
             <Grid container sx={styles.ArtistContainer}>
             {artists.map(artist => {
-                return <Grid sx={{padding:"1rem"}} Item><DisplayArtistComponent artist={artist} /></Grid>
+                return <Grid key={`${artist.name}${Math.random() * 2 ** 9}`} sx={{padding:"1rem"}} Item><DisplayArtistComponent artist={artist} /></Grid>
             })}
 
             </Grid>

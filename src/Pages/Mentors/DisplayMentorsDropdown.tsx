@@ -8,7 +8,7 @@ const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
         <Link href={`book-a-mentor/${mentor.id}`}>
             <ListItem className="listSelection" sx={styles.mentorListView} alignItems="center">
                 <ListItemAvatar>
-                    <Avatar alt={mentor.name} src={mentor.image} />
+                    <Avatar alt={mentor.fullname} src={mentor.image} />
                 </ListItemAvatar>
                 <ListItemText
                     primary={
@@ -17,7 +17,7 @@ const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
                             component="h3"
                             variant="body2"
                         >
-                            {mentor.name}
+                            {mentor.fullname}
                         </Typography>
                     }
                     secondary={
@@ -26,7 +26,7 @@ const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
                             component="p"
                             variant="body2"
                         >
-                            Specialties: [{mentor.specialties.join(",")}] {/* {mentor.name} */}
+                            Specialties: [{mentor.specialties.join(",")}] {/* {mentor.fullname} */}
                         </Typography>
                     }
                 />

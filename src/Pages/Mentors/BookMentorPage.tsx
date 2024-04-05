@@ -39,8 +39,8 @@ const BookMentorPage = () => {
                     <Grid item>
 
                         <Box sx={{ maxWidth: '600px' }}>
-                            <IgnPillComponent description={`Mentor: ${currentMentor?.name}`} link="" />
-                            <img style={{ width: "100%",border:"2px solid #ecdb22 " }} src={currentMentor?.image} alt={currentMentor?.name} />
+                            <IgnPillComponent description={`Mentor: ${currentMentor?.fullname}`} link="" />
+                            <img style={{ width: "100%",border:"2px solid #ecdb22 " }} src={currentMentor?.image} alt={currentMentor?.fullname} />
                         </Box>
                         <Typography sx={{ paddingTop: 2, paddingBottom: 2 }} variant="body1" >Mentorship Duration: 6 weeks</Typography>
 

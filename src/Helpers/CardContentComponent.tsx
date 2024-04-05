@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState,useEffect} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,20 +17,22 @@ const DefaultNameHolder = ({name} : {name:string}) => {
 
 
 export default function CardContentComponent({data} : {data:MenteeDataType}) {
+
   return (
       <>
       <Link to="/">
         <Box component="div"  sx={styles.mainCardHolder}>
    
           <Box component="div" sx={styles.overlay} />
-          <Box sx={styles.nameHolder} ><Typography variant='subtitle2' sx={{fontSize:"1.3em",color:"#000000"}}>{data.username}</Typography></Box>
+          <Box sx={styles.nameHolder} ><Typography variant='subtitle2' sx={{fontSize:"1.3em",color:"#000000"}}>{data.fullname}</Typography></Box>
 
           <Box component="div" sx={styles.overlayText}/>
           <Box sx={{position:"absolute",bottom:0}}>
 
           <Grid container sx={{padding:"8px 10px"}} spacing={6} justifyContent={'center'} alignItems={"center"}>
             <Grid item xs={2}> <ScheduleIcon  sx={{color:"white",fontSize:50}}/></Grid>
-            <Grid item xs={9}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${data.nextSession.month} ${data.nextSession.day} at ${data.nextSession.time}`}</Typography></Grid>
+            
+            <Grid item xs={9}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${data.nextSession} `}</Typography></Grid>
          </Grid>
           </Box>
           <img src={data.image}  alt=""  style={styles.image}/>

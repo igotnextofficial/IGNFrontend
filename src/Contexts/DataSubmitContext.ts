@@ -3,7 +3,8 @@ import { httpDataObject } from "../Types/DataTypes";
 interface dataSubmissionType{
     data:object,
     response:httpDataObject | null,
-    updateData:((data:httpDataObject) => void),
+    updateData:((data:httpDataObject | null) => void),
+    updateUrl:((url:string) => void)
 }
 
 

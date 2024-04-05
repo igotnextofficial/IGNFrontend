@@ -7,13 +7,13 @@ const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
         <>
         <Box sx={styles.mainContainer} >
                 <Box sx={styles.container}>
-                    <Avatar src={artist.image} alt={artist.name} sx={{width:250, height:250}} />
+                    <Avatar src={artist.image} alt={artist.fullname} sx={{width:250, height:250}} />
                     <Box sx={styles.pillHolder}>
                         <IgnPillComponent description={artist.genre} />
                     </Box>
                 </Box>
                 <Box>
-                    <TextContentComponent content={artist.name} />
+                    <TextContentComponent content={artist.fullname} />
                 </Box>
         
             </Box>

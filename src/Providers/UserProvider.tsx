@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         console.log(`updated`)
     },[refresh])
 
-    const updateUser = useCallback((user: UserDataType) => {
+    const updateUser = useCallback((user: UserDataType | MentorDataType | ArtistDataType) => {
         console.log(`let us update`);
         setUser((currentUser) => ({
             ...currentUser,
@@ -36,6 +36,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }, []); // Assuming setUser doesn't need external dependencies
     
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
+
         let response;
         
         if (login && data) {

@@ -2,7 +2,7 @@ import { Roles } from "../Types/Roles"
 export const ArtistFake =[
     {
     id: "1",
-    name: "Reuben Buapim",
+    fullname: "Reuben Buapim",
     username: "Colla",
     role: Roles.ARTIST,
     genre: "Hip Hop",
@@ -16,7 +16,7 @@ export const ArtistFake =[
   
     {
       id: "2",
-      name: "Lila Hart",
+      fullname: "Lila Hart",
       username: "MysticLila",
       role: Roles.ARTIST,
       genre: "Indie Pop",
@@ -25,7 +25,7 @@ export const ArtistFake =[
     },
     {
       id: "3",
-      name: "Marcus Reed",
+      fullname: "Marcus Reed",
       username: "DJReed",
       role: Roles.ARTIST,
       genre: "Electronic",
@@ -34,7 +34,7 @@ export const ArtistFake =[
     },
     {
       id: "4",
-      name: "Elena Torres",
+      fullname: "Elena Torres",
       username: "ElenaT",
       role: Roles.ARTIST,
       genre: "Classical",
@@ -43,7 +43,7 @@ export const ArtistFake =[
     },
     {
       id: "5",
-      name: "Toby Greene",
+      fullname: "Toby Greene",
       username: "RhythmToby",
       role: Roles.ARTIST, 
       genre: "Rock",
@@ -52,7 +52,7 @@ export const ArtistFake =[
     },
     {
       id: "6",
-      name: "Elena Thompson",
+      fullname: "Elena Thompson",
       username: "VocalVortex",
       role: Roles.ARTIST,
       genre: "Pop",
@@ -61,7 +61,7 @@ export const ArtistFake =[
     },
     {
       id: "7",
-      name: "Liam Echos",
+      fullname: "Liam Echos",
       username: "EchoBass",
       role: Roles.ARTIST,
       genre: "Reggae",
@@ -70,7 +70,7 @@ export const ArtistFake =[
     },
     {
       id: "8",
-      name: "Sophie Lune",
+      fullname: "Sophie Lune",
       username: "LunarNotes",
       role: Roles.ARTIST,
       genre: "Indie Folk",
@@ -79,7 +79,7 @@ export const ArtistFake =[
     },
     {
       id: "9",
-      name: "Cedric Blaze",
+      fullname: "Cedric Blaze",
       username: "CeeBlaze",
       role: Roles.ARTIST,
       genre: "Hip Hop",
@@ -88,7 +88,7 @@ export const ArtistFake =[
     },
     {
       id: "10",
-      name: "Ava Harmony",
+      fullname: "Ava Harmony",
       username: "MelodyCraft",
       role: Roles.ARTIST,
       genre: "R&B",

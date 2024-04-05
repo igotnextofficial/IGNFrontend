@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import ListMentors from "../../Components/Users/Mentor/ListMentors"
 import CategorySelection from "./CategorySelection"
 import DisplayMentorDropdown from "./DisplayMentorsDropdown"
-import { Link } from "@mui/material";
+
 
 const mentorObject = new Mentor()
 const allMentors = mentorObject.getAll();
@@ -71,7 +71,7 @@ const DisplaySearchField = ({ byCategory = false }) => {
 
     const handleChangeForMentorList = (data: string) => {
         let searchedMentorList = data.trim().length === 0 ? [] : allMentors.filter((mentor) => {
-            return mentor.name.toLowerCase().startsWith(data.toLowerCase())
+            return mentor.fullname.toLowerCase().startsWith(data.toLowerCase())
         })
 
         setMentorsList(searchedMentorList)

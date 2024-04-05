@@ -61,13 +61,14 @@ const MainApplication = () => {
 
           {/* Profile */}
 
-          <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
-          <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> {/* Sends Request */}
           
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
-          <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
+            <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
             <Route path='/dashboard/:role' element={<Dashboard />} /> 
-
+            
+            <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
+          <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> {/* Sends Request */}
+          
 
             <Route path='/compose-article' element={<ComposeArticle />} />  {/* Sends Request */}
             <Route path='/edit-article/:article_id' element={<EditArticle />} />{/* Sends Request */}

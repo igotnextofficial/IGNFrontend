@@ -16,7 +16,7 @@ class Mentor extends Model {
       this.data = mentorsFake;
     }
 
-    getAll(){
+    getAll (){
         return this.data         
     }
 

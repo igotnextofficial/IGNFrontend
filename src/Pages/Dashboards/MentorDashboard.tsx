@@ -81,12 +81,12 @@ const MentorDashboard = ()=>{
                     </Box>
                 </Grid>
             <Grid item xs={8}>
-                    <ListMentees user={user as MentorDataType} />
+                    <ListMentees mentor={user as MentorDataType} />
                 </Grid>
 
                          
                 <Grid item xs={4}>
-                    <RequestMenteeComponent user={user as MentorDataType}/>
+                    <RequestMenteeComponent mentor={user as MentorDataType}/>
                 </Grid>
 
                 {/* <Grid item xs={6}>

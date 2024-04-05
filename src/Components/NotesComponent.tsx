@@ -13,7 +13,7 @@ const [recipient ,setRecipient] = useState<listDisplayDataType | null>(null)
 
 useEffect(() => {
     setRecipient({
-        title:`Recipient: ${recipientOfNote?.name}`,
+        title:`Recipient: ${recipientOfNote?.fullname}`,
         image_url:recipientOfNote?.image ?? "",
         subtitle: "", 
         meta:`` 
@@ -47,7 +47,7 @@ const NotesComponent = ({recipient}: {recipient:MenteeDataType}) => {
     return (
     
     <FormDataProvider>
-    {sentSuccessfully ? <SuccessMessage person={recipient.name } /> : <Notes recipientOfNote={recipient} sent={handleSent} /> }
+    {sentSuccessfully ? <SuccessMessage person={recipient.fullname } /> : <Notes recipientOfNote={recipient} sent={handleSent} /> }
     </FormDataProvider>
     )
 }

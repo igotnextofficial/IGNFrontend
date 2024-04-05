@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react'; // Import useState and useEffect
-import Mentor from '../../../Models/Users/Mentor';
 import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
-import { MentorDataType } from '../../../Types/DataTypes';
+import { HttpMethods, MentorDataType } from '../../../Types/DataTypes';
+import DataSubmissionProvider from '../../../Providers/DataSubmissionProvider';
+import { useDataSubmitContext } from '../../../Contexts/DataSubmitContext';
 
-const ListMentors = () => {
+const ListMentorsData = () => {
     const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
+    const {response } = useDataSubmitContext()
+
+
+
 
     useEffect(() => {
-        const mentorsInit = new Mentor();
-        const loadedMentors = mentorsInit.getAll(); // Assume this is synchronous; adjust if it's async
-        setMentors(loadedMentors);
-    }, []); // Empty dependency array means this effect runs once on mount
+        if(response ){
+            let response_data = response.data as MentorDataType[]
+            let data =  response_data.map(mentor => {
+                mentor.bio = `${mentor.bio.substring(0,120)}...` 
+                return mentor
+            })
+            setMentors(data as MentorDataType[])
+        }
+        console.log(`the response is calling... ${response}  ${JSON.stringify(process.env)}`)
+
+
+
+    }, [response]); // Empty dependency array means this effect runs once on mount
 
     return (
         <Grid container sx={styles.Container}>
@@ -29,5 +43,15 @@ const styles = {
         marginTop: "3rem"
     }
 };
+
+
+const ListMentors = () => {
+
+    return (
+        <DataSubmissionProvider httpMethod={HttpMethods.GET} dataUrl={`${process.env.REACT_APP_MENTOR_API}`}>
+            <ListMentorsData/>
+        </DataSubmissionProvider>
+    )
+}
 
 export default ListMentors;

@@ -28,7 +28,7 @@ export default function  ListContentComponent({data} : {data:MenteeDataType}) {
             <ScheduleIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={`${data.name}`} secondary={`${data.nextSession.month} ${data.nextSession.day} at ${data.nextSession.time}`} />
+        <ListItemText primary={`${data.fullname}`} secondary={`${data.nextSession}`} />
       </ListItem>
        
         </List> 

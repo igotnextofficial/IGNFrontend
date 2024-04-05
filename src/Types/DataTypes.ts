@@ -12,16 +12,14 @@ export interface SongDataType{
 
 export interface UserDataType {
     id:string,
-    name:string,
-    fullname?:string,
+    fullname:string,
     role:Roles
     image?:string,
     bio?:string,
 }
 export interface MentorDataType {
     id:string,
-    name:string,
-    fullname?:string,
+    fullname:string,
     username?:string
     image:string,
     role:Roles
@@ -36,14 +34,15 @@ export interface CalendarDataType{
     time:string
 }
 export interface MenteeDataType extends ArtistDataType {
+    id:string,
     progress:number,
-    nextSession:CalendarDataType
+    nextSession:string,
+    status:string
 }
 
 export interface ArtistDataType {
     id:string,
-    name:string,
-    fullname?:string,
+    fullname:string,
     username:string,
     image:string,
     role:Roles

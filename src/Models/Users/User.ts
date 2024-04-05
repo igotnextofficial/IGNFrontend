@@ -11,9 +11,9 @@ class User{
     static readonly ACCESS_TOKEN: string = "accessToken"
     constructor(){
         this.baseURI = process.env.REACT_APP_ENVIRONMENT === "development" ? `${process.env.REACT_APP_TEST_API}` : `https://${process.env.REACT_APP_USER_API_URI}`; 
-        this.endpoint = `http://${this.baseURI}/users`;
-        this.loginEndpoint = `http://${this.baseURI}/login`
-        this.logoutEndpoint = `http://${this.baseURI}/logout`
+        this.endpoint = `${process.env.REACT_APP_USER_API_URI}`;
+        this.loginEndpoint = `${process.env.REACT_APP_LOGIN_API}`
+        this.logoutEndpoint = `${process.env.REACT_APP_LOGOUT_API}`
    
         this.ignHttpRequest = new IgnRequest({baseURL:this.baseURI})
         this.ignHttpRequest.setHeaders();
