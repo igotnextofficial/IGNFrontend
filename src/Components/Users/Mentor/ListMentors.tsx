@@ -1,16 +1,26 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect
+import React, { useState, useEffect, HTMLProps } from 'react'; // Import useState and useEffect
 import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
-import { HttpMethods, MentorDataType } from '../../../Types/DataTypes';
+import { HttpMethods, MentorDataType, httpDataObject } from '../../../Types/DataTypes';
 import DataSubmissionProvider from '../../../Providers/DataSubmissionProvider';
 import { useDataSubmitContext } from '../../../Contexts/DataSubmitContext';
+import { sendRequest } from '../../../Utils/helpers';
 
-const ListMentorsData = () => {
+const ListMentors = () => {
     const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
-    const {response } = useDataSubmitContext()
+    const [response,setResponse] = useState<httpDataObject | null>(null);
 
 
+    useEffect(() => {
+        const loadData = async () => {
+            let response = await sendRequest(HttpMethods.GET,`${process.env.REACT_APP_MENTOR_API}`)
+            setResponse(response)
+        }
 
+        loadData()
+   
+    },[])
+      
 
     useEffect(() => {
         if(response ){
@@ -45,13 +55,5 @@ const styles = {
 };
 
 
-const ListMentors = () => {
-
-    return (
-        <DataSubmissionProvider httpMethod={HttpMethods.GET} dataUrl={`${process.env.REACT_APP_MENTOR_API}`}>
-            <ListMentorsData/>
-        </DataSubmissionProvider>
-    )
-}
 
 export default ListMentors;

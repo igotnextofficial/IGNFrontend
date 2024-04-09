@@ -20,10 +20,11 @@ export interface UserDataType {
 export interface MentorDataType {
     id:string,
     fullname:string,
-    username?:string
+    username?:string,
     image:string,
-    role:Roles
+    role:Roles,
     bio:string,
+    availability:boolean,
     specialties:string[],
     mentees:MenteeDataType[]
 }
@@ -37,7 +38,8 @@ export interface MenteeDataType extends ArtistDataType {
     id:string,
     progress:number,
     nextSession:string,
-    status:string
+    status:string,
+    request_id:string
 }
 
 export interface ArtistDataType {

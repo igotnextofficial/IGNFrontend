@@ -1,10 +1,8 @@
 import { createContext, useContext } from "react";
-import { httpDataObject } from "../Types/DataTypes";
+
 interface dataSubmissionType{
-    data:object,
-    response:httpDataObject | null,
-    updateData:((data:httpDataObject | null) => void),
-    updateUrl:((url:string) => void)
+    
+
 }
 
 

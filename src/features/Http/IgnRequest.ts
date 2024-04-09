@@ -1,6 +1,5 @@
 import { HttpConfigurationType, HttpHeaders, httpDataObject } from "../../Types/DataTypes";
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { wrappedData } from "../../Utils/helpers";
 import User from "../../Models/Users/User";
 
 

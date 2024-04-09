@@ -2,36 +2,44 @@ import React, {useState, useEffect} from "react"
 import { Link } from "react-router-dom"
 import { Box,Grid,Button } from "@mui/material"
 
-import { ArtistFake } from "../../../fake-data/ArtistFake"
+
 
 import DashboardSectionComponent from "../../DashboardSectionComponent"
 import ListDisplayComponent from "../../../Helpers/ListDisplayComponent"
 import { useUser } from "../../../Contexts/UserContext"
 
-import { listDisplayDataType,ArtistDataType,MentorDataType, MenteeDataType, UserDataType } from "../../../Types/DataTypes"
+import { listDisplayDataType, MentorDataType, MenteeDataType,  HttpMethods } from "../../../Types/DataTypes"
+
+
+import { sendRequest } from "../../../Utils/helpers"
 
 
 
 const handleDecline = (id:string) => {}
 
-const RequestMenteeComponent =  ({mentor}: {mentor:MentorDataType}) => {
+const RequestMenteeComponent = ({mentor}: {mentor:MentorDataType}) => {
     const {user,updateUser} = useUser()
     const [data,setData ] = useState<MenteeDataType[]>([])
 
     useEffect(() => {
         setData(mentor.mentees.filter(mentee => mentee.status === "pending"))
+     
     },[mentor])
 
-    const handleApproved = (mentee:MenteeDataType) => {
+    const handleApproved = async (mentee:MenteeDataType) => {
         let statusUpdate = {status : "approved"}
         let updatedMentee = {...mentee,...statusUpdate}
         let currentUser =  user as MentorDataType
         let currentMentees =  currentUser.mentees.filter(item => item.id !== updatedMentee.id)
-        let newMentee = {mentees:[...currentMentees,updatedMentee]}
-     
+        let newMentee = {mentees:[updatedMentee,...currentMentees]}
+        let url = `${process.env.REACT_APP_TEST_API}/mentors/approve/${mentee.request_id}`
         let updatedUser = {...user, ...newMentee}
         updateUser(updatedUser as MentorDataType)
-        console.dir(updatedUser)
+        let response = await sendRequest(HttpMethods.POST, url)
+        if(response === null){
+            console.log(`undo`)
+        }
+    
    
     }
     return <>
@@ -46,7 +54,7 @@ const RequestMenteeComponent =  ({mentor}: {mentor:MentorDataType}) => {
 
                    
                     return (
-                        <React.Fragment key={mentor.id}>
+                        <React.Fragment key={mentee.id}>
                           
                             <Link to={`mentee/${mentor.id}/notes`}>  <ListDisplayComponent data={data} /></Link>
                             <Grid container spacing={2} justifyContent={"flex-end"}>
@@ -70,6 +78,8 @@ const RequestMenteeComponent =  ({mentor}: {mentor:MentorDataType}) => {
        
 
 }
+
+
 
 
 export default RequestMenteeComponent

@@ -108,8 +108,6 @@ const ArtistDashboard = () => {
                 <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={12}>
                         <ProfileTopSection/>
-                 
-           
                     </Grid>
 
                     {user.bio && <Grid item xs={12}> <DisplayBio user={user as ArtistDataType}/> </Grid>}

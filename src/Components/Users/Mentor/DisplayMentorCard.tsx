@@ -5,45 +5,51 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Grid ,Button, CardActionArea, CardActions } from '@mui/material';
 import { HttpMethods, MentorDataType } from '../../../Types/DataTypes';
-import { Link } from 'react-router-dom';
+
 import DataSubmissionProvider from '../../../Providers/DataSubmissionProvider';
-import { useDataSubmitContext } from '../../../Contexts/DataSubmitContext';
 import FormDataProvider from "../../../Providers/FormDataProvider";
-import { useFormDataContext } from "../../../Contexts/FormContext";
 import { useUser } from '../../../Contexts/UserContext';
+import { sendRequest } from '../../../Utils/helpers';
  
 
 const labels = {
   "pending":"Pending Approval",
-  "approved": "Current Mentor"
+  "approved": "Current Mentor",
+  "default": "Book Mentor"
 
 }
-function DisplayMentorCardData({mentor} : {mentor:MentorDataType}) {
+const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
   const {user}= useUser()
-  const {updateUrl,updateData} = useDataSubmitContext()
-  const [buttonLabel, setButtonLabel] = useState("Book Mentor")
+  const [buttonLabel, setButtonLabel] = useState(labels.default)
 
   useEffect(() => {
       const mentee = mentor.mentees.find(mentee => mentee.id === user?.id);
       if(mentee){
         if(mentee.status === "approved"){
-          setButtonLabel("Current Mentor")
+          setButtonLabel(labels.approved)
         } 
 
         if(mentee.status === "pending"){
-          setButtonLabel("Pending Approval")
+          setButtonLabel(labels.pending)
         } 
 
       }
   },[mentor,user])
-  const handleBooking = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleBooking = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    setButtonLabel(labels.pending)
     let mentor_id = event.currentTarget.dataset.src;
     let endpoint = `${process.env.REACT_APP_MENTOR_API}/${mentor_id}/request/${user?.id}`
     console.log(`the endpoint is : ${endpoint}  |  ${event.currentTarget}`)
       event.currentTarget.disabled = true
-      updateUrl(endpoint)
-      updateData(null)
-      setButtonLabel("Request Pending")
+      let response = await sendRequest(HttpMethods.POST,endpoint);
+      if(response === null){
+        event.currentTarget.disabled = false
+        setButtonLabel(labels.default)
+      }
+  
+
+     
 
   }
 
@@ -101,16 +107,6 @@ function DisplayMentorCardData({mentor} : {mentor:MentorDataType}) {
 
 
 
-const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
-  return (
-    <>
-            <FormDataProvider>
-        <DataSubmissionProvider httpMethod={HttpMethods.POST} dataUrl={``}>
-            <DisplayMentorCardData mentor={mentor} />
-          </DataSubmissionProvider>
-      </FormDataProvider>
-    </>
-  )
-}
+
 
 export default DisplayMentorCard;

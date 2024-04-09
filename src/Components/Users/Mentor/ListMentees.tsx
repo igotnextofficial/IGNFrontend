@@ -4,15 +4,21 @@ import { Box,Grid,Button , Typography} from "@mui/material"
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
 import DashboardSectionComponent from "../../DashboardSectionComponent";
-import { MenteeDataType, MentorDataType } from "../../../Types/DataTypes";
+import { HttpMethods, MenteeDataType, MentorDataType, httpDataObject } from "../../../Types/DataTypes";
 
 import LinearProgressBar from "../../../Helpers/LinearProgressBar";
 import NotesComponent from "../../NotesComponent";
 
-const ListMentees =  ({mentor}: {mentor:MentorDataType}) => {
+import { useUser } from "../../../Contexts/UserContext";
+import { sendRequest } from "../../../Utils/helpers";
+
+const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
     const[data,setData] = useState<MenteeDataType[]>([])
+    const {user} = useUser()
     const [recipient,setRecipient] = useState<MenteeDataType | null>(null)
     const [hoveredMenteeId, setHoveredMenteeId] = useState(null);
+
+
     useEffect(()=>{
         setData(mentor.mentees.filter(mentee => mentee.status === "approved"))
     },[mentor])
@@ -26,6 +32,15 @@ const ListMentees =  ({mentor}: {mentor:MentorDataType}) => {
     const handleMouseLeave = () => {
       setHoveredMenteeId(null);
     };
+
+    const submitNotes = async (notesData:httpDataObject,recipient:string) => {
+    const url = `${process.env.REACT_APP_TEST_API}/notes/${recipient}`
+    let response = await sendRequest(HttpMethods.POST,url,notesData)
+        console.log(`Sending ${JSON.stringify(notesData)}`)
+        if(!response){return false}
+
+        return true
+    }
     return <>
     <Box sx={{border:"1px solid rgba(0,0,0,0.1)", padding:"8px 20px" , borderRadius:"5px",backgroundColor:"white"}}>
             <DashboardSectionComponent title={`Mentee(s) (${data.length})`}><></></DashboardSectionComponent>
@@ -33,8 +48,8 @@ const ListMentees =  ({mentor}: {mentor:MentorDataType}) => {
        
                    
                     return (
-                        <>
-                        {recipient && recipient.id === mentee.id && <NotesComponent recipient={recipient}/>}
+                        <React.Fragment key={index}>
+                        {recipient && recipient.id === mentee.id && <NotesComponent recipient={recipient} handleClick={submitNotes}/>}
                             <Box key={index} component={"div"} sx={{margin:"30px 0", borderBottom:"1px solid  rgba(0,0,0,0.1)", padding:"30px 0"}} >
 
                                 <Box component={"div"}  sx={{ marginBottom:"15px",border:"1px solid  rgba(0,0,0,0.1)",boxShadow:"2px 2px 10px rgba(0, 0, 0, 0.1)",fontSize:0}}>
@@ -47,7 +62,7 @@ const ListMentees =  ({mentor}: {mentor:MentorDataType}) => {
 
                                     <Grid item xs={10} sx={{cursor:"pointer"}} > <Typography variant="subtitle1" sx={{color:'darkgrey'}}> {mentee.fullname} ({mentee.username}) Session Tracker:</Typography>
                                         
-                                        <LinearProgressBar userProgress={mentee.progress} />
+                                        <LinearProgressBar userProgress={mentee.progress || 0} />
                                     </Grid>
                                     <Grid item xs={2} ><Button color={"inherit"} sx={{width:"100%"}} variant="contained" startIcon={<EditNoteIcon/>} onClick={() => {
                                         setRecipient(mentee)
@@ -55,7 +70,7 @@ const ListMentees =  ({mentor}: {mentor:MentorDataType}) => {
                                 </Grid>
                             </Box>
                     
-                        </>
+                        </React.Fragment>
                     )
                 }) : null}
           
@@ -66,5 +81,9 @@ const ListMentees =  ({mentor}: {mentor:MentorDataType}) => {
           </Box>
     </>
 }
+
+
+
+
 
 export default ListMentees

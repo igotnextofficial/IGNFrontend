@@ -75,6 +75,8 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                         {
                         
                         data.map(mentee => {
+                            console.log(`the sessions is ${mentee.nextSession}`)
+                            if(!(mentee.nextSession)){return null}
                             const readableDate = formatDate(new Date(mentee.nextSession));
                    
                           

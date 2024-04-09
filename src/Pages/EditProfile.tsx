@@ -1,24 +1,21 @@
-import {  useCallback, useEffect } from "react"
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react"
+
 import { useUser } from "../Contexts/UserContext"
-import { useDataSubmitContext } from "../Contexts/DataSubmitContext";
-import DataSubmissionProvider from "../Providers/DataSubmissionProvider";
 import { HttpMethods, UserDataType } from "../Types/DataTypes";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import ContentContainer from "../Utils/ContentContainer";
 import Artist from "../Models/Users/Artist";
 import IgnFormGenerate from "../Components/IgnFormGenerate";
 import { useFormDataContext } from "../Contexts/FormContext";
 import FormDataProvider from "../Providers/FormDataProvider";
-import User from "../Models/Users/User";
-import UploadImageComponent from "../Components/UploadImageComponent";
+
+import { sendRequest } from "../Utils/helpers";
 
 
-const endpoint = new User().getEndpoint()
+
 
 const Profile = () => {
     const { user, updateUser} = useUser();
-    const { updateData,response } = useDataSubmitContext()
     const { data, updateFormData } = useFormDataContext()
     const formStructure = new Artist().structure;
 
@@ -35,16 +32,16 @@ useEffect(() => {
 },[user,updateFormData])
 
 
-useEffect(()=> {
-    if(response !== null){
 
-        localStorage.setItem('userInfo',JSON.stringify(response?.data))
-        updateUser(response.data as UserDataType)   
-    }
-},[response,updateUser])
  
-    const handleSubmit = ()=>{
-        updateData(data)
+    const handleSubmit = async () => {
+        const endpoint = `${process.env.REACT_APP_USER_API_URI}/${user?.id}`
+        const response = await sendRequest(HttpMethods.PUT,endpoint,data)
+        if(response !== null){
+
+            localStorage.setItem('userInfo',JSON.stringify(response?.data))
+            updateUser(response.data as UserDataType)   
+        }
    
     }
 
@@ -60,16 +57,11 @@ useEffect(()=> {
 }
 
 const EditProfile = () => {
-    const {user} = useUser()
     return (
         <FormDataProvider>
-            <DataSubmissionProvider httpMethod={HttpMethods.PUT} dataUrl={`${endpoint}/${user?.id}`}>
-                
-                <ContentContainer>
+             <ContentContainer>
                     <Profile />
                 </ContentContainer>
-
-            </DataSubmissionProvider>
         </FormDataProvider>
 
     )

@@ -6,7 +6,8 @@ const mentor_artist = ArtistFake.slice(0).map((artist,index) => {
     ...artist,
     progress:Math.min((index + 1) * 33.,((index + 1) * 33) - 100),
     nextSession:"",
-    status:"pending"
+    status:"pending",
+    request_id:(Math.random() * 2 ** 9).toString()
 
   }
 })
@@ -19,6 +20,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Vocal Training", "Performance Coaching", "Music Production"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
       
     },
@@ -29,6 +31,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Lyricism", "Flow", "Storytelling"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     },
     {
@@ -38,6 +41,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Lyricism", "Music Business", "Career Development"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     },
     {
@@ -47,6 +51,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Stage Presence", "Vocal Performance", "Career Longevity"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     },
     {
@@ -56,6 +61,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Soul Music", "Vocal Technique", "Emotional Expression"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     },
     {
@@ -65,6 +71,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Piano and Songwriting", "Vocal Harmony", "Music Production"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     },
     {
@@ -74,6 +81,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["R&B and Soul Vocals", "Stage Performance", "Vocal Range Expansion"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     },
     {
@@ -83,6 +91,7 @@ export const mentorsFake = [
       bio: "With over a decade of experience in the music industry, John Smith is a seasoned mentor ready to share his extensive knowledge with aspiring musicians. He has worked with a diverse range of artists, from chart-toppers to indie gems, and his expertise spans various genres. John is passionate about helping you find your unique sound and navigate the ever-evolving landscape of the music world. As a mentor, he's dedicated to fostering your creative growth and providing invaluable insights to launch your musical journey to new heights.",
       specialties: ["Hip Hop Culture", "Music Marketing", "Artist Branding"],
       mentees:[...mentor_artist],
+      availability:true,
       role:Roles.MENTOR
     }
   ];

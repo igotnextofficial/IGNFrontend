@@ -4,11 +4,13 @@ import IgnFormGenerate from "./IgnFormGenerate"
 import { NotesFormStructure } from "../FormStructures/NotesFormStructure"
 import FormDataProvider from "../Providers/FormDataProvider"
 import { useFormDataContext } from "../Contexts/FormContext"
-import { listDisplayDataType, MenteeDataType } from "../Types/DataTypes"
+import { httpDataObject, listDisplayDataType, MenteeDataType } from "../Types/DataTypes"
 import ListDisplayComponent from "../Helpers/ListDisplayComponent"
+import { useUser } from "../Contexts/UserContext"
 
-const Notes = ({recipientOfNote,sent}: {recipientOfNote:MenteeDataType,sent: (success:boolean) => void}) => {
+const Notes = ({recipientOfNote,handleClick,sent}: {recipientOfNote:MenteeDataType,handleClick: (data:httpDataObject,id:string) => Promise<boolean>, sent:(success:boolean) => void}) => {
 const { data, updateFormData } = useFormDataContext()
+const { user } = useUser()
 const [recipient ,setRecipient] = useState<listDisplayDataType | null>(null)
 
 useEffect(() => {
@@ -19,10 +21,10 @@ useEffect(() => {
         meta:`` 
      })
 },[recipientOfNote])
-    const handleSubmit = ()=>{
-        let submitData = JSON.stringify({data:data})
-        console.log(`submitting the data ${submitData}`)
-        sent(true)
+    const handleSubmit = async ()=>{
+        const _data = {...data, recipient:recipientOfNote.id, sender:user?.id}
+        let response = await handleClick({"data":_data},recipientOfNote.id)
+        sent(response)
     }
 
     return (
@@ -37,7 +39,9 @@ useEffect(() => {
 const SuccessMessage = ({person} : {person:string} ) => {
     return <Typography variant="subtitle1" sx={{color:"black"}}>{`Note has been successfully sent to ${person}`}</Typography>
 }
-const NotesComponent = ({recipient}: {recipient:MenteeDataType}) => {
+
+
+const NotesComponent = ({recipient,handleClick}: {recipient:MenteeDataType, handleClick: (data:httpDataObject,id:string) => Promise<boolean> }) => {
     const [sentSuccessfully,setSentSuccessfully] = useState(false)
 
     const handleSent = ((success:boolean) => {
@@ -47,7 +51,7 @@ const NotesComponent = ({recipient}: {recipient:MenteeDataType}) => {
     return (
     
     <FormDataProvider>
-    {sentSuccessfully ? <SuccessMessage person={recipient.fullname } /> : <Notes recipientOfNote={recipient} sent={handleSent} /> }
+    {sentSuccessfully ? <SuccessMessage person={recipient.fullname } /> : <Notes recipientOfNote={recipient} handleClick={handleClick} sent={handleSent} /> }
     </FormDataProvider>
     )
 }
