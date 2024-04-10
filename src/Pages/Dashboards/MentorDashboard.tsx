@@ -16,20 +16,7 @@ import RequestMenteeComponent from "../../Components/Users/Mentor/RequestMenteeC
 import OpenUpForSessions from "../../Components/Users/Mentor/OpenUpForSessions"
 
 
-const ScheduledDate = ({date} : {date:CalendarDataType}) => {
-    return (<>
-            <Box  sx={{backgroundColor:'grey', borderRadius:"5px", border:" 1px solid #1d1917"}}>
-                <Grid sx={{textAlign:"center"}} container justifyContent={"center"} alignContent={"center"}>
-                    <Grid item xs={12} sx={{backgroundColor:"#03a0b0", color:"white",borderRadius:"3px", padding:" 5px 10px"}}> <Typography sx={{fontSize:"1.2em"}}> {date.month}</Typography></Grid>
-                    <Grid item xs={12} sx={{backgroundColor:"#03a0b0", color:"white"}}> <Typography sx={{fontSize:"2em"}}>{date.day}</Typography></Grid>
-                    <Grid item xs={12} sx={{backgroundColor:"#ffffff"}}> <Typography sx={{fontSize:"1.3em",color:"#1d1917"}}> {date.time}</Typography></Grid>
-                </Grid>
-            </Box>
-    </>
-    )
-}
 
- 
 
 
 

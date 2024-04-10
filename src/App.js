@@ -5,7 +5,7 @@ import Navigation from './Features/Navigation/Navigation';
 import ProtectedRoutes from './Utils/ProtectedRoute';
 
 
-import { BrowserRouter as Router, Switch, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router,Route, Routes} from 'react-router-dom';
 import Dashboard from './Pages/Dashboards/Dashboard';
 import ComposeArticle from './Pages/Articles/ComposeArticle';
 import EditArticle from './Pages/Articles/EditArticle';
@@ -28,6 +28,7 @@ import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
 import EditProfile from './Pages/EditProfile';
+import MessageReaderReply from './Pages/Notes/MessageReaderReply';
 
 
 
@@ -67,9 +68,10 @@ const MainApplication = () => {
             <Route path='/dashboard/:role' element={<Dashboard />} /> 
             
             <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
-          <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> {/* Sends Request */}
+            <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> {/* Sends Request */}
           
-
+            <Route path='/notes/:note_id' element={<MessageReaderReply />} /> 
+            
             <Route path='/compose-article' element={<ComposeArticle />} />  {/* Sends Request */}
             <Route path='/edit-article/:article_id' element={<EditArticle />} />{/* Sends Request */}
           </Route>

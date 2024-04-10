@@ -15,7 +15,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import TextContentComponent from '../../Helpers/TextContentComponent'
 import { ArtistDataType } from '../../Types/DataTypes'
-import Artist from '../../Models/Users/Artist'
+import MentorsFeedback from '../../Components/Users/Artist/MentorsFeedback'
+
 import { Link } from 'react-router-dom'
 import ProfileTopSection from '../../Components/Users/ProfileTopSection'
 
@@ -33,9 +34,6 @@ const RecentArticles = ({currentUser}: {currentUser:ArtistDataType}) => {
 }
 
 
-const MentorsFeedBack = () => {
-    return <DefaultMessaging />
-}
 const DefaultMessaging = () => {
     return <Typography sx={{ display: 'block', color: '#c7c7c7',padding:'15px' }} component="span" variant="body2"> No Data Available </Typography>
 }
@@ -113,7 +111,7 @@ const ArtistDashboard = () => {
                     {user.bio && <Grid item xs={12}> <DisplayBio user={user as ArtistDataType}/> </Grid>}
                     <Grid item xs={4}>
                         <DashboardSectionComponent title="Mentor's Feedback:" >
-                            <MentorsFeedBack/>
+                            <MentorsFeedback/>
                         </DashboardSectionComponent>
                     </Grid>
 

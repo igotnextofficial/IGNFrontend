@@ -31,7 +31,7 @@ const ListMentors = () => {
             })
             setMentors(data as MentorDataType[])
         }
-        console.log(`the response is calling... ${response}  ${JSON.stringify(process.env)}`)
+
 
 
 
