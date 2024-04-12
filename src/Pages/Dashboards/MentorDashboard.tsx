@@ -14,6 +14,9 @@ import UpcomingSessions from "../../Components/Users/Mentor/UpcomingSessions"
 
 import RequestMenteeComponent from "../../Components/Users/Mentor/RequestMenteeComponent"
 import OpenUpForSessions from "../../Components/Users/Mentor/OpenUpForSessions"
+import MenteeNotes from "../../Components/Users/Mentor/MenteeNotes"
+
+import DashboardSectionBorder from "../../Components/Users/Mentor/DashboardSectionComponentWithBorder"
 
 
 
@@ -63,18 +66,37 @@ const MentorDashboard = ()=>{
                }
                 </Grid>  
             <Grid item xs={12}>
-                 <Box sx={{border:"1px solid rgba(0,0,0,0.1)", padding:"8px 20px" , borderRadius:"5px",backgroundColor:"white"}}>
+                 <DashboardSectionBorder title="Upcoming Session(s)">
                     <UpcomingSessions user={user as MentorDataType} />
-                    </Box>
+                    </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={8}>
-                    <ListMentees mentor={user as MentorDataType} />
+                    <DashboardSectionBorder title="Mentee(s)">
+                         <ListMentees mentor={user as MentorDataType} />
+                    </DashboardSectionBorder>
                 </Grid>
 
                          
-                <Grid item xs={4}>
-                    <RequestMenteeComponent mentor={user as MentorDataType}/>
+                <Grid item xs={4} >
+                    <Grid container spacing={3}>
+                        <Grid item>
+                        <DashboardSectionBorder title="Mentorship Request(s)">
+                            <RequestMenteeComponent mentor={user as MentorDataType} />
+                        </DashboardSectionBorder>
+                        </Grid>
+                        
+                        <Grid item>
+                        <DashboardSectionBorder title="Mentee note(s)">
+                            <MenteeNotes/>
+                            </DashboardSectionBorder>
+                        </Grid>
+                    </Grid>
+                   
+                   
                 </Grid>
+
+    
+          
 
                 {/* <Grid item xs={6}>
                  {   data && <TopProfileSectionComponent user={data} bio={user.bio} />}

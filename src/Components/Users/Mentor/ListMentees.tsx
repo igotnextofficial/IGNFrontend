@@ -11,6 +11,7 @@ import NotesComponent from "../../NotesComponent";
 
 import { useUser } from "../../../Contexts/UserContext";
 import { sendRequest } from "../../../Utils/helpers";
+import NoDataAvailable from "../../../Utils/NoDataAvailable";
 
 const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
     const[data,setData] = useState<MenteeDataType[]>([])
@@ -41,15 +42,16 @@ const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
 
         return true
     }
-    return <>
-    <Box sx={{border:"1px solid rgba(0,0,0,0.1)", padding:"8px 20px" , borderRadius:"5px",backgroundColor:"white"}}>
-            <DashboardSectionComponent title={`Mentee(s) (${data.length})`}><></></DashboardSectionComponent>
-                {data.length > 0 ?  data.map((mentee,index) => {
+    return  data.length > 0 ? <>
+
+                {  data.map((mentee,index) => 
+                    {
        
                    
                     return (
                         <React.Fragment key={index}>
-                        {recipient && recipient.id === mentee.id && <NotesComponent recipient={recipient} handleClick={submitNotes}/>}
+                        {
+                        recipient && recipient.id === mentee.id && <NotesComponent recipient={recipient} handleClick={submitNotes}/>}
                             <Box key={index} component={"div"} sx={{margin:"30px 0", borderBottom:"1px solid  rgba(0,0,0,0.1)", padding:"30px 0"}} >
 
                                 <Box component={"div"}  sx={{ marginBottom:"15px",border:"1px solid  rgba(0,0,0,0.1)",boxShadow:"2px 2px 10px rgba(0, 0, 0, 0.1)",fontSize:0}}>
@@ -72,14 +74,14 @@ const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
                     
                         </React.Fragment>
                     )
-                }) : null}
+                })}
           
   
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <Button variant="outlined">View All</Button>
                             </Box>
-          </Box>
-    </>
+       
+    </> : <NoDataAvailable/>
 }
 
 

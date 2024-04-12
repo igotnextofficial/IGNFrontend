@@ -12,6 +12,7 @@ import ListContentComponent from "../../../Helpers/ListContentComponent";
 import { Switch, FormControlLabel } from '@mui/material';
 import ViewModuleIcon from '@mui/icons-material/ViewModule'; // Grid icon
 import ViewListIcon from '@mui/icons-material/ViewList'; // List icon
+import NoDataAvailable from "../../../Utils/NoDataAvailable";
 
 
 function formatDate(date:Date) {
@@ -51,16 +52,7 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     }, [user])
     return (
         <>
-            <DashboardSectionComponent title={`Upcoming Session(s) (${data.length})`} > </DashboardSectionComponent>
-            <Box
-                component="div"
-                sx={{
 
-                    backgroundColor: "#e6e6e6",
-                    borderRadius: "5px",
-                    padding: " 20px  30px"
-                }}
-            >
                 <FormControlLabel
                     control={<Switch checked={gridView} onChange={handleChange} />}
                     label={   <Box display="flex" alignItems="center" gap={1}>
@@ -91,10 +83,10 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                         })}
                     </Grid>
                 ) : (
-                    <div>No upcoming sessions</div>
+                    <NoDataAvailable/>
                 )}
 
-            </Box>
+ 
         </>
 
 

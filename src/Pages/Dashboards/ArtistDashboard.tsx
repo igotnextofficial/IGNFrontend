@@ -5,7 +5,7 @@ import ListArticlesComponent from '../../Components/Article/ListAritclesComponen
 import { FetchMode } from '../../Types/ArticleFetchMode'
 import { ArticleContext } from '../../Contexts/ArticleContext'
 import { useUser } from '../../Contexts/UserContext'
-import DashboardSectionComponent from '../../Components/DashboardSectionComponent'
+import DashboardSectionBorder from '../../Components/Users/Mentor/DashboardSectionComponentWithBorder'
 import ContentContainer from '../../Utils/ContentContainer'
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
@@ -110,15 +110,15 @@ const ArtistDashboard = () => {
 
                     {user.bio && <Grid item xs={12}> <DisplayBio user={user as ArtistDataType}/> </Grid>}
                     <Grid item xs={4}>
-                        <DashboardSectionComponent title="Mentor's Feedback:" >
+                        <DashboardSectionBorder title="Mentor's Feedback:" >
                             <MentorsFeedback/>
-                        </DashboardSectionComponent>
+                        </DashboardSectionBorder>
                     </Grid>
 
                     <Grid item xs={4}>
-                        <DashboardSectionComponent title="Most Recent Articles" >
+                        <DashboardSectionBorder title="Most Recent Articles" >
                             <RecentArticles currentUser={user as ArtistDataType} />
-                        </DashboardSectionComponent>
+                        </DashboardSectionBorder>
                     </Grid>
 
 

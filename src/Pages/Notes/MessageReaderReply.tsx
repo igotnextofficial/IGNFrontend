@@ -16,8 +16,17 @@ const MessageReaderReplyData = () => {
     const {note_id} = useParams()
     const [note,setNote] = useState<Record<string,any> | null>(null)
     const [showNotesBox,setShowNotesBox] = useState<boolean>(false)
+    const [successful,setSuccessful] = useState<boolean>(false)
+    const [message,setMessage] = useState("")
     const [replyTo,setReplyTo] = useState<UserDataType| MentorDataType| ArtistDataType | null>(null)
 
+    useEffect(() => {
+        setShowNotesBox(false)
+        if(successful){
+
+            setMessage(`Hey ${user?.fullname}, Your reply to ${note?.sender.fullname} was successfully sent`)
+        }
+    },[successful,note,user])
 
     useEffect(() => {
         note && setReplyTo(note.sender.id)
@@ -37,14 +46,13 @@ const MessageReaderReplyData = () => {
     },[note_id])
 
     const handleSubmit = async() => {
-        const _data = {...data, subject:note?.subject, sender:user?.id}
-        let url = `${process.env.REACT_APP_NOTES_API}/${note?.sender.id}`
-        console.log(` 
-        
-            sending: ${JSON.stringify(_data)},
-            url: ${url}
-        `)
-        // let response = await sendRequest(HttpMethods.POST,url,{"data":_data})
+        const _data = {...data, subject:note?.subject, sender:user?.id,priorMessage:note?.id}
+        let url = `${process.env.REACT_APP_NOTES_API}/${replyTo}`
+
+        let response = await sendRequest(HttpMethods.POST,url,{"data":_data})
+        if(response){
+            setSuccessful(true)
+        }
        
     }
     const handleReplyClick = () => {
@@ -86,7 +94,11 @@ const MessageReaderReplyData = () => {
                 </>
                 )}
            
-               
+               {
+                message.trim() !== "" && (
+                    <Typography variant='h6' color={"success"}>{message}</Typography>
+                )
+               }
           
             </MainHolderComponent>
         </>

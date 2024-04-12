@@ -29,6 +29,8 @@ import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
 import EditProfile from './Pages/EditProfile';
 import MessageReaderReply from './Pages/Notes/MessageReaderReply';
+import { Schedule } from '@mui/icons-material';
+import ScheduleTime from './Components/ScheduleTime';
 
 
 
@@ -61,11 +63,12 @@ const MainApplication = () => {
           <Route path='/profile/:role' element={< Dashboard />} />
 
           {/* Profile */}
-
+          <Route path='/schedule' element={<ScheduleTime />} /> 
           
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
             <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
             <Route path='/dashboard/:role' element={<Dashboard />} /> 
+     
             
             <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
             <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> {/* Sends Request */}

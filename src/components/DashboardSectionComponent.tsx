@@ -7,10 +7,10 @@ interface DashboardSectionComponentProps {
     title: string;
     width?: number
   }
-const DashboardSectionComponent: React.FC<DashboardSectionComponentProps> = ({children,title,width = 500}) => {
+const DashboardSectionComponent: React.FC<DashboardSectionComponentProps> = ({children,title}) => {
         return (
             <>
-                    <Box component={'div'} sx={{backgroundColor:'background.paper', maxWidth: `${width}px`, padding:'5px'}}>
+                    <Box component={'div'} sx={{backgroundColor:'background.paper', padding:'5px'}}>
                     <Typography
                         sx={{ display: 'block',color:'#1d1917', fontSize:'1.2em', padding:'10px', fontWeight:'bold' }}
                         component="h2"
