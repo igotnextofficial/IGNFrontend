@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, useLayoutEffect, useEffect, useCallback } from "react";
 import { UserContext } from "../Contexts/UserContext";
 import User from "../Models/Users/User";
-import { ArtistDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
+import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
 import Artist from "../Models/Users/Artist";
 import Mentor from "../Models/Users/Mentor";
 
@@ -9,7 +9,7 @@ const tempUser = [new Artist(),new Mentor()];
 const currentTempId = 1
 const UserObj = new User()
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | null>(null);
+    const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [refresh,setRefresh] = useState(false)
 

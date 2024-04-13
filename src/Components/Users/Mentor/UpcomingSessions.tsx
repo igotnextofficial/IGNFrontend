@@ -6,13 +6,14 @@ import { Grid } from "@mui/material";
 import { MentorDataType, ArtistDataType, MenteeDataType } from "../../../Types/DataTypes";
 
 import CardContentComponent from "../../../Helpers/CardContentComponent";
-import DashboardSectionComponent from "../../DashboardSectionComponent";
+
 import ListContentComponent from "../../../Helpers/ListContentComponent";
 
 import { Switch, FormControlLabel } from '@mui/material';
 import ViewModuleIcon from '@mui/icons-material/ViewModule'; // Grid icon
 import ViewListIcon from '@mui/icons-material/ViewList'; // List icon
 import NoDataAvailable from "../../../Utils/NoDataAvailable";
+import dayjs from "dayjs";
 
 
 function formatDate(date:Date) {
@@ -36,6 +37,21 @@ function formatDate(date:Date) {
   }
   
 
+
+  const getUpcomingSessionWithinMax = (mentee:MenteeDataType,max:number):MenteeDataType | null => {
+    const today = dayjs()
+    const maximumDate = dayjs().add(max,'day')
+    const upcomingSession = dayjs(mentee.nextSession);
+
+    if( ((upcomingSession < today) || (upcomingSession > maximumDate)) ){return null}
+    const readableDate = formatDate(new Date(mentee.nextSession));
+
+  
+        let updatedDate = {nextSession:readableDate}
+        let updateData = {...mentee,...updatedDate}
+
+        return updateData;
+  }
   
 
 
@@ -67,13 +83,9 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                         {
                         
                         data.map(mentee => {
-                            console.log(`the sessions is ${mentee.nextSession}`)
-                            if(!(mentee.nextSession)){return null}
-                            const readableDate = formatDate(new Date(mentee.nextSession));
-                   
-                          
-                                let updatedDate = {nextSession:readableDate}
-                                let updateData = {...mentee,...updatedDate}
+                            if(!mentee.nextSession){return null}
+                                let updateData =  getUpcomingSessionWithinMax(mentee,7) 
+                                if(!updateData){return null}
 
                             return (
                                 <Grid item key={mentee.id} xs={12} sm={6} md={4}> {/* item specifies a grid item. xs, sm, md, etc., determine the size of the item across different screen sizes */}

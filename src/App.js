@@ -31,6 +31,7 @@ import EditProfile from './Pages/EditProfile';
 import MessageReaderReply from './Pages/Notes/MessageReaderReply';
 import { Schedule } from '@mui/icons-material';
 import ScheduleTime from './Components/ScheduleTime';
+import ScheduleSession from './Pages/Artists/ScheduleSession';
 
 
 
@@ -63,10 +64,10 @@ const MainApplication = () => {
           <Route path='/profile/:role' element={< Dashboard />} />
 
           {/* Profile */}
-          <Route path='/schedule' element={<ScheduleTime />} /> 
+          <Route path='/schedule' element={<ScheduleSession />} /> 
           
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
-            <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
+            <Route path='/account' element={<EditProfile />} /> {/* Sends Request */}
             <Route path='/dashboard/:role' element={<Dashboard />} /> 
      
             

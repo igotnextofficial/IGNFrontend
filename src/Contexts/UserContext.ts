@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react";
 import User from "../Models/Users/User";
-import { ArtistDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
+import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
 
 
 export interface userContextType{
-    user: UserDataType | ArtistDataType | MentorDataType | null,
+    user: UserDataType | ArtistDataType | MentorDataType | MenteeDataType | null,
     isLoggedin:boolean,
     updateUser:(user:UserDataType)=>void
     attemptLoginOrLogout: (login:boolean,data?:httpDataObject,) => Promise<boolean>,

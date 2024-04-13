@@ -5,6 +5,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { Button,Box, Typography , Grid} from '@mui/material';
 import IgnPillComponent from '../Helpers/IgnPillComponent';
+import { sendRequest } from '../Utils/helpers';
+import { HttpMethods, MenteeDataType, MentorDataType } from '../Types/DataTypes';
+import { useUser } from '../Contexts/UserContext';
+
+
 
 const AvailableTimes = ({time, handleTime, isAvailable} : {time:string, handleTime:(time:string,available:boolean) => void, isAvailable:boolean})  => {
     return (
@@ -18,15 +23,19 @@ const AvailableTimes = ({time, handleTime, isAvailable} : {time:string, handleTi
     )
 }
 const ScheduleTime = () => {
+    const {user} = useUser()
     const [schedule,setSchedule] = useState<string | null>(null)
     const [chosenTime,setChosenTime] = useState<string>("")
     const [availableTime,setAvailableTime] = useState<string[]>([])
+    const [scheduledSuccessfully,setScheduledSuccessfully] = useState<boolean>(false)
 
     const [allTime,setAllTime] = useState<string[]>([])
 
     const today = dayjs();
     const maxDate = today.add(14,'day');
 
+    useEffect(() => {},[scheduledSuccessfully])
+ 
     useEffect(() => {
         if(allTime.length === 0){
         let morningSchedule = new Set()
@@ -85,15 +94,36 @@ const ScheduleTime = () => {
        }
        
     },[schedule])
-    useEffect(() => {
-        console.log(`the Chosen time is ${schedule} ${chosenTime}`)
-    },[chosenTime,schedule])
+
+    const scheduleDate = async() => {
+        let data = {
+             nextSession:`${schedule} ${chosenTime}`,
+             mentee_id:`${user?.id}`
+            }
+
+    
+            if(schedule && chosenTime){
+                let currentuser = user as MenteeDataType
+               
+                console.log(JSON.stringify({data}))
+                let url = `${process.env.REACT_APP_SESSION_API}/${currentuser.mentor?.id}/schedule`;
+                console.log(`sending to ${url}`)
+                let response = await sendRequest(HttpMethods.POST,url,{data})
+
+                if(response !== null){
+                    setScheduledSuccessfully(true)
+                }
+            }
+        
+    }
+
 
     const handleTimeChange = (value:string,available:boolean) => {
         if(available){
             setChosenTime(value)
         }
     }
+
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker value={dayjs(schedule)} onChange={(value) => { 
@@ -117,7 +147,7 @@ const ScheduleTime = () => {
                 </Grid>
                 {
                     (chosenTime && schedule) &&
-                    <Button onClick={() => { console.log(`${schedule} ${chosenTime}`)}}>Schedule Appointment</Button>
+                    <Button  variant='contained' onClick={() => {  scheduleDate() }}>Schedule Appointment</Button>
               }
         </LocalizationProvider>
     )

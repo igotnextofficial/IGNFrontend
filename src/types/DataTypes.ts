@@ -36,10 +36,22 @@ export interface CalendarDataType{
 }
 export interface MenteeDataType extends ArtistDataType {
     id:string,
-    progress:number,
+    request_id:string,
+    mentor?: MentorDataType | null,
+    mentorSession?:MentorSessionDataType[],
     nextSession:string,
-    status:string,
-    request_id:string
+    progress:number,
+    status:string
+}
+
+export interface MentorSessionDataType {
+    id:string,
+    mentor_id:string,
+    mentee_id:string,
+    currentSessionNumber: number,
+    maxSessionNumber:number,
+    nextSession:string,
+    previousSession:string,
 }
 
 export interface ArtistDataType {
