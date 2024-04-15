@@ -3,21 +3,20 @@ import React, { useEffect, useState } from "react"
 import { Box,Grid,Button , Typography} from "@mui/material"
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
-import DashboardSectionComponent from "../../DashboardSectionComponent";
+
 import { HttpMethods, MenteeDataType, MentorDataType, httpDataObject } from "../../../Types/DataTypes";
 
 import LinearProgressBar from "../../../Helpers/LinearProgressBar";
 import NotesComponent from "../../NotesComponent";
 
-import { useUser } from "../../../Contexts/UserContext";
+
 import { sendRequest } from "../../../Utils/helpers";
 import NoDataAvailable from "../../../Utils/NoDataAvailable";
 
 const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
     const[data,setData] = useState<MenteeDataType[]>([])
-    const {user} = useUser()
     const [recipient,setRecipient] = useState<MenteeDataType | null>(null)
-    const [hoveredMenteeId, setHoveredMenteeId] = useState(null);
+
 
 
     useEffect(()=>{
@@ -26,13 +25,6 @@ const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
 
    
 
-    const handleMouseEnter = () => {
-      setHoveredMenteeId(null);
-    };
-  
-    const handleMouseLeave = () => {
-      setHoveredMenteeId(null);
-    };
 
     const submitNotes = async (notesData:httpDataObject,recipient:string) => {
     const url = `${process.env.REACT_APP_TEST_API}/notes/${recipient}`

@@ -1,8 +1,8 @@
 import React, { useEffect,useState } from "react"
 import { structureDataType, displayType } from "../Types/DataTypes"
-import { Typography, RadioGroup, Radio, Grid, TextField, Checkbox, FormControlLabel, FormLabel, FormGroup, FormControl } from "@mui/material"
+import {RadioGroup, Radio, Grid, TextField, FormControlLabel, FormLabel, FormControl } from "@mui/material"
 import { useFormDataContext } from "../Contexts/FormContext"
-import { Input } from '@mui/material';
+
 
 const Generate = ({ formStructures }: { formStructures: structureDataType[] }) => {
     let sortedFields = [...formStructures].sort((a, b) => a.order - b.order)

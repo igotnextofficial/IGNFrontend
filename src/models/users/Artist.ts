@@ -1,5 +1,4 @@
-import { ArtistDataType, UserDataType, httpDataObject, structureDataType } from "../../Types/DataTypes";
-import IgnRequest from '../../Features/Http/IgnRequest';
+import { ArtistDataType, structureDataType } from "../../Types/DataTypes";
 import Model from "../Model";
 import { displayType } from "../../Types/DataTypes";
 import { ArtistFake } from "../../fake-data/ArtistFake";

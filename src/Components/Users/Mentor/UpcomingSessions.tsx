@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
 
-import { MentorDataType, ArtistDataType, MenteeDataType } from "../../../Types/DataTypes";
+import { MentorDataType, MenteeDataType } from "../../../Types/DataTypes";
 
 import CardContentComponent from "../../../Helpers/CardContentComponent";
 
@@ -23,9 +23,9 @@ function formatDate(date:Date) {
     
     const day = date.getDate();
     const month = months[date.getMonth()];
-    const year = date.getFullYear();
+    // const year = date.getFullYear();
     let hour = date.getHours();
-    const minutes = date.getMinutes();
+    // const minutes = date.getMinutes();
     const ampm = hour >= 12 ? 'PM' : 'AM';
   
     hour = hour % 12;

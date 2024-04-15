@@ -1,4 +1,4 @@
-import { Box, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import IGNButton from "../Components/Button";
 
 const InformationComponent = ({buttonLink = "",buttonLabel="",title="", children}) => {

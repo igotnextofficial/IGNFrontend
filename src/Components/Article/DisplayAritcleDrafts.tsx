@@ -95,7 +95,7 @@ const DisplayArticleDrafts = ({ article_drafts = [], updatedArticle }:
             setRestoreDraft(false)
             setIgnore(true)
         }
-    },[restoreDraft,ignore])
+    },[restoreDraft, ignore, currentSelectedDraft, updatedArticle])
     
     const ShowCurrentSelectedDraft = ()=>{
        
@@ -205,8 +205,5 @@ const DisplayArticleDrafts = ({ article_drafts = [], updatedArticle }:
     )
 }
 
-const styles={
-    title:{},
-    content:{}
-}
+
 export default DisplayArticleDrafts;

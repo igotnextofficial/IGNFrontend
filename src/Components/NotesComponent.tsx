@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react"
+import {useState,useEffect} from "react"
 import { Button, Typography } from "@mui/material"
 import IgnFormGenerate from "./IgnFormGenerate"
 import { NotesFormStructure } from "../FormStructures/NotesFormStructure"
@@ -9,7 +9,7 @@ import ListDisplayComponent from "../Helpers/ListDisplayComponent"
 import { useUser } from "../Contexts/UserContext"
 
 const Notes = ({recipientOfNote,handleClick,sent}: {recipientOfNote:MenteeDataType,handleClick: (data:httpDataObject,id:string) => Promise<boolean>, sent:(success:boolean) => void}) => {
-const { data, updateFormData } = useFormDataContext()
+const { data } = useFormDataContext()
 const { user } = useUser()
 const [recipient ,setRecipient] = useState<listDisplayDataType | null>(null)
 

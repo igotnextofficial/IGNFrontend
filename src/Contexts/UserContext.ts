@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import User from "../Models/Users/User";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
 
 

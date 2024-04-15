@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import Typography from '@mui/material/Typography';
-import {Box,Grid} from '@mui/material';
 
 import {MenteeDataType } from '../Types/DataTypes';
 import {List,ListItem,ListItemText,ListItemAvatar,Avatar } from "@mui/material"
@@ -9,11 +7,7 @@ import {List,ListItem,ListItemText,ListItemAvatar,Avatar } from "@mui/material"
 
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Link } from 'react-router-dom';
-//  <CalendarMonth/>
 
-const DefaultNameHolder = ({name} : {name:string}) => {
- 
-}
 
 
 export default function  ListContentComponent({data} : {data:MenteeDataType}) {

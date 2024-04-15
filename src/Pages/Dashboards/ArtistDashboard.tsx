@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Grid, Typography, Avatar} from '@mui/material'
+import { useContext } from 'react'
+import { Grid, Typography} from '@mui/material'
 import ArticleProvider from '../../Providers/ArticleProvider'
 import ListArticlesComponent from '../../Components/Article/ListAritclesComponent '
 import { FetchMode } from '../../Types/ArticleFetchMode'
@@ -7,17 +7,11 @@ import { ArticleContext } from '../../Contexts/ArticleContext'
 import { useUser } from '../../Contexts/UserContext'
 import DashboardSectionBorder from '../../Components/Users/Mentor/DashboardSectionComponentWithBorder'
 import ContentContainer from '../../Utils/ContentContainer'
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import TextContentComponent from '../../Helpers/TextContentComponent'
 import { ArtistDataType } from '../../Types/DataTypes'
 import MentorsFeedback from '../../Components/Users/Artist/MentorsFeedback'
 
-import { Link } from 'react-router-dom'
 import ProfileTopSection from '../../Components/Users/ProfileTopSection'
 
 
@@ -38,49 +32,7 @@ const DefaultMessaging = () => {
     return <Typography sx={{ display: 'block', color: '#c7c7c7',padding:'15px' }} component="span" variant="body2"> No Data Available </Typography>
 }
 
-const CurrentUserTopSection = ({currentUser}: {currentUser:ArtistDataType}) => {
-    return (
-        <Link to={"/edit-profile"}>
-        <List sx={{ width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
-        
-            <ListItem >
-                <ListItemAvatar sx={{ marginRight: 2 }}>
-                    <Avatar alt={currentUser.fullname} src={currentUser.image} sx={{ width: 56, height: 56 }} />
-                </ListItemAvatar>
-                <ListItemText
 
-                    primary={
-                        <React.Fragment>
-                            <Typography
-                                sx={{ color: '#1d1917', fontSize: '2em', fontWeight: "bold" }}
-                                component="h2"
-                                variant="body2"
-                            >
-                                {currentUser.fullname ?? currentUser.fullname}'s Profile
-                            </Typography>
-                        </React.Fragment>
-                    }
-                    secondary=
-                    {<React.Fragment>
-
-
-                        <Typography
-                            sx={{ display: 'block', color: '#c7c7c7' }}
-                            component="span"
-                            variant="body2"
-
-                        >
-                            Genre: {currentUser.genre || 'N/A'}
-                        </Typography>
-                    </React.Fragment>
-                    }
-                />
-                   <ModeEditIcon sx={{alignSelf:"flex-start",opacity:1}}/>
-            </ListItem>
-        </List>
-        </Link>
-    )
-}
 
 
 const DisplayBio = ({user} : {user:ArtistDataType}) => {

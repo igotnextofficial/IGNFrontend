@@ -5,10 +5,10 @@ import { ErrorContext } from "../../Contexts/ErrorContext";
 
 const DetectChange = () => {
     let location = useLocation()
-    let {error,updateError} = useContext(ErrorContext);
+    let { updateError} = useContext(ErrorContext);
     useEffect(()=>{
       updateError('')
-    },[location])
+    },[location,updateError])
   
     return (
         <></>

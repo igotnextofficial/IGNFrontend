@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import WriterDashboard from "./WriterDashboard";
-import User from "../../Models/Users/User";
-import TemporaryDrawer from '../../Components/Navigation/LeftDrawer';
+
 import ContentContainer from "../../Utils/ContentContainer";
 import { UserContext } from "../../Contexts/UserContext";
 import { useParams } from "react-router-dom";

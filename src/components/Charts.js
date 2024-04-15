@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid,Tooltip, ResponsiveContainer } from 'recharts';
 import { Avatar } from '@mui/material';
 
@@ -51,7 +51,7 @@ const TriangleBar = (props) => {
 const CustomToolTip = ({ payload, label, active }) =>{
     let image = active ? getImage(label) : null;
     return active ? (
-        <div className="custom-tooltip" style={{backgroundColor:'#ffffff', borderRadius:'5px', padding:'8px 10px', cursor:'pointer', border:'1px solid c7c7c7',boxShadow: '3px 3px 6px rgba(0,0,0,0.1)', cursor:'pointer'}}>
+        <div className="custom-tooltip" style={{backgroundColor:'#ffffff', borderRadius:'5px', padding:'8px 10px', cursor:'pointer', border:'1px solid c7c7c7',boxShadow: '3px 3px 6px rgba(0,0,0,0.1)'}}>
             <Avatar
               alt={label}
               src={image}
@@ -68,24 +68,24 @@ const getImage = (title)=>{
    const found = data.find(article =>  article.name === title ? article : null )
     return found ? found.image : null
 }
-const renderCustomAxisTick = ({ x, y, payload }) => {
+// const renderCustomAxisTick = ({ x, y, payload }) => {
 
-    const articleImage = getImage(payload.value);
+//     const articleImage = getImage(payload.value);
 
-    return (
-      <g transform={`translate(${x},${y + 20})`}>
-        {articleImage && (
-          <foreignObject x={-20} y={-20} width={40} height={40}>
-            <Avatar
-              alt={payload.value}
-              src={articleImage}
-              sx={{ width: '100%', height: '100%' }} // Adjust the size of the Avatar component
-            />
-          </foreignObject>
-        )}
-      </g>
-    );
-  };
+//     return (
+//       <g transform={`translate(${x},${y + 20})`}>
+//         {articleImage && (
+//           <foreignObject x={-20} y={-20} width={40} height={40}>
+//             <Avatar
+//               alt={payload.value}
+//               src={articleImage}
+//               sx={{ width: '100%', height: '100%' }} // Adjust the size of the Avatar component
+//             />
+//           </foreignObject>
+//         )}
+//       </g>
+//     );
+//   };
   
 
 export default function Chart() {

@@ -1,5 +1,4 @@
-import { MentorDataType, MenteeDataType,structureDataType } from "../../Types/DataTypes";
-import IgnRequest from "../../Features/Http/IgnRequest";
+import { MentorDataType,structureDataType } from "../../Types/DataTypes";
 import Model from "../Model";
 import { mentorsFake } from "../../fake-data/mentorsFake";
 import { MentorFormStructure } from "../../FormStructures/MentorFormStructure";

@@ -1,5 +1,4 @@
-import React from "react";
-import { Box, Typography, Grid} from "@mui/material";
+import { Box, Grid} from "@mui/material";
 import { AboutIGN } from "../../StaticInformation/aboutus";
 import InformationComponent from "../../Helpers/InformationComponent";
 import SectionComponent from "../../Helpers/SectionComponent";
@@ -21,7 +20,7 @@ const AboutUsComponent = () => {
             </Grid>
             <Grid item  md={7}>
                 <Box sx={{}}>
-                    <img style={{width:"100%",boderRadius:"10%"}} src="https://png.pngtree.com/background/20230611/original/pngtree-artistic-abstract-music-concept-for-headphones-picture-image_3162681.jpg" alt="image" />
+                    <img style={{width:"100%",boderRadius:"10%"}} src="https://png.pngtree.com/background/20230611/original/pngtree-artistic-abstract-music-concept-for-headphones-picture-image_3162681.jpg" alt="-about" />
                 </Box>
             </Grid>
         </Grid>

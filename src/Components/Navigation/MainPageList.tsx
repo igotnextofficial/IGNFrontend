@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
 import { Grid } from "@mui/material";
 
-interface Page{
-    slug:string,
-    name:string,
-    order: number,
-    display:boolean
-}
+
 const MainPageList = ()=>{
     const linksData = [
         {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,9 +8,7 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+
 import MenuItem from '@mui/material/MenuItem';
 import Ignlogo from '../../Components/Ignlogo';
 import { Link } from 'react-router-dom';
@@ -18,7 +16,7 @@ import { Link } from 'react-router-dom';
 import AccountSettings from '../../Components/Navigation/AccountSettings';
 import BrowserNavigation from '../../Components/Navigation/BrowserNavigation';
 import SigninOrRegister from '../../Components/Navigation/SigninOrRegister';
-import { UserContext } from '../../Contexts/UserContext';
+
 
 
 
@@ -30,26 +28,21 @@ const pages = [{title:'Who\'s Next',slug:'/whos-next'}, {title:'Featured Artists
 const ResponsiveAppBar  = ({Authenticated=false}) => {
 
 
-  const userLoggedin = true;
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
 
 
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+
 
 
 // if(userLoggedin === false){

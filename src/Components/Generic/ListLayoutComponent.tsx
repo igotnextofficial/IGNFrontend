@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
 import { ListDataType } from '../../Types/DataTypes';
-import { useLoaderData, useParams } from "react-router-dom";
+
 
 interface ListLayoutComponentProps {
     data: ListDataType[];
@@ -29,7 +29,7 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
   
 
     const output = paginatedData.map((list, index) => {
-        const { id,title, image_url, content, author,link,category } = list;
+        const { id,title, image_url, content, author,category } = list;
         return (
             <React.Fragment key={index}>
             <Link  sx={{ textDecoration: "none" }} color="inherit" href={`${category}/${id}`}>

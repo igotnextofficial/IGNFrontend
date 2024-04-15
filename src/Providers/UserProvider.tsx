@@ -1,17 +1,15 @@
-import React, { useState, ReactNode, useLayoutEffect, useEffect, useCallback } from "react";
+import  { useState, ReactNode, useLayoutEffect, useEffect, useCallback } from "react";
 import { UserContext } from "../Contexts/UserContext";
 import User from "../Models/Users/User";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
-import Artist from "../Models/Users/Artist";
-import Mentor from "../Models/Users/Mentor";
 
-const tempUser = [new Artist(),new Mentor()];
-const currentTempId = 1
+
+
 const UserObj = new User()
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
-    const [refresh,setRefresh] = useState(false)
+    const [refresh,] = useState(false)
 
     useLayoutEffect( ()=>{
         let found_user = localStorage.getItem('userInfo') // never
@@ -60,8 +58,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     };
 
 
-    const getUsername = () => {}
-    const getFullName = () => { return user?.fullname || ""}
     return (
         <UserContext.Provider value={{ user, isLoggedin, attemptLoginOrLogout, updateUser }}>
             {children}

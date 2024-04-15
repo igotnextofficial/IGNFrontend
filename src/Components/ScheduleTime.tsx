@@ -4,9 +4,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { Button,Box, Typography , Grid} from '@mui/material';
-import IgnPillComponent from '../Helpers/IgnPillComponent';
+
 import { sendRequest } from '../Utils/helpers';
-import { HttpMethods, MenteeDataType, MentorDataType } from '../Types/DataTypes';
+import { HttpMethods, MenteeDataType } from '../Types/DataTypes';
 import { useUser } from '../Contexts/UserContext';
 
 

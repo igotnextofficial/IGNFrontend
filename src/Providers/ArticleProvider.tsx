@@ -56,7 +56,7 @@ interface ArticleProviderProps {
       };
   
       fetchArticles();
-    }, [mode, id]); // Re-run the effect if 'mode' or 'id' changes
+    }, [mode, id,category]); // Re-run the effect if 'mode' or 'id' changes
   
     // Depending on your design, you can either pass the articles down directly through the component's children or use a context to provide the articles deeper into the component tree.
   

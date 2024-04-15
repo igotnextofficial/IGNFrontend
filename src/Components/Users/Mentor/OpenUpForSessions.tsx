@@ -1,6 +1,6 @@
 import { Switch,FormGroup,FormControlLabel } from "@mui/material"
 import FormDataProvider from "../../../Providers/FormDataProvider"
-import { useEffect,useLayoutEffect, useState } from "react"
+import {useLayoutEffect, useState } from "react"
 import { useUser } from "../../../Contexts/UserContext"
 import { sendRequest } from "../../../Utils/helpers"
 import { HttpMethods } from "../../../Types/DataTypes"

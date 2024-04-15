@@ -1,16 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams,Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
 import {
   Box,
   Button,
   Grid,
   TextField,
   Typography,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  FormLabel,
   Divider,
 } from "@mui/material";
 
@@ -24,10 +19,9 @@ import Article from "../../Models/Users/Article";
 
 import { useEditorFormContext } from "../../Contexts/EditorFormContext";
 
-import { ArticleCategories } from "../../Types/ArticleCategories";
+
 import {
   ArticleDataType,
-  ArticleSavedDataType,
   EditorRangeLimitsDataType,
   EditorRangeSelectorDataType,
 } from "../../Types/DataTypes";
@@ -44,29 +38,31 @@ const RANGE_LIMITS: EditorRangeLimitsDataType = {
   },
 };
 
+const withinRange = (medium: EditorRangeSelectorDataType = "title",data:ArticleDataType,content:string) => {
+  if (!(Object.keys(RANGE_LIMITS).includes(medium))) return false;
+  const mediumLength =
+    medium === Article.TITLE ? data.title.length : content.length;
+
+  return (
+    mediumLength >= RANGE_LIMITS[medium].min &&
+    mediumLength <= RANGE_LIMITS[medium].max
+  );
+};
+
 const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) => {
   const { data, updateData } = useEditorFormContext();
 
   const [content, setContent] = useState("");
   const [contentWithoutTags, setContentWithoutTags] = useState("");
-  const {article_id} = useParams();
-  const [status, setStatus] = useState("draft");
-  const [errors, setErrors] = useState({ message: "" });
+  // const {article_id} = useParams();
+  // const [status, setStatus] = useState("draft");
+  const [errors, ] = useState({ message: "" });
   const [canPublish, setCanPublish] = useState(false);
-  const [category, setCategory] = useState<ArticleCategories | string>(
-    ArticleCategories.FEATURED_ARTIST
-  );
+  // const [category, setCategory] = useState<ArticleCategories | string>(
+  //   ArticleCategories.FEATURED_ARTIST
+  // );
 
-  const withinRange = (medium: EditorRangeSelectorDataType = "title") => {
-    if (!(Object.keys(RANGE_LIMITS).includes(medium))) return false;
-    const mediumLength =
-      medium === Article.TITLE ? data.title.length : content.length;
 
-    return (
-      mediumLength >= RANGE_LIMITS[medium].min &&
-      mediumLength <= RANGE_LIMITS[medium].max
-    );
-  };
   /**
    *  handles updating the data
    *  @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered on data change.
@@ -103,15 +99,15 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
   }
 
   const ReadyForReview = () => {
-    setStatus("pending");
+    // setStatus("pending");
     // handleReview(status);
   };
 
   useEffect(() => {
     
   
-    setCanPublish(withinRange(Article.TITLE) && withinRange(Article.CONTENT));
-  }, [data]);
+    setCanPublish(withinRange(Article.TITLE,data,content) && withinRange(Article.CONTENT,data,content));
+  }, [data,content]);
 
   const Errors = () =>
     errors.message !== "" ? (

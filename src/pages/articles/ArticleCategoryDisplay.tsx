@@ -4,7 +4,8 @@ import { ArticleContext } from '../../Contexts/ArticleContext';
 import InformationComponent from '../../Helpers/InformationComponent';
 import MainHolderComponent from '../../Helpers/MainHolderComponent';
 import PaginatedPage from '../../Components/Generic/PaginatePageComponent';
-import { useParams } from "react-router-dom";
+
+
 const ArticleCategoryDisplay = ({title} :{title:string}) => {
 
     const [data, setData] = useState<ListDataType[] | ArticleDataType[]>([]);
@@ -15,7 +16,7 @@ const ArticleCategoryDisplay = ({title} :{title:string}) => {
             setData(allArticles)
         }
    
-    })
+    },[allArticles])
 
     return (
     <>

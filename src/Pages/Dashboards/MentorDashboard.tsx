@@ -1,14 +1,13 @@
 import React, { useState,useEffect } from "react"
 
-import { MentorDataType,CalendarDataType } from "../../Types/DataTypes"
+import { MentorDataType } from "../../Types/DataTypes"
 import { useUser } from "../../Contexts/UserContext"
 import { listDisplayDataType } from "../../Types/DataTypes"
 import TopProfileSectionComponent from "../../Helpers/TopProfileSectionComponent"
-import {Grid, Typography } from "@mui/material"
+import {Grid, Box } from "@mui/material"
 
 import ListMentees from "../../Components/Users/Mentor/ListMentees"
 
-import {Box} from "@mui/material"
 
 import UpcomingSessions from "../../Components/Users/Mentor/UpcomingSessions"
 
@@ -22,13 +21,6 @@ import DashboardSectionBorder from "../../Components/Users/Mentor/DashboardSecti
 
 
 
-
-const NoMentees = () => {
-
-   return <Typography variant="subtitle1" sx={{color:"lightgrey"}}> you currenly have no mentees.</Typography>
- 
-
-}
 
 
 

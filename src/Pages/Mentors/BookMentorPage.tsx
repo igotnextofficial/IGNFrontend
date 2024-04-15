@@ -5,7 +5,7 @@ import Mentor from "../../Models/Users/Mentor"
 import { MentorDataType } from "../../Types/DataTypes"
 import SectionComponent from "../../Helpers/SectionComponent"
 import PaymentForm from "../../Helpers/PaymentForm"
-import BackgroundCoverImage from "../../Components/BackgroundCoverImage"
+
 import IgnPillComponent from "../../Helpers/IgnPillComponent"
 
 const BookMentorPage = () => {
@@ -57,13 +57,5 @@ const BookMentorPage = () => {
     )
 }
 
-const styles = {
-    holder: {
-        position: "absolute",
-        bottom: 0,
-        width: "100%",
-        backgroundImage: "linear-gradient(rgba(0,0,0,0), rgba(0,0,0))",
-        padding: " 0.4rem 1rem"
-    }
-}
+
 export default BookMentorPage

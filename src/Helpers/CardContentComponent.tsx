@@ -1,19 +1,12 @@
-import React, {useState,useEffect} from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import React from 'react';
+
 import Typography from '@mui/material/Typography';
 import {Box,Grid} from '@mui/material';
-import { Button, CardActionArea, CardActions } from '@mui/material';
-import { MentorDataType,MenteeDataType } from '../Types/DataTypes';
-import { CalendarMonth } from '@mui/icons-material';
+
+import { MenteeDataType } from '../Types/DataTypes';
+
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Link } from 'react-router-dom';
-//  <CalendarMonth/>
-
-const DefaultNameHolder = ({name} : {name:string}) => {
- 
-}
 
 
 export default function CardContentComponent({data} : {data:MenteeDataType}) {

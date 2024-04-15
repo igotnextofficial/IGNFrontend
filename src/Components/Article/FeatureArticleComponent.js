@@ -1,6 +1,4 @@
-import React from "react";
-import { Grid, Typography,Box, Link } from "@mui/material";
-import BackgroundCoverImage from "../BackgroundCoverImage";
+import { Grid } from "@mui/material";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 
 const FeatureArticleComponent = () => {

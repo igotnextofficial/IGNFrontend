@@ -2,7 +2,6 @@ import { useState,useContext,useEffect,useLayoutEffect } from "react";
 import { useParams,Navigate } from "react-router-dom";
 import { ArticleDataType } from "../../Types/DataTypes";
 import ContentContainer from "../../Utils/ContentContainer";
-import InformationComponent from "../../Helpers/InformationComponent";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";
 import Editor from "./Editor";
@@ -11,14 +10,24 @@ import Article from "../../Models/Users/Article";
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import { ErrorContext } from "../../Contexts/ErrorContext";
 
-import { useEditorFormContext } from "../../Contexts/EditorFormContext";
+const updateDraft = async(drafts:ArticleDataType[],updatedArticle:ArticleDataType) =>{
+    let copiedDraft = [...drafts];
+        
+    if(drafts.length >= 10){
+        copiedDraft.pop()    
+    }
 
-const DisplayTextEditor = ({})=> {
+   return[
+       updatedArticle,
+        ...copiedDraft
+    ];
+ }   
+const DisplayTextEditor = ()=> {
     
     //shared between both composing and editing of articles
     const currentArticleContext = useContext(ArticleContext); 
      const {updateError} = useContext(ErrorContext)
-     const { data } = useEditorFormContext();
+  
      const [editMode,setEditMode] = useState(false)     //
      const [updatedArticle, setUpdatedArticle] = useState<ArticleDataType>(Article.defaultResponse );
      const [willNeedRefresh,setWillNeedRefresh] = useState(false); 
@@ -31,18 +40,7 @@ const DisplayTextEditor = ({})=> {
 
      const [intialLoad,setIntialLoad] = useState(true);
 
-     const updateDraft = async() =>{
-        let copiedDraft = [...drafts];
-            
-        if(drafts.length >= 10){
-            copiedDraft.pop()    
-        }
-   
-        setDrafts([
-           updatedArticle,
-            ...copiedDraft
-        ]);
-     }     
+  
 
      useLayoutEffect(()=>{
         if(article_id){
@@ -61,7 +59,7 @@ const DisplayTextEditor = ({})=> {
 
 
        
-     })
+     }, [article_id, updatedArticle, currentArticleContext, drafts.length])
 
      useEffect(()=>{
         setIntialLoad(false)
@@ -80,14 +78,14 @@ const DisplayTextEditor = ({})=> {
             }
         }
 
-     },[drafts])
+     },[drafts, intialLoad, successfulUpdate])
 
       useEffect(()=>{
         const article = new Article();
 
         const makeUpdate = async ()=>{
         
-            await updateDraft();
+            setDrafts(await updateDraft(drafts,updatedArticle));
             const response = editMode
             ? await article.createOrUpdate(updatedArticle,article_id)
             : await article.createOrUpdate(updatedArticle)
@@ -120,7 +118,7 @@ const DisplayTextEditor = ({})=> {
             setIgnore(true)
         }
         
-      },[updatedArticle])
+      },[article_id, editMode, ignore, drafts, updateError, updatedArticle])
     
       
       const handleSaveDraft = (data:ArticleDataType)=>{
@@ -131,7 +129,7 @@ const DisplayTextEditor = ({})=> {
     }
 
 
-    const handleReadyForReview = () => {}
+    // const handleReadyForReview = () => {}
     
 
 

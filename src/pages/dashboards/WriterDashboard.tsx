@@ -1,19 +1,18 @@
-import React from "react";
-import DisplayArticle from "../../Components/DisplayArticles";
+
 import { ArticleDataType } from "../../Types/DataTypes";
-import Editor from "../../Components/Article/Editor";
+
 
 import DashboardSectionComponent from "../../Components/DashboardSectionComponent";
-import TaskList from "../../Components/TaskList";
+
 import Grid from '@mui/material/Grid';
 
-import Scrollable from "../../Components/Scrollable";
+
 import DisplayTasks from "../../Components/DisplayTasks";
 import {tasksData}  from "../../data";
 import Chart from "../../Components/Charts";
 import ToDo from "../../Components/ToDo";
 import ListArticlesComponent from "../../Components/Article/ListAritclesComponent ";
-import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
+
 
 const WriterDashboard = () => {
     let userArticles: ArticleDataType[]  = [

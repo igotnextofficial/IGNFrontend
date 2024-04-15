@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { FormDataContext } from "../Contexts/FormContext"
 
 interface FormDataProviderProps {
@@ -6,7 +6,7 @@ interface FormDataProviderProps {
 }
 const FormDataProvider:React.FC<FormDataProviderProps> = ({children}) => {
     const [data, setData] = useState<Record<string, any>>({});
-    const [mediafile, setFile] = useState<Record<string, File>>({});
+    const [, setFile] = useState<Record<string, File>>({});
 
     
     const updateData = useCallback((key:string,value:string)=>{

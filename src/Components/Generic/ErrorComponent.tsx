@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material"
-import { useContext, useEffect, useState } from "react"
+import {Typography } from "@mui/material"
+import { useContext } from "react"
 import ErrorIcon from '@mui/icons-material/Error';
 import {Grid} from "@mui/material";
 import { ErrorContext } from "../../Contexts/ErrorContext";

@@ -1,5 +1,5 @@
 import './App.css';
-import { pages } from './Routes/web';
+
 
 import Navigation from './Features/Navigation/Navigation';
 import ProtectedRoutes from './Utils/ProtectedRoute';
@@ -29,8 +29,7 @@ import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
 import EditProfile from './Pages/EditProfile';
 import MessageReaderReply from './Pages/Notes/MessageReaderReply';
-import { Schedule } from '@mui/icons-material';
-import ScheduleTime from './Components/ScheduleTime';
+
 import ScheduleSession from './Pages/Artists/ScheduleSession';
 
 
@@ -102,17 +101,17 @@ function App() {
 
 
 
-  const isAuthenticated = false;
+  // const isAuthenticated = false;
 
-  const routeComponents = pages.map(({ slug, component, useProtected }, key) => {
+  // const routeComponents = pages.map(({ slug, component, useProtected }, key) => {
 
 
 
-    return useProtected ?
-      <ProtectedRoutes key={key} path={slug} exact element={component} isAuthenticated={isAuthenticated} /> :
-      <Route key={key} path={slug} exact element={component} />
-  }
-  );
+  //   return useProtected ?
+  //     <ProtectedRoutes key={key} path={slug} exact element={component} isAuthenticated={isAuthenticated} /> :
+  //     <Route key={key} path={slug} exact element={component} />
+  // }
+  // );
 
   return (
 

@@ -191,3 +191,26 @@ export interface listDisplayDataType{
     meta?:string
 }
 
+export interface PaymentInformation{
+    cardholderInformation: { 
+      fullname:string, 
+      address:string,
+      zipCode:number,
+      city:string,
+      state:string
+    },
+    paymemtInformation:{
+      cardNumber:number,
+      cvc:number,
+      expiration:Date
+    }
+    goals?:string,
+  
+  }
+
+  export interface Page{
+    slug:string,
+    name:string,
+    order: number,
+    display:boolean
+}

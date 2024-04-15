@@ -1,32 +1,9 @@
-import React, { useState } from 'react';
+
 import TextField from '@mui/material/TextField';
 import { Box,Button,FormControl,Grid } from '@mui/material';
 
-interface PaymentInformation{
-  cardholderInformation: { 
-    fullname:string, 
-    address:string,
-    zipCode:number,
-    city:string,
-    state:string
-  },
-  paymemtInformation:{
-    cardNumber:number,
-    cvc:number,
-    expiration:Date
-  }
-  goals?:string,
 
-}
 const CheckoutForm = () => {
-
-
-  const [errorMessage, setErrorMessage] = useState<PaymentInformation | null>(null);
-  const [data,setData] = useState(null)
-
-  const handleSubmit = async (event:HTMLElement) => {
-   
-  };
 
   return (
     <Box sx={styles.container}>

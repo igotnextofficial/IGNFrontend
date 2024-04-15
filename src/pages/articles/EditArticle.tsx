@@ -1,13 +1,11 @@
-import { useContext  } from "react";
 import { useParams } from "react-router-dom";
 
 import { Box } from "@mui/material";
 import ArticleProvider from "../../Providers/ArticleProvider";
 import InformationComponent from "../../Helpers/InformationComponent"; 
-import { ArticleContext } from "../../Contexts/ArticleContext";
 import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
 import { FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
-import Article from "../../Models/Users/Article";
+
 
 
 const EditArticle = () => {

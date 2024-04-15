@@ -1,9 +1,9 @@
-import React from "react";
+
 import { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { useHistory } from 'react-router-dom';
+
 
 const IgnForm = ({ formProperties }) => {
 

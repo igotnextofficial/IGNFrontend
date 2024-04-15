@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
@@ -19,10 +19,8 @@ import Loader from '../../Components/Loader';
 import forms from '../../Utils/forms';
 import { Navigate } from 'react-router-dom';
 
-import axios from 'axios';
-import IgnRequest from "../../Features/Http/IgnRequest";
-import { UserContext, useUser } from '../../Contexts/UserContext';
-import { httpDataObject } from '../../Types/DataTypes';
+import { useUser } from '../../Contexts/UserContext';
+
 
 
 
@@ -31,27 +29,16 @@ import { httpDataObject } from '../../Types/DataTypes';
 
 const Login = ()=>{
     const {user,isLoggedin,attemptLoginOrLogout }= useUser();
-    const [successfulLogin,setSuccessfulLogin] = useState(false);
-    const [hasErrors,setHasErrors] = useState(false);
-    const [errMessage,setErrMessage] = useState('');
+    const [successfulLogin,] = useState(false);
+    const [hasErrors,] = useState(false);
+    const [errMessage,] = useState('');
     const [loading,setLoading] = useState(false);
 
     const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
         return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
     }
 
-    const userLogin = async (data:httpDataObject) => {
-   
-        let loggedIn = await attemptLoginOrLogout(true,data);
-        if(loggedIn){
-            setSuccessfulLogin(true);
-        
-        }
-        else{
-            setErrMessage('Username/Password does not match.')
-        }
-       
-    }
+
     useEffect(() =>{
         // <Navigate to="/dashboard" replace={true} />
     },[successfulLogin])

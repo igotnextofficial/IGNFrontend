@@ -1,24 +1,14 @@
-import { useState } from "react";
-import { Grid, Typography } from "@mui/material"
+
+import { Grid } from "@mui/material"
 import Ignlogo from '../Ignlogo';
-import { Link } from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
 import MainPageList from "./MainPageList";
 
 
 
 const BrowserNavigation = ()=> {
 
-    const [isHovered, setIsHovered] = useState(false);
-    const setColor = useState("");
 
-    const handleMouseEnter = () => {
-      setIsHovered(true);
-    };
-  
-    const handleMouseLeave = () => {
-        setIsHovered(false);
-    }
+
      
     return (
     <>

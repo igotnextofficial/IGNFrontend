@@ -1,12 +1,9 @@
-import { Output, Today } from "@mui/icons-material";
-import React, { useState } from "react";
+import  { useState } from "react";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+
 import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
+
 import { Grid, TextField,Button,Typography } from "@mui/material";
 const ToDo = () =>{
     const [toDoList, setToDoList] = useState([]);

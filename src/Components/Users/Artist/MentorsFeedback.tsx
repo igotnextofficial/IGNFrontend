@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from "react"
 import NotesFeedback from "../../../Pages/Notes/NotesFeedback"
 
 const MentorsFeedback = () => {

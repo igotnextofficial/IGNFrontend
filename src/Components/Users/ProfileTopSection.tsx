@@ -3,7 +3,7 @@ import { useUser } from "../../Contexts/UserContext";
 import { Link } from "react-router-dom";
 import { List,ListItem,ListItemAvatar,Avatar,ListItemText,Typography } from "@mui/material"
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { ArtistDataType, MenteeDataType, MentorDataType } from "../../Types/DataTypes";
+import {  MentorDataType } from "../../Types/DataTypes";
 
 const ProfileTopSection = () => {
     const { user } = useUser()

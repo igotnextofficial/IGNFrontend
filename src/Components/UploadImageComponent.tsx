@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {  Button, TextField,  FormLabel } from '@mui/material';
+import React, {useEffect, useState } from 'react';
+import { TextField,  FormLabel } from '@mui/material';
 import { useFileUploadContext } from '../Contexts/FileUploadContext';
 import FileUploadProvider from '../Providers/FileUploadProvider';
-import { UploadFile } from '@mui/icons-material';
 import { useEditorFormContext } from '../Contexts/EditorFormContext';
 
 
@@ -12,12 +11,12 @@ const UploadImageComponent = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const ImageUploadDisplay = () => {
-    const {selectedFiles,fileUrl,errors,uploadFile} = useFileUploadContext()
+    const {selectedFiles,fileUrl,uploadFile} = useFileUploadContext()
 
   
     useEffect(() => {
         setPreviewUrl(fileUrl)
-    },[uploadFile])
+    },[uploadFile,fileUrl])
 
     const handleFileChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files ? event.target.files[0] : null;
@@ -27,10 +26,7 @@ const UploadImageComponent = () => {
         } 
       };
   
-    const handleUpload = () => {
-      // Code to handle the file upload
-      // Example: You can send the 'selectedFile' to a server or process it as needed
-    };
+
     return (
       <div>
       <FormLabel id="radio-buttons-group-label">Upload an image:</FormLabel>

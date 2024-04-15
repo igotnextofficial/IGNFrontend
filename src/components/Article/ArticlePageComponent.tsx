@@ -1,6 +1,6 @@
-import { useContext } from "react";
+
 import { useParams } from "react-router-dom";
-import { ArticleContext } from "../../Contexts/ArticleContext";
+
 import { Box,Grid , Typography } from "@mui/material";
 import ArticleProvider from "../../Providers/ArticleProvider";
 import ContentContainer from "../../Utils/ContentContainer";

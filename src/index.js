@@ -5,8 +5,6 @@ import './index.css';
 import './styles/defaults.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { UserProvider } from './Providers/UserProvider';
-import User from './Models/Users/User';
 import RootComponent from './Components/Generic/RootComponent';
 const container =  document.getElementById('root');
 

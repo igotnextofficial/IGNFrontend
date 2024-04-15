@@ -1,4 +1,3 @@
-import React from "react";
 import SectionComponent from "../../../Helpers/SectionComponent";
 import InformationComponent from "../../../Helpers/InformationComponent";
 import { Grid } from "@mui/material";

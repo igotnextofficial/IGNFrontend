@@ -1,6 +1,5 @@
 import BackgroundCoverImage from "../BackgroundCoverImage";
-import { Box,Link,Typography } from "@mui/material";
-import { useState } from "react";
+import { Box,Typography } from "@mui/material";
 import IgnPillComponent from "../../Helpers/IgnPillComponent";
 import { ArticleDataType } from "../../Types/DataTypes";
 

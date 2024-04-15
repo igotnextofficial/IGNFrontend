@@ -1,6 +1,5 @@
-import React from "react";
-import { Route, Navigate, Outlet } from "react-router-dom";
-import Login from "../Pages/Authentication/Login";
+import { Navigate, Outlet } from "react-router-dom";
+
 
 const ProtectedRoutes = ({redirectPath="/login",isAuthenticated = false, children}) => {
 

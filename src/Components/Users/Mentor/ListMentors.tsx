@@ -1,9 +1,7 @@
-import React, { useState, useEffect, HTMLProps } from 'react'; // Import useState and useEffect
+import { useState, useEffect } from 'react'; // Import useState and useEffect
 import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
 import { HttpMethods, MentorDataType, httpDataObject } from '../../../Types/DataTypes';
-import DataSubmissionProvider from '../../../Providers/DataSubmissionProvider';
-import { useDataSubmitContext } from '../../../Contexts/DataSubmitContext';
 import { sendRequest } from '../../../Utils/helpers';
 
 const ListMentors = () => {

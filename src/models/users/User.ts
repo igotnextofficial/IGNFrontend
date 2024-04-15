@@ -1,4 +1,4 @@
-import { UserDataType, httpDataObject } from "../../Types/DataTypes";
+import {httpDataObject } from "../../Types/DataTypes";
 import IgnRequest from "../../Features/Http/IgnRequest";
 
 class User{

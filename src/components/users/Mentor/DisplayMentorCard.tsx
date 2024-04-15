@@ -6,8 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Grid ,Button, CardActionArea, CardActions } from '@mui/material';
 import { HttpMethods, MentorDataType } from '../../../Types/DataTypes';
 
-import DataSubmissionProvider from '../../../Providers/DataSubmissionProvider';
-import FormDataProvider from "../../../Providers/FormDataProvider";
+
 import { useUser } from '../../../Contexts/UserContext';
 import { sendRequest } from '../../../Utils/helpers';
  
@@ -54,17 +53,8 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
   }
 
 
-  const hasMentor = () => {
-    let mentees = mentor.mentees ? mentor.mentees :[]
-    
-    for(const mentee of mentees) {
-      if(mentee.id === user?.id){
 
-        return true
-      }
-    }
-    return false
-  }
+
   return (
     <Card sx={{ maxWidth: 345, marginBottom:"3rem" }}>
       <CardActionArea>
