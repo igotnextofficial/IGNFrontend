@@ -32,9 +32,9 @@ const FeatureArticleComponent = () => {
             <Grid item xs={6}>
                 <Grid container>
                     {
-                    articles.ministories.map((articles) => {
+                    articles.ministories.map((articles, index) => {
                        return(
-                        <Grid item xs={6}>
+                        <Grid key={index} item xs={6}>
                             <DisplayArticleComponent article={articles} height={25} /> 
                          </Grid>
                        )

@@ -29,3 +29,5 @@ yarn.lock
 public/manifest.json
 public/robots.txt
 .env
+certs/localhost+3-key.pem
+certs/localhost+3.pem
