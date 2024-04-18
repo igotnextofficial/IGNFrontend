@@ -1,9 +1,11 @@
 import { createContext,useContext } from "react";
+import { FieldErrorMaintainerType } from "../Types/DataTypes";
 
 interface FormDataContextState {
     updateFormData:(key:string,value:any )=> void,
     updateFileData:(key:string,value:File )=> void,
-
+    hasError:FieldErrorMaintainerType,
+    isValid:boolean,
     data: any
 }
 

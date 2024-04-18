@@ -1,156 +1,96 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { httpDataObject } from '../../Types/DataTypes';
+import React, { useEffect, useState } from 'react';
+import { httpDataObject, HttpMethods } from '../../Types/DataTypes';
 import { Avatar,Box,Select,MenuItem,CssBaseline,Grid,InputLabel,FormControl,Paper,Typography,TextField,Link,SelectChangeEvent} from '@mui/material'
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { Roles } from '../../Types/Roles';
 
 import Copyright from '../../Components/Copyright';
 import IGNButton from '../../Components/Button';
 
 import { useUser } from '../../Contexts/UserContext';
-import { ErrorContext } from '../../Contexts/ErrorContext';
+import { useErrorHandler } from '../../Contexts/ErrorContext';
+
 import { Navigate } from 'react-router-dom';
 
+import { sendRequest } from '../../Utils/helpers';
+import { validateFullname, validateEmail,validatePassword,validateUsername } from '../../Utils/validate';
+import IgnFormGenerate from '../../Components/IgnFormGenerate';
+import { RegisterFormStructure } from '../../FormStructures/RegisterFormStructure';
+import FormDataProvider from '../../Providers/FormDataProvider';
+import { validationObject } from '../../Types/DataTypes';
 import User from '../../Models/Users/User';
+import { useFormDataContext } from '../../Contexts/FormContext';
+
+
+const user = new User()
+const RegisterUserAttempt = async (data:httpDataObject) => {
+
+    let url = process.env.REACT_APP_REGISTER_API || ""
+    const response = await sendRequest(HttpMethods.POST,url,data);
+    if(response !== null){
+        return response
+    }
+    else return null
+}
 
 
 
 
 
-const Register = ()=>{
+
+const RegisterDisplay = ()=>{
 
     const {user,isLoggedin,attemptLoginOrLogout } = useUser()
+    const{data,hasError,isValid} = useFormDataContext()
     const [login,setLogin] = useState(false)
     const [role, setRole] = useState('');
-
-
-    const {updateError} = useContext(ErrorContext)
-    const [data,setData] = useState<httpDataObject | null>(null);
-    const [registration,setAttemptRegistration] = useState(false);
-    
-    const handleRoleChange = (event: SelectChangeEvent<typeof role>) => {
-        setRole(event.target.value as typeof role);
-    };
-    
-
+    const {updateError} = useErrorHandler()
 
     useEffect(() => {
-        const loginUser = async ( ) => {
+        // const loginUser = async ( ) => {
    
         
-            const loginResponse = data !== null ? await attemptLoginOrLogout(true,data) : null;
-            if (!loginResponse) {
-                updateError?.("The user could not be logged in");
-                return false
-            }
+        //     const loginResponse = data !== null ? await attemptLoginOrLogout(true,data) : null;
+        //     if (!loginResponse) {
+        //         updateError?.("The user could not be logged in");
+        //         return false
+        //     }
     
-            return true
-        }
-        if(login){
-            loginUser()
-        }
+        //     return true
+        // }
+        // if(login){
+        //     loginUser()
+        // }
 
-        return () => {
-            setLogin(false)
-        }
+        // return () => {
+        //     setLogin(false)
+        // }
     },[login,attemptLoginOrLogout,updateError,data])
 
-    useEffect(() => {
-        let isMounted = true; // flag to track if the component is mounted
-
-        const registerUser = async () => {
-            try {
-                const userObj = new User()
-                const response = data !== null ? await userObj.register(data) : null;
-                if (!response ) {
-                    isMounted && updateError?.("The account could not be created.");
-                    return;
-                }
-
-                setLogin(true)
-            
-                
-            } catch (error) {
-                // Handle or log error
-                isMounted && updateError?.("An error occurred during registration or login.");
-            }
-        };
-
-        if(data !== null){
-            registerUser();
-        }
 
 
-
-        // Cleanup function
-        return () => {
-            isMounted = false;
-        };
-
-    }, [registration,data,updateError]);
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  
+    const handleSubmit = async (event:  React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formDataObject = Object.fromEntries(formData.entries());
-        const userData = {
-            data: {
-                ...formDataObject,
-                role: role // Add
-            }
-        };
+        if(isValid){
+           const response = await RegisterUserAttempt({data});
 
-        setData(userData);
-        setAttemptRegistration(true)
-   
-
-    }
-    type TextFieldVariant = "filled" | "outlined" | "standard";
-    type TextFieldMargin = "normal" | "none" | "dense" ;
-    const props = 
-    {
-       fullname  : {
-            required: true,
-            fullWidth: true,
-            id: 'fullname',
-            name: 'fullname',
-            label: "fullname",
-            variant: "filled" as TextFieldVariant  ,
-            margin: 'normal' as TextFieldMargin
-        },
-        email  : {
-            required: true,
-            fullWidth: true,
-            id: 'email',
-            name: 'email',
-            label: "Email Address",
-            variant: "filled" as TextFieldVariant  ,
-            margin: 'normal' as TextFieldMargin
-        },
-        password: {
-            required: true,
-            fullWidth: true,
-            name: 'password',
-            label: 'Password',
-            type: 'password',
-            id: 'password',
-            autoComplete: 'current-password',
-            variant: "filled" as TextFieldVariant ,
-            margin: 'normal' as TextFieldMargin
-        },
-        username: {
-            required: true,
-            fullWidth: true,
-            name: 'username',
-            label: 'Username',
-            type: 'text',
-            id: 'username',
-            variant: "filled" as TextFieldVariant,
-            margin: 'normal' as TextFieldMargin
+           if(response !== null){
+                const loginResponse = data !== null ? await attemptLoginOrLogout(true,{data}) : null;
+                if(loginResponse === null){
+                    updateError?.("The user could not be logged in"); 
+                }
+           }
+           else{
+            updateError?.("Issues with registering user"); 
+           }
         }
+
     }
+
+  
 
     const theme = createTheme()
     return (
@@ -160,6 +100,7 @@ const Register = ()=>{
             )}
 
             <ThemeProvider theme={theme}>
+               
                 <Grid container component="main" sx={{ height: '100vh' }} spacing={2}>
                     <CssBaseline />
                     <Grid
@@ -183,25 +124,10 @@ const Register = ()=>{
                             <Typography component="h1" variant="h5" mb={2}>
                                 Register Account
                             </Typography>
-                            <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
-                            <TextField {...props.fullname} />
-                                <TextField {...props.email} />
-                                <TextField {...props.password} />
-                                <TextField {...props.username} />
-                                <FormControl fullWidth variant='filled'>
-                                    <InputLabel id="role-label">Role</InputLabel>
-                                    <Select
-                                        labelId='role-label'
-                                        value={role}
-                                        label="Role"
-                                        onChange={handleRoleChange}
-                                    >
-                                        <MenuItem value={'admin'}>admin</MenuItem>
-                                        <MenuItem value={'artist'}>Artist</MenuItem>
-                                        <MenuItem value={'default'}>Listener</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <IGNButton buttonLabel='Register' />
+                            <Box component="div" sx={{ mt: 1 }} >
+                            
+                            <IgnFormGenerate formStructures={RegisterFormStructure} />
+                            <IGNButton buttonLabel='Register' onClick={(event: React.MouseEvent<HTMLButtonElement>) => handleSubmit(event)} />
                                 <Grid container>
                                     <Grid item xs>
                                         {/* Other link or content if needed */}
@@ -222,4 +148,11 @@ const Register = ()=>{
     );
 }
 
+export const Register = () => {
+    return (
+        <FormDataProvider validations={user.validateRegistrationForm()} formKeys={user.validationIntialStates()}>
+            <RegisterDisplay/>
+        </FormDataProvider>
+    )
+}
 export default Register

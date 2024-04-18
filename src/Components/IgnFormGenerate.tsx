@@ -1,7 +1,8 @@
-import React, { useEffect,useState } from "react"
+import React, {  useEffect,useState } from "react"
 import { structureDataType, displayType } from "../Types/DataTypes"
-import {RadioGroup, Radio, Grid, TextField, FormControlLabel, FormLabel, FormControl } from "@mui/material"
+import {SelectChangeEvent,RadioGroup,InputLabel, Radio, Grid, TextField, FormControlLabel,MenuItem,Select, FormLabel, FormControl } from "@mui/material"
 import { useFormDataContext } from "../Contexts/FormContext"
+
 
 
 const Generate = ({ formStructures }: { formStructures: structureDataType[] }) => {
@@ -22,14 +23,16 @@ const Generate = ({ formStructures }: { formStructures: structureDataType[] }) =
 }
 
 const FieldOutput = ({ structure }: { structure: structureDataType }) => {
-    const { data, updateFormData,updateFileData } = useFormDataContext()
+    const { updateFormData,updateFileData,hasError } = useFormDataContext()
     const [dataValue,setDataValue] = useState("")
+    const [current_key,setCurrentKey] = useState("")
+
+
     useEffect(() => {
-        if(data[structure.label]){
-            setDataValue(data[structure.label])
-        }
-    },[data,structure.label])
-    
+        setCurrentKey(structure.label.toLowerCase())
+    },[structure.label])
+
+
     if (structure.display === displayType.Image) {
 
         return (
@@ -53,11 +56,15 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
             <TextField
                 label={structure.label}
                 {...structure.props}
-                onChange={(event) => {
-                    updateFormData(structure.label, event.target.value) }}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setDataValue(event.currentTarget.value) 
+                    updateFormData(current_key,event.currentTarget.value)
+                }}
                 value={dataValue}
                 variant="outlined"
                 fullWidth
+                error={current_key in hasError ? !(hasError[current_key].valid) : true }
+                helperText={current_key in hasError ? hasError[current_key].message : `label does not exist ${current_key}`}
             />
         )
     }
@@ -68,7 +75,10 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
              {...structure.props}
              multiline
              rows={12}
-             onChange={(event) => { updateFormData(structure.label, event.target.value) }}
+             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setDataValue(event.currentTarget.value) 
+                updateFormData(current_key,event.currentTarget.value)
+            }}
              value={dataValue}
              label={structure.label}
              fullWidth
@@ -84,6 +94,26 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
     //         </FormGroup>)
     //     }
 
+    if(structure.display === displayType.DropDown){
+        return (
+            <FormControl fullWidth variant='filled'>
+                <InputLabel id="role-label">{structure.label}</InputLabel>
+                <Select 
+                    labelId='role-label' 
+                    value={dataValue} label="Role" 
+                    onChange={(event: SelectChangeEvent<typeof dataValue>) => {
+                        setDataValue(event.target.value) 
+                        updateFormData(current_key,event.target.value)
+                    }}
+                >
+                    {structure.options?.map((option, index) => (
+                        <MenuItem key={index} value={option}>{option}</MenuItem>
+                 
+                        ))}
+                </Select>
+            </FormControl>
+        )
+    }
     if (structure.display === displayType.ChoiceList) {
         return (
             <Grid container>

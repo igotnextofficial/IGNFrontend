@@ -19,7 +19,10 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
       });
       return response.data;
     } catch (error) {
-      console.error("Axios error:", error);
+      if(error instanceof Error){
+        console.error("Axios error:", error.message);
+      }
+   
       return null;
     }
   }

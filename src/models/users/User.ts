@@ -1,5 +1,8 @@
-import {httpDataObject } from "../../Types/DataTypes";
+import {httpDataObject,FieldErrorMaintainerType,validationObject } from "../../Types/DataTypes";
 import IgnRequest from "../../Features/Http/IgnRequest";
+import { UserFields } from "../../Types/UserFields";
+import { validateFullname, validateEmail,validatePassword,validateUsername, validateChoices } from '../../Utils/validate';
+import { Roles } from "../../Types/Roles";
 
 class User{
     endpoint: string
@@ -7,6 +10,9 @@ class User{
     ignHttpRequest: IgnRequest;
     loginEndpoint:string;
     logoutEndpoint:string;
+    fields = [UserFields.FULLNAME,UserFields.EMAIL,UserFields.PASSWORD,UserFields.USERNAME,UserFields.ROLE]
+    static readonly registerFormFields = [UserFields.FULLNAME,UserFields.EMAIL,UserFields.PASSWORD,UserFields.USERNAME]
+    static readonly loginFormFields = [UserFields.EMAIL, UserFields.PASSWORD]
     static readonly INFO: string = "userInfo"
     static readonly ACCESS_TOKEN: string = "accessToken"
     constructor(){
@@ -92,6 +98,53 @@ class User{
         }
 
  
+    }
+
+    fullnameValidation(){
+        return {method:validateFullname,'valid':false,'message':'Fullname is required should be between 3 - 30 characters'}
+    }
+
+    emailValidation(){
+        return {method:validateEmail,'valid':false,'message':'Fullname is required should be between 3 - 30 characters'}
+    }
+    
+    usernameValidation(){
+        return {method:validateUsername,'valid':false,'message':'is required must be between'}
+    }
+    
+    passwordValidation(){
+            return {method:validatePassword,'valid':false,'message':'is required must be between'}
+    }
+
+    validatingRoles(value:string){
+        let choiceList = [Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT]
+        return validateChoices(choiceList,value)
+    }
+    roleValidation(){
+
+        return {method:this.validatingRoles,'valid':false,'message':'Please choose a role'}
+    }
+
+    validateRegistrationForm():validationObject{
+        const validate:validationObject = {
+            'fullname': this.fullnameValidation(),
+            'email':  this.emailValidation(),
+            'username': this.usernameValidation(),
+            'password': this.passwordValidation(),
+            'role': this.roleValidation()
+        }
+
+        return validate
+    }
+
+     validationIntialStates():FieldErrorMaintainerType {
+        let updatedField:FieldErrorMaintainerType = {};
+         this.fields.forEach(field => {
+            let currentField = field.toLocaleLowerCase()
+            updatedField[currentField] = {"valid":false,"message":""}
+        })
+
+        return updatedField
     }
 
     async register(data:httpDataObject){

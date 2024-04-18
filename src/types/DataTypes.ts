@@ -166,6 +166,7 @@ export enum ValidFileTypes {
 export enum displayType {
     InputValue = "input-value",
     TextValue = "text-value",
+    DropDown = "dropdown",
     MultiChoiceList = "multi-choice-list",
     ChoiceList = "choice-list",
     Image = "image"
@@ -213,4 +214,19 @@ export interface PaymentInformation{
     name:string,
     order: number,
     display:boolean
+}
+
+export interface validationObject {
+    [key:string]:{
+        method:(value:any,value2?:any) =>  boolean, 
+        valid:boolean,
+        message:string
+    }
+}
+
+export interface FieldErrorMaintainerType {
+    [key: string]: {
+        valid: boolean;
+        message: string;
+    };
 }
