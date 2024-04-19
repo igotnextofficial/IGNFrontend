@@ -15,11 +15,11 @@ import { useErrorHandler } from '../../Contexts/ErrorContext';
 import { Navigate } from 'react-router-dom';
 
 import { sendRequest } from '../../Utils/helpers';
-import { validateFullname, validateEmail,validatePassword,validateUsername } from '../../Utils/validate';
+
 import IgnFormGenerate from '../../Components/IgnFormGenerate';
 import { RegisterFormStructure } from '../../FormStructures/RegisterFormStructure';
 import FormDataProvider from '../../Providers/FormDataProvider';
-import { validationObject } from '../../Types/DataTypes';
+
 import User from '../../Models/Users/User';
 import { useFormDataContext } from '../../Contexts/FormContext';
 
@@ -35,43 +35,12 @@ const RegisterUserAttempt = async (data:httpDataObject) => {
     else return null
 }
 
-
-
-
-
-
 const RegisterDisplay = ()=>{
 
     const {user,isLoggedin,attemptLoginOrLogout } = useUser()
-    const{data,hasError,isValid} = useFormDataContext()
-    const [login,setLogin] = useState(false)
-    const [role, setRole] = useState('');
+    const{data,isValid} = useFormDataContext()
     const {updateError} = useErrorHandler()
 
-    useEffect(() => {
-        // const loginUser = async ( ) => {
-   
-        
-        //     const loginResponse = data !== null ? await attemptLoginOrLogout(true,data) : null;
-        //     if (!loginResponse) {
-        //         updateError?.("The user could not be logged in");
-        //         return false
-        //     }
-    
-        //     return true
-        // }
-        // if(login){
-        //     loginUser()
-        // }
-
-        // return () => {
-        //     setLogin(false)
-        // }
-    },[login,attemptLoginOrLogout,updateError,data])
-
-
-
-  
     const handleSubmit = async (event:  React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         if(isValid){
@@ -96,7 +65,7 @@ const RegisterDisplay = ()=>{
     return (
         <>
               {isLoggedin && user &&(
-                <Navigate to={`/dashboard/${user.role || role}`} replace={true} />
+                <Navigate to={`/dashboard/${user.role }`} replace={true} />
             )}
 
             <ThemeProvider theme={theme}>

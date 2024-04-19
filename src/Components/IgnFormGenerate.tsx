@@ -24,7 +24,7 @@ const Generate = ({ formStructures }: { formStructures: structureDataType[] }) =
 
 const FieldOutput = ({ structure }: { structure: structureDataType }) => {
     const { updateFormData,updateFileData,hasError } = useFormDataContext()
-    const [dataValue,setDataValue] = useState("")
+    const [dataValue,setDataValue] = useState(structure.default ?? "")
     const [current_key,setCurrentKey] = useState("")
 
 
@@ -40,6 +40,9 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
             type="file"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 if(event.target.files){
+              
+               
+                    console.log(JSON.stringify(event.currentTarget.files))
                     updateFileData('image',event.target.files[0])}
                 }
            
@@ -51,7 +54,6 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
 
 
     if (structure.display === displayType.InputValue) {
-
         return (
             <TextField
                 label={structure.label}
@@ -63,8 +65,8 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
                 value={dataValue}
                 variant="outlined"
                 fullWidth
-                error={current_key in hasError ? !(hasError[current_key].valid) : true }
-                helperText={current_key in hasError ? hasError[current_key].message : `label does not exist ${current_key}`}
+                error={current_key in hasError ? !(hasError[current_key].valid) : dataValue.trim() === "" }
+                helperText={current_key in hasError ? hasError[current_key].message : ``}
             />
         )
     }
@@ -119,7 +121,11 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
             <Grid container>
                 <FormControl>
                     <FormLabel id="row-radio-buttons-group-label">{structure.label}</FormLabel>
-                    <RadioGroup row value={dataValue} onChange={(event) => { updateFormData(structure.label, event.target.value) }}>
+                    <RadioGroup row value={dataValue} onChange={(event) => { 
+                        setDataValue(event.target.value)
+                        updateFormData(structure.label, event.target.value) 
+                        
+                        }}>
                         {structure.options?.map((option, index) => (
                             <Grid key={index} item xs={3}>
                                 <FormControlLabel  value={option} control={<Radio />} label={option} />

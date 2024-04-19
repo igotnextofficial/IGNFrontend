@@ -137,6 +137,25 @@ class User{
         return validate
     }
 
+    validateLoginForm():validationObject{
+        const validate:validationObject = {
+            'email':  this.emailValidation(),
+            'password': this.passwordValidation()
+        }
+
+        return validate
+    }
+
+    validationLoginIntialStates():FieldErrorMaintainerType {
+        let updatedField:FieldErrorMaintainerType = {};
+        
+        [UserFields.EMAIL,UserFields.PASSWORD].forEach(field => {
+            let currentField = field.toLocaleLowerCase()
+            updatedField[currentField] = {"valid":false,"message":""}
+        })
+
+        return updatedField
+    }
      validationIntialStates():FieldErrorMaintainerType {
         let updatedField:FieldErrorMaintainerType = {};
          this.fields.forEach(field => {

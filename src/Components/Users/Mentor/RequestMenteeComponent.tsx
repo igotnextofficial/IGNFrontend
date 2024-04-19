@@ -45,7 +45,7 @@ const RequestMenteeComponent = ({ mentor }: { mentor: MentorDataType }) => {
          {data.map(mentee => {
             const data: listDisplayDataType = {
                 title: `${mentee.fullname} (${mentee.username})`,
-                image_url: mentee.image,
+                image_url: mentee.image || "",
                 subtitle: `${mentee.bio.substring(0, 200)} ${mentee.bio.length > 200 ? "..." : ""}`
             }
 

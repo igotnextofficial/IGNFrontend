@@ -6,7 +6,8 @@ interface FormDataContextState {
     updateFileData:(key:string,value:File )=> void,
     hasError:FieldErrorMaintainerType,
     isValid:boolean,
-    data: any
+    data: Record<string, any>
+  
 }
 
 export const FormDataContext = createContext<FormDataContextState | null>(null)

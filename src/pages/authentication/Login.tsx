@@ -14,45 +14,39 @@ import Link from '@mui/material/Link';
 import BackgroundCoverImage from '../../Components/BackgroundCoverImage';
 import Copyright from '../../Components/Copyright';
 import IGNButton from '../../Components/Button';
-import IgnForm from '../../Components/IgnForm';
+
 import Loader from '../../Components/Loader';
-import forms from '../../Utils/forms';
+
 import { Navigate } from 'react-router-dom';
 
 import { useUser } from '../../Contexts/UserContext';
+import IgnFormGenerate from '../../Components/IgnFormGenerate';
+import { LoginFormStructure } from '../../FormStructures/LoginFormStructure';
+import FormDataProvider from '../../Providers/FormDataProvider';
+import User from '../../Models/Users/User';
+import { useFormDataContext } from '../../Contexts/FormContext';
+import { useErrorHandler } from '../../Contexts/ErrorContext';
 
 
 
 
+const userClass = new User()
 
-
-
-const Login = ()=>{
+const LoginDisplay = ()=>{
+    const {updateError} = useErrorHandler()
     const {user,isLoggedin,attemptLoginOrLogout }= useUser();
-    const [successfulLogin,] = useState(false);
-    const [hasErrors,] = useState(false);
-    const [errMessage,] = useState('');
-    const [loading,setLoading] = useState(false);
-
-    const DisplayErrors = ({hasErrors = false,errorMessage = ""}) => {
-        return errMessage.trim().length > 0 ? <p className='error'>{errorMessage}</p> : null;
-    }
-
-
-    useEffect(() =>{
-        // <Navigate to="/dashboard" replace={true} />
-    },[successfulLogin])
-
-    useEffect(() =>{
-        setLoading(false)
-    },[hasErrors])
+    const {data,isValid} = useFormDataContext()
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setLoading(true);
-        const formData = new FormData(event.currentTarget);
-        const data = Object.fromEntries(formData.entries())
-        await attemptLoginOrLogout(true,{"data":data})
+        if(isValid){
+
+            const response = await attemptLoginOrLogout(true,{data})
+    
+            if(!response){
+                updateError("Issue with logging in user ")
+            }
+        }
     }
        
    
@@ -75,7 +69,7 @@ const Login = ()=>{
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                         <Box sx={{ my: 8, mx: 4,position:'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', }} >
 
-                               <Loader display={loading} />
+                       
                          
                             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                                 <LockOutlinedIcon/>
@@ -84,8 +78,9 @@ const Login = ()=>{
                                 Sign in
                             </Typography>
                             <Box component="form" noValidate sx={{mt:1}} onSubmit={handleSubmit}>
-                            <DisplayErrors hasErrors={hasErrors} errorMessage={errMessage}/>
-                            <IgnForm formProperties={forms.login}  />
+                        
+                            <IgnFormGenerate formStructures={LoginFormStructure} />
+                          
                                 <IGNButton buttonLabel='Sign in'/>
                                  
                                 <Grid container>
@@ -113,4 +108,11 @@ const Login = ()=>{
 
 }
 
+export const Login = () => {
+    return (
+        <FormDataProvider validations={userClass.validateLoginForm()} formKeys={userClass.validateLoginForm()}>
+            <LoginDisplay/>
+        </FormDataProvider>
+    )
+}
 export default Login

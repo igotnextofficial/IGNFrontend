@@ -11,7 +11,7 @@ interface FormDataProviderProps {
 
 const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,formKeys}) => {
     const [data, setData] = useState<Record<string, any>>({});
-    const [, setFile] = useState<Record<string, File>>({});
+    const [file, setFile] = useState<Record<string, File> | null>(null);
     const [hasError,setHasError] = useState<FieldErrorMaintainerType>(formKeys ?? {}  )
     const [isValid,setIsValid] = useState(false);
     
@@ -43,9 +43,10 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
               
                 setHasError(updateHasError)
             }
+
+            
             setData((currentData) => ({...currentData,[current_key]:value}))
-
-
+       
         }
         catch(error){
                 throw new Error(`All form fields should have a validation function | missing ${key}`)
@@ -54,15 +55,15 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
     },[hasError, validations])
     
 
-     const updateFileData = (key:string,file: File) => {
-        setData((currentData) => ({...currentData,[key.toLowerCase()]:file}))
-        setFile({[key.toLowerCase()]:file});
-    };
+    const updateFileData = useCallback((key: string, file: File) => {
+        setData((currentData) => ({...currentData,[key.toLowerCase()]: file}))
+        setFile({[key.toLowerCase()]: file}); // Append file or update existing file entry
+    }, []);
 
 
 
     return (
-        <FormDataContext.Provider value={{updateFormData:updateData,data:data, updateFileData,hasError,isValid}}>
+        <FormDataContext.Provider value={{updateFormData:updateData,data, updateFileData,hasError,isValid , file}}>
             {children}
         </FormDataContext.Provider>
     )

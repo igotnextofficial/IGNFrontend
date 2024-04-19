@@ -8,16 +8,27 @@ interface axiosDataObject{
 }
 
 
-
+interface optionsDataType{
+  headers:any
+  method:HttpMethods,
+  url:string,
+  data?:FormData | httpDataObject | null
+}
 async function submit(submissionData: axiosDataObject, updatedData: FormData | httpDataObject | null) {
     try {
-      const response = await axios({
-        headers: updatedData && 'image' in updatedData ? { 'Content-Type': 'multipart/form-data' } : {'Content-Type': 'application/json'},
+      const headers = updatedData instanceof FormData ? {} : { 'Content-Type': 'application/json' };
+      const options:optionsDataType = {
+        headers,
         method: submissionData.method,
         url: submissionData.url,
-        data: updatedData ? updatedData : {},
-      });
+        data:updatedData
+      }
+
+
+
+      const response = await axios(options);
       return response.data;
+
     } catch (error) {
       if(error instanceof Error){
         console.error("Axios error:", error.message);
@@ -38,9 +49,11 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
 
   export async function sendRequest (method:HttpMethods, url:string, data?:httpDataObject | null, headers={}){
     let preparedData = null
+
     if(data ){
-      if('image' in data){
-        preparedData = getFormData(data)
+      if('image' in data.data){
+        preparedData = getFormData(data.data)
+        console.log(`found an image ${data.data}`)
       }
       else{
         preparedData = data;

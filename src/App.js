@@ -66,7 +66,7 @@ const MainApplication = () => {
           <Route path='/schedule' element={<ScheduleSession />} /> 
           
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
-            <Route path='/account' element={<EditProfile />} /> {/* Sends Request */}
+            <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
             <Route path='/dashboard/:role' element={<Dashboard />} /> 
      
             

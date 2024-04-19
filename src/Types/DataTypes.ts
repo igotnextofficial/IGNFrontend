@@ -11,31 +11,29 @@ export interface SongDataType{
 }
 
 export interface UserDataType {
+    [key:string]: any,
     id:string,
     fullname:string,
+    username?:string,
     role:Roles
     image?:string,
     bio?:string,
 }
-export interface MentorDataType {
-    id:string,
-    fullname:string,
-    username?:string,
-    image:string,
-    role:Roles,
-    bio:string,
+export interface MentorDataType extends UserDataType {
     availability:boolean,
     specialties:string[],
     mentees:MenteeDataType[]
 }
 
-export interface CalendarDataType{
-    month:string,
-    day:string,
-    time:string
+
+export interface ArtistDataType extends UserDataType {
+    genre:string,
+    bio:string,
+    songs?:string[],
+    albums?:string[]
 }
+
 export interface MenteeDataType extends ArtistDataType {
-    id:string,
     request_id:string,
     mentor?: MentorDataType | null,
     mentorSession?:MentorSessionDataType[],
@@ -43,6 +41,13 @@ export interface MenteeDataType extends ArtistDataType {
     progress:number,
     status:string
 }
+
+export interface CalendarDataType{
+    month:string,
+    day:string,
+    time:string
+}
+
 
 export interface MentorSessionDataType {
     id:string,
@@ -54,17 +59,7 @@ export interface MentorSessionDataType {
     previousSession:string,
 }
 
-export interface ArtistDataType {
-    id:string,
-    fullname:string,
-    username:string,
-    image:string,
-    role:Roles
-    genre:string,
-    bio:string,
-    songs?:string[],
-    albums?:string[]
-}
+
 export interface ArticleDataType {
     id?:""
     title:string,
@@ -179,6 +174,7 @@ export interface structureDataType{
     placeholder?:string,
     props:object,
     order: number,
+    default?:string,
     options?: string[]
 
 }
