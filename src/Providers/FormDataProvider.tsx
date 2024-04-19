@@ -11,7 +11,7 @@ interface FormDataProviderProps {
 
 const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,formKeys}) => {
     const [data, setData] = useState<Record<string, any>>({});
-    const [file, setFile] = useState<Record<string, File> | null>(null);
+    const [, setFile] = useState<Record<string, File> | null>(null);
     const [hasError,setHasError] = useState<FieldErrorMaintainerType>(formKeys ?? {}  )
     const [isValid,setIsValid] = useState(false);
     
@@ -63,7 +63,7 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
 
 
     return (
-        <FormDataContext.Provider value={{updateFormData:updateData,data, updateFileData,hasError,isValid , file}}>
+        <FormDataContext.Provider value={{updateFormData:updateData,data, updateFileData,hasError,isValid }}>
             {children}
         </FormDataContext.Provider>
     )

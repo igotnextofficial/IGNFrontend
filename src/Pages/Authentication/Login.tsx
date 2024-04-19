@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 
@@ -15,7 +15,6 @@ import BackgroundCoverImage from '../../Components/BackgroundCoverImage';
 import Copyright from '../../Components/Copyright';
 import IGNButton from '../../Components/Button';
 
-import Loader from '../../Components/Loader';
 
 import { Navigate } from 'react-router-dom';
 
