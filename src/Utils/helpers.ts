@@ -20,8 +20,10 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
       const options:optionsDataType = {
         headers,
         method: submissionData.method,
-        url: submissionData.url,
-        data:updatedData
+        url: submissionData.url
+      }
+      if(updatedData !== null){
+          options.data = updatedData;
       }
 
 

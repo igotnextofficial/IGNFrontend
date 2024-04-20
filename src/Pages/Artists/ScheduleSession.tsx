@@ -8,6 +8,30 @@ import IgnPillComponent from "../../Helpers/IgnPillComponent"
 import dayjs from 'dayjs';
 
 
+
+const ScheduledSucces = () => {
+    return (
+        <>
+        <Typography sx={{ paddingTop: 2, paddingBottom: 2 }} variant="h4" >{`Your session was scheduled successfully`}</Typography>
+        </>
+    )
+}
+
+
+const Scheduler = ({currentMentor}:{currentMentor:MentorDataType | null}) => {
+
+    return (
+
+        <>
+            <Typography sx={{ paddingTop: 2, paddingBottom: 2 }} variant="h4" >{`Schedule your session with ${currentMentor?.fullname}`}</Typography>
+                <Box sx={{ maxWidth: '600px' }}>
+                    <IgnPillComponent description={`Mentor: ${currentMentor?.fullname}`} link="" />
+                        <img style={{ width: "100%",border:"2px solid #ecdb22 " }} src={currentMentor?.image} alt={currentMentor?.fullname} />
+                </Box>
+                <ScheduleTime/>
+        </>
+    )
+}
 const ScheduleSession = () => {
     const { user } = useUser()
     const [currentMentor,setCurrentMentor] = useState <MentorDataType | null>(null)
@@ -34,14 +58,9 @@ const ScheduleSession = () => {
        
     },[user,currentMentor])
     return (
-            scheduledSuccessfully  === false ? <MainHolderComponent>
-                 <Typography sx={{ paddingTop: 2, paddingBottom: 2 }} variant="h4" >{`Schedule your session with ${currentMentor?.fullname}`}</Typography>
-                     <Box sx={{ maxWidth: '600px' }}>
-                            <IgnPillComponent description={`Mentor: ${currentMentor?.fullname}`} link="" />
-                            <img style={{ width: "100%",border:"2px solid #ecdb22 " }} src={currentMentor?.image} alt={currentMentor?.fullname} />
-                        </Box>
-                <ScheduleTime/>
-            </MainHolderComponent> : null
+           <MainHolderComponent>
+                {scheduledSuccessfully ? <ScheduledSucces/>  : <Scheduler currentMentor={currentMentor} />}
+            </MainHolderComponent> 
     )
 }
 

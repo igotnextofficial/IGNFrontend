@@ -36,20 +36,22 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
   },[mentor,user])
 
   const handleBooking = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    setButtonLabel(labels.pending)
-    let mentor_id = event.currentTarget.dataset.src;
-    let endpoint = `${process.env.REACT_APP_MENTOR_API}/${mentor_id}/request/${user?.id}`
-    console.log(`the endpoint is : ${endpoint}  |  ${event.currentTarget}`)
-      event.currentTarget.disabled = true
-      let response = await sendRequest(HttpMethods.POST,endpoint);
-      if(response === null){
-        event.currentTarget.disabled = false
-        setButtonLabel(labels.default)
-      }
-  
-
-     
-
+    try{
+      setButtonLabel(labels.pending)
+      let mentor_id = event.currentTarget.dataset.src;
+      let endpoint = `${process.env.REACT_APP_MENTOR_API}/${mentor_id}/request/${user?.id}`
+        event.currentTarget.disabled = true
+        let response = await sendRequest(HttpMethods.POST,endpoint);
+        if(response === null){
+          event.currentTarget.disabled = false
+          setButtonLabel(labels.default)
+        }
+    }
+    catch(error){
+        if(error instanceof Error){
+          console.error(error.message)
+        }
+    }
   }
 
 
