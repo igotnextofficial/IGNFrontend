@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Box, Button, Grid, Typography} from '@mui/material'
+import {Grid, Typography} from '@mui/material'
 import ArticleProvider from '../../Providers/ArticleProvider'
 import ListArticlesComponent from '../../Components/Article/ListAritclesComponent '
 import { FetchMode } from '../../Types/ArticleFetchMode'
@@ -8,13 +8,13 @@ import { useUser } from '../../Contexts/UserContext'
 import DashboardSectionBorder from '../../Components/Users/Mentor/DashboardSectionComponentWithBorder'
 import ContentContainer from '../../Utils/ContentContainer'
 
-import TextContentComponent from '../../Helpers/TextContentComponent'
+
 import { ArtistDataType } from '../../Types/DataTypes'
 import MentorsFeedback from '../../Components/Users/Artist/MentorsFeedback'
 import IconOnlyTopSection from '../../Components/Users/IconOnlyTopSection'
 import DisplayTextComponent from '../../Components/Users/DisplayTextComponent'
 
-import { Link } from 'react-router-dom'
+
 import CurrentMentorDisplay from '../../Components/Users/Artist/CurrentMentorDisplay'
 import ListMentors from '../../Components/Users/Mentor/ListMentors'
 
@@ -40,13 +40,7 @@ const DefaultMessaging = () => {
 
 
 
-const DisplayBio = ({user} : {user:ArtistDataType}) => {
-    return user.bio ? <>
-  
-            <DisplayTextComponent text={user?.bio || ""} />
 
-</>: null
-}
 const ArtistDashboard = () => {
     const { user  } = useUser() 
     if (!user) {
