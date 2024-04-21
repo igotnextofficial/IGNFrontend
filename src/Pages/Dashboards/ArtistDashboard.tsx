@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Grid, Typography} from '@mui/material'
+import { Box, Button, Grid, Typography} from '@mui/material'
 import ArticleProvider from '../../Providers/ArticleProvider'
 import ListArticlesComponent from '../../Components/Article/ListAritclesComponent '
 import { FetchMode } from '../../Types/ArticleFetchMode'
@@ -11,8 +11,13 @@ import ContentContainer from '../../Utils/ContentContainer'
 import TextContentComponent from '../../Helpers/TextContentComponent'
 import { ArtistDataType } from '../../Types/DataTypes'
 import MentorsFeedback from '../../Components/Users/Artist/MentorsFeedback'
+import IconOnlyTopSection from '../../Components/Users/IconOnlyTopSection'
+import DisplayTextComponent from '../../Components/Users/DisplayTextComponent'
 
-import ProfileTopSection from '../../Components/Users/ProfileTopSection'
+import { Link } from 'react-router-dom'
+import CurrentMentorDisplay from '../../Components/Users/Artist/CurrentMentorDisplay'
+import ListMentors from '../../Components/Users/Mentor/ListMentors'
+
 
 
 
@@ -37,13 +42,13 @@ const DefaultMessaging = () => {
 
 const DisplayBio = ({user} : {user:ArtistDataType}) => {
     return user.bio ? <>
-          <Grid sx={{ backgroundColor: "lightgrey", padding: 2, borderRadius: "5px", marginTop: 2, MarginBottom: 2 }}>
-         <TextContentComponent content={user?.bio || ""} />
-    </Grid> 
+  
+            <DisplayTextComponent text={user?.bio || ""} />
+
 </>: null
 }
 const ArtistDashboard = () => {
-    const { user } = useUser()
+    const { user  } = useUser() 
     if (!user) {
         return <Typography>User not found or not logged in</Typography>;
     }
@@ -56,23 +61,63 @@ const ArtistDashboard = () => {
          
 
                 <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    <Grid item xs={12}>
-                        <ProfileTopSection/>
+                    <Grid item xs={8} >
+                    <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        <Grid item xs={12}>
+                            <DashboardSectionBorder title="Profile Information" >
+                                <IconOnlyTopSection />
+                            </DashboardSectionBorder>
+                            </Grid>
+
+                            {
+                            user.mentor === null && <Grid item xs={12}>
+                                <DashboardSectionBorder title="Choose A mentor" >
+                                    <ListMentors/>
+                                </DashboardSectionBorder>
+                            </Grid>
+                            }
+                
+                            <Grid item xs={12}>
+                                <DashboardSectionBorder title="Most Recent Articles" >
+                                    <RecentArticles currentUser={user as ArtistDataType} />
+                                </DashboardSectionBorder>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <DashboardSectionBorder title={`${user?.fullname} Bio`} >
+                             
+                                {user.bio  && <Grid item xs={12}> <DisplayTextComponent text={user.bio || ""} /> </Grid>}
+                                </DashboardSectionBorder>
+                            </Grid>
+
+                    </Grid>
+                    
+
+                        {/* <ProfileTopSection/> */}
                     </Grid>
 
-                    {user.bio && <Grid item xs={12}> <DisplayBio user={user as ArtistDataType}/> </Grid>}
                     <Grid item xs={4}>
-                        <DashboardSectionBorder title="Mentor's Feedback:" >
-                            <MentorsFeedback/>
-                        </DashboardSectionBorder>
+                        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            <Grid item xs={12}>
+                                <DashboardSectionBorder title="Mentor's Feedback:" >
+                                    <MentorsFeedback/>
+                                </DashboardSectionBorder>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DashboardSectionBorder title={`Current Mentor: ${user?.mentor.fullname}`} >
+                                  <CurrentMentorDisplay user={user as ArtistDataType}/>
+                                
+                                </DashboardSectionBorder>
+                            </Grid>
+                        </Grid>
                     </Grid>
 
+               
                     <Grid item xs={4}>
-                        <DashboardSectionBorder title="Most Recent Articles" >
-                            <RecentArticles currentUser={user as ArtistDataType} />
-                        </DashboardSectionBorder>
+                  
                     </Grid>
 
+              
 
                 </Grid>
             </ArticleProvider>

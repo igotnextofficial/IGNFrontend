@@ -12,18 +12,14 @@ import { useUser } from '../../Contexts/UserContext';
 const AccountSettings = () => {
   const { user } = useUser()
   const settings: Settings[] = [
-    {
-      title: 'Profile',
-      slug: '/profile'
-    }, 
-    { title: 'Account', slug: '/account' }, 
+    { title: 'Account', slug: '/edit-profile' }, 
     { title: 'Dashboard', slug: `dashboard/${user?.role}` }, 
     { title: 'Logout', slug: '/logout' }];
 
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  if(user?.role ===  Roles.ARTIST){
+  if(user?.role ===  Roles.ARTIST && user?.mentor === null){
     settings.unshift({
        title: 'Find a mentor', slug: '/mentors/find-a-mentor' 
     })

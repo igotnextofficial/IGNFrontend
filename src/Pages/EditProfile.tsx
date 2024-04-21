@@ -18,6 +18,7 @@ const Profile = () => {
     const { user, updateUser} = useUser();
     const { data } = useFormDataContext()
     const [formStructure,setFormStructure] = useState<structureDataType[]>([])
+    const [successfulUpdate,setSuccessfulUpdate] = useState(false)
   
     useEffect(() => {
         const artist = new Artist()
@@ -30,18 +31,6 @@ const Profile = () => {
         setFormStructure(userFormStructure)
     },[user])
 
-// useEffect(() => {
-//     const exclusion = ['id']; // will pull this from model or somewhere else.
-//             if (user) {
-//                 for (const key in user) {
-//                     const value = (user as any)[key]
-//                     if (!exclusion.includes(key)) {
-//                         updateFormData(key, value);
-//                     }
-//                 }
-//             }
-// },[user,updateFormData])
-
 
 
  
@@ -52,25 +41,12 @@ const Profile = () => {
         console.log("clicked the update button: labels " + labels)
         
         const response = await sendRequest(HttpMethods.PUT,endpoint,{data})
-        // if(file !== null){
-        //     for(const item in data){
-        //         formData.append(item,data[item])
-        //     }
-
-        //     formData.append('image',file.image)
-        //     const response = await sendRequest(HttpMethods.PUT,endpoint,formData)
-        // }
-
-
-
-
-        
-        // const endpoint = `${process.env.REACT_APP_USER_API_URI}/${user?.id}`
-        // const response = await sendRequest(HttpMethods.PUT,endpoint,data)
+ 
         if(response !== null){
 
             localStorage.setItem('userInfo',JSON.stringify(response?.data))
-            updateUser(response.data as UserDataType)   
+            updateUser(response.data as UserDataType)
+            setSuccessfulUpdate(true)   
         }
    
     }
@@ -81,6 +57,7 @@ const Profile = () => {
 
             <IgnFormGenerate formStructures={ formStructure } />
             <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={() => {return handleSubmit()}}>Update</Button>
+            {successfulUpdate && <Typography variant="h4">Your account has beent successfully updated.</Typography>}
 
         </>
     )
