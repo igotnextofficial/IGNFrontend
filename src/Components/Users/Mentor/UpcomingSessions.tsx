@@ -42,13 +42,11 @@ function formatDate(date:Date) {
     const today = dayjs()
     const maximumDate = dayjs().add(max,'day')
     const upcomingSession = dayjs(mentee.nextSession);
-
     if( ((upcomingSession < today) || (upcomingSession > maximumDate)) ){return null}
     const readableDate = formatDate(new Date(mentee.nextSession));
-
-  
         let updatedDate = {nextSession:readableDate}
         let updateData = {...mentee,...updatedDate}
+
 
         return updateData;
   }
@@ -64,7 +62,7 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     };
 
     useEffect(() => {
-        setData(user.mentees.filter((mentee) => mentee.status === "approved").slice(0, 5))
+        setData(user.mentees.filter((mentee) => mentee.status === "approved"))
     }, [user])
     return (
         <>

@@ -97,12 +97,12 @@ const ArtistDashboard = () => {
                                     <MentorsFeedback/>
                                 </DashboardSectionBorder>
                             </Grid>
-                            <Grid item xs={12}>
+                            {user.mentor !== null && <Grid item xs={12}>
                                 <DashboardSectionBorder title={`Current Mentor: ${user?.mentor.fullname}`} >
                                   <CurrentMentorDisplay user={user as ArtistDataType}/>
                                 
                                 </DashboardSectionBorder>
-                            </Grid>
+                            </Grid>}
                         </Grid>
                     </Grid>
 
