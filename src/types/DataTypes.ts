@@ -5,6 +5,10 @@ export interface AlbumDataType{
     duration:number,
 }
 
+export interface RoleDataType{
+    id:string,
+    type:Roles
+}
 export interface SongDataType{
     title:string,
     duration: number
@@ -15,7 +19,7 @@ export interface UserDataType {
     id:string,
     fullname:string,
     username?:string,
-    role:Roles
+    role: RoleDataType,
     image?:string,
     bio?:string,
 }

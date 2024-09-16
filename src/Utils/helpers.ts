@@ -1,4 +1,5 @@
 import axios from "axios"
+
 import { HttpMethods,httpDataObject } from "../Types/DataTypes"
 
 interface axiosDataObject{
@@ -12,6 +13,7 @@ interface optionsDataType{
   headers:any
   method:HttpMethods,
   url:string,
+  withCredentials?:boolean,
   data?:FormData | httpDataObject | null
 }
 async function submit(submissionData: axiosDataObject, updatedData: FormData | httpDataObject | null) {
@@ -20,7 +22,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
       const options:optionsDataType = {
         headers,
         method: submissionData.method,
-        url: submissionData.url
+        url: submissionData.url,
       }
       if(updatedData !== null){
           options.data = updatedData;

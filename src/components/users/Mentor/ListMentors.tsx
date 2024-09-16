@@ -3,15 +3,33 @@ import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
 import { HttpMethods, MentorDataType, httpDataObject } from '../../../Types/DataTypes';
 import { sendRequest } from '../../../Utils/helpers';
+import { useUser } from '../../../Contexts/UserContext';
+import axios from 'axios';
 
 const ListMentors = () => {
     const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
     const [response,setResponse] = useState<httpDataObject | null>(null);
 
+    const {accessToken} = useUser();
 
     useEffect(() => {
         const loadData = async () => {
-            let response = await sendRequest(HttpMethods.GET,`${process.env.REACT_APP_MENTOR_API}`)
+            try{
+                if(!accessToken){
+                    let response = await axios.get(`${process.env.REACT_APP_MENTOR_API}`, {
+                        headers: {
+                            "Authorization": `Bearer ${accessToken}`
+                        }
+                    });
+                    
+                }
+
+                
+            }
+            catch(e){
+                console.error(`Couldn't load mentors ${e}`)
+            }
+
             setResponse(response)
         }
 

@@ -58,6 +58,7 @@ const validateCommonString = (value:string,min:number,max:number) => {
 }
 
  export const validateEmail = (email:string) => {
+    return true
     const validEmailDomains = ["gmail.com","aol.com","yahoo.com","hotmail.com"]
     let valid = false
     if(validator.isEmail(email)){

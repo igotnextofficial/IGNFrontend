@@ -32,19 +32,57 @@ import MessageReaderReply from './Pages/Notes/MessageReaderReply';
 
 import ScheduleSession from './Pages/Artists/ScheduleSession';
 
+import { socket } from './socket'
+
+import { useEffect,useState } from 'react';
+import LocalStorage from './Storage/LocalStorage';
+
 
 
 
 const MainApplication = () => {
   const { isLoggedin } = useUser();
+
   const isAuthenticated = isLoggedin
+  const [isConnected,setIsConnected] = useState(socket.connected)
+
+ 
+  useEffect(() => {
+    function onConnect(){
+      setIsConnected(true)
+    }
+    
+    function onDisconnect(){
+      setIsConnected(false)
+    }
+
+    // if(isAuthenticated && !isConnected){
+    //   socket.connect()
+    // }
+    // if(isAuthenticated && isConnected){
+    //   socket.emit('authenticate', { isAuthenticated, token: localStorage.getItem('token') , message:"hello from client"})
+    // }
+
+
+    // socket.on('connect',  onConnect)
+
+    // socket.on('disconnect',  onDisconnect)
+
+    // return () => {
+    //   socket.off('connect',onConnect)
+    //   socket.off('disconnect',onDisconnect)
+    // }
+  
+  },[isAuthenticated,isConnected])
+
+  
+ 
+
   return (
 
 
     <>
-
-
-
+   
       <Router>
         <DetectChange />
         <Navigation Authenticated={isAuthenticated} />

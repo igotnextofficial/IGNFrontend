@@ -1,22 +1,30 @@
+
 import {httpDataObject,FieldErrorMaintainerType,validationObject } from "../../Types/DataTypes";
 import IgnRequest from "../../Features/Http/IgnRequest";
 import { UserFields } from "../../Types/UserFields";
 import { validateFullname, validateEmail,validatePassword,validateUsername, validateChoices } from '../../Utils/validate';
 import { Roles } from "../../Types/Roles";
+import Storage from "../../Storage/StorageAbstract";
+import { StorageTypes } from "../../Storage/StorageTypes";
+import axios from "axios";
+
 
 class User{
     endpoint: string
-    baseURI: string
+    private readonly baseURI: string
     ignHttpRequest: IgnRequest;
     loginEndpoint:string;
     logoutEndpoint:string;
+
     fields = [UserFields.FULLNAME,UserFields.EMAIL,UserFields.PASSWORD,UserFields.USERNAME,UserFields.ROLE]
     static readonly registerFormFields = [UserFields.FULLNAME,UserFields.EMAIL,UserFields.PASSWORD,UserFields.USERNAME]
     static readonly loginFormFields = [UserFields.EMAIL, UserFields.PASSWORD]
-    static readonly INFO: string = "userInfo"
-    static readonly ACCESS_TOKEN: string = "accessToken"
+    static readonly INFO: string = "user_info"
+    static readonly ACCESS_TOKEN: string = "access_token"
+    static readonly REFRESH_TOKEN: string = "refresh_token"
+    
     constructor(){
-        this.baseURI = process.env.REACT_APP_ENVIRONMENT === "development" ? `${process.env.REACT_APP_TEST_API}` : `https://${process.env.REACT_APP_USER_API_URI}`; 
+        this.baseURI = `https://${process.env.REACT_APP_USER_API_URI}`; 
         this.endpoint = `${process.env.REACT_APP_USER_API_URI}`;
         this.loginEndpoint = `${process.env.REACT_APP_LOGIN_API}`
         this.logoutEndpoint = `${process.env.REACT_APP_LOGOUT_API}`
@@ -55,45 +63,87 @@ class User{
 
     async login (data:httpDataObject){
         let ignHttpRequest = new IgnRequest({baseURL:this.baseURI});
+        let cookie_storage = new Storage(StorageTypes.CookieStorage);
+        let local_storage = new Storage(StorageTypes.LocalStorage);
         try{
             
            let response = await ignHttpRequest.post(`${this.loginEndpoint}`,data);
            if(response.status !== 200){return null}
-     
-           localStorage.setItem(User.INFO,JSON.stringify(response.data['data']));
-           document.cookie = `access_token=${response.data['access_token']}; Secure; HttpOnly`;
-           localStorage.setItem(User.ACCESS_TOKEN, response.data['access_token']);
-           localStorage.setItem("test","testing to login user")
+            
+           let user_data = response.data['data'];
 
-           return response;
+           if(user_data.role.type === Roles.ARTIST){
+                user_data.mentor = null;
+                user_data.sessions = [];
+                
+                // let resources = [
+                //     axios.get(Endpoints.MENTOR),
+                //     axios.get(Endpoints.SESSIONS),
+                //     axios.get(Endpoints.NOTES)
+                // ];
+
+                // axios.all(resources)
+                // .then(axios.spread((mentor, session, notes) => {
+                //     // Handle each response individually
+                //     console.log('Mentor Data:', mentor.data);
+                //     console.log('Session Data:', session.data);
+                //     console.log('Notes Data:', notes.data);
+              
+                //     // You can now work with the data, e.g., update state if using React
+                // }))
+                // .catch(error => {
+                //     // Handle error for any of the requests
+                //     console.error('Error fetching data:', error);
+                // });
+
+           }
+
+           if(user_data.role.type === Roles.WRITER){
+
+           }
+
+              if(user_data.role.type === Roles.MENTOR){
+    
+              }
+           
+           let access_token = response.data[User.ACCESS_TOKEN];
+           let refresh_token = response.data[User.REFRESH_TOKEN];
+           // save data to storage , be aware of xss attacks,
+        //    local_storage.setItem(User.INFO,JSON.stringify(response.data['data']));
+           local_storage.save('user_info',user_data);
+ 
+            return response;
         }
         catch(error){
-            console.log('could not login')
-            console.log(JSON.stringify(error))
             return null
         }
 
        
     }
 
-    getUserAccessToken(){
-        return localStorage.getItem(User.ACCESS_TOKEN) || ""
+    getUserAccessToken( ){
+        let cookie_storage = new Storage(StorageTypes.CookieStorage);
+        return cookie_storage.load(User.ACCESS_TOKEN)
     }
 
-    async logout(){
-        if(!localStorage.getItem(User.INFO)){
-            return null;
+    async logout(access_token:string){
+    
+        let local_storage = new Storage(StorageTypes.LocalStorage);
+        
+        if(!local_storage.hasItem(User.INFO)){
+            return null
         }
-        let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${localStorage.getItem(User.ACCESS_TOKEN)}`}});
+
+        let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${access_token}`}});
 
         try{
             const response = await ignHttpRequest.post(this.logoutEndpoint);
-             localStorage.removeItem(User.INFO)
-             localStorage.removeItem(User.ACCESS_TOKEN)
+            local_storage.remove(User.INFO);
+        
              return response
         }
         catch(error){
-            console.log(JSON.stringify(error))
+             
             return null
         }
 

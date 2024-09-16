@@ -28,6 +28,7 @@ const NotesFeedback = () => {
             if(user){
                 const response = await loadNotes(user.id,'recipient');
                 const data = response as Record<string,any>[]
+                if(data === null){return []}
                 const onlyUnreadNotes =  data.filter(onlyRead => {
                    return  onlyRead.status === "unread"
                 })

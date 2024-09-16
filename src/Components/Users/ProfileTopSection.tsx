@@ -1,4 +1,4 @@
-import React from "react"
+import React , {useMemo} from "react"
 import { useUser } from "../../Contexts/UserContext";
 import { Link } from "react-router-dom";
 import { List,ListItem,ListItemAvatar,Avatar,ListItemText,Typography } from "@mui/material"
@@ -7,6 +7,9 @@ import {  MentorDataType } from "../../Types/DataTypes";
 
 const ProfileTopSection = () => {
     const { user } = useUser()
+    const role = useMemo(() => {
+        return user?.getUserRole();
+      }, [user])
     return user && (
         <Link to={"/edit-profile"}>
         <List sx={{ width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
@@ -39,8 +42,8 @@ const ProfileTopSection = () => {
 
                         >
                        
-                          {user.role === "artist" && 'genre' in user ? `Genre: ${ user.genre }` : ''}
-                          {user.role === "mentor" ? `specialties: ${(user as MentorDataType).specialties.join(",")}` : ''}
+                          {role === "artist" && 'genre' in user ? `Genre: ${ user.genre }` : ''}
+                          {role === "mentor" ? `specialties: ${(user as MentorDataType).specialties.join(",")}` : ''}
                         </Typography>
                     </React.Fragment>
                     }

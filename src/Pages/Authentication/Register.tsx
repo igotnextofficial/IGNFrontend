@@ -64,7 +64,7 @@ const RegisterDisplay = ()=>{
     return (
         <>
               {isLoggedin && user &&(
-                <Navigate to={`/dashboard/${user.role }`} replace={true} />
+                <Navigate to={`/dashboard/${user.role.type }`} replace={true} />
             )}
 
             <ThemeProvider theme={theme}>

@@ -43,8 +43,6 @@ const Profile = () => {
         const response = await sendRequest(HttpMethods.PUT,endpoint,{data})
  
         if(response !== null){
-
-            localStorage.setItem('userInfo',JSON.stringify(response?.data))
             updateUser(response.data as UserDataType)
             setSuccessfulUpdate(true)   
         }

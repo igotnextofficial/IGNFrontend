@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {Grid, Typography} from '@mui/material'
 import ArticleProvider from '../../Providers/ArticleProvider'
 import ListArticlesComponent from '../../Components/Article/ListAritclesComponent '
@@ -17,6 +17,7 @@ import DisplayTextComponent from '../../Components/Users/DisplayTextComponent'
 
 import CurrentMentorDisplay from '../../Components/Users/Artist/CurrentMentorDisplay'
 import ListMentors from '../../Components/Users/Mentor/ListMentors'
+import Mentor from '../../Models/Users/Mentor'
 
 
 
@@ -43,9 +44,14 @@ const DefaultMessaging = () => {
 
 const ArtistDashboard = () => {
     const { user  } = useUser() 
+ 
+   
+
+ 
     if (!user) {
         return <Typography>User not found or not logged in</Typography>;
     }
+    
     return  (
         <ContentContainer>
 
@@ -64,7 +70,7 @@ const ArtistDashboard = () => {
                             </Grid>
 
                             {
-                            user.mentor === null && <Grid item xs={12}>
+                            user?.mentor === null && <Grid item xs={12}>
                                 <DashboardSectionBorder title="Choose A mentor" >
                                     <ListMentors/>
                                 </DashboardSectionBorder>
@@ -97,8 +103,8 @@ const ArtistDashboard = () => {
                                     <MentorsFeedback/>
                                 </DashboardSectionBorder>
                             </Grid>
-                            {user.mentor !== null && <Grid item xs={12}>
-                                <DashboardSectionBorder title={`Current Mentor: ${user?.mentor.fullname}`} >
+                            {user?.mentor !== null && <Grid item xs={12}>
+                                <DashboardSectionBorder title={user.mentor.fullname ? `Current Mentor: ${user?.mentor?.fullname}` : ''} >
                                   <CurrentMentorDisplay user={user as ArtistDataType}/>
                                 
                                 </DashboardSectionBorder>

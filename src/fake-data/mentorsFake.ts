@@ -21,7 +21,7 @@ export const mentorsFake = [
       specialties: ["Vocal Training", "Performance Coaching", "Music Production"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
       
     },
     {
@@ -32,7 +32,7 @@ export const mentorsFake = [
       specialties: ["Lyricism", "Flow", "Storytelling"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     },
     {
       id: "878sdf-098762-dfghj",
@@ -42,7 +42,7 @@ export const mentorsFake = [
       specialties: ["Lyricism", "Music Business", "Career Development"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     },
     {
       id: "978sdf-098762-dfghj",
@@ -52,7 +52,7 @@ export const mentorsFake = [
       specialties: ["Stage Presence", "Vocal Performance", "Career Longevity"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     },
     {
       id: "078sdf-098762-dfghj",
@@ -62,7 +62,7 @@ export const mentorsFake = [
       specialties: ["Soul Music", "Vocal Technique", "Emotional Expression"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     },
     {
       id: "178sdf-098762-dfghj",
@@ -72,7 +72,7 @@ export const mentorsFake = [
       specialties: ["Piano and Songwriting", "Vocal Harmony", "Music Production"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     },
     {
       id: "278sdf-098762-dfghj",
@@ -82,7 +82,7 @@ export const mentorsFake = [
       specialties: ["R&B and Soul Vocals", "Stage Performance", "Vocal Range Expansion"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     },
     {
       id: "378sdf-098762-dfghj",
@@ -92,7 +92,7 @@ export const mentorsFake = [
       specialties: ["Hip Hop Culture", "Music Marketing", "Artist Branding"],
       mentees:[...mentor_artist],
       availability:true,
-      role:Roles.MENTOR
+      role:{id:"",type:Roles.MENTOR}
     }
   ];
   

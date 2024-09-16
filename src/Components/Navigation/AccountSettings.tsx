@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Avatar, Box, IconButton, Tooltip, Menu, MenuItem, Typography, Grid } from '@mui/material';
 
@@ -10,16 +10,26 @@ import { Settings } from '../../Types/DataTypes';
 import { useUser } from '../../Contexts/UserContext';
 
 const AccountSettings = () => {
+  const [role,setRole] = useState("")
   const { user } = useUser()
+
+  useEffect(() => {
+    console.log(`the user is ${JSON.stringify(user)}`)
+    const user_role = user?.role.type || "artist"
+    setRole(user_role)
+  }, [user])
+ 
+
   const settings: Settings[] = [
     { title: 'Account', slug: '/edit-profile' }, 
-    { title: 'Dashboard', slug: `dashboard/${user?.role}` }, 
+    { title: 'Dashboard', slug: `dashboard/${user?.role.type}` }, 
     { title: 'Logout', slug: '/logout' }];
 
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  if(user?.role ===  Roles.ARTIST && user?.mentor === null){
+
+  if(role ===  Roles.ARTIST && user?.mentor === null){
     settings.unshift({
        title: 'Find a mentor', slug: '/mentors/find-a-mentor' 
     })
@@ -41,6 +51,7 @@ const AccountSettings = () => {
   return (
 
     <>
+    
       <Box sx={{ flexGrow: 0 }}>
 
         <Tooltip title="Open settings">
