@@ -9,7 +9,7 @@ const FooterComponent = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     return(
-        <Box sx={styles.container}>
+        <Box id="footer-container" sx={styles.container}>
             <Grid container justifyContent={"center"} alignItems={"center"}>
                 <Grid item xs={4}><Ignlogo/></Grid>
                 <Grid item xs={8}>

@@ -225,7 +225,9 @@ div.significant-button {
     height: 300px; }
   div.display-image-list-ign {
     width: 250px;
-    height: 250px; } }
+    height: 250px; }
+  div#footer-container {
+    padding: 2rem 2rem; } }
 
 @media screen and (max-width: 1325px) {
   div.display-image-list-ign {
@@ -242,7 +244,9 @@ div.significant-button {
     width: 200px;
     height: 200px; } }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   div.display-image-list-ign {
     width: 150px;
-    height: 150px; } }
+    height: 150px; }
+  div#footer-container {
+    padding: 2rem 0.3rem; } }
