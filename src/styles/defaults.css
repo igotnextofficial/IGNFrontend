@@ -223,26 +223,26 @@ div.significant-button {
     font-size: 0.7em; }
   .grid-container img {
     height: 300px; }
-  .display-image-list-ign {
+  div.display-image-list-ign {
     width: 250px;
     height: 250px; } }
 
 @media screen and (max-width: 1325px) {
-  .display-image-list-ign {
+  div.display-image-list-ign {
     width: 200px;
     height: 200px; } }
 
 @media screen and (max-width: 1120px) {
-  .display-image-list-ign {
+  div.display-image-list-ign {
     width: 150px;
     height: 150px; } }
 
 @media screen and (max-width: 500px) {
-  .display-image-list-ign {
+  div.display-image-list-ign {
     width: 200px;
     height: 200px; } }
 
 @media screen and (max-width: 400px) {
-  .display-image-list-ign {
+  div.display-image-list-ign {
     width: 150px;
     height: 150px; } }
