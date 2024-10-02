@@ -35,7 +35,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start --host 0.0.0.0 --port 80",
+    "start": "yarn run sass:watch & react-scripts --openssl-legacy-provider start --host 0.0.0.0 --port 80",
     "build": "react-scripts build",
     "test": "mocha --reporter spec --colors -r ts-node/register 'src/tests/**/*.test.ts'",
     "test:watch": "react-scripts test --watch",

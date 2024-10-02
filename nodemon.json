@@ -1,0 +1,7 @@
+{
+    "watch": ["src/styles/scss"],
+    "ext": "scss",
+    "ignore": ["node_modules"],
+    "exec": "yarn run sass:watch"
+  }
+  

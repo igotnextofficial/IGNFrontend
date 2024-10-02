@@ -25,7 +25,6 @@ const IconOnlyTopSection = () => {
             width: "200px", // Adjust the size as needed
             height: "200px",
             borderRadius: "50%",
-            backgroundImage: `url(${user?.image})`,
             backgroundSize: "cover",
             border: "3px solid white",
             display: "flex",
@@ -44,9 +43,12 @@ const IconOnlyTopSection = () => {
                     component={"div"}
                 >
                     <ModeEditIcon sx={{ alignSelf: "flex-end", opacity: 0.3, color: "black", margin: "10px" }} />
-                    <div style={styles.imageContainer}>
-
-                        <img style={{ width: "0px" }} src={user?.image} alt={user?.fullname} />
+                    <div style={styles.imageContainer}> 
+                        <img
+                            src={user?.image || "/images/default_male_image.jpg"}
+                            alt={user?.fullname}
+                            style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit:"cover" }} // Ensure the image is styled properly
+                        />
                     </div>
 
                     <Box component={"div"} sx={{ margin: "10px 0" }}>

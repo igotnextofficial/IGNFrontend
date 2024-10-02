@@ -31,7 +31,7 @@ const styles={
         bottom:0,
         width:"100%",
         backgroundImage: "linear-gradient(rgba(0,0,0,0), rgba(0,0,0))", 
-        padding:" 0.4rem 1rem"
+        padding:" 0.4rem 0.3rem"
     
     },
     category:{

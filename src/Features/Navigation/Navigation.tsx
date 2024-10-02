@@ -20,7 +20,36 @@ import SigninOrRegister from '../../Components/Navigation/SigninOrRegister';
 
 
 
-const pages = [{title:'Who\'s Next',slug:'/whos-next'}, {title:'Featured Artists',slug:'/featured-artist'}, {title:'Music',slug:'/music'}];
+const pages = [     {
+  slug: '/',
+  name: "Home",
+  order: 1,
+  display: true,
+},
+{
+  slug: "whos-next",
+  name: "Who's Next",
+  order: 2,
+  display: true,
+},
+{
+  slug: "featured-artists",
+  name: "Featured Artists",
+  order: 3,
+  display: true,
+},
+{
+  slug: "entertainment-news",
+  name: "Entertainment News",
+  order: 4,
+  display: true,
+},
+{
+  slug: "artist-of-the-month",
+  name: "Artist of the Month",
+  order: 5,
+  display: true,
+},];
 
 
 
@@ -49,7 +78,7 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
 //   return null;
 // }
   return (
-    <AppBar position="sticky"  sx={{backgroundColor:"#fd2f30"}}>
+    <AppBar position="sticky" id='ign-navigation'  >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
@@ -58,7 +87,7 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
          
 
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' },width:'100%' }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -84,12 +113,17 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
+                color:'black',
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map(({title,slug}) => (
-                <MenuItem key={slug} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link to={slug}>{title}</Link></Typography>
+              {pages.map(({name,slug}) => (
+                <MenuItem className='here-and-now' key={slug} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center"><Link
+                
+                  to={slug}
+                  style={{ textDecoration: 'none', color: 'black' }} 
+                  >{name}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>

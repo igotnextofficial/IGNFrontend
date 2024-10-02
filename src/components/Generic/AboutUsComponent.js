@@ -15,7 +15,7 @@ const AboutUsComponent = () => {
             buttonLabel="Read More"
             buttonLink="/about-us"
            >
-            <TextContentComponent content={AboutIGN.content} />
+            <p>{AboutIGN.content}</p>
             </InformationComponent>
             </Grid>
             <Grid item  md={7}>

@@ -5,6 +5,7 @@ import { HttpMethods, MentorDataType, httpDataObject } from '../../../Types/Data
 import { sendRequest } from '../../../Utils/helpers';
 import { useUser } from '../../../Contexts/UserContext';
 import axios from 'axios';
+import NoDataAvailable from '../../../Utils/NoDataAvailable';
 
 const ListMentors = () => {
     const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
@@ -54,16 +55,20 @@ const ListMentors = () => {
 
 
     }, [response]); // Empty dependency array means this effect runs once on mount
-
     return (
-        <Grid container sx={styles.Container}>
-            {mentors.map((mentor, index) => ( // Use index as a fallback key; ideally use mentor.id or similar
-                <Grid item sx={{ padding: "1rem" }} key={mentor.id || index}> 
-                    <DisplayMentorCard mentor={mentor} />
-                </Grid>
-            ))}
-        </Grid>
+        mentors.length === 0 ? (
+            <NoDataAvailable/>
+        ) : (
+            <Grid container sx={styles.Container}>
+                {mentors.map((mentor, index) => (
+                    <Grid item sx={{ padding: "1rem" }} key={mentor.id || index}> 
+                        <DisplayMentorCard mentor={mentor} />
+                    </Grid>
+                ))}
+            </Grid>
+        )
     );
+    
 };
 
 const styles = {

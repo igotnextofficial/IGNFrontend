@@ -5,6 +5,9 @@ import { socket } from "../socket";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../Types/DataTypes";
 import LocalStorage from  "../Storage/LocalStorage";
 import axios from "axios";
+import { useHttpRequest } from "../Contexts/HttpRequestContext";
+
+import { Endpoints } from "../Config/app";
 
 interface ApiErrorResponse extends Error {
     response?: {
@@ -74,12 +77,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
-
+    const {updateUrl} = useHttpRequest("")
+   
     
     useEffect(() => { 
- 
-        const attemptRefreshToken = ( async (user_id:string) => {
-            return await refreshToken(user_id)
+        
+        const attemptRefreshToken = ( async ( user_information:Record<string,string>) => {
+            return await refreshToken(user_information.id,user_information.role)
         })
 
         if(!accessToken && !user){
@@ -89,8 +93,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 setIsLoggedin(true)
                 
                 if(intialLoad.current !== false){
-
-                    attemptRefreshToken(found_user.id).then((response) => {
+                    const user_information = {
+                        id: found_user.id,
+                        role: found_user.role
+                    }
+                    attemptRefreshToken(user_information).then((response) => {
                     
                         if(!response){
                         //    console.log(`this is when user should be logged out page load intial ${intialLoad.current}`);  
@@ -285,13 +292,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
      * @param user_id - user id to be refreshed
      * @returns - boolean representing whether the token was refreshed or not
      */
-    const refreshToken = async (user_id: string): Promise<boolean> => {
+    const refreshToken = async (user_id: string,role:string): Promise<boolean> => {
         let controller = new AbortController()
         let signal = controller.signal
         try {
             let url = process.env.REACT_AUTH_REFRESH_API_URL || "https://shield.igotnext.local/api/token-refresh";
             console.log(`hitting endpoint url ${url} with user id ${user_id}`);
-            let response = await axios.post(url, { "data": { user_id } , signal});
+            let response = await axios.post(url, { "data": { user_id,role } , signal});
     
             if (response.status === 200) {
                 let new_token = response.data['data']['access_token'];
@@ -316,6 +323,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         return "";
     }
 
+
+    const login = () => {
+        updateUrl(Endpoints.LOGIN)
+    }
+
+    const logout = () => {
+        updateUrl(Endpoints.LOGOUT)
+    }
+
+    const register = () => {}
+    
 
     return (
         <UserContext.Provider value={{ user, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken }}>

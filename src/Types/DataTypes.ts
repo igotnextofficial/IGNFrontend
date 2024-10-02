@@ -101,10 +101,18 @@ export interface httpDataObject {
 }
 
 export interface HttpHeaders {
-    "Access-Control-Allow-Origin"?:string,
-    Authorization?:string,
-    "Content-Type"?:string,
-}
+    "Access-Control-Allow-Origin"?: string;
+    Authorization?: string;
+    "Content-Type"?: string;
+    Accept?: string;
+    "Cache-Control"?: string;
+    "X-Requested-With"?: string;
+    "User-Agent"?: string;
+    Origin?: string;
+    Referer?: string;
+    "Accept-Language"?: string;
+  }
+  
 
 export interface HttpConfigurationType {
     baseURL:string,

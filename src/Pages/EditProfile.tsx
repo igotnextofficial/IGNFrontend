@@ -36,10 +36,8 @@ const Profile = () => {
  
     const handleSubmit = async () => {
         const endpoint = `${process.env.REACT_APP_USER_API_URI}/${user?.id}`
-
         const labels = formStructure.map(({ label }) => label);
-        console.log("clicked the update button: labels " + labels)
-        
+
         const response = await sendRequest(HttpMethods.PUT,endpoint,{data})
  
         if(response !== null){
@@ -55,7 +53,7 @@ const Profile = () => {
 
             <IgnFormGenerate formStructures={ formStructure } />
             <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={() => {return handleSubmit()}}>Update</Button>
-            {successfulUpdate && <Typography variant="h4">Your account has beent successfully updated.</Typography>}
+            {successfulUpdate && <Typography variant="h4">Your account has been successfully updated.</Typography>}
 
         </>
     )

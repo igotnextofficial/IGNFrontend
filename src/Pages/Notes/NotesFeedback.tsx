@@ -6,27 +6,39 @@ import ListDisplayComponent from "../../Helpers/ListDisplayComponent"
 import { Link } from  'react-router-dom'
 import { Button,Box } from "@mui/material"
 import NoDataAvailable from "../../Utils/NoDataAvailable"
+import axios from "axios"
 
-const loadNotes = async (user_id:string,type:"sender" | "recipient") => {
-    const url =`${process.env.REACT_APP_NOTES_API}/${user_id}/${type}`
-    console.log(`the url is ${url}`)
-    const response = await sendRequest(HttpMethods.GET,url)
-    if(response){
-        return response.data
+
+const loadNotes = async (
+    user_id: string,
+    type: "sender" | "recipient",
+    access_token?: string
+) => {
+    try {
+        const url = `${process.env.REACT_APP_NOTES_API}/${user_id}/${type}`;
+
+        const response = await axios.get(url, {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Error loading notes:", error);
+        return null;
     }
-    else{
-        return null
-    }
-}
+};
+
 
 const NotesFeedback = () => {
-    const { user } = useUser()
+    const { user,accessToken } = useUser()
     const[notes,setNotes] = useState<Record<string,any>[] | null>(null)
     useEffect(() => {
 
         const load = async () => {
             if(user){
-                const response = await loadNotes(user.id,'recipient');
+                const response = await loadNotes(user.id,'recipient',accessToken);
                 const data = response as Record<string,any>[]
                 if(data === null){return []}
                 const onlyUnreadNotes =  data.filter(onlyRead => {
@@ -52,7 +64,7 @@ const NotesFeedback = () => {
         }
         
         load()
-    },[user])
+    },[user,accessToken])
 
     return (
         notes && notes.length > 0 ? <>

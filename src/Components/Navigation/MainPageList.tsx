@@ -11,6 +11,11 @@ const MainPageList = ()=>{
           display: true,
         },
         {
+          slug:'',
+          name: "Stories",
+          order: 6,
+        },
+        {
           slug: "whos-next",
           name: "Who's Next",
           order: 2,
@@ -44,7 +49,7 @@ const MainPageList = ()=>{
         const visibleLinks = sortedLinks.filter(link => link.display);
 
         const linkElements = visibleLinks.map((linkItem,index) => {
-            return <Grid key={index} className="ign-links" item><Link to={linkItem.slug}>{linkItem.name}</Link></Grid>
+            return <Grid key={index} sx={{flexWrap:"nowrap"}} className="ign-links" item><Link to={linkItem.slug}>{linkItem.name}</Link></Grid>
         })
 
 
@@ -60,7 +65,9 @@ const MainPageList = ()=>{
     
     return (
         <>
+ 
             <RenderLinks/>
+    
         </>
     )
 }

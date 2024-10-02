@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 const SectionComponent = ({children,alternate= false}) =>{
     const sectionStyles = alternate ?{...styles.spacing,...styles.alternateSectionHolder} : {...styles.spacing,...styles.sectionHolder}
     return(
-    <Box sx={sectionStyles}>
+    <Box id="ign-section-holder" sx={sectionStyles}>
         {children}
     </Box>
     )

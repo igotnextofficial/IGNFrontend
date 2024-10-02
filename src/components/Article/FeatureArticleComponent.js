@@ -1,52 +1,86 @@
-import { Grid } from "@mui/material";
-import DisplayArticleComponent from "./DisplayArticleComponent";
+import React, { useState, useEffect } from "react";
+import IgnPillComponent from "../../Helpers/IgnPillComponent";
+
+
+const FeatureArticleUIComponent = ({ article }) => {
+  return (
+    <div className="grid-container">
+      <img src={article.image_url} alt={article.title} />
+      <div className="grid-overlay-text">
+        <span>
+          <IgnPillComponent description={article.category} link={article.slug} />
+          <h2>{article.title}</h2>
+          <button className="read-more-btn">Read More</button>
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const FeatureArticleComponent = () => {
-    const articles = {
-        featured:
-        
-            {
-            title:"Radiant Creativity Unveiled: Kristina Belle Takes Center Stage",
-            slug:"/articles/georgie-reign-artist-of-the-month",
-            date:"10/15/2023",
-            category:"Artist of the month",
-            image_url:"singing"
-        },
-        
-        ministories:
-        
-            [
-                {title:"Musiq Soulchild: Rememering when i had next!",slug:"",date:"",category:"Advice from a mentor",image_url:"musiq"},
-                {title:"Kayla and Johnny Heading on tour",slug:"",date:"",category:"Entertainment News",image_url:"concert"},
-                {title:"Top ten upcoming Artist 2023",slug:"",date:"",category:"Featured Artists",image_url:"topartist"},
-                {title:"Georgia Reign: The artist who will change the game",slug:"",date:"",category:"Who's Next",image_url:"reign"}
-            ]
-        
-    };
+  const articles = [
+    {
+      title: "Radiant Creativity Unveiled: Kristina Belle Takes Center Stage",
+      slug: "/articles/georgie-reign-artist-of-the-month",
+      image_url: "/images/singing.jpg",
+      category: "Artist of the month",
+    },
+    {
+      title: "Musiq Soulchild: Remembering when I had next!",
+      slug: "",
+      image_url: "/images/musiq.jpg",
+      category: "Advice from a mentor",
+    },
+    {
+      title: "Kayla and Johnny Heading on tour",
+      slug: "",
+      image_url: "/images/concert.jpg",
+      category: "Entertainment News",
+    },
+    {
+      title: "Top ten upcoming Artist 2023",
+      slug: "",
+      image_url: "/images/topartist.jpg",
+      category: "Featured Artists",
+    },
+    {
+      title: "Georgia Reign: The artist who will change the game",
+      slug: "",
+      image_url: "/images/reign.jpg",
+      category: "Who's Next",
+    },
+  ];
 
-    return( 
-        <Grid container>
-            <Grid item xs={6} >
-                <DisplayArticleComponent article={articles.featured} featured={true} />
-            </Grid>
-            <Grid item xs={6}>
-                <Grid container>
-                    {
-                    articles.ministories.map((articles, index) => {
-                       return(
-                        <Grid key={index} item xs={6}>
-                            <DisplayArticleComponent article={articles} height={25} /> 
-                         </Grid>
-                       )
-                    })
-                    }
-          
-                </Grid>
-            </Grid>
-        </Grid>
-  
-        )
-}   
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-export default FeatureArticleComponent
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === articles.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change slide every 5 seconds
 
+    return () => clearInterval(interval);
+  }, [articles.length]);
+
+  // Calculate the progress for the indicator
+  const calculateProgress = () => {
+    return ((currentIndex + 1) / articles.length) * 100;
+  };
+
+  return (
+    <>
+      <div id="featured-stories">
+        <FeatureArticleUIComponent article={articles[currentIndex]} />
+        <div className="indicator-container">
+          <div
+            className="progress-indicator"
+            style={{ width: `${calculateProgress()}%` }}
+          ></div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default FeatureArticleComponent;

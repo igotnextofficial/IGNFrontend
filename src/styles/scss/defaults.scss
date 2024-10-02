@@ -1,13 +1,17 @@
 @import 'react-quill/dist/quill.snow.css';
 
-$primary-orange-color:#f86e51;
+$primary-orange-color:#ff6347;
 $primary-black-color: #1d1917; 
 $primary-yellow-color: #f2c85b;
-$primary-white-color:antiquewhite;
+$primary-white-color:#FBFAF9;
+$primary-red-color:#fd2f30;
+$primary-grey-color:#8f8f8f;
+$darker-yellow-color: darken($primary-yellow-color, 15%); 
+$darker-yellow-color-opaque: rgba(red($darker-yellow-color), green($darker-yellow-color), blue($darker-yellow-color), 0.8);
 
 body {
     margin: 0;
-    background-color: #FBFAF9;
+    background-color: $primary-white-color;
     color: $primary-black-color;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
@@ -15,7 +19,7 @@ body {
 .App{
   max-width: 100%;
   margin: 0 auto;
- background-color: #FBFAF9;
+ background-color: $primary-white-color;;
   padding: 0;
 }
 
@@ -58,3 +62,259 @@ body {
   .mid-point{color:$primary-yellow-color}
   .safe-zone{color:rgb(95, 159, 0)}
 
+
+  // igotnextmagazine navigation
+
+  #ign-navigation {
+    background-color: $primary-white-color;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* light grey shadow */
+  }
+  
+.main-menu-dropdown-holder{
+  background-color: $primary-white-color;
+  width: 100%;
+}
+
+#ign-navigation .ign-links a {
+  color: $primary-grey-color;
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  overflow: hidden;
+  padding: 10px 20px;
+  border-radius: 3px;
+  transition: color 0.3s ease-in-out; /* Fallback for browsers that don't support clip-path */
+}
+
+#ign-navigation .ign-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%; /* Start the effect off-screen */
+  width: 100%;
+  height: 100%;
+  background-color: $primary-red-color;
+  transition: left 0.3s ease-in-out;
+  z-index: -1;
+}
+
+#ign-navigation .ign-links a:hover::before {
+  left: 0; /* Move the red background from left to right */
+}
+
+#ign-navigation .ign-links a:hover {
+  color: $primary-white-color; 
+}
+
+ div.significant-button{
+  background-color:$primary-white-color;
+  padding: 5px 8px;
+  border:1px solid $primary-red-color;
+  border-radius:10px;
+  margin: 0 10px;
+  display: inline-block;
+}
+.significant-button a{
+  color:$primary-red-color;
+  text-decoration:none;
+}
+
+.significant-button.v2{
+  background-color:$primary-red-color;
+  padding: 5px 8px;
+  border:1px solid $primary-red-color;
+  border-radius:10px;
+}
+
+.significant-button.v2 a{
+  color:$primary-white-color;
+  text-decoration:none;
+}
+
+
+#menu-appbar div {
+  left: 0 !important; // Tp avoid menu bar on mobile from having a negative value
+}
+
+
+// igotnextmagazine end-navigation
+
+
+// igotnextmagazine Featured Articles
+#featured-stories .featured-stories-images{
+  max-width: 3840px;
+}
+#featured-stories .featured-stories-images img{
+  width: 100%;
+  height:60%;
+  object-fit: cover;
+}
+
+/* Grid container for image and text */
+.grid-container {
+  display: grid;
+  position: relative;
+  width: 100%;
+  max-width: 3840px;
+  margin: auto;
+}
+
+/* Make the image responsive */
+.grid-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  grid-area: 1 / 1; /* Places the image in the first grid cell */
+}
+
+
+
+/* Text overlay with grid placement */
+.grid-overlay-text {
+  grid-area: 1 / 1; /* Places text in the same grid cell as the image */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Align to bottom */
+  align-items: flex-end; /* Align to right */
+  text-align: right;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Adds semi-transparent background */
+  color: white;
+  padding: 20px;
+
+  border-radius: 8px; /* Optional: Adds rounded corners */
+}
+
+.grid-overlay-text span {
+  background: linear-gradient(135deg, $primary-yellow-color, $darker-yellow-color-opaque);
+  animation: gradientShift 5s ease-in-out infinite; /* Smooth transition with infinite loop */
+  background-size: 200% 200%; /* Allows the background to move more smoothly */
+  padding: 20px;
+  border-radius: 5px;
+  text-align: left;
+  max-width: 600px;
+  
+}
+
+.grid-overlay-text h2 {
+  font-size: 4rem; /* Adjust for responsiveness */
+  margin:10px 0; ;
+  color: #825e00;
+ 
+
+}
+
+.grid-overlay-text p {
+  font-size: 1rem;
+}
+
+/* Read More button styles */
+.read-more-btn {
+  background-color: $primary-orange-color; /* Tomato red */
+  color: $primary-white-color;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.read-more-btn:hover {
+  background-color: $primary-red-color; /* Darker red on hover */
+}
+
+/* Indicator container */
+.indicator-container {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background-color: #ddd;
+  margin-top: 0px;
+}
+
+/* Progress indicator */
+.progress-indicator {
+  height: 100%;
+  background-color: #ff6347; /* Progress color */
+  transition: width 0.5s ease;
+}
+
+// igotnextmagazine End Featured Articles
+
+
+@media screen and (max-width: 899px) {
+  #ign-section-holder{
+    padding:60px 20px
+  }
+  #ign-navigation{
+    background-color: $primary-red-color;
+  }
+
+  .grid-overlay-text span {
+    max-width: none;
+    justify-content: end;
+    background: none;
+  }
+
+  .grid-overlay-text h2 {
+    font-size: 1.5rem;
+    color: $primary-white-color;
+    
+  }
+  .read-more-btn{
+    font-size: 0.7em;
+  }
+  .grid-container img {
+    height: 300px;
+  }
+
+
+
+  .display-image-list-ign{
+    width: 250px;
+    height: 250px;
+  }
+}
+
+
+@media screen and (max-width: 1325px) {
+  
+  .display-image-list-ign{
+    width: 200px;
+    height: 200px;
+  }
+
+
+}
+
+
+@media screen and (max-width: 1120px) {
+  
+  .display-image-list-ign{
+    width: 150px;
+    height: 150px;
+  }
+
+
+}
+
+@media screen and (max-width: 500px) {
+  
+  .display-image-list-ign{
+    width: 200px;
+    height: 200px;
+  }
+
+}
+
+@media screen and (max-width: 400px) {
+  
+  .display-image-list-ign{
+    width: 150px;
+    height: 150px;
+  }
+
+
+}

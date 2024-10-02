@@ -18,6 +18,7 @@ import DisplayTextComponent from '../../Components/Users/DisplayTextComponent'
 import CurrentMentorDisplay from '../../Components/Users/Artist/CurrentMentorDisplay'
 import ListMentors from '../../Components/Users/Mentor/ListMentors'
 import Mentor from '../../Models/Users/Mentor'
+import NoDataAvailable from '../../Utils/NoDataAvailable'
 
 
 
@@ -51,6 +52,8 @@ const ArtistDashboard = () => {
     if (!user) {
         return <Typography>User not found or not logged in</Typography>;
     }
+
+    
     
     return  (
         <ContentContainer>
@@ -86,7 +89,11 @@ const ArtistDashboard = () => {
                             <Grid item xs={12}>
                                 <DashboardSectionBorder title={`${user?.fullname} Bio`} >
                              
-                                {user.bio  && <Grid item xs={12}> <DisplayTextComponent text={user.bio || ""} /> </Grid>}
+                                {
+                                user.bio ? <Grid item xs={12}> <DisplayTextComponent text={user.bio || ""} /> </Grid>
+                                
+                                : <NoDataAvailable/>
+                            }
                                 </DashboardSectionBorder>
                             </Grid>
 
