@@ -25,7 +25,7 @@ yarn-error.log*
 .babelrc
 .env.development
 .eslintcache
-yarn.lock
+
 public/manifest.json
 public/robots.txt
 .env
