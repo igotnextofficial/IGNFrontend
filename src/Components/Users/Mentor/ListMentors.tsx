@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'; // Import useState and useEffect
 import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
-import { HttpMethods, MentorDataType, httpDataObject } from '../../../Types/DataTypes';
-import { sendRequest } from '../../../Utils/helpers';
+import { MentorDataType, httpDataObject } from '../../../Types/DataTypes';
+// import { sendRequest } from '../../../Utils/helpers';
 import { useUser } from '../../../Contexts/UserContext';
 import axios from 'axios';
 import NoDataAvailable from '../../../Utils/NoDataAvailable';
@@ -16,27 +16,25 @@ const ListMentors = () => {
     useEffect(() => {
         const loadData = async () => {
             try{
-                if(!accessToken){
+                if(accessToken){
                     let response = await axios.get(`${process.env.REACT_APP_MENTOR_API}`, {
                         headers: {
                             "Authorization": `Bearer ${accessToken}`
                         }
                     });
+
+                    setResponse(response)
                     
                 }
-
-                
             }
             catch(e){
                 console.error(`Couldn't load mentors ${e}`)
-            }
-
-            setResponse(response)
+            }        
         }
 
         loadData()
    
-    },[])
+    },[accessToken])
       
 
     useEffect(() => {

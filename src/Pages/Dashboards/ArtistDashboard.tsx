@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext  } from 'react'
 import {Grid, Typography} from '@mui/material'
 import ArticleProvider from '../../Providers/ArticleProvider'
 import ListArticlesComponent from '../../Components/Article/ListAritclesComponent '
@@ -17,7 +17,6 @@ import DisplayTextComponent from '../../Components/Users/DisplayTextComponent'
 
 import CurrentMentorDisplay from '../../Components/Users/Artist/CurrentMentorDisplay'
 import ListMentors from '../../Components/Users/Mentor/ListMentors'
-import Mentor from '../../Models/Users/Mentor'
 import NoDataAvailable from '../../Utils/NoDataAvailable'
 
 

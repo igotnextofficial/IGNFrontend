@@ -36,7 +36,7 @@ const Profile = () => {
  
     const handleSubmit = async () => {
         const endpoint = `${process.env.REACT_APP_USER_API_URI}/${user?.id}`
-        const labels = formStructure.map(({ label }) => label);
+        // const labels = formStructure.map(({ label }) => label);
 
         const response = await sendRequest(HttpMethods.PUT,endpoint,{data})
  

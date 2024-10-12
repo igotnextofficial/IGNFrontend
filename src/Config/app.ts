@@ -1,3 +1,4 @@
+import App from "../App"
 
 
 export const Endpoints = {
@@ -12,6 +13,17 @@ export const Endpoints = {
     REFRESH_TOKEN: process.env.REACT_AUTH_REFRESH_API_URL || "https://shield.igotnext.local/api/token-refresh"
 }
 
+
+export const APP_ENDPOINTS = {
+    ARTICLES: {
+        BASE: Endpoints.ARTICLES,
+        ALL: `${Endpoints.ARTICLES}/all`,
+        SINGLE: `${Endpoints.ARTICLES}`,
+        USER: `${Endpoints.ARTICLES}/user`,
+        DRAFTS: `${Endpoints.ARTICLES}/drafts`,
+        FEATURED: `${Endpoints.ARTICLES}/featured`
+    }
+}
 export const validEndpoints = [
     Endpoints.ARTICLES,
     Endpoints.AUTH,

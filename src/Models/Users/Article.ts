@@ -2,6 +2,7 @@ import { ArticleDataType, ArticleSavedDataType} from "../../Types/DataTypes";
 import IgnRequest from '../../Features/Http/IgnRequest';
 import User from "./User";
 import { ArticleCategories } from "../../Types/ArticleCategories";
+import { APP_ENDPOINTS } from "../../Config/app";
 
 class Article{
     endpoint: string
@@ -205,6 +206,16 @@ TempArticles: ArticleDataType[]  = [
         }
     }
 
+    async retrieveFeatured(){
+        try {
+            let featuredArticles = await this.ignHttpRequest.get(APP_ENDPOINTS.ARTICLES.FEATURED);
+            return featuredArticles.data['data'];
+        } catch (error) {
+            console.error("Error retrieving articles:", error);
+            return []; // Return empty array in case of error, or handle it as per your requirement
+        }  
+    }
+
     async retrieveDraftsByArticle(id:string){
         try{
             let response = await this.get(id,true);
@@ -229,9 +240,9 @@ TempArticles: ArticleDataType[]  = [
     }
     async retrieveById(id:string){
         try {
-            let response = await this.get(id);
+            let response = await await this.ignHttpRequest.get(APP_ENDPOINTS.ARTICLES.BASE + `/${id}`);
             if(!response){return null}
-            return response.data;
+            return response.data['data'];
         } catch (error) {
             console.error("Error retrieving articles:", error);
             return []; // Return empty array in case of error, or handle it as per your requirement

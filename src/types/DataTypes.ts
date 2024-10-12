@@ -73,7 +73,8 @@ export interface ArticleDataType {
     published:string,
     category?:string,
     user_id?:string,
-    drafts?:ArticleDataType[] 
+    drafts?:ArticleDataType[], 
+    created_at?:string,
 }
 
 export interface ArticleSavedDataType {

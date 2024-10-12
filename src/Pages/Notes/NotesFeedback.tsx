@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react"
-import { sendRequest } from "../../Utils/helpers"
-import { HttpMethods } from "../../Types/DataTypes"
 import { useUser } from "../../Contexts/UserContext"
 import ListDisplayComponent from "../../Helpers/ListDisplayComponent"
 import { Link } from  'react-router-dom'

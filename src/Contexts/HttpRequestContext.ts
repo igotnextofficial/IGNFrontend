@@ -1,5 +1,13 @@
+/*
+     ====================== HTTP CONNECTIONS ======================
+        This context is responsible for handling all HTTP requests.
+        Once MVP is done, I will cirle back to this context and add
+        more features like error handling, etc.
+        allowing this to be the main and only  point of communication with APIs.
+
+*/
 import { createContext,useContext } from "react";
-import { httpDataObject, HttpHeaders, HttpMethods } from "../Types/DataTypes";
+import { httpDataObject } from "../Types/DataTypes";
 
 export interface HttpRequestContextType {
     data?:httpDataObject | null

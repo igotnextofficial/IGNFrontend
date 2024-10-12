@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import IgnPillComponent from "../../Helpers/IgnPillComponent";
+import { ArticleContext } from "../../Contexts/ArticleContext";
+import { Link } from "react-router-dom";
 
 
 const FeatureArticleUIComponent = ({ article }) => {
@@ -10,7 +12,9 @@ const FeatureArticleUIComponent = ({ article }) => {
         <span>
           <IgnPillComponent description={article.category} link={article.slug} />
           <h2>{article.title}</h2>
+          <Link to={`/article/${article.category}/${article.id}`}>
           <button className="read-more-btn">Read More</button>
+          </Link>
         </span>
       </div>
     </div>
@@ -18,42 +22,21 @@ const FeatureArticleUIComponent = ({ article }) => {
 };
 
 const FeatureArticleComponent = () => {
-  const articles = [
-    {
-      title: "Radiant Creativity Unveiled: Kristina Belle Takes Center Stage",
-      slug: "/articles/georgie-reign-artist-of-the-month",
-      image_url: "/images/singing.jpg",
-      category: "Artist of the month",
-    },
-    {
-      title: "Musiq Soulchild: Remembering when I had next!",
-      slug: "",
-      image_url: "/images/musiq.jpg",
-      category: "Advice from a mentor",
-    },
-    {
-      title: "Kayla and Johnny Heading on tour",
-      slug: "",
-      image_url: "/images/concert.jpg",
-      category: "Entertainment News",
-    },
-    {
-      title: "Top ten upcoming Artist 2023",
-      slug: "",
-      image_url: "/images/topartist.jpg",
-      category: "Featured Artists",
-    },
-    {
-      title: "Georgia Reign: The artist who will change the game",
-      slug: "",
-      image_url: "/images/reign.jpg",
-      category: "Who's Next",
-    },
-  ];
+  const  { allArticles }  = useContext(ArticleContext);
+  const [articles, setArticles] = useState([]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if( allArticles && allArticles.length > 0){
+      setArticles(allArticles);
+    }
+   
+    
+  },[allArticles])
+
+  useEffect(() => {
+ 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
         prevIndex === articles.length - 1 ? 0 : prevIndex + 1
@@ -61,7 +44,7 @@ const FeatureArticleComponent = () => {
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(interval);
-  }, [articles.length]);
+  }, [ articles.length]);
 
   // Calculate the progress for the indicator
   const calculateProgress = () => {
@@ -69,7 +52,7 @@ const FeatureArticleComponent = () => {
   };
 
   return (
-    <>
+    articles.length > 0 ? <>
       <div id="featured-stories">
         <FeatureArticleUIComponent article={articles[currentIndex]} />
         <div className="indicator-container">
@@ -79,7 +62,7 @@ const FeatureArticleComponent = () => {
           ></div>
         </div>
       </div>
-    </>
+    </> : <></>
   );
 };
 

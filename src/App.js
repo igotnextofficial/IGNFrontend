@@ -32,10 +32,8 @@ import MessageReaderReply from './Pages/Notes/MessageReaderReply';
 
 import ScheduleSession from './Pages/Artists/ScheduleSession';
 
-import { socket } from './socket'
 
-import { useEffect,useState } from 'react';
-import LocalStorage from './Storage/LocalStorage';
+// import LocalStorage from './Storage/LocalStorage'; // not curretly used.
 
 
 
@@ -44,36 +42,53 @@ const MainApplication = () => {
   const { isLoggedin } = useUser();
 
   const isAuthenticated = isLoggedin
-  const [isConnected,setIsConnected] = useState(socket.connected)
+
+  /* 
+  ================== Socket Connection ================== 
+
+   - Not currently used but will circle back after MVP is completed.
+   and will be used to send notifications to users.
+
+       --- Neccessary imports: ---
+       import { socket } from './socket'
+       import { useEffect,useState } from 'react';
+  
+   */
+  
+
+  // const [isConnected,setIsConnected] = useState(socket.connected)
 
  
-  useEffect(() => {
-    function onConnect(){
-      setIsConnected(true)
-    }
+  // useEffect(() => {
+  //   function onConnect(){
+  //     setIsConnected(true)
+  //   }
     
-    function onDisconnect(){
-      setIsConnected(false)
-    }
+  //   function onDisconnect(){
+  //     setIsConnected(false)
+  //   }
 
-    // if(isAuthenticated && !isConnected){
-    //   socket.connect()
-    // }
-    // if(isAuthenticated && isConnected){
-    //   socket.emit('authenticate', { isAuthenticated, token: localStorage.getItem('token') , message:"hello from client"})
-    // }
+  //   // if(isAuthenticated && !isConnected){
+  //   //   socket.connect()
+  //   // }
+  //   // if(isAuthenticated && isConnected){
+  //   //   socket.emit('authenticate', { isAuthenticated, token: localStorage.getItem('token') , message:"hello from client"})
+  //   // }
 
 
-    // socket.on('connect',  onConnect)
+  //   // socket.on('connect',  onConnect)
 
-    // socket.on('disconnect',  onDisconnect)
+  //   // socket.on('disconnect',  onDisconnect)
 
-    // return () => {
-    //   socket.off('connect',onConnect)
-    //   socket.off('disconnect',onDisconnect)
-    // }
+  //   // return () => {
+  //   //   socket.off('connect',onConnect)
+  //   //   socket.off('disconnect',onDisconnect)
+  //   // }
   
-  },[isAuthenticated,isConnected])
+  // },[isAuthenticated,isConnected])
+
+
+//  ================== End Socket Connection ================== 
 
   
  

@@ -3,6 +3,7 @@ export enum FetchMode {
     SINGLE,
     USER,
     DRAFTS,
+    FEATURED,
     // Add other modes here as needed
   }
 

@@ -58,17 +58,25 @@ const validateCommonString = (value:string,min:number,max:number) => {
 }
 
  export const validateEmail = (email:string) => {
-    return true
-    const validEmailDomains = ["gmail.com","aol.com","yahoo.com","hotmail.com"]
+
+
+    /**
+     *  ======================= VALIDATE EMAIL =======================
+     * Find a better to validate email domain.
+     *    const validEmailDomains = ["gmail.com","aol.com","yahoo.com","hotmail.com"]
+             if(validEmailDomains.includes(emailDomain)){
+             valid = true
+         }  
+
+     * 
+     */
     let valid = false
     if(validator.isEmail(email)){
 
         let start = email.indexOf("@")
         let emailDomain = email.substring(start + 1)
         console.log(`email check ${email} email domain is ${emailDomain}`)
-        if(validEmailDomains.includes(emailDomain)){
-            valid = true
-        }
+        valid = true
     }
     
     console.log(`is the email valid ${valid}`)

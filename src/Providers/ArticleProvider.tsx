@@ -40,6 +40,10 @@ interface ArticleProviderProps {
               if (!id) throw new Error("A user ID is required to fetch drafts");
               articles = await article.retrieveDraftsByArticle(id);
               break;
+            case FetchMode.FEATURED:
+              articles = await article.retrieveFeatured();
+              setArticleList(articles)
+              break;
             // Handle other cases as needed
             default:
               throw new Error("Invalid fetch mode");
@@ -56,9 +60,13 @@ interface ArticleProviderProps {
       };
   
       fetchArticles();
-    }, [mode, id,category]); // Re-run the effect if 'mode' or 'id' changes
-  
-    // Depending on your design, you can either pass the articles down directly through the component's children or use a context to provide the articles deeper into the component tree.
+    }, [mode, id,category]); 
+
+    /**
+     *  ================================ Thoughts ================================
+     * Why not just return an article array whether it is one or many instead of having article and allArticles?
+     * 
+     */
   
     return (
       <ArticleContext.Provider value={{ article: userArticles, error ,allArticles: articleList }}>

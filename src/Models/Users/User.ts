@@ -6,7 +6,7 @@ import { validateFullname, validateEmail,validatePassword,validateUsername, vali
 import { Roles } from "../../Types/Roles";
 import Storage from "../../Storage/StorageAbstract";
 import { StorageTypes } from "../../Storage/StorageTypes";
-import axios from "axios";
+ 
 
 
 class User{
@@ -63,7 +63,6 @@ class User{
 
     async login (data:httpDataObject){
         let ignHttpRequest = new IgnRequest({baseURL:this.baseURI});
-        let cookie_storage = new Storage(StorageTypes.CookieStorage);
         let local_storage = new Storage(StorageTypes.LocalStorage);
         try{
             
@@ -105,9 +104,7 @@ class User{
               if(user_data.role.type === Roles.MENTOR){
     
               }
-           
-           let access_token = response.data[User.ACCESS_TOKEN];
-           let refresh_token = response.data[User.REFRESH_TOKEN];
+
            // save data to storage , be aware of xss attacks,
         //    local_storage.setItem(User.INFO,JSON.stringify(response.data['data']));
            local_storage.save('user_info',user_data);
