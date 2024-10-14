@@ -71,3 +71,29 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
     }
     return null
   }
+
+
+
+
+  export const timeAgo = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000); // Difference in seconds
+
+    let interval = Math.floor(diffInSeconds / 3600); // Difference in hours
+
+    if (interval >= 24) {
+        interval = Math.floor(interval / 24); // Convert hours to days
+        return interval + (interval === 1 ? " day ago" : " days ago");
+    } else if (interval >= 1) {
+        return interval + (interval === 1 ? " hour ago" : " hours ago");
+    }
+
+    interval = Math.floor(diffInSeconds / 60); // Difference in minutes
+    if (interval >= 1) {
+        return interval + (interval === 1 ? " minute ago" : " minutes ago");
+    }
+
+    return "just now";
+};

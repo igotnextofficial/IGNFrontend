@@ -32,7 +32,7 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
         const { id,title, image_url, content, author,category } = list;
         return (
             <React.Fragment key={index}>
-            <Link  sx={{ textDecoration: "none" }} color="inherit" href={`${category}/${id}`}>
+            <Link  sx={{ textDecoration: "none" }} color="inherit" href={`${category?.replaceAll(" ","-")}/${id}`}>
 
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
@@ -47,10 +47,10 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
                                     component="span"
                                     variant="body2"
                                     color="text.primary"
-                                >
-                                    {content.slice(0,200)}
-                                </Typography>
-                                {author && ` - Author: ${author}`}
+                                    dangerouslySetInnerHTML={{ __html: content.slice(0, 200)  + ' ...' }} 
+                                />
+               
+                       
                             </React.Fragment>
                         }
                     />

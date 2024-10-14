@@ -3,6 +3,7 @@ import IgnRequest from '../../Features/Http/IgnRequest';
 import User from "./User";
 import { ArticleCategories } from "../../Types/ArticleCategories";
 import { APP_ENDPOINTS } from "../../Config/app";
+import { Roles } from "../../Types/Roles";
 
 class Article{
     endpoint: string
@@ -21,7 +22,7 @@ class Article{
         image_url:"",
         content:"",
         category:ArticleCategories.DEFAULT,
-        author:"",
+        author: {id:'',fullname:' ',role:{id:'',type:Roles.ADMIN}},
         published:"",
         drafts:[]
     };
@@ -50,7 +51,7 @@ class Article{
             content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
             dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
             Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-            author: 'Cierra Bellamy',
+            author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
             published:"06/21/2023"
     },
     {
@@ -59,7 +60,7 @@ class Article{
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
     {
@@ -68,7 +69,7 @@ class Article{
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
     {
@@ -77,7 +78,7 @@ class Article{
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
     {
@@ -86,7 +87,7 @@ class Article{
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
 
@@ -99,7 +100,7 @@ TempArticles: ArticleDataType[]  = [
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published: "06/21/2023"
     },
     {
@@ -108,7 +109,7 @@ TempArticles: ArticleDataType[]  = [
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
     dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published: "06/23/2023"
     },
     {
@@ -117,7 +118,7 @@ TempArticles: ArticleDataType[]  = [
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
     dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published: "06/23/2023"
     },
     {
@@ -126,17 +127,17 @@ TempArticles: ArticleDataType[]  = [
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
     dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published: "06/23/2023"
     },
     {
-        title: 'Colla: Latest Album - Love',
-        image_url: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/78/a1/6e/78a16e10-5fb6-b466-7b14-845e9ea7e0d2/artwork.jpg/1200x630bb.jpg',
+        title: 'Ashton Jones She Got Next',
+        image_url:'https://i0.wp.com/starmometer.com/wp-content/uploads/2011/03/ashton.jpg?w=520&ssl=1',
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
-    dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
-    Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
-        published: "06/23/2023"
+        dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
+        Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
+        published:"06/21/2023"
     },
 
 ]
@@ -195,7 +196,7 @@ TempArticles: ArticleDataType[]  = [
     async retreiveAll(category="") {
         try {
             
-            let myendpoint = category !== "" ? `${this.endpoint}/${category}` : this.endpoint 
+            let myendpoint = category.trim() !== "" ? `${APP_ENDPOINTS.ARTICLES.CATEGORY}/${category}` : APP_ENDPOINTS.ARTICLES.BASE
             this.addToken()
             let userArticles = await this.ignHttpRequest.get( myendpoint);
             userArticles.data['data']['link']=`${category}/${userArticles.data['data']['id']}`
@@ -207,6 +208,16 @@ TempArticles: ArticleDataType[]  = [
     }
 
     async retrieveFeatured(){
+        try {
+            let featuredArticles = await this.ignHttpRequest.get(APP_ENDPOINTS.ARTICLES.FEATURED);
+            return featuredArticles.data['data'];
+        } catch (error) {
+            console.error("Error retrieving articles:", error);
+            return []; // Return empty array in case of error, or handle it as per your requirement
+        }  
+    }
+
+    async retrieveByCategory(){
         try {
             let featuredArticles = await this.ignHttpRequest.get(APP_ENDPOINTS.ARTICLES.FEATURED);
             return featuredArticles.data['data'];

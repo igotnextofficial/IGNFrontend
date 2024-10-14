@@ -64,7 +64,7 @@ const LoginDisplay = ()=>{
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height:'100vh' }} spacing={2}>
                     <CssBaseline/>
-                    <BackgroundCoverImage url="login.jpg" />
+                    <BackgroundCoverImage url="https://localhost:3000/images/login.jpg" />
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                         <Box sx={{ my: 8, mx: 4,position:'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', }} >
 

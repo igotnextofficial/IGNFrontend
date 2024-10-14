@@ -20,10 +20,8 @@ import FooterComponent from './Components/Generic/FooterComponent';
 import ErrorComponent from './Components/Generic/ErrorComponent';
 
 import DetectChange from './Components/Generic/DetectPageChangeComponent';
-import WhosNextPage from './Pages/Articles/WhosNext';
-import EntertainmentNewsPage from './Pages/Articles/EntertainmentNews';
-import ArtistOfThelMonthPage from './Pages/Articles/ArtistOfTheMonth';
-import FeaturedArtistPage from './Pages/Articles/FeaturedArtist';
+
+import ArticleCategoryList from './Pages/Articles/ArticleCategoryList';
 import ArticlePageComponent from './Components/Article/ArticlePageComponent';
 import FindMentorPage from './Pages/Mentors/FindMentorPage';
 import BookMentorPage from './Pages/Mentors/BookMentorPage';
@@ -107,11 +105,9 @@ const MainApplication = () => {
           <Route path='/register' element={<Register />} />
 
           {/* Articles */}
-          <Route path='/whos-next' element={<WhosNextPage />} />
-          <Route path='/artist-of-the-month' element={<ArtistOfThelMonthPage />} />
-          <Route path='/featured-artists' element={<FeaturedArtistPage />} />
-          <Route path='/entertainment-news' element={<EntertainmentNewsPage />} />
-          <Route path='article/:category/:article_id' element={<ArticlePageComponent />} />
+          <Route path='/articles/:category' element={<ArticleCategoryList />} />
+     
+          <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />
           
           <Route path='/profile/:role' element={< Dashboard />} />
 

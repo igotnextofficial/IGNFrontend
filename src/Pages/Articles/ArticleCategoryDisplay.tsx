@@ -6,17 +6,8 @@ import MainHolderComponent from '../../Helpers/MainHolderComponent';
 import PaginatedPage from '../../Components/Generic/PaginatePageComponent';
 
 
-const ArticleCategoryDisplay = ({title} :{title:string}) => {
+const ArticleCategoryDisplay = ({title,data} :{title:string, data: ListDataType[]}) => {
 
-    const [data, setData] = useState<ListDataType[] | ArticleDataType[]>([]);
-    const {allArticles} = useContext(ArticleContext); 
-
-    useLayoutEffect( () =>{
-        if(allArticles){
-            setData(allArticles)
-        }
-   
-    },[allArticles])
 
     return (
     <>
@@ -24,7 +15,7 @@ const ArticleCategoryDisplay = ({title} :{title:string}) => {
         <InformationComponent 
             title={title}
            >
-          
+            
                 <PaginatedPage initialData={data} />
             </InformationComponent>
             </MainHolderComponent>

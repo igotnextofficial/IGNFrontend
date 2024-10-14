@@ -207,6 +207,18 @@ div.significant-button {
   /* Progress color */
   transition: width 0.5s ease; }
 
+.articleContent p {
+  font-size: 1.2em;
+  font-weight: 300;
+  font-family: lato,sans-serif;
+  line-height: 2em; }
+
+.articleContent :nth-child(1)::first-letter {
+  font-size: 3em;
+  font-weight: 500;
+  font-style: italic;
+  color: #fd2f30; }
+
 @media screen and (max-width: 899px) {
   #ign-section-holder {
     padding: 60px 20px; }

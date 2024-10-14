@@ -23,12 +23,12 @@ const BackgroundCoverImage = (
     ) => {
 
     const originStyles={
-        backgroundImage: `url(/images/${url})`,
+        backgroundImage: `url(${url})`,
         backgroundRepeat: 'no-repeat',
         backgroundColor: (t: Theme) =>
         t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
         backgroundSize: 'cover',
-        backgroundPosition: '0 50%',
+        backgroundPosition: 'center',
     };
 
     const combinedStyles = {
@@ -47,3 +47,4 @@ const BackgroundCoverImage = (
 
 }
 export default BackgroundCoverImage;
+ 

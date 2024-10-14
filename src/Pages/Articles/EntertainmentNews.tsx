@@ -1,25 +1,25 @@
-import ArticleProvider from '../../Providers/ArticleProvider';
-import { Categories, FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
+// import ArticleProvider from '../../Providers/ArticleProvider';
+// import { Categories, FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
 
-import ArticleCategoryDisplay from './ArticleCategoryDisplay';
-
-
+// import ArticleCategoryDisplay from './ArticleCategoryDisplay';
 
 
 
 
-const EntertainmentNewsPage = () => {
 
-    return (
+
+// const EntertainmentNewsPage = () => {
+
+//     return (
     
-    <>
-    <ArticleProvider mode={FetchMode.ALL} category={Categories.ENTERTAINMENT_NEWS}>
-        <ArticleCategoryDisplay title="entertainment news"/>
+//     <>
+//     <ArticleProvider mode={FetchMode.ALL} category={Categories.ENTERTAINMENT_NEWS}>
+//         <ArticleCategoryDisplay title="entertainment news"/>
 
-    </ArticleProvider>
+//     </ArticleProvider>
 
-    </>
-    );
-};
+//     </>
+//     );
+// };
 
-export default EntertainmentNewsPage;
+// export default EntertainmentNewsPage;

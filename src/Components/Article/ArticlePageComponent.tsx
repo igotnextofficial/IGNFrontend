@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ArticleContext } from "../../Contexts/ArticleContext";
 
 import { Box,Grid , Typography } from "@mui/material";
@@ -9,53 +9,143 @@ import { FetchMode } from "../../Types/ArticleFetchMode";
 import ArticleSideListComponent from "./ArticleSideListComponent";
 import { useTheme } from '@mui/material/styles';
 import Article from "../../Models/Users/Article";
-import { ArticleDataType } from "../../Types/DataTypes";
-const DisplayArticle = ({ article }: { article: ArticleDataType }) => {
-    const theme = useTheme();
-    return (
-        <ContentContainer>
-        <Box sx={{ position: 'relative', width: '100%', maxWidth: '800px' }}>
-            <img src={article.image_url} alt={article.title} style={{ width: '100%', height: 'auto', borderRadius: theme.shape.borderRadius }} />
-            <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', color: 'white', padding: theme.spacing(2), borderRadius: `0 0 ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px` }}>
-                <Typography variant="h3" sx={{ fontWeight: 'bold', textShadow: '1px 1px 4px rgba(0, 0, 0, 0.8)' }}>{article.title}</Typography>
-                <Typography variant="subtitle1" sx={{ fontStyle: 'italic' }}>
-                    Written By: {article.author} | {article.created_at}
-                </Typography>
-            </Box>
-        </Box>
-        <Box sx={{ ...styles.content, padding: theme.spacing(3) }} dangerouslySetInnerHTML={{ __html: article.content }} />
-    </ContentContainer> 
-    )
-}
+import { ArticleDataType, UserDataType } from "../../Types/DataTypes";
+import ArticleGridComponent from "./ArticleGridComponent";
+import { socket } from "../../socket";
+import { BorderBottom, BorderTop, Height } from "@mui/icons-material";
+import { pad } from "crypto-js";
+import DisplayArticleComponent from "./DisplayArticleComponent";
+// const DisplayArticle = ({ article }: { article: ArticleDataType }) => {
+//     const theme = useTheme();
+//     return (
+//         <ContentContainer>
+//             <></>
+//     </ContentContainer> 
+//     )
+// }
+
 const ArticlePageComponent = () => {
     const { article_id } = useParams();
+
+    const FeaturedArticleList = ( ) => {
+       const {allArticles} = useContext(ArticleContext);
+       const[articles,setArticles] = useState<ArticleDataType[] | null>(null)
+
+         useEffect(() => {
+              if(allArticles){
+                const filterOutCurrentArticle = allArticles.filter((article) => article.id !== article_id)
+                setArticles(filterOutCurrentArticle)
+              }
+         },[allArticles]);
+
+         
+         return articles ? (
+            <Grid container spacing={0} sx={{ width: '100%' }}>
+              {articles.map((article, index) => (
+                <Grid item xs={12} md={6} key={index} sx={{ padding: 0 }}>
+                    <Link to={`/articles/${article.category?.toLocaleLowerCase().replaceAll(" ","-")}/${article.id}`} style={{ textDecoration: 'none' }}>
+                        <DisplayArticleComponent article={article} height={50} featured={false} />
+                    </Link>
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <></>
+          );
+    }
+
+
+    const RecentStoriesList = ( ) => {
+        const {allArticles} = useContext(ArticleContext);
+        const[articles,setArticles] = useState<ArticleDataType[] | null>(null)
+  
+          useEffect(() => {
+               if(allArticles){
+                 const filterOutCurrentArticle = allArticles.filter((article) => article.id !== article_id)
+                 setArticles(filterOutCurrentArticle)
+               }
+          },[allArticles])
+        return  articles ? <ArticleSideListComponent articles={ articles} headline="Recent Stories"/> : <></>
+    }
+
+
+
     const ReadArticle = () => {
         const { article} = useContext(ArticleContext);
         const [currentArticle, setCurrentArticle] = useState<ArticleDataType | null>(null);
+        const [title, setTitle] = useState("");
+        const [article_date, setDate] = useState("");
+    
       
         useEffect(() => {
             if (article) {
-              
-                setCurrentArticle({...article});
+              setCurrentArticle(article);
+                if(article.created_at){
+                    let current_article_date = new Date(article.created_at)
+                    const formatted_date = current_article_date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })
+
+                    setDate(formatted_date)
+
+
+                }
+                     
+
 
             }
         }, [article]);
         
         useEffect(() => {
-            console.log(`the current article is ${currentArticle?.title}`)
+
         },[currentArticle])
         const theme = useTheme();
         return (
 
             currentArticle !== null ? <>
-            <DisplayArticle article={[article]} />
+            <Box>
+                <Grid container>
+                    <Grid item md={4} alignContent={'center'}>
+                    <Typography variant="h3" sx={styles.title}>{currentArticle.title}</Typography>
+                    <span style={styles.seperator}/>
+                        <Typography variant="subtitle1" sx={styles.authorDateContainer}>
+                            Written By: {currentArticle.author.fullname} | {article_date}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={8}>
+                        <img src={currentArticle.image_url} alt={title} style={styles.image} />
+                    </Grid>
+                </Grid>
+                <Box className="articleContent" sx={{ ...styles.content, padding: theme.spacing(3) }} dangerouslySetInnerHTML={{ __html: currentArticle.content }} />
+              
+            </Box>
+
             </>: <></> 
         );
     }
 
     return (
         <Box sx ={styles.articleContainer}>
-        <Grid container justifyContent={"center"} spacing={3}>
+                <ArticleProvider mode={FetchMode.SINGLE} id={article_id}>
+                    <ReadArticle />
+                </ArticleProvider>
+                <Typography sx={styles.readMore} variant="h5">READ MORE</Typography>
+
+                <ArticleProvider mode={FetchMode.FEATURED} id={article_id}>
+                    <FeaturedArticleList/>
+                </ArticleProvider>
+           
+
+                <ArticleProvider mode={FetchMode.FEATURED} id={article_id}>
+                    <RecentStoriesList/>
+                </ArticleProvider>
+
+            
+        
+                
+        {/* <Grid container justifyContent={"center"} spacing={2}>
             <Grid item>
                 <ArticleProvider mode={FetchMode.SINGLE} id={article_id}>
                     <ReadArticle />
@@ -79,7 +169,7 @@ const ArticlePageComponent = () => {
         </Grid>
         <Box>
         <Typography  variant="h5">More Content</Typography>
-        </Box>
+        </Box> */}
   
         </Box>
 
@@ -96,18 +186,20 @@ const styles = {
     },
     title: {
         // Remove the leading dash '-', make it more modern by increasing font size
-        lineHeight: "1.3rem",
+        lineHeight: "3rem",
         letterSpacing: "0.02rem",
         padding: "0.8rem 0",
-        fontWeight: "bold",
+        fontWeight: "normal",
         textAlign: "center", // Center align the title for a modern look
         fontSize: "2.5rem", // Larger font size for the title
     },
     content: {
-        maxWidth: "800px",
+        maxWidth: "1600px",
         width: '100%', // Ensures the content takes the full width
-        lineHeight: "1.7rem",
+
     },
+
+ 
     image: {
         width: '100%',
         maxWidth:"800px",
@@ -118,13 +210,34 @@ const styles = {
 
     authorDateContainer: {
         display: 'flex',
+        fontFamily: "Lato, sans-serif",
+        fontWeight: 300,
+        // fontStyle: 'normal',
+        
         justifyContent: 'center', // Center align the author and date
         alignItems: 'center',
         gap: '8px', // Add some space between author, separator, and date
-        margin: '1rem 0', // Add margin above and below the author/date line
+        margin: '0', // Add margin above and below the author/date line
         color: 'gray',
         fontStyle: 'italic', // Italicize for a more elegant look
     },
+    seperator: {
+        display: 'block',
+        width: '80%',
+        borderTop:'1px dashed gray',
+        margin: '0 auto 15px', // Add margin above and below the separator
+    },
+    readMore:{
+        textAlign: 'center',
+        margin: '2em 0',
+        color: 'gray',
+        fontWeight: 300,
+        borderTop: '1px solid #000000',
+        borderBottom: '1px solid #000000',
+        padding: '0.5em 0',
+        fontFamily: "Lato, sans-serif",
+        fontStyle: 'italic',
+    }
 };
 
 export default ArticlePageComponent;

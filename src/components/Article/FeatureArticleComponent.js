@@ -3,7 +3,6 @@ import IgnPillComponent from "../../Helpers/IgnPillComponent";
 import { ArticleContext } from "../../Contexts/ArticleContext";
 import { Link } from "react-router-dom";
 
-
 const FeatureArticleUIComponent = ({ article }) => {
   return (
     <div className="grid-container">
@@ -12,8 +11,8 @@ const FeatureArticleUIComponent = ({ article }) => {
         <span>
           <IgnPillComponent description={article.category} link={article.slug} />
           <h2>{article.title}</h2>
-          <Link to={`/article/${article.category}/${article.id}`}>
-          <button className="read-more-btn">Read More</button>
+          <Link to={`/articles/${article.category.replaceAll(" ", "-")}/${article.id}`}>
+            <button className="read-more-btn">Read More</button>
           </Link>
         </span>
       </div>
@@ -22,21 +21,17 @@ const FeatureArticleUIComponent = ({ article }) => {
 };
 
 const FeatureArticleComponent = () => {
-  const  { allArticles }  = useContext(ArticleContext);
+  const { allArticles } = useContext(ArticleContext);
   const [articles, setArticles] = useState([]);
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if( allArticles && allArticles.length > 0){
+    if (allArticles && allArticles.length > 0) {
       setArticles(allArticles);
     }
-   
-    
-  },[allArticles])
+  }, [allArticles]);
 
   useEffect(() => {
- 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
         prevIndex === articles.length - 1 ? 0 : prevIndex + 1
@@ -44,17 +39,39 @@ const FeatureArticleComponent = () => {
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(interval);
-  }, [ articles.length]);
+  }, [articles.length]);
+
+  // Handle previous and next slide navigation
+  const handlePrevClick = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? articles.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextClick = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === articles.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
   // Calculate the progress for the indicator
   const calculateProgress = () => {
     return ((currentIndex + 1) / articles.length) * 100;
   };
 
-  return (
-    articles.length > 0 ? <>
+  return articles.length > 0 ? (
+    <>
       <div id="featured-stories">
         <FeatureArticleUIComponent article={articles[currentIndex]} />
+        
+        {/* Arrow controls */}
+        <button className="prev-btn" onClick={handlePrevClick}>
+          &#9664; {/* Left arrow symbol */}
+        </button>
+        <button className="next-btn" onClick={handleNextClick}>
+          &#9654; {/* Right arrow symbol */}
+        </button>
+
         <div className="indicator-container">
           <div
             className="progress-indicator"
@@ -62,7 +79,47 @@ const FeatureArticleComponent = () => {
           ></div>
         </div>
       </div>
-    </> : <></>
+
+      {/* Add CSS for the hover effect */}
+      <style>{`
+        #featured-stories {
+          position: relative;
+        }
+
+        .prev-btn, .next-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background-color: rgba(0, 0, 0, 0.5);
+          border: none;
+          color: white;
+          font-size: 2rem;
+          padding: 0.5rem;
+          cursor: pointer;
+          z-index: 2;
+          display: none; /* Initially hidden */
+        }
+
+        /* Show arrows when the user hovers over the featured stories section */
+        #featured-stories:hover .prev-btn,
+        #featured-stories:hover .next-btn {
+          display: block;
+        }
+
+        .prev-btn {
+          left: 10px;
+        }
+        .next-btn {
+          right: 10px;
+        }
+
+        .prev-btn:hover, .next-btn:hover {
+          background-color: rgba(0, 0, 0, 0.8);
+        }
+      `}</style>
+    </>
+  ) : (
+    <></>
   );
 };
 

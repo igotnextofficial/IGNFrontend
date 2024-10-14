@@ -44,6 +44,7 @@ interface ArticleProviderProps {
               articles = await article.retrieveFeatured();
               setArticleList(articles)
               break;
+              
             // Handle other cases as needed
             default:
               throw new Error("Invalid fetch mode");

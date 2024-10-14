@@ -1,7 +1,7 @@
 
 import { ArticleDataType } from "../../Types/DataTypes";
 
-
+import { Roles } from "../../Types/Roles";
 import DashboardSectionComponent from "../../Components/DashboardSectionComponent";
 
 import Grid from '@mui/material/Grid';
@@ -22,7 +22,7 @@ const WriterDashboard = () => {
             content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
             dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
             Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-            author: 'Cierra Bellamy',
+            author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
             published:"06/21/2023"
     },
     {
@@ -31,7 +31,7 @@ const WriterDashboard = () => {
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
     {
@@ -40,7 +40,7 @@ const WriterDashboard = () => {
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
     {
@@ -49,7 +49,7 @@ const WriterDashboard = () => {
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
     {
@@ -58,7 +58,7 @@ const WriterDashboard = () => {
         content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, nobis eligendi, 
         dolor ab, quasi recusandae aliquam voluptatem nesciunt ea dignissimos perferendis? 
         Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
-        author: 'Cierra Bellamy',
+        author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
         published:"06/23/2023"
     },
 

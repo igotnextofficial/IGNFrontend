@@ -1,25 +1,25 @@
 
-import ArticleProvider from '../../Providers/ArticleProvider';
-import { Categories, FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
-import ArticleCategoryDisplay from './ArticleCategoryDisplay';
+// import ArticleProvider from '../../Providers/ArticleProvider';
+// import { Categories, FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
+// import ArticleCategoryDisplay from './ArticleCategoryDisplay';
 
 
 
 
 
 
-const FeaturedArtistPage = () => {
+// const FeaturedArtistPage = () => {
 
-    return (
+//     return (
     
-    <>
-    <ArticleProvider mode={FetchMode.ALL} category={Categories.FEATURED_ARTIST}>
-        <ArticleCategoryDisplay title="featured artists"/>
+//     <>
+//     <ArticleProvider mode={FetchMode.ALL} category={Categories.FEATURED_ARTIST}>
+//         <ArticleCategoryDisplay title="featured artists"/>
 
-    </ArticleProvider>
+//     </ArticleProvider>
 
-    </>
-    );
-};
+//     </>
+//     );
+// };
 
-export default FeaturedArtistPage;
+// export default FeaturedArtistPage;

@@ -43,7 +43,7 @@ const DisplayArticle = ( {article}:{article:ArticleDataType} ) => {
                           variant="body2"
                         
                         >
-                          Author: {article.author} | Published:{article.published}
+                          Author: {article.author.name} | Published:{article.published}
                         </Typography>
                       </React.Fragment>
                       }

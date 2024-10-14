@@ -1,4 +1,5 @@
 import App from "../App"
+import CategoriesComponent from "../Components/Article/CategoriesComponent"
 
 
 export const Endpoints = {
@@ -21,7 +22,8 @@ export const APP_ENDPOINTS = {
         SINGLE: `${Endpoints.ARTICLES}`,
         USER: `${Endpoints.ARTICLES}/user`,
         DRAFTS: `${Endpoints.ARTICLES}/drafts`,
-        FEATURED: `${Endpoints.ARTICLES}/featured`
+        FEATURED: `${Endpoints.ARTICLES}/featured`,
+        CATEGORY: `${Endpoints.ARTICLES}/category`
     }
 }
 export const validEndpoints = [

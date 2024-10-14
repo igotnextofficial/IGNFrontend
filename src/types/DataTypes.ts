@@ -69,7 +69,7 @@ export interface ArticleDataType {
     title:string,
     image_url:string,
     content:string,
-    author:string,
+    author:UserDataType,
     published:string,
     category?:string,
     user_id?:string,

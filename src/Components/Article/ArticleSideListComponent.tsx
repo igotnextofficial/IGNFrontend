@@ -1,27 +1,28 @@
 import React from 'react';
-import { Box, Typography, Stack, Divider, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Typography, Stack, Divider, useTheme, useMediaQuery, Link } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime'; // Import an icon for timestamp
-
-// Define a type for the article prop
-type Article = {
-  title: string;
-  category: string;
-  timestamp: string;
-};
+import { ArticleDataType } from '../../Types/DataTypes';
+import { timeAgo } from '../../Utils/helpers';
+import { Link as RouterLink } from 'react-router-dom'; // Assuming you're using react-router for navigation
 
 // Define a type for the ArticleSideList props
 type ArticleSideListProps = {
-  articles: Article[];
+  articles: ArticleDataType[];
+  headline?: string;
 };
 
-const ArticleSideListComponent: React.FC<ArticleSideListProps> = ({ articles }) => {
+// Utility function to format the category
+const formatCategory = (category: string): string => {
+  return category.toLowerCase().replace(/\s+/g, '-'); // Convert to lowercase and replace spaces with hyphens
+};
+
+const ArticleSideListComponent = ({ articles, headline = "Latest News" }: ArticleSideListProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box sx={{
       width: '100%',
-      maxWidth: 360,
       bgcolor: 'background.paper',
       my: 2,
       p: 2,
@@ -31,14 +32,14 @@ const ArticleSideListComponent: React.FC<ArticleSideListProps> = ({ articles }) 
     }}>
       <Typography variant="h6" component="div" sx={{
         fontWeight: 'bold',
-        color: theme.palette.secondary.main, // Use theme's secondary color
+        color: "#000000", // Use theme's secondary color
         mb: 1,
         fontFamily: 'Urbanist, sans-serif',
         fontSize: isMobile ? '1rem' : '1.25rem', // Responsive font size
       }}>
-        The Latest
+        {headline}
       </Typography>
-      <Divider sx={{ bgcolor: theme.palette.secondary.main, mb: 2 }} />
+      <Divider sx={{ bgcolor: "#000000", mb: 2 }} />
       <Stack direction="column" spacing={2}>
         {articles.map((article, index) => (
           <Box key={index} sx={{
@@ -48,30 +49,59 @@ const ArticleSideListComponent: React.FC<ArticleSideListProps> = ({ articles }) 
             },
             p: 1, // Padding inside each article box
           }}>
-            <Typography variant="subtitle2" sx={{
-              fontWeight: 'bold',
-              color: theme.palette.text.primary,
-              textTransform: 'uppercase',
-              fontSize: '0.875rem',
-            }}>
-              {article.category}
-            </Typography>
-            <Typography gutterBottom variant="subtitle1" component="div" sx={{
-              fontWeight: 'bold',
-              color: theme.palette.text.primary,
-              fontFamily: 'Urbanist, sans-serif',
-            }}>
-              {article.title}
-            </Typography>
-            <Box display="flex" alignItems="center" gap={0.5}>
-              <AccessTimeIcon fontSize="small" sx={{ color: theme.palette.text.secondary }} />
-              <Typography variant="caption" sx={{
-                color: theme.palette.text.secondary,
-                fontSize: '0.75rem',
+            {/* Stack to align image and text side by side */}
+            <Stack direction="row" spacing={2} alignItems="flex-start">
+              {/* Image on the left */}
+              <Box sx={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                flexShrink: 0, // Ensure the image doesn't shrink
               }}>
-                {article.timestamp}
-              </Typography>
-            </Box>
+                <img
+                  src={article.image_url}
+                  alt={article.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </Box>
+
+              {/* Article content on the right */}
+              <Box>
+                {/* Create a link to the article's page */}
+                <Link
+                  component={RouterLink}
+                  to={`/articles/${formatCategory(article.category ? article.category : "")}/${article.id}`}
+                  underline="none"
+                  sx={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  <Typography variant="subtitle2" sx={{
+                    fontWeight: 'bold',
+                    color: theme.palette.text.primary,
+                    textTransform: 'uppercase',
+                    fontSize: '0.875rem',
+                  }}>
+                    {article.category}
+                  </Typography>
+                  <Typography gutterBottom variant="subtitle1" component="div" sx={{
+                    fontWeight: 'bold',
+                    color: theme.palette.text.primary,
+                    fontFamily: 'Urbanist, sans-serif',
+                  }}>
+                    {article.title}
+                  </Typography>
+                </Link>
+                <Box display="flex" alignItems="center" gap={0.5}>
+                  <AccessTimeIcon fontSize="small" sx={{ color: theme.palette.text.secondary }} />
+                  <Typography variant="caption" sx={{
+                    color: theme.palette.text.secondary,
+                    fontSize: '0.75rem',
+                  }}>
+                    {timeAgo(article.created_at as string)}
+                  </Typography>
+                </Box>
+              </Box>
+            </Stack>
           </Box>
         ))}
       </Stack>
