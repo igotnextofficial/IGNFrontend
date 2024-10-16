@@ -10,6 +10,7 @@ RUN mkdir -p public src
 
 # Copy only the package files first and install dependencies
 COPY package.json yarn.lock ./
+
 RUN yarn install
 
 # Copy the rest of the configuration files and source code

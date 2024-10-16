@@ -22,7 +22,7 @@ export const APP_ENDPOINTS = {
         SINGLE: `${Endpoints.ARTICLES}`,
         USER: `${Endpoints.ARTICLES}/user`,
         DRAFTS: `${Endpoints.ARTICLES}/drafts`,
-        FEATURED: `${Endpoints.ARTICLES}/featured`,
+        FEATURED: `${Endpoints.ARTICLES}/category/featured`,
         CATEGORY: `${Endpoints.ARTICLES}/category`
     }
 }

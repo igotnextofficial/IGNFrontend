@@ -3,6 +3,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 RUN apk add --update --no-cache python3 python3-dev py3-setuptools make g++ && ln -sf python3 /usr/bin/python
 COPY package.json yarn.lock ./
+COPY .env ./
 RUN yarn install
 COPY . ./
 RUN yarn build
