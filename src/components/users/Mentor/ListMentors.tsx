@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'; // Import useState and useEffect
 import DisplayMentorCard from './DisplayMentorCard';
 import { Grid } from "@mui/material";
-import { MentorDataType, httpDataObject } from '../../../Types/DataTypes';
+import { MentorDataType, httpDataObject } from '../../../types/DataTypes';
 // import { sendRequest } from '../../../Utils/helpers';
-import { useUser } from '../../../Contexts/UserContext';
+import { useUser } from '../../../contexts/UserContext';
 import axios from 'axios';
-import NoDataAvailable from '../../../Utils/NoDataAvailable';
+import NoDataAvailable from '../../../utils/NoDataAvailable';
 
 const ListMentors = () => {
     const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state

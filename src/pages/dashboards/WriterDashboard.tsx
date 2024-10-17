@@ -1,17 +1,17 @@
 
-import { ArticleDataType } from "../../Types/DataTypes";
+import { ArticleDataType } from "../../types/DataTypes";
 
-import { Roles } from "../../Types/Roles";
-import DashboardSectionComponent from "../../Components/DashboardSectionComponent";
+import { Roles } from "../../types/Roles";
+import DashboardSectionComponent from "../../components/DashboardSectionComponent";
 
 import Grid from '@mui/material/Grid';
 
 
-import DisplayTasks from "../../Components/DisplayTasks";
+import DisplayTasks from "../../components/DisplayTasks";
 import {tasksData}  from "../../data";
-import Chart from "../../Components/Charts";
-import ToDo from "../../Components/ToDo";
-import ListArticlesComponent from "../../Components/Article/ListAritclesComponent ";
+import Chart from "../../components/Charts";
+import ToDo from "../../components/ToDo";
+import ListArticlesComponent from "../../components/article/ListAritclesComponent ";
 
 
 const WriterDashboard = () => {

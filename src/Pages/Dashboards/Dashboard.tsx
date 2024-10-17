@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import WriterDashboard from "./WriterDashboard";
 
-import ContentContainer from "../../Utils/ContentContainer";
-import { UserContext } from "../../Contexts/UserContext";
+import ContentContainer from "../../utils/ContentContainer";
+import { UserContext } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import MentorDashboard from "./MentorDashboard";
 import ArtistDashboard from "./ArtistDashboard";

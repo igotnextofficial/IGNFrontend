@@ -1,7 +1,7 @@
-import { MentorDataType,structureDataType } from "../../Types/DataTypes";
+import { MentorDataType,structureDataType } from "../../types/DataTypes";
 import Model from "../Model";
 import { mentorsFake } from "../../fake-data/mentorsFake";
-import { MentorFormStructure } from "../../FormStructures/MentorFormStructure";
+import { MentorFormStructure } from "../../formstructures/MentorFormStructure";
 
 
 

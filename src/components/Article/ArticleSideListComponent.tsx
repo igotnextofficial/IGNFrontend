@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Typography, Stack, Divider, useTheme, useMediaQuery, Link } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime'; // Import an icon for timestamp
-import { ArticleDataType } from '../../Types/DataTypes';
-import { timeAgo } from '../../Utils/helpers';
+import { ArticleDataType } from '../../types/DataTypes';
+import { timeAgo } from '../../utils/helpers';
 import { Link as RouterLink } from 'react-router-dom'; // Assuming you're using react-router for navigation
 
 // Define a type for the ArticleSideList props

@@ -1,5 +1,5 @@
 import { ArtistFake } from "./ArtistFake";
-import { Roles } from "../Types/Roles";
+import { Roles } from "../types/Roles";
 
 const mentor_artist = ArtistFake.slice(0).map((artist,index) => {
   return {

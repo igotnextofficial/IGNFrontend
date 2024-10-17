@@ -1,7 +1,7 @@
 import { Box,Avatar } from "@mui/material";
-import IgnPillComponent from "../../../Helpers/IgnPillComponent";
-import TextContentComponent from "../../../Helpers/TextContentComponent";
-import { ArtistDataType } from "../../../Types/DataTypes";
+import IgnPillComponent from "../../../helpers/IgnPillComponent";
+import TextContentComponent from "../../../helpers/TextContentComponent";
+import { ArtistDataType } from "../../../types/DataTypes";
 const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
     return (
         <>

@@ -1,14 +1,14 @@
 import { useState,useContext,useEffect,useLayoutEffect } from "react";
 import { useParams,Navigate } from "react-router-dom";
-import { ArticleDataType } from "../../Types/DataTypes";
-import ContentContainer from "../../Utils/ContentContainer";
+import { ArticleDataType } from "../../types/DataTypes";
+import ContentContainer from "../../utils/ContentContainer";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
 import { Grid } from "@mui/material";
 import Editor from "./Editor";
-import Article from "../../Models/Users/Article";
+import Article from "../../models/users/Article";
 
-import { ArticleContext } from "../../Contexts/ArticleContext";
-import { ErrorContext } from "../../Contexts/ErrorContext";
+import { ArticleContext } from "../../contexts/ArticleContext";
+import { ErrorContext } from "../../contexts/ErrorContext";
 
 const updateDraft = async(drafts:ArticleDataType[],updatedArticle:ArticleDataType) =>{
     let copiedDraft = [...drafts];

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Grid,Chip, Typography } from '@mui/material';
-import { TaskDataType } from '../Types/DataTypes';
+import { TaskDataType } from '../types/DataTypes';
 
 
 

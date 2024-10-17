@@ -4,11 +4,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Grid ,Button, CardActionArea, CardActions } from '@mui/material';
-import { HttpMethods, MentorDataType } from '../../../Types/DataTypes';
+import { HttpMethods, MentorDataType } from '../../../types/DataTypes';
 
 
-import { useUser } from '../../../Contexts/UserContext';
-import { sendRequest } from '../../../Utils/helpers';
+import { useUser } from '../../../contexts/UserContext';
+import { sendRequest } from '../../../utils/helpers';
  
 
 const labels = {

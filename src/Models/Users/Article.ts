@@ -1,9 +1,9 @@
-import { ArticleDataType, ArticleSavedDataType} from "../../Types/DataTypes";
-import IgnRequest from '../../Features/Http/IgnRequest';
+import { ArticleDataType, ArticleSavedDataType} from "../../types/DataTypes";
+import IgnRequest from '../../features/http/IgnRequest';
 import User from "./User";
-import { ArticleCategories } from "../../Types/ArticleCategories";
-import { APP_ENDPOINTS } from "../../Config/app";
-import { Roles } from "../../Types/Roles";
+import { ArticleCategories } from "../../types/ArticleCategories";
+import { APP_ENDPOINTS } from "../../config/app";
+import { Roles } from "../../types/Roles";
 
 class Article{
     endpoint: string

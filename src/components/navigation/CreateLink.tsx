@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { UserContext } from '../../Contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 
 // Make sure 'user' is defined or imported in your component if it's used
 

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { Avatar, Box, IconButton, Tooltip, Menu, MenuItem, Typography, Grid } from '@mui/material';
 
-import { Roles } from '../../Types/Roles';
+import { Roles } from '../../types/Roles';
 import CreateLink from './CreateLink';
 
 
-import { Settings } from '../../Types/DataTypes';
-import { useUser } from '../../Contexts/UserContext';
+import { Settings } from '../../types/DataTypes';
+import { useUser } from '../../contexts/UserContext';
 
 const AccountSettings = () => {
   const [role,setRole] = useState("")

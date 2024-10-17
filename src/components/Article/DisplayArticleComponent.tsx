@@ -1,7 +1,7 @@
 import BackgroundCoverImage from "../BackgroundCoverImage";
 import { Box,Typography } from "@mui/material";
-import IgnPillComponent from "../../Helpers/IgnPillComponent";
-import { ArticleDataType } from "../../Types/DataTypes";
+import IgnPillComponent from "../../helpers/IgnPillComponent";
+import { ArticleDataType } from "../../types/DataTypes";
 
 const DisplayArticleComponent = ({article, height=50,featured=false} : {article:ArticleDataType,height: number, featured:boolean}) => {
     

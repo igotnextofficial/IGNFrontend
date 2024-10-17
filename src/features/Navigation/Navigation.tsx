@@ -10,12 +10,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 
 import MenuItem from '@mui/material/MenuItem';
-import Ignlogo from '../../Components/Ignlogo';
+import Ignlogo from '../../components/Ignlogo';
 import { Link } from 'react-router-dom';
 
-import AccountSettings from '../../Components/Navigation/AccountSettings';
-import BrowserNavigation from '../../Components/Navigation/BrowserNavigation';
-import SigninOrRegister from '../../Components/Navigation/SigninOrRegister';
+import AccountSettings from '../../components/navigation/AccountSettings';
+import BrowserNavigation from '../../components/navigation/BrowserNavigation';
+import SigninOrRegister from '../../components/navigation/SigninOrRegister';
 
 
 

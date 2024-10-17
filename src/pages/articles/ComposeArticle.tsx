@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
-import InformationComponent from "../../Helpers/InformationComponent";
-import EditorProvider from "../../Providers/EditorProvider";
+import DisplayTextEditor from "../../components/article/DisplayTextEditor";
+import InformationComponent from "../../helpers/InformationComponent";
+import EditorProvider from "../../providers/EditorProvider";
 
 
 const ComposeArticle = () => {

@@ -1,4 +1,4 @@
-import { Roles } from "../Types/Roles"
+import { Roles } from "../types/Roles"
 export const ArtistFake =[
     {
     id: "1",

@@ -1,10 +1,10 @@
 import React from "react";
 import DisplayArticle from "./DisplayArticles";
-import { ArticleDataType } from "../Types/DataTypes";
+import { ArticleDataType } from "../types/DataTypes";
 
 import { Box, Divider, Typography, Link } from "@mui/material";
-import Article from "../Models/Users/Article";
-import ListArticlesComponent from "./Article/ListAritclesComponent ";
+import Article from "../models/users/Article";
+import ListArticlesComponent from "./article/ListAritclesComponent ";
 import { useEffect, useState } from "react";
 
 const ArticlesList = () => {

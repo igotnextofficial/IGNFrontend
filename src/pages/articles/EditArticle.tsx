@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 
 import { Box } from "@mui/material";
-import ArticleProvider from "../../Providers/ArticleProvider";
-import InformationComponent from "../../Helpers/InformationComponent"; 
-import DisplayTextEditor from "../../Components/Article/DisplayTextEditor";
-import { FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
+import ArticleProvider from "../../providers/ArticleProvider";
+import InformationComponent from "../../helpers/InformationComponent"; 
+import DisplayTextEditor from "../../components/article/DisplayTextEditor";
+import { FetchMode } from "../../types/ArticleFetchMode"; // types and enums
 
 
 

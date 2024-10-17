@@ -13,18 +13,18 @@ import ReactQuill, { UnprivilegedEditor } from "react-quill";
 import { DeltaStatic, Sources } from "quill";
 
 import UploadImageComponent from "../UploadImageComponent";
-import WordCount from "../../Utils/WordCount";
+import WordCount from "../../utils/WordCount";
 
-import Article from "../../Models/Users/Article";
+import Article from "../../models/users/Article";
 
-import { useEditorFormContext } from "../../Contexts/EditorFormContext";
+import { useEditorFormContext } from "../../contexts/EditorFormContext";
 
 
 import {
   ArticleDataType,
   EditorRangeLimitsDataType,
   EditorRangeSelectorDataType,
-} from "../../Types/DataTypes";
+} from "../../types/DataTypes";
 import CategoriesComponent from "./CategoriesComponent";
 
 const RANGE_LIMITS: EditorRangeLimitsDataType = {

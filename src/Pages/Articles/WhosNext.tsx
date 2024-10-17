@@ -1,5 +1,5 @@
-// import ArticleProvider from '../../Providers/ArticleProvider';
-// import { Categories, FetchMode } from "../../Types/ArticleFetchMode"; // types and enums
+// import ArticleProvider from '../../providers/ArticleProvider';
+// import { Categories, FetchMode } from "../../types/ArticleFetchMode"; // types and enums
 
 // import ArticleCategoryDisplay from './ArticleCategoryDisplay';
 

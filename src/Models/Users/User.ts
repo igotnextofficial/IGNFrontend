@@ -1,11 +1,11 @@
 
-import {httpDataObject,FieldErrorMaintainerType,validationObject } from "../../Types/DataTypes";
-import IgnRequest from "../../Features/Http/IgnRequest";
-import { UserFields } from "../../Types/UserFields";
-import { validateFullname, validateEmail,validatePassword,validateUsername, validateChoices } from '../../Utils/validate';
-import { Roles } from "../../Types/Roles";
-import Storage from "../../Storage/StorageAbstract";
-import { StorageTypes } from "../../Storage/StorageTypes";
+import {httpDataObject,FieldErrorMaintainerType,validationObject } from "../../types/DataTypes";
+import IgnRequest from "../../features/http/IgnRequest";
+import { UserFields } from "../../types/UserFields";
+import { validateFullname, validateEmail,validatePassword,validateUsername, validateChoices } from '../../utils/validate';
+import { Roles } from "../../types/Roles";
+import Storage from "../../storage/StorageAbstract";
+import { StorageTypes } from "../../storage/StorageTypes";
  
 
 

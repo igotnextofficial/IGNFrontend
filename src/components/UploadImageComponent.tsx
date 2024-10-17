@@ -1,8 +1,8 @@
 import React, {useEffect, useState } from 'react';
 import { TextField,  FormLabel } from '@mui/material';
-import { useFileUploadContext } from '../Contexts/FileUploadContext';
-import FileUploadProvider from '../Providers/FileUploadProvider';
-import { useEditorFormContext } from '../Contexts/EditorFormContext';
+import { useFileUploadContext } from '../contexts/FileUploadContext';
+import FileUploadProvider from '../providers/FileUploadProvider';
+import { useEditorFormContext } from '../contexts/EditorFormContext';
 
 
 const UploadImageComponent = () => {

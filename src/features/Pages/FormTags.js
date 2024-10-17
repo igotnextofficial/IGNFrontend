@@ -1,7 +1,7 @@
 // testing react using Refs
 
 import React, { useState, useEffect,useRef, useContext }  from 'react';
-import Errors from '../Errors/display'
+import Errors from '../errors/display'
 import { FormContext } from './FormContext'
 
 

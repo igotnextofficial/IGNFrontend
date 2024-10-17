@@ -9,7 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
-import { ListDataType } from '../../Types/DataTypes';
+import { ListDataType } from '../../types/DataTypes';
 
 
 interface ListLayoutComponentProps {

@@ -11,20 +11,20 @@ import Typography from '@mui/material/Typography';
 
 import Link from '@mui/material/Link';
 
-import BackgroundCoverImage from '../../Components/BackgroundCoverImage';
-import Copyright from '../../Components/Copyright';
-import IGNButton from '../../Components/Button';
+import BackgroundCoverImage from '../../components/BackgroundCoverImage';
+import Copyright from '../../components/Copyright';
+import IGNButton from '../../components/Button';
 
 
 import { Navigate } from 'react-router-dom';
 
-import { useUser } from '../../Contexts/UserContext';
-import IgnFormGenerate from '../../Components/IgnFormGenerate';
-import { LoginFormStructure } from '../../FormStructures/LoginFormStructure';
-import FormDataProvider from '../../Providers/FormDataProvider';
-import User from '../../Models/Users/User';
-import { useFormDataContext } from '../../Contexts/FormContext';
-import { useErrorHandler } from '../../Contexts/ErrorContext';
+import { useUser } from '../../contexts/UserContext';
+import IgnFormGenerate from '../../components/IgnFormGenerate';
+import { LoginFormStructure } from '../../formstructures/LoginFormStructure';
+import FormDataProvider from '../../providers/FormDataProvider';
+import User from '../../models/users/User';
+import { useFormDataContext } from '../../contexts/FormContext';
+import { useErrorHandler } from '../../contexts/ErrorContext';
 
 
 

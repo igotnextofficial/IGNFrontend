@@ -1,6 +1,6 @@
-import { ArtistDataType, structureDataType } from "../../Types/DataTypes";
+import { ArtistDataType, structureDataType } from "../../types/DataTypes";
 import Model from "../Model";
-import { displayType } from "../../Types/DataTypes";
+import { displayType } from "../../types/DataTypes";
 import { ArtistFake } from "../../fake-data/ArtistFake";
 
 const musicGenres = [

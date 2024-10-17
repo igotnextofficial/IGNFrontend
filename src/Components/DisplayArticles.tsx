@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ArticleDataType } from "../Types/DataTypes";
+import { ArticleDataType } from "../types/DataTypes";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';

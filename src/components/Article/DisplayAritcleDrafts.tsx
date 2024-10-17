@@ -5,8 +5,8 @@ import {Backdrop} from "@mui/material";
 import {Paper} from "@mui/material";
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 
-import { ArticleDataType } from "../../Types/DataTypes";
-import Article from "../../Models/Users/Article";
+import { ArticleDataType } from "../../types/DataTypes";
+import Article from "../../models/users/Article";
 
 
 

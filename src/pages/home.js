@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import ArtistListComponent from "../Components/Users/Artist/ArtistListComponent";
-import MentorListComponent from "../Components/Users/Mentor/MentorListComponent";
-import FeatureArticleComponent from "../Components/Article/FeatureArticleComponent";
-import AboutUsComponent from "../Components/Generic/AboutUsComponent";
-import ArticleProvider from '../Providers/ArticleProvider';
-import { FetchMode } from '../Types/ArticleFetchMode';
+import ArtistListComponent from "../components/users/artist/ArtistListComponent";
+import MentorListComponent from "../components/users/mentor/MentorListComponent";
+import FeatureArticleComponent from "../components/article/FeatureArticleComponent";
+import AboutUsComponent from "../components/generic/AboutUsComponent";
+import ArticleProvider from '../providers/ArticleProvider';
+import { FetchMode } from '../types/ArticleFetchMode';
 
 const Home = () => {
     useEffect(() => {

@@ -5,7 +5,7 @@ import './index.css?version=1.0.1';
 import './styles/defaults.css?version=1.0.1';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import RootComponent from './Components/Generic/RootComponent';
+import RootComponent from './components/generic/RootComponent';
 const container =  document.getElementById('root');
 
 const ROOT = createRoot(container);

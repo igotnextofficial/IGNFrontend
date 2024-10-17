@@ -1,34 +1,34 @@
 import './App.css';
 
 
-import Navigation from './Features/Navigation/Navigation';
-import ProtectedRoutes from './Utils/ProtectedRoute';
+import Navigation from './features/navigation/Navigation';
+import ProtectedRoutes from './utils/ProtectedRoute';
 
 
 import { BrowserRouter as Router,Route, Routes} from 'react-router-dom';
-import Dashboard from './Pages/Dashboards/Dashboard';
-import ComposeArticle from './Pages/Articles/ComposeArticle';
-import EditArticle from './Pages/Articles/EditArticle';
-import Login from './Pages/Authentication/Login';
-import Register from './Pages/Authentication/Register';
+import Dashboard from './pages/dashboards/Dashboard';
+import ComposeArticle from './pages/articles/ComposeArticle';
+import EditArticle from './pages/articles/EditArticle';
+import Login from './pages/authentication/Login';
+import Register from './pages/authentication/Register';
 
 
-import { useUser } from './Contexts/UserContext';
+import { useUser } from './contexts/UserContext';
 
-import Home from './Pages/home';
-import FooterComponent from './Components/Generic/FooterComponent';
-import ErrorComponent from './Components/Generic/ErrorComponent';
+import Home from './pages/home';
+import FooterComponent from './components/generic/FooterComponent';
+import ErrorComponent from './components/generic/ErrorComponent';
 
-import DetectChange from './Components/Generic/DetectPageChangeComponent';
+import DetectChange from './components/generic/DetectPageChangeComponent';
 
-import ArticleCategoryList from './Pages/Articles/ArticleCategoryList';
-import ArticlePageComponent from './Components/Article/ArticlePageComponent';
-import FindMentorPage from './Pages/Mentors/FindMentorPage';
-import BookMentorPage from './Pages/Mentors/BookMentorPage';
-import EditProfile from './Pages/EditProfile';
-import MessageReaderReply from './Pages/Notes/MessageReaderReply';
+import ArticleCategoryList from './pages/articles/ArticleCategoryList';
+import ArticlePageComponent from './components/article/ArticlePageComponent';
+import FindMentorPage from './pages/mentors/FindMentorPage';
+import BookMentorPage from './pages/mentors/BookMentorPage';
+import EditProfile from './pages/EditProfile';
+import MessageReaderReply from './pages/notes/MessageReaderReply';
 
-import ScheduleSession from './Pages/Artists/ScheduleSession';
+import ScheduleSession from './pages/artists/ScheduleSession';
 
 
 // import LocalStorage from './Storage/LocalStorage'; // not curretly used.

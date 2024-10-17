@@ -1,4 +1,4 @@
-import { ValidFileTypes, ByteType } from "../Types/DataTypes"
+import { ValidFileTypes, ByteType } from "../types/DataTypes"
 
 
 export interface Media {

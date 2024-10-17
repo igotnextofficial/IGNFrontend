@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TaskDataType } from "../Types/DataTypes";
+import { TaskDataType } from "../types/DataTypes";
 import TaskList from "./TaskList";
 
 import { useState } from "react";

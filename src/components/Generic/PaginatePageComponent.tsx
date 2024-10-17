@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ListLayoutComponent from './ListLayoutComponent';
 import Pagination from '@mui/material/Pagination'; // Assuming you're using Material-UI's Pagination component
 
-import { ArticleDataType, ListDataType } from '../../Types/DataTypes';
+import { ArticleDataType, ListDataType } from '../../types/DataTypes';
 
 interface PaginatedPageProps {
     initialData: ListDataType[] ;

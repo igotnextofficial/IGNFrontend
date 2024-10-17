@@ -1,8 +1,8 @@
-import Home from '../Pages/home';
-import Login from '../Pages/Authentication/Login'
-import Register from '../Pages/Authentication/Register';
-import FormTest from '../Pages/FormTest';
-import Dashboard from '../Pages/Dashboards/Dashboard';
+import Home from '../pages/home';
+import Login from '../pages/authentication/Login'
+import Register from '../pages/authentication/Register';
+import FormTest from '../pages/FormTest';
+import Dashboard from '../pages/dashboards/Dashboard';
 import { Logout } from '@mui/icons-material';
 
 

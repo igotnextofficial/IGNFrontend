@@ -1,8 +1,8 @@
 import React from "react"
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router-dom";
-import ArticleProvider from "../../Providers/ArticleProvider";
-import { FetchMode } from "../../Types/ArticleFetchMode";
+import ArticleProvider from "../../providers/ArticleProvider";
+import { FetchMode } from "../../types/ArticleFetchMode";
 
 const ArticleComponent = () =>  {
     const{article_id} = useParams();

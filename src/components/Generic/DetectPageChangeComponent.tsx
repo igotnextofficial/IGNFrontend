@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { ErrorContext } from "../../Contexts/ErrorContext";
+import { ErrorContext } from "../../contexts/ErrorContext";
 
 const DetectChange = () => {
     let location = useLocation()

@@ -1,7 +1,7 @@
-import SectionComponent from "../../../Helpers/SectionComponent";
-import InformationComponent from "../../../Helpers/InformationComponent";
+import SectionComponent from "../../../helpers/SectionComponent";
+import InformationComponent from "../../../helpers/InformationComponent";
 import { Grid } from "@mui/material";
-import Artist from "../../../Models/Users/Artist";
+import Artist from "../../../models/users/Artist";
 import DisplayArtistComponent from "./DisplayArtistComponent";
 const ArtistListComponent = () => {
     const ShowArtists = () =>{

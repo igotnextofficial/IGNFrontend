@@ -1,8 +1,8 @@
 
 import {  FormControl, FormControlLabel, Radio, RadioGroup, FormLabel  } from '@mui/material';
 
-import { ArticleCategories } from '../../Types/ArticleCategories';
-import { useEditorFormContext } from '../../Contexts/EditorFormContext';
+import { ArticleCategories } from '../../types/ArticleCategories';
+import { useEditorFormContext } from '../../contexts/EditorFormContext';
 
 const CategoriesComponent = () => {
     const { data,updateData } = useEditorFormContext()

@@ -1,6 +1,6 @@
-import { HttpConfigurationType, HttpHeaders, httpDataObject } from "../../Types/DataTypes";
+import { HttpConfigurationType, HttpHeaders, httpDataObject } from "../../types/DataTypes";
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import User from "../../Models/Users/User";
+import User from "../../models/users/User";
 
 
 class IgnRequest {

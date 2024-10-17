@@ -6,8 +6,7 @@
 
 - [] Add calendly or some sort of scheduling system for mentors, check google api 
 - [] Zoom API or the like for video calls.
-- [] Add Fake Data, Articles,admin 
-- [] make sure pagination is setup
+
 
  
 
@@ -17,7 +16,7 @@
 ### Authentication
 - [] Most Important circle back around to authentication process and storing of tokens
 - [] Handle decoding token on frontend to verify the users scope and access any other needed info
-- [] add expiration time to tokens
+
 
 ### Dashobards
 #### Writer Dashboard
@@ -37,6 +36,7 @@
 
 
 ## Backlog
+
 - [] upload and streaming music.
 - [] Mentors should be able to adjust payment fee.? Need to think about this.
 - [] need to think of payment Models.
@@ -45,10 +45,17 @@
     - [] should be able to subscribe to an artist page
     - [] will get updates if subscribed to artist page.
 
-
+ ### Noticeable Issues
+    - [] After clicking through the pages , the page goes blank and 
+        "enable JS Error" appears
+    - [] endpoints are being hit unneccesarily , need some sort of cache system or pull from local storage if possible
+    - [] Footer does not adhere to the bottom of all pages
+    - [] Article List pagges need to be designed.
 ## Completed
 #### FBFAF9 BG Color
-
+- [x] Add Fake Data, Articles,admin 
+- [x] make sure pagination is setup
+- [x] add expiration time to tokens
 - [x] should be able to toggle between being open or closed to accepting new clients.
 - [x]  Page to Leave Notes for mentee 
 - [x] Add categories to article creation pages.

@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArticleContext } from "../../Contexts/ArticleContext";
+import { ArticleContext } from "../../contexts/ArticleContext";
 
 import { Box,Grid , Typography } from "@mui/material";
-import ArticleProvider from "../../Providers/ArticleProvider";
-import ContentContainer from "../../Utils/ContentContainer";
-import { FetchMode } from "../../Types/ArticleFetchMode";
+import ArticleProvider from "../../providers/ArticleProvider";
+import ContentContainer from "../../utils/ContentContainer";
+import { FetchMode } from "../../types/ArticleFetchMode";
 import ArticleSideListComponent from "./ArticleSideListComponent";
 import { useTheme } from '@mui/material/styles';
-import Article from "../../Models/Users/Article";
-import { ArticleDataType, UserDataType } from "../../Types/DataTypes";
+import Article from "../../models/users/Article";
+import { ArticleDataType, UserDataType } from "../../types/DataTypes";
 import ArticleGridComponent from "./ArticleGridComponent";
 import { socket } from "../../socket";
 import { BorderBottom, BorderTop, Height } from "@mui/icons-material";

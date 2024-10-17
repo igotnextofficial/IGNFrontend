@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { UserProvider } from '../../Providers/UserProvider';
-import ErrorProvider from '../../Providers/ErrorProvider';
+import { UserProvider } from '../../providers/UserProvider';
+import ErrorProvider from '../../providers/ErrorProvider';
 
 interface RootComponentProps {
     children: ReactNode;

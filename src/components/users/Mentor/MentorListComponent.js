@@ -1,6 +1,6 @@
 
-import SectionComponent from "../../../Helpers/SectionComponent";
-import InformationComponent from "../../../Helpers/InformationComponent";
+import SectionComponent from "../../../helpers/SectionComponent";
+import InformationComponent from "../../../helpers/InformationComponent";
 
 import ListMentors from "./ListMentors";
 

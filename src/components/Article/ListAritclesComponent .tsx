@@ -1,4 +1,4 @@
-import { ArticleDataType } from "../../Types/DataTypes"
+import { ArticleDataType } from "../../types/DataTypes"
 import DisplayArticle from "../DisplayArticles"
 const ListArticlesComponent = ({articles} :{ articles:ArticleDataType[]} ) => 
 {

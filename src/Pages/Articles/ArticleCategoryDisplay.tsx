@@ -1,9 +1,9 @@
 import { useContext, useLayoutEffect, useState } from "react";
-import { ArticleDataType, ListDataType } from '../../Types/DataTypes'
-import { ArticleContext } from '../../Contexts/ArticleContext';
-import InformationComponent from '../../Helpers/InformationComponent';
-import MainHolderComponent from '../../Helpers/MainHolderComponent';
-import PaginatedPage from '../../Components/Generic/PaginatePageComponent';
+import { ArticleDataType, ListDataType } from '../../types/DataTypes'
+import { ArticleContext } from '../../contexts/ArticleContext';
+import InformationComponent from '../../helpers/InformationComponent';
+import MainHolderComponent from '../../helpers/MainHolderComponent';
+import PaginatedPage from '../../components/generic/PaginatePageComponent';
 
 
 const ArticleCategoryDisplay = ({title,data} :{title:string, data: ListDataType[]}) => {

@@ -1,7 +1,7 @@
 import { Box, Grid} from "@mui/material";
-import { AboutIGN } from "../../StaticInformation/aboutus";
-import InformationComponent from "../../Helpers/InformationComponent";
-import SectionComponent from "../../Helpers/SectionComponent";
+import { AboutIGN } from "../../staticinformation/aboutus";
+import InformationComponent from "../../helpers/InformationComponent";
+import SectionComponent from "../../helpers/SectionComponent";
 
 
 const AboutUsComponent = () => {
