@@ -1,6 +1,3 @@
-import App from "../App"
-import CategoriesComponent from "../components/article/CategoriesComponent"
-
 
 export const Endpoints = {
     ARTICLES: process.env.REACT_APP_ARTICLES_API || "",

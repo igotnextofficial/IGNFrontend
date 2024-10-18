@@ -1,6 +1,4 @@
-import { useContext, useLayoutEffect, useState } from "react";
-import { ArticleDataType, ListDataType } from '../../types/DataTypes'
-import { ArticleContext } from '../../contexts/ArticleContext';
+import {  ListDataType } from '../../types/DataTypes'
 import InformationComponent from '../../helpers/InformationComponent';
 import MainHolderComponent from '../../helpers/MainHolderComponent';
 import PaginatedPage from '../../components/generic/PaginatePageComponent';

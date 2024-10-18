@@ -29,7 +29,7 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
   
 
     const output = paginatedData.map((list, index) => {
-        const { id,title, image_url, content, author,category } = list;
+        const { id,title, image_url, content,category } = list;
         return (
             <React.Fragment key={index}>
             <Link  sx={{ textDecoration: "none" }} color="inherit" href={`${category?.replaceAll(" ","-")}/${id}`}>

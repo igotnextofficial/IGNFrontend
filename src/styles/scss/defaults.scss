@@ -8,7 +8,10 @@ $primary-red-color:#fd2f30;
 $primary-grey-color:#8f8f8f;
 $darker-yellow-color: darken($primary-yellow-color, 15%); 
 $darker-yellow-color-opaque: rgba(red($darker-yellow-color), green($darker-yellow-color), blue($darker-yellow-color), 0.8);
-
+#ign-navigation {
+  background-color: $primary-white-color !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* light grey shadow */
+}
 body {
     margin: 0;
     background-color: $primary-white-color;
@@ -65,11 +68,7 @@ body {
 
   // igotnextmagazine navigation
 
-  #ign-navigation {
-    background-color: $primary-white-color;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* light grey shadow */
-  }
-  
+
 .main-menu-dropdown-holder{
   background-color: $primary-white-color;
   width: 100%;

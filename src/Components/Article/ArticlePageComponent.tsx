@@ -4,16 +4,12 @@ import { ArticleContext } from "../../contexts/ArticleContext";
 
 import { Box,Grid , Typography } from "@mui/material";
 import ArticleProvider from "../../providers/ArticleProvider";
-import ContentContainer from "../../utils/ContentContainer";
+
 import { FetchMode } from "../../types/ArticleFetchMode";
 import ArticleSideListComponent from "./ArticleSideListComponent";
 import { useTheme } from '@mui/material/styles';
-import Article from "../../models/users/Article";
-import { ArticleDataType, UserDataType } from "../../types/DataTypes";
-import ArticleGridComponent from "./ArticleGridComponent";
-import { socket } from "../../socket";
-import { BorderBottom, BorderTop, Height } from "@mui/icons-material";
-import { pad } from "crypto-js";
+
+import { ArticleDataType} from "../../types/DataTypes";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 // const DisplayArticle = ({ article }: { article: ArticleDataType }) => {
 //     const theme = useTheme();
@@ -73,7 +69,6 @@ const ArticlePageComponent = () => {
     const ReadArticle = () => {
         const { article} = useContext(ArticleContext);
         const [currentArticle, setCurrentArticle] = useState<ArticleDataType | null>(null);
-        const [title, setTitle] = useState("");
         const [article_date, setDate] = useState("");
     
       
@@ -115,7 +110,7 @@ const ArticlePageComponent = () => {
                         </Typography>
                     </Grid>
                     <Grid item md={8}>
-                        <img src={currentArticle.image_url} alt={title} style={styles.image} />
+                        <img src={currentArticle.image_url} alt={currentArticle.title} style={styles.image} />
                     </Grid>
                 </Grid>
                 <Box className="articleContent" sx={{ ...styles.content, padding: theme.spacing(3) }} dangerouslySetInnerHTML={{ __html: currentArticle.content }} />

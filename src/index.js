@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { createRoot } from 'react-dom/client';
-import './index.css?version=1.0.1';
-import './styles/defaults.css?version=1.0.1';
+import './index.css';
+import './styles/scss/defaults.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import RootComponent from './components/generic/RootComponent';
