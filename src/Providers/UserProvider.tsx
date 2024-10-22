@@ -8,6 +8,7 @@ import axios from "axios";
 // import { useHttpRequest } from "../Contexts/HttpRequestContext";
 
 import { Endpoints } from "../config/app";
+import { cp } from "fs";
 
 // interface ApiErrorResponse extends Error {
 //     response?: {
@@ -164,9 +165,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
 
         let response;
-        
+        console.log(`attempting login or logout ${login} with data ${data}`);
         if (login && data) {
             response = await UserObj.login(data); // state set in local storage
+            console.log(`response from login ${response}`);
             if (response) {
                 const user_data = {...response.data['data']}
       

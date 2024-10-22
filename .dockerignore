@@ -13,10 +13,7 @@
 
 # misc
 .DS_Store
-.env.local
-.env.development
-.env.test.local
-.env.production
+
 
 
 npm-debug.log*
@@ -24,6 +21,8 @@ yarn-debug.log*
 yarn-error.log*
 .babelrc
 .env.development
+.env.local
+.env.production
 .eslintcache
 
 public/manifest.json

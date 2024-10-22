@@ -70,8 +70,8 @@ class User{
            if(response.status !== 200){return null}
             
            let user_data = response.data['data'];
-
-           if(user_data.role.type === Roles.ARTIST){
+            let user_role_type = user_data?.role?.type ??  "";
+           if(user_role_type === Roles.ARTIST){
                 user_data.mentor = null;
                 user_data.sessions = [];
                 
@@ -97,11 +97,11 @@ class User{
 
            }
 
-           if(user_data.role.type === Roles.WRITER){
+           if(user_role_type === Roles.WRITER){
 
            }
 
-              if(user_data.role.type === Roles.MENTOR){
+              if(user_role_type === Roles.MENTOR){
     
               }
 
@@ -109,9 +109,11 @@ class User{
         //    local_storage.setItem(User.INFO,JSON.stringify(response.data['data']));
            local_storage.save('user_info',user_data);
  
-            return response;
+            return  response;
         }
         catch(error){
+            console.log("We ran into an error when trying to login the user")
+            console.log(error)
             return null
         }
 

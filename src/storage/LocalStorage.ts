@@ -11,10 +11,12 @@ export default class LocalStorage implements storageInterface {
             }
             let cipher_text = CryptoJs.AES.encrypt( value, this.secret_key).toString();
             localStorage.setItem(key, cipher_text);
+
         }
         catch(e){
-            console.error(`Error saving to local storage ${e}`);
+       
         }
+
     }
 
     load(key: string) {

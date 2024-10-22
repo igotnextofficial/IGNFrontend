@@ -6,12 +6,14 @@ $primary-yellow-color: #f2c85b;
 $primary-white-color:#FBFAF9;
 $primary-red-color:#fd2f30;
 $primary-grey-color:#8f8f8f;
-$darker-yellow-color: darken($primary-yellow-color, 15%); 
-$darker-yellow-color-opaque: rgba(red($darker-yellow-color), green($darker-yellow-color), blue($darker-yellow-color), 0.8);
+$darker-yellow-color: #eeb82c; 
+$darker-yellow-color-opaque: rgba(238, 184, 44, 0.8);
+
 #ign-navigation {
   background-color: $primary-white-color !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* light grey shadow */
 }
+
 body {
     margin: 0;
     background-color: $primary-white-color;
@@ -263,7 +265,7 @@ body {
     padding:60px 20px
   }
   #ign-navigation{
-    background-color: $primary-red-color;
+    background-color: $primary-red-color !important;
   }
 
   .grid-overlay-text span {

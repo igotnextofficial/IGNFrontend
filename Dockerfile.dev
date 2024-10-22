@@ -1,11 +1,9 @@
 # Step 1: Build the React app
 FROM node:18-alpine AS build
-WORKDIR /app
 RUN apk add --update --no-cache python3 python3-dev py3-setuptools make g++ && ln -sf python3 /usr/bin/python
-COPY package.json yarn.lock ./
-COPY .env ./
-RUN yarn install
+WORKDIR /app
 COPY . ./
+RUN yarn install
 RUN yarn build
 
 # Step 2: Serve the React app using NGINX

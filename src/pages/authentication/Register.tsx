@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { useEffect } from 'react';
 import { httpDataObject, HttpMethods } from '../../types/DataTypes';
 import { Avatar,Box,CssBaseline,Grid,Paper,Typography,Link} from '@mui/material'
 
@@ -39,6 +39,14 @@ const RegisterDisplay = ()=>{
     const {user,isLoggedin,attemptLoginOrLogout } = useUser()
     const{data,isValid} = useFormDataContext()
     const {updateError} = useErrorHandler()
+    const [refreshPage, setRefreshPage] = React.useState<boolean>(false);
+    useEffect(() => {
+        console.log(`login is now ${isLoggedin} and user is ${user}`)
+        if(isLoggedin && user){
+            console.log(`login has changed and user `)
+           setRefreshPage(true);
+        }
+    },[isLoggedin,user]);
 
     const handleSubmit = async (event:  React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -63,8 +71,8 @@ const RegisterDisplay = ()=>{
     const theme = createTheme()
     return (
         <>
-              {isLoggedin && user &&(
-                <Navigate to={`/dashboard/${user.role.type }`} replace={true} />
+              {refreshPage &&(
+                <Navigate to={`/dashboard/${user?.role.type }`} replace={true} />
             )}
 
             <ThemeProvider theme={theme}>
