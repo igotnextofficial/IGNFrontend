@@ -4,13 +4,19 @@ import CryptoJs from 'crypto-js';
 export default class LocalStorage implements storageInterface {
 
     private readonly secret_key = process.env.REACT_APP_SECURE_SERCET_KEY_STORAGE ?? ""
-    save(key: string, value: any) {
+    save(key: string, value: any,secure:boolean = true) {
         try{
-            if(typeof value === 'object'){
-                value = JSON.stringify(value);
+            if(!secure){
+              localStorage.setItem(key, value);  
             }
-            let cipher_text = CryptoJs.AES.encrypt( value, this.secret_key).toString();
-            localStorage.setItem(key, cipher_text);
+            else{
+
+                if(typeof value === 'object'){
+                    value = JSON.stringify(value);
+                }
+                let cipher_text = CryptoJs.AES.encrypt( value, this.secret_key).toString();
+                localStorage.setItem(key, cipher_text);
+            }
 
         }
         catch(e){
@@ -19,8 +25,11 @@ export default class LocalStorage implements storageInterface {
 
     }
 
-    load(key: string) {
+    load(key: string,secure:boolean = true): any {
         let data = localStorage.getItem(key) ?? "";
+        if(!secure){
+            return data;
+        }
         const bytes = CryptoJs.AES.decrypt(data, this.secret_key);
         return bytes.toString(CryptoJs.enc.Utf8);
     }

@@ -50,7 +50,8 @@
         "enable JS Error" appears
     - [] endpoints are being hit unneccesarily , need some sort of cache system or pull from local storage if possible
     - [] Footer does not adhere to the bottom of all pages
-    - [] Article List pagges need to be designed.
+    - [] Article List pages need to be designed.
+    
 ## Completed
 #### FBFAF9 BG Color
 - [x] Add Fake Data, Articles,admin 

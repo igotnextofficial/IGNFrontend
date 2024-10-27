@@ -39,14 +39,19 @@ const ListMentors = () => {
 
     useEffect(() => {
         if(response ){
-            let response_data = response.data as MentorDataType[]
-            let data =  response_data.map(mentor => {
-           
+            try{
+                let response_data = response.data as MentorDataType[];
+                let data =  response_data.map(mentor => { 
                     mentor.bio = `${mentor.bio?.substring(0,120)}...` 
              
                 return mentor
             })
             setMentors(data as MentorDataType[])
+            }
+            catch(e){
+                console.error(`Error loading mentors ${e}`)
+            }
+      
         }
 
 

@@ -43,7 +43,7 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
               
                
                     console.log(JSON.stringify(event.currentTarget.files))
-                    updateFileData('image',event.target.files[0])}
+                    updateFileData('media',event.target.files[0])}
                 }
            
             }

@@ -9,13 +9,13 @@ import IgnFormGenerate from "../components/IgnFormGenerate";
 import { useFormDataContext } from "../contexts/FormContext";
 import FormDataProvider from "../providers/FormDataProvider";
 
-import { sendRequest } from "../utils/helpers";
-
+import { getFormData, sendRequest } from "../utils/helpers";
+import { APP_ENDPOINTS } from "../config/app";  
 
 
 
 const Profile = () => {
-    const { user, updateUser} = useUser();
+    const { user, updateUser,accessToken} = useUser();
     const { data } = useFormDataContext()
     const [formStructure,setFormStructure] = useState<structureDataType[]>([])
     const [successfulUpdate,setSuccessfulUpdate] = useState(false)
@@ -35,10 +35,30 @@ const Profile = () => {
 
  
     const handleSubmit = async () => {
+        const user_endpoint = `${APP_ENDPOINTS.USER.BASE}/${user?.id}`;
+        const media_endpoint = `${APP_ENDPOINTS.MEDIA.IMAGE}/${user?.id}`;
         const endpoint = `${process.env.REACT_APP_USER_API_URI}/${user?.id}`
+        let image_url = "";
+        let data_to_send:Record<string,any> = {};
         // const labels = formStructure.map(({ label }) => label);
+        console.log(`Submitting form data for ${data} and stringified data ${JSON.stringify(data)}`)
 
-        const response = await sendRequest(HttpMethods.PUT,endpoint,{data})
+        if('media' in data){
+            const upload_image_data = {'media': data['media']};
+            const upload_image = await sendRequest(HttpMethods.POST,media_endpoint,{"data": upload_image_data},{'Authorization':`Bearer ${accessToken}`})
+            console.log(`Upload image response ${upload_image} with stringified ${JSON.stringify(upload_image)}`);
+            image_url = upload_image?.data?.url ?? ""
+            data_to_send['profile_photo_path'] = image_url
+        }
+
+
+        for(const key in data){
+            if(key !== 'media'){
+                data_to_send[key] = data[key]
+            }
+        }
+       console.log(`Data to send ${data_to_send} as stringified ${JSON.stringify(data_to_send)}`)
+        const response = await sendRequest(HttpMethods.PUT,endpoint,{"data":data_to_send},{'Authorization':`Bearer ${accessToken}`});
  
         if(response !== null){
             updateUser(response.data as UserDataType)

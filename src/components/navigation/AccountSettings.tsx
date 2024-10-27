@@ -58,7 +58,7 @@ const AccountSettings = () => {
           <Grid container spacing={2} alignItems={"center"}>
             <Grid item>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user?.fullname} src={user?.image} />
+                <Avatar alt={user?.fullname} src={user?.profile_photo_path} />
               </IconButton>
             </Grid>
             <Grid item> <Typography>Welcome, {user?.fullname} </Typography></Grid>

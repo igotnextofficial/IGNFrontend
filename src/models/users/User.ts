@@ -154,17 +154,35 @@ class User{
     }
 
     emailValidation(){
-        return {method:validateEmail,'valid':false,'message':'Fullname is required should be between 3 - 30 characters'}
+        return {method:validateEmail,'valid':false,'message':'E-Mail is required should be between 3 - 30 characters'}
     }
     
-    usernameValidation(){
-        return {method:validateUsername,'valid':false,'message':'is required must be between'}
+    usernameValidation() {
+        return {
+            method: validateUsername,
+            valid: false,
+            message: `Username is required and must meet the following criteria: \n
+    
+        - Must be between [3] and [25] characters long. \n
+        - Must not contain any numeric characters. \n
+        - Must not contain spaces.`
+        };
     }
     
-    passwordValidation(){
-            return {method:validatePassword,'valid':false,'message':'is required must be between'}
+    
+    passwordValidation() {
+        return {
+            method: validatePassword,
+            valid: false,
+            message: `Your password is required and must meet the following criteria: \n
+        
+        - Must be between [8] and [16] characters long. \n
+        - Must contain at least one number. \n
+        - Must contain at least one special character (e.g., !, @, #, etc.). \n
+        - Must contain at least one uppercase letter.`
+        };
     }
-
+    
     validatingRoles(value:string){
         let choiceList = [Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT]
         return validateChoices(choiceList,value)

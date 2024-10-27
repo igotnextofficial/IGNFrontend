@@ -33,7 +33,7 @@ const MentorDashboard = ()=>{
         if(user && 'specialties' in user){
             setData({
                 title:`${user?.fullname}'s Mentor Dashboard`,
-                image_url:user?.image ?? "",
+                image_url:user?.profile_photo_path ?? "",
                 subtitle: "", 
                 meta:`specialties: ${user.specialties.join(",")}` 
              })

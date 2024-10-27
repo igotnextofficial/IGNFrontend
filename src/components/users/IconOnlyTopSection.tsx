@@ -45,7 +45,7 @@ const IconOnlyTopSection = () => {
                     <ModeEditIcon sx={{ alignSelf: "flex-end", opacity: 0.3, color: "black", margin: "10px" }} />
                     <div style={styles.imageContainer}> 
                         <img
-                            src={user?.image || "/images/default_male_image.jpg"}
+                            src={user?.profile_photo_path || "/images/default_male_image.jpg"}
                             alt={user?.fullname}
                             style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit:"cover" }} // Ensure the image is styled properly
                         />

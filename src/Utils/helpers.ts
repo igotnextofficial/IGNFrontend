@@ -16,9 +16,9 @@ interface optionsDataType{
   withCredentials?:boolean,
   data?:FormData | httpDataObject | null
 }
-async function submit(submissionData: axiosDataObject, updatedData: FormData | httpDataObject | null) {
+async function submit(submissionData: axiosDataObject, updatedData: FormData | httpDataObject | null, headers:Record<string,any> = {}) {
     try {
-      const headers = updatedData instanceof FormData ? {} : { 'Content-Type': 'application/json' };
+      headers = updatedData instanceof FormData ? {...headers} : { ...headers, 'Content-Type': 'application/json' };
       const options:optionsDataType = {
         headers,
         method: submissionData.method,
@@ -43,7 +43,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
   }
 
   
-  const getFormData = (data: Record<string, any>) => {
+  export const getFormData = (data: Record<string, any>) => {
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
@@ -51,11 +51,11 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
     return formData;
   };
 
-  export async function sendRequest (method:HttpMethods, url:string, data?:httpDataObject | null, headers={}){
+  export async function sendRequest (method:HttpMethods, url:string, data?:httpDataObject | null, headers:Record<string,any> = {}):Promise<httpDataObject | null>{  
     let preparedData = null
 
     if(data ){
-      if('image' in data.data){
+      if('media' in data.data){
         preparedData = getFormData(data.data)
         console.log(`found an image ${data.data}`)
       }
@@ -65,7 +65,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
     }
 
 
-    const response = await submit({ method, url },preparedData);
+    const response = await submit({ method, url },preparedData,headers);
     if(response){
       return response as httpDataObject;
     }

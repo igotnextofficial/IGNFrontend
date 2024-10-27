@@ -20,7 +20,7 @@ export interface UserDataType {
     fullname:string,
     username?:string,
     role: RoleDataType,
-    image?:string,
+    profile_photo_path?:string,
     bio?:string,
 }
 export interface MentorDataType extends UserDataType {
@@ -98,7 +98,7 @@ export interface TaskDataType {
 
 
 export interface httpDataObject {
-    data:object
+    data:Record<string,any>,
 }
 
 export interface HttpHeaders {
@@ -177,7 +177,7 @@ export enum displayType {
     DropDown = "dropdown",
     MultiChoiceList = "multi-choice-list",
     ChoiceList = "choice-list",
-    Image = "image"
+    Image = "media"
 }
 
 export interface structureDataType{

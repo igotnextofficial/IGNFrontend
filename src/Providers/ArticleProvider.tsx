@@ -3,7 +3,7 @@ import { ArticleDataType } from "../types/DataTypes";
 import Article from "../models/users/Article";
 import { ArticleContext } from "../contexts/ArticleContext";
 import { FetchMode,Categories } from "../types/ArticleFetchMode";
-
+import LocalStorage from "../storage/LocalStorage";
 
 interface ArticleProviderProps {
     children: ReactNode;
@@ -21,6 +21,7 @@ interface ArticleProviderProps {
       const article = new Article();
       
       const fetchArticles = async () => {
+        const local_storage = new LocalStorage();
         try {
           let articles;
           switch (mode) {
@@ -41,8 +42,17 @@ interface ArticleProviderProps {
               articles = await article.retrieveDraftsByArticle(id);
               break;
             case FetchMode.FEATURED:
-              articles = await article.retrieveFeatured();
-              setArticleList(articles)
+              if(!local_storage.hasItem("featured_articles")){
+                articles = await article.retrieveFeatured();
+                setArticleList(articles);
+                local_storage.save("featured_articles",articles);
+
+              }
+              else{
+                console.log("loading from local storage")
+                articles = JSON.parse(local_storage.load("featured_articles"));
+                setArticleList(articles);
+              }
               break;
               
             // Handle other cases as needed
@@ -59,7 +69,7 @@ interface ArticleProviderProps {
           }
         }
       };
-  
+
       fetchArticles();
     }, [mode, id,category]); 
 
