@@ -72,7 +72,7 @@ class User{
            let user_data = response.data['data'];
             let user_role_type = user_data?.role?.type ??  "";
            if(user_role_type === Roles.ARTIST){
-                user_data.mentor = null;
+                
                 user_data.sessions = [];
                 
                 // let resources = [
@@ -112,8 +112,8 @@ class User{
             return  response;
         }
         catch(error){
-            console.log("We ran into an error when trying to login the user")
-            console.log(error)
+            // console.log("We ran into an error when trying to login the user")
+            // console.log(error)
             return null
         }
 

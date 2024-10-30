@@ -31,6 +31,7 @@ import MessageReaderReply from './pages/notes/MessageReaderReply';
 import ScheduleSession from './pages/artists/ScheduleSession';
 
 
+
 // import LocalStorage from './Storage/LocalStorage'; // not curretly used.
 
 
@@ -92,7 +93,9 @@ const MainApplication = () => {
  
 
   return (
+      // console.log(`current environment version2: ${process.env.REACT_APP_ENVIRONMENT} and current refresh token endpoint is ${process.env.REACT_APP_AUTH_REFRESH_API_URL} and loaded in the config is ${Endpoints.REFRESH_TOKEN}`),
 
+      // console.log(`all env ${JSON.stringify(process.env), null, 2}`),
 
     <>
    
@@ -179,3 +182,5 @@ function App() {
 }
 
 export default App;
+
+

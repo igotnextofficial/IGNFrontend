@@ -41,9 +41,9 @@ const RegisterDisplay = ()=>{
     const {updateError} = useErrorHandler()
     const [refreshPage, setRefreshPage] = React.useState<boolean>(false);
     useEffect(() => {
-        console.log(`login is now ${isLoggedin} and user is ${user}`)
+        // console.log(`login is now ${isLoggedin} and user is ${user}`)
         if(isLoggedin && user){
-            console.log(`login has changed and user `)
+            // console.log(`login has changed and user `)
            setRefreshPage(true);
         }
     },[isLoggedin,user]);

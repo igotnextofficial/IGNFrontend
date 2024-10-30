@@ -41,12 +41,12 @@ const Profile = () => {
         let image_url = "";
         let data_to_send:Record<string,any> = {};
         // const labels = formStructure.map(({ label }) => label);
-        console.log(`Submitting form data for ${data} and stringified data ${JSON.stringify(data)}`)
+        // console.log(`Submitting form data for ${data} and stringified data ${JSON.stringify(data)}`)
 
         if('media' in data){
             const upload_image_data = {'media': data['media']};
             const upload_image = await sendRequest(HttpMethods.POST,media_endpoint,{"data": upload_image_data},{'Authorization':`Bearer ${accessToken}`})
-            console.log(`Upload image response ${upload_image} with stringified ${JSON.stringify(upload_image)}`);
+            // console.log(`Upload image response ${upload_image} with stringified ${JSON.stringify(upload_image)}`);
             image_url = upload_image?.data?.url ?? ""
             data_to_send['profile_photo_path'] = image_url
         }
@@ -57,7 +57,7 @@ const Profile = () => {
                 data_to_send[key] = data[key]
             }
         }
-       console.log(`Data to send ${data_to_send} as stringified ${JSON.stringify(data_to_send)}`)
+    //    console.log(`Data to send ${data_to_send} as stringified ${JSON.stringify(data_to_send)}`)
         const response = await sendRequest(HttpMethods.PUT,endpoint,{"data":data_to_send},{'Authorization':`Bearer ${accessToken}`});
  
         if(response !== null){

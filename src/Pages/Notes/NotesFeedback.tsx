@@ -40,24 +40,30 @@ const NotesFeedback = () => {
                     const response = await loadNotes(user.id,'recipient',accessToken);
                     const data = response as Record<string,any>[]
                     if(data === null || data.length === 0 ){return []}
-                    const onlyUnreadNotes =  data.filter(onlyRead => {
-                       return  onlyRead.status === "unread"
-                    })
-                    const sorted = onlyUnreadNotes.sort((a,b) => {
-                        let a_date = new Date(a.created_at);
-                        let b_date = new Date(b.created_at)
-                       if( (a_date < b_date) ){
-                        return 1 
-                       }
-    
-                       if( a_date  > b_date){
-                        return -1 
-                       }
-    
-                       return 0
-    
-                    })
-                    setNotes(sorted )
+                    if(data){
+
+                   
+                        const onlyUnreadNotes =  data.filter(onlyRead => {
+                        return  onlyRead.status === "unread"
+                        })
+
+                        const sorted = onlyUnreadNotes.sort((a,b) => {
+                            let a_date = new Date(a.created_at);
+                            let b_date = new Date(b.created_at)
+                        if( (a_date < b_date) ){
+                            return 1 
+                        }
+        
+                        if( a_date  > b_date){
+                            return -1 
+                        }
+        
+                        return 0
+        
+                        })
+
+                        setNotes(sorted )
+                    }
                 }
                 catch(error){
                     console.error("Error loading notes:", error);

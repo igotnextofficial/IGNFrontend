@@ -80,18 +80,18 @@ import { Endpoints } from "../config/app";
         let signal = controller.signal
         try {
             let url = Endpoints.REFRESH_TOKEN;
-            console.log(`hitting endpoint url ${url} with user id ${user_id}`);
+            // console.log(`hitting endpoint url ${url} with user id ${user_id}`);
             let response = await axios.post(url, { "data": { user_id,role } , signal});
     
             if (response.status === 200) {
                 let new_token = response.data['data']['access_token'];
-                console.log(`refreshed token ${new_token}`);
+                // console.log(`refreshed token ${new_token}`);
                 // setAccessToken(new_token);
           
                 return new_token;
             }
         } catch (e) {
-            console.error("Failed to refresh token:", e);
+            // console.error("Failed to refresh token:", e);
         }
         return ""
     };
@@ -121,8 +121,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 if(intialLoad.current !== false){
                     const user_information = {
                         id: found_user.id,
-                        role: found_user.role
+                        role: found_user.role?.type
                     }
+
+                  
                     attemptRefreshToken(user_information).then((response) => {
                     
                         if(!response){
@@ -136,10 +138,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                         }
                         else{
                             setAccessToken(response)
-                            console.log(`this is when user should be logged in page load intial ${intialLoad.current}`);
+                            // console.log(`this is when user should be logged in page load intial ${intialLoad.current}`);
                         }
                     }).catch((e) => {
-                        console.error(`error -  failed refreshing token ${e}`)
+                        // console.error(`error -  failed refreshing token ${e}`)
                     }).finally(() => {
                         intialLoad.current = false
                     })
@@ -165,15 +167,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
 
         let response;
-        console.log(`attempting login or logout ${login} with data ${data}`);
+     
         if (login && data) {
             response = await UserObj.login(data); // state set in local storage
-            console.log(`response from login ${response}`);
+
             if (response) {
                 const user_data = {...response.data['data']}
       
                 const access_token =  response.data['access_token']
-                console.log(`the access token is ${access_token}`)
+           
                 setAccessToken(access_token);
                 setUser(user_data as UserDataType); // Assuming response.data is the user data
                 setIsLoggedin(true);

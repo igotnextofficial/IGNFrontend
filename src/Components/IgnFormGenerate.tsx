@@ -42,7 +42,7 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
                 if(event.target.files){
               
                
-                    console.log(JSON.stringify(event.currentTarget.files))
+                    // console.log(JSON.stringify(event.currentTarget.files))
                     updateFileData('media',event.target.files[0])}
                 }
            

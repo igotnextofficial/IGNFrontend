@@ -75,11 +75,11 @@ const validateCommonString = (value:string,min:number,max:number) => {
 
         let start = email.indexOf("@")
         let emailDomain = email.substring(start + 1)
-        console.log(`email check ${email} email domain is ${emailDomain}`)
+        // console.log(`email check ${email} email domain is ${emailDomain}`)
         valid = true
     }
     
-    console.log(`is the email valid ${valid}`)
+    // console.log(`is the email valid ${valid}`)
     return valid
 }
 

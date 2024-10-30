@@ -3,6 +3,7 @@ import {List,ListItem,ListItemAvatar,ListItemText,Avatar,Typography } from "@mui
 import { listDisplayDataType } from "../types/DataTypes"
 
 const ListDisplayComponent = ({data,size = "small"} : {data:listDisplayDataType,size?:string}) => {
+    // console.log(`data is ${JSON.stringify(data)} amd image is ${data?.image_url}`)
     return data ?  <List sx={{width: '100%', maxWidth: 640, bgcolor: 'background.paper'}}>
             <ListItem >
                 <ListItemAvatar>

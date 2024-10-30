@@ -62,7 +62,9 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     };
 
     useEffect(() => {
-        setData(user.mentees.filter((mentee) => mentee.status === "approved"))
+        if(user && user.mentees){
+            setData(user.mentees.filter((mentee) => mentee.status === "approved"))
+        }
     }, [user])
     return (
         <>

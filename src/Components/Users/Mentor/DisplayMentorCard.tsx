@@ -9,6 +9,7 @@ import { HttpMethods, MentorDataType } from '../../../types/DataTypes';
 
 import { useUser } from '../../../contexts/UserContext';
 import { sendRequest } from '../../../utils/helpers';
+import { Endpoints } from '../../../config/app';
  
 
 const labels = {
@@ -18,10 +19,13 @@ const labels = {
 
 }
 const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
-  const {user}= useUser()
+  const {user,accessToken}= useUser()
   const [buttonLabel, setButtonLabel] = useState(labels.default)
 
   useEffect(() => {
+      if(mentor && mentor.mentees){
+
+    
       const mentee = mentor.mentees.find(mentee => mentee.id === user?.id);
       if(mentee){
         if(mentee.status === "approved"){
@@ -33,15 +37,16 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
         } 
 
       }
+    }
   },[mentor,user])
 
   const handleBooking = async (event: React.MouseEvent<HTMLButtonElement>) => {
     try{
       setButtonLabel(labels.pending)
       let mentor_id = event.currentTarget.dataset.src;
-      let endpoint = `${process.env.REACT_APP_MENTOR_API}/${mentor_id}/request/${user?.id}`
+      let endpoint = `${Endpoints.MENTOR}/${mentor_id}/request/${user?.id}` // request to book mentor
         event.currentTarget.disabled = true
-        let response = await sendRequest(HttpMethods.POST,endpoint);
+        let response = await sendRequest(HttpMethods.POST,endpoint,null,{Authorization:`Bearer ${accessToken}`});
         if(response === null){
           event.currentTarget.disabled = false
           setButtonLabel(labels.default)
@@ -62,8 +67,8 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-          image={mentor.image}
+          height="350"
+          image={mentor.profile_photo_path}
           alt={mentor.fullname}
         />
         <CardContent>

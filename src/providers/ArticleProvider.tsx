@@ -49,7 +49,7 @@ interface ArticleProviderProps {
 
               }
               else{
-                console.log("loading from local storage")
+                // console.log("loading from local storage")
                 articles = JSON.parse(local_storage.load("featured_articles"));
                 setArticleList(articles);
               }

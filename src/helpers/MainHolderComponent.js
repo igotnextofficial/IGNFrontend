@@ -18,8 +18,11 @@ const styles = {
         backgroundColor:"#ffffff", 
   
     },
-    spacing:{
-        padding:"2rem 10rem"
-    }
+    spacing: {
+        padding: "2rem 10rem",
+        "@media (max-width:600px)": {
+          padding: "0" // Adjust padding for mobile here
+        }
+      }
 }
 export default MainHolderComponent;

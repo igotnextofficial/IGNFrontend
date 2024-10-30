@@ -1,4 +1,3 @@
-
 export const Endpoints = {
     ARTICLES: process.env.REACT_APP_ARTICLES_API || "",
     USER: process.env.REACT_APP_USER_API_URI || "",
@@ -10,7 +9,7 @@ export const Endpoints = {
     LOGIN: process.env.REACT_APP_LOGIN_API || "",
     LOGOUT: process.env.REACT_APP_LOGOUT_API || "",
     MEDIA: process.env.REACT_APP_MEDIA_API || "",
-    REFRESH_TOKEN: process.env.REACT_AUTH_REFRESH_API_URL || ""
+    REFRESH_TOKEN: process.env.REACT_APP_AUTH_REFRESH_API_URL || ""
 }
 
 
@@ -18,11 +17,12 @@ export const APP_ENDPOINTS = {
     USER: {
         BASE: Endpoints.USER,
         SINGLE: `${Endpoints.USER}/`,
-        MENTOR: `${Endpoints.USER}/mentor`,
+        MENTORS: `${Endpoints.USER}/role/9d4eab70-b242-46e8-aab0-cd93fd5e5ac9`,
         MENTEE: `${Endpoints.USER}/mentee`,
         ARTIST: `${Endpoints.USER}/artist`,
         ADMIN: `${Endpoints.USER}/admin`,
         ALL: `${Endpoints.USER}/all`,
+        BATCH: `${Endpoints.USER}/batch`,
         LOGIN: `${Endpoints.USER}/login`,
         LOGOUT: `${Endpoints.USER}/logout`,
     },

@@ -23,7 +23,7 @@ const AvailableTimes = ({time, handleTime, isAvailable} : {time:string, handleTi
     )
 }
 const ScheduleTime = () => {
-    const {user} = useUser()
+    const {user,accessToken} = useUser()
     const [schedule,setSchedule] = useState<string | null>(null)
     const [chosenTime,setChosenTime] = useState<string>("")
     const [availableTime,setAvailableTime] = useState<string[]>([])
@@ -104,11 +104,11 @@ const ScheduleTime = () => {
     
             if(schedule && chosenTime){
                 let currentuser = user as MenteeDataType
-               
-                console.log(JSON.stringify({data}))
+                const headers = { Authorization: `Bearer ${accessToken}` }
+                // console.log(JSON.stringify({data}))
                 let url = `${process.env.REACT_APP_SESSION_API}/${currentuser.mentor?.id}/schedule`;
-                console.log(`sending to ${url}`)
-                let response = await sendRequest(HttpMethods.POST,url,{data})
+                // console.log(`sending to ${url}`)
+                let response = await sendRequest(HttpMethods.POST,url,{data},headers)
 
                 if(response !== null){
                     setScheduledSuccessfully(true)

@@ -79,7 +79,7 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
 // }
   return (
     <AppBar position="sticky" id='ign-navigation'  >
-      <Container maxWidth="xl">
+      <Container  maxWidth="xl">
         <Toolbar disableGutters>
 
           
@@ -113,10 +113,28 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                color:'black',
                 display: { xs: 'block', md: 'none' },
+                width: '100vw',
+                left: 0,
+                right: 0,
+                top: 0,
+                
+                '& .MuiPaper-root': {
+                  width: '100vw', // Ensure the Menu content covers full width
+                  maxWidth: '100vw',
+                  paddingRight: '0px', // Removes extra right padding
+                  
+             
+                },
+
+                '& .MuiList-root':{
+                  padding: 0,
+                }
               }}
             >
+              <Grid container justifyContent={"flex-start"} alignItems={"center"} sx={{backgroundColor: "#f0e6dc", padding: "15px 20px 8px"}}>
+                  <Grid item> {Authenticated ? <AccountSettings /> : <SigninOrRegister/>}</Grid>
+              </Grid>
               {pages.map(({name,slug}) => (
                 <MenuItem className='here-and-now' key={slug} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link
@@ -126,6 +144,8 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
                   >{name}</Link></Typography>
                 </MenuItem>
               ))}
+
+
             </Menu>
           </Box>
 

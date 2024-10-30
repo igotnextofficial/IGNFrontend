@@ -6,7 +6,16 @@ import { MentorDataType, httpDataObject } from '../../../types/DataTypes';
 import { useUser } from '../../../contexts/UserContext';
 import axios from 'axios';
 import NoDataAvailable from '../../../utils/NoDataAvailable';
-
+import { APP_ENDPOINTS } from '../../../config/app';
+const loadData = async () => {
+    try{
+        return await axios.get(`${APP_ENDPOINTS.USER.MENTORS}`); // should load with all the home page data then saved to a cache
+  
+    }
+    catch(e){
+        // console.error(`Couldn't load mentors ${e}`)
+    }        
+}
 const ListMentors = () => {
     const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
     const [response,setResponse] = useState<httpDataObject | null>(null);
@@ -14,42 +23,34 @@ const ListMentors = () => {
     const {accessToken} = useUser();
 
     useEffect(() => {
-        const loadData = async () => {
-            try{
-                if(accessToken){
-                    let response = await axios.get(`${process.env.REACT_APP_MENTOR_API}`, {
-                        headers: {
-                            "Authorization": `Bearer ${accessToken}`
-                        }
-                    });
+    
 
-                    setResponse(response)
-                    
-                }
-            }
-            catch(e){
-                console.error(`Couldn't load mentors ${e}`)
-            }        
-        }
-
-        loadData()
+        let data = loadData().then(response => {
+            // console.log('loading mentors')
+            // console.log(`Response ${JSON.stringify(response)}`)
+            if  (response === undefined){return []}
+      
+            setResponse(response.data)
+        })
    
-    },[accessToken])
+    },[])
       
 
     useEffect(() => {
         if(response ){
             try{
                 let response_data = response.data as MentorDataType[];
+                // console.log(`the response data is ${JSON.stringify(response_data)}`)
                 let data =  response_data.map(mentor => { 
                     mentor.bio = `${mentor.bio?.substring(0,120)}...` 
-             
+                    
+                
                 return mentor
             })
             setMentors(data as MentorDataType[])
             }
             catch(e){
-                console.error(`Error loading mentors ${e}`)
+                // console.error(`Error loading mentors ${e}`)
             }
       
         }

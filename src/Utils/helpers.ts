@@ -35,7 +35,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
 
     } catch (error) {
       if(error instanceof Error){
-        console.error("Axios error:", error.message);
+        // console.error("Axios error:", error.message);
       }
    
       return null;
@@ -57,7 +57,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
     if(data ){
       if('media' in data.data){
         preparedData = getFormData(data.data)
-        console.log(`found an image ${data.data}`)
+        // console.log(`found an image ${data.data}`)
       }
       else{
         preparedData = data;

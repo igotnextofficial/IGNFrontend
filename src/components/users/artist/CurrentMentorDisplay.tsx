@@ -16,7 +16,7 @@ const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
     return (
         <>
           <Box sx={{backgroundColor:"#000000"}}>
-            <Box sx={{backgroundImage:`url(${user?.mentor?.image})`, width:"100%", height:"100dvh", maxHeight:"300px" ,backgroundSize:"cover",opacity:0.7}}></Box>
+            <Box sx={{backgroundImage:`url(${user?.mentor?.profile_photo_path})`, width:"100%", height:"100dvh", maxHeight:"300px" ,backgroundSize:"cover",opacity:0.7}}></Box>
           </Box>
          <Button disabled={cannotSchedule} sx={{margin:"10px 0 "}} variant='contained'> {cannotSchedule ? "Schedule Next Session" : <Link to="/schedule">Schedule Next Session</Link> }</Button>
         </>

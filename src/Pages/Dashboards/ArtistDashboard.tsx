@@ -1,4 +1,4 @@
-import { useContext  } from 'react'
+import { useContext, useEffect  } from 'react'
 import {Grid, Typography} from '@mui/material'
 import ArticleProvider from '../../providers/ArticleProvider'
 import ListArticlesComponent from '../../components/article/ListAritclesComponent '
@@ -46,7 +46,9 @@ const ArtistDashboard = () => {
     const { user  } = useUser() 
  
    
-
+    useEffect(() => {
+        // { console.log(JSON.stringify(user))}
+    }, [])
  
     if (!user) {
         return <Typography>User not found or not logged in</Typography>;
@@ -74,6 +76,7 @@ const ArtistDashboard = () => {
                             {
                             user?.mentor === null && <Grid item xs={12}>
                                 <DashboardSectionBorder title="Choose A mentor" >
+                               
                                     <ListMentors/>
                                 </DashboardSectionBorder>
                             </Grid>
@@ -106,7 +109,7 @@ const ArtistDashboard = () => {
                         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                             <Grid item xs={12}>
                                 <DashboardSectionBorder title="Mentor's Feedback:" >
-                                    <MentorsFeedback/>
+                                    {user.mentor ? <MentorsFeedback/> : <NoDataAvailable/>}
                                 </DashboardSectionBorder>
                             </Grid>
                             {user?.mentor !== null && <Grid item xs={12}>

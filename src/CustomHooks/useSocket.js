@@ -13,7 +13,7 @@ export const useSocket = ({isAuthenticated}) => {
             }
         }
         catch(err){
-            console.log('Error connecting to socket') // don't console log this 
+            // console.log('Error connecting to socket') // don't console log this 
         }
 
         return () => {

@@ -31,9 +31,9 @@ const ArticleCategoryPrepareList = ({ category }: { category: string }) => {
             // Convert all articles to ListDataType format
             const convertedArticles = allArticles.map(convertToListData);
             setArticles(convertedArticles);
-            console.log("Converted Articles:", convertedArticles);
+            // console.log("Converted Articles:", convertedArticles);
         } else {
-            console.log("No articles available");
+            // console.log("No articles available");
         }
     }, [allArticles]);
 

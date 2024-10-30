@@ -14,7 +14,7 @@ const AccountSettings = () => {
   const { user } = useUser()
 
   useEffect(() => {
-    console.log(`the user is ${JSON.stringify(user)}`)
+  
     const user_role = user?.role.type || "artist"
     setRole(user_role)
   }, [user])

@@ -28,7 +28,7 @@ const DisplayDashboard: React.FC<{role: DashboardRole}> = ({role}) => {
 const Dashboard = () => {
     const{ user }= useContext(UserContext)
     const {role} = useParams()
-        console.log(`the user role is ${user?.role}`)
+        // console.log(`the user role is ${user?.role}`)
     return(
        <ContentContainer>
             

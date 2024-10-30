@@ -1,84 +1,78 @@
 @import 'react-quill/dist/quill.snow.css';
-
-$primary-orange-color:#ff6347;
-$primary-black-color: #1d1917; 
-$primary-yellow-color: #f2c85b;
-$primary-white-color:#FBFAF9;
-$primary-red-color:#fd2f30;
-$primary-grey-color:#8f8f8f;
-$darker-yellow-color: #eeb82c; 
-$darker-yellow-color-opaque: rgba(238, 184, 44, 0.8);
-
 #ign-navigation {
-  background-color: $primary-white-color !important;
+  background-color: #FBFAF9 !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* light grey shadow */
 }
 
 body {
-    margin: 0;
-    padding: 0 !important;
-    background-color: $primary-white-color;
-    color: $primary-black-color;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
+  margin: 0;
+  padding: 0 !important;
+  background-color: #FBFAF9;
+  color: #1d1917;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-.App{
+.App {
   max-width: 100%;
   margin: 0 auto;
- background-color: $primary-white-color;;
+  background-color: #FBFAF9;
   padding: 0;
 }
 
-.pageContainer{
+.pageContainer {
   padding: 20px;
 }
 
-.listSelection:hover{
+.listSelection:hover {
   background-color: #f2c85b;
   cursor: pointer;
-  color:#f7f7f7;
+  color: #f7f7f7;
 }
 
-.button{background-color: $primary-orange-color;}
+.button {
+  background-color: #ff6347;
+}
 
 /* Articles */
-#articleDisplayContainer{
-    background-color: $primary-white-color;
-    color: $primary-black-color;
-    border-radius: 5px 5px;
-    max-width:600px;
-    box-shadow: #1d1917 3px 3px 3px 3px ;
-  }
+#articleDisplayContainer {
+  background-color: #FBFAF9;
+  color: #1d1917;
+  border-radius: 5px 5px;
+  max-width: 600px;
+  box-shadow: #1d1917 3px 3px 3px 3px;
+}
 
-  .add-shadow {
-    box-shadow: 3px 3px 6px rgba(0,0,0,0.1);
-  }
+.add-shadow {
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+}
 
-  a{
-    cursor: pointer;
-  }
+a {
+  cursor: pointer;
+}
 
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionStatic.mainNavigation.css-hip9hq-MuiPaper-root-MuiAppBar-root {
+  background-color: #ff6347;
+}
 
-  .MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionStatic.mainNavigation.css-hip9hq-MuiPaper-root-MuiAppBar-root{
-    background-color: $primary-orange-color;
-  }
+.max-point {
+  color: #ff6347;
+}
 
+.mid-point {
+  color: #f2c85b;
+}
 
-  .max-point{color:$primary-orange-color}
-  .mid-point{color:$primary-yellow-color}
-  .safe-zone{color:rgb(95, 159, 0)}
+.safe-zone {
+  color: rgb(95, 159, 0);
+}
 
-
-  // igotnextmagazine navigation
-
-
-.main-menu-dropdown-holder{
-  background-color: $primary-white-color;
+.main-menu-dropdown-holder {
+  background-color: #FBFAF9;
   width: 100%;
 }
 
 #ign-navigation .ign-links a {
-  color: $primary-grey-color;
+  color: #8f8f8f;
   position: relative;
   display: inline-block;
   text-decoration: none;
@@ -89,13 +83,13 @@ body {
 }
 
 #ign-navigation .ign-links a::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%; /* Start the effect off-screen */
   width: 100%;
   height: 100%;
-  background-color: $primary-red-color;
+  background-color: #fd2f30;
   transition: left 0.3s ease-in-out;
   z-index: -1;
 }
@@ -105,50 +99,46 @@ body {
 }
 
 #ign-navigation .ign-links a:hover {
-  color: $primary-white-color; 
+  color: #FBFAF9;
 }
 
- div.significant-button{
-  background-color:$primary-white-color;
+div.significant-button {
+  background-color: #FBFAF9;
   padding: 5px 8px;
-  border:1px solid $primary-red-color;
-  border-radius:10px;
+  border: 1px solid #fd2f30;
+  border-radius: 10px;
   margin: 0 10px;
   display: inline-block;
 }
-.significant-button a{
-  color:$primary-red-color;
-  text-decoration:none;
+
+.significant-button a {
+  color: #fd2f30;
+  text-decoration: none;
 }
 
-.significant-button.v2{
-  background-color:$primary-red-color;
+.significant-button.v2 {
+  background-color: #fd2f30;
   padding: 5px 8px;
-  border:1px solid $primary-red-color;
-  border-radius:10px;
+  border: 1px solid #fd2f30;
+  border-radius: 10px;
 }
 
-.significant-button.v2 a{
-  color:$primary-white-color;
-  text-decoration:none;
+.significant-button.v2 a {
+  color: #FBFAF9;
+  text-decoration: none;
 }
-
 
 #menu-appbar div {
-  left: 0 !important; // Tp avoid menu bar on mobile from having a negative value
+  left: 0 !important;
 }
 
-
-// igotnextmagazine end-navigation
-
-
-// igotnextmagazine Featured Articles
-#featured-stories .featured-stories-images{
+#featured-stories .featured-stories-images {
   max-width: 3840px;
 }
-#featured-stories .featured-stories-images img{
+
+#featured-stories .featured-stories-images img {
   width: 100%;
-  height:60%;
+  height: 60%;
   object-fit: cover;
 }
 
@@ -167,14 +157,12 @@ body {
   height: auto;
   display: block;
   object-fit: cover;
-  grid-area: 1 / 1; /* Places the image in the first grid cell */
+  grid-area: 1/1; /* Places the image in the first grid cell */
 }
-
-
 
 /* Text overlay with grid placement */
 .grid-overlay-text {
-  grid-area: 1 / 1; /* Places text in the same grid cell as the image */
+  grid-area: 1/1; /* Places text in the same grid cell as the image */
   display: flex;
   flex-direction: column;
   justify-content: center; /* Align to bottom */
@@ -183,27 +171,23 @@ body {
   background-color: rgba(0, 0, 0, 0.5); /* Optional: Adds semi-transparent background */
   color: white;
   padding: 20px;
-
   border-radius: 8px; /* Optional: Adds rounded corners */
 }
 
 .grid-overlay-text span {
-  background: linear-gradient(135deg, $primary-yellow-color, $darker-yellow-color-opaque);
+  background: linear-gradient(135deg, #f2c85b, rgba(238, 184, 44, 0.8));
   animation: gradientShift 5s ease-in-out infinite; /* Smooth transition with infinite loop */
   background-size: 200% 200%; /* Allows the background to move more smoothly */
   padding: 20px;
   border-radius: 5px;
   text-align: left;
   max-width: 600px;
-  
 }
 
 .grid-overlay-text h2 {
   font-size: 4rem; /* Adjust for responsiveness */
-  margin:10px 0; ;
+  margin: 10px 0;
   color: #825e00;
- 
-
 }
 
 .grid-overlay-text p {
@@ -212,8 +196,8 @@ body {
 
 /* Read More button styles */
 .read-more-btn {
-  background-color: $primary-orange-color; /* Tomato red */
-  color: $primary-white-color;
+  background-color: #ff6347; /* Tomato red */
+  color: #FBFAF9;
   border: none;
   border-radius: 20px;
   padding: 10px 20px;
@@ -224,7 +208,7 @@ body {
 }
 
 .read-more-btn:hover {
-  background-color: $primary-red-color; /* Darker red on hover */
+  background-color: #fd2f30; /* Darker red on hover */
 }
 
 /* Indicator container */
@@ -243,104 +227,76 @@ body {
   transition: width 0.5s ease;
 }
 
-// igotnextmagazine End Featured Articles
-
-.articleContent p{
+.articleContent p {
   font-size: 1.2em;
   font-weight: 300;
-  font-family: lato,sans-serif;
+  font-family: lato, sans-serif;
   line-height: 2em;
-
 }
 
-.articleContent :nth-child(1)::first-letter{
-  font-size: 3em; 
+.articleContent :nth-child(1)::first-letter {
+  font-size: 3em;
   font-weight: 500;
   font-style: italic;
-  color:$primary-red-color
-  
-
+  color: #fd2f30;
 }
-@media screen and (max-width: 899px) {
-  #ign-section-holder{
-    padding:60px 20px
-  }
-  #ign-navigation{
-    background-color: $primary-red-color !important;
-  }
 
+@media screen and (max-width: 899px) {
+  #ign-section-holder {
+    padding: 60px 20px;
+  }
+  #ign-navigation {
+    background-color: #fd2f30 !important;
+  }
   .grid-overlay-text span {
     max-width: none;
     justify-content: end;
     background: none;
   }
-
   .grid-overlay-text h2 {
     font-size: 1.5rem;
-    color: $primary-white-color;
-    
+    color: #FBFAF9;
   }
-  .read-more-btn{
+  .read-more-btn {
     font-size: 0.7em;
   }
   .grid-container img {
     height: 300px;
   }
-
-
-
-  div.display-image-list-ign{
+  div.display-image-list-ign {
     width: 250px;
     height: 250px;
   }
-  
-
-  div#footer-container{
+  div#footer-container {
     padding: 2rem 2rem;
   }
 }
-
-
 @media screen and (max-width: 1325px) {
-  
-  div.display-image-list-ign{
+  div.display-image-list-ign {
     width: 200px;
     height: 200px;
   }
-
-
 }
-
-
 @media screen and (max-width: 1120px) {
-  
-  div.display-image-list-ign{
+  div.display-image-list-ign {
     width: 150px;
     height: 150px;
   }
-
-
 }
-
 @media screen and (max-width: 500px) {
-  
-  div.display-image-list-ign{
+  div.display-image-list-ign {
     width: 200px;
     height: 200px;
   }
-
 }
-
 @media screen and (max-width: 450px) {
-  
-  div.display-image-list-ign{
+  div.display-image-list-ign {
     width: 150px;
     height: 150px;
   }
-
-  div#footer-container{
+  div#footer-container {
     padding: 2rem 0.3rem;
   }
-
-
 }
+
+/*# sourceMappingURL=defaults.css.map */
