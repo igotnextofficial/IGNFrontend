@@ -16,13 +16,13 @@ const [recipient ,setRecipient] = useState<listDisplayDataType | null>(null)
 useEffect(() => {
     setRecipient({
         title:`Recipient: ${recipientOfNote?.fullname}`,
-        image_url:recipientOfNote?.image ?? "",
+        image_url:recipientOfNote?.profile_photo_path ?? "",
         subtitle: "", 
         meta:`` 
      })
 },[recipientOfNote])
     const handleSubmit = async ()=>{
-        const _data = {...data, recipient:recipientOfNote.id, sender:user?.id}
+        const _data = {...data, recipient_id:recipientOfNote.id, sender_id:user?.id}
         let response = await handleClick({"data":_data},recipientOfNote.id)
         sent(response)
     }

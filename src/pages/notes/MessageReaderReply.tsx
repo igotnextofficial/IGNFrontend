@@ -9,11 +9,12 @@ import IgnFormGenerate from '../../components/IgnFormGenerate'
 import { useFormDataContext } from '../../contexts/FormContext'
 import { useUser } from '../../contexts/UserContext'
 import FormDataProvider from '../../providers/FormDataProvider'
+import { APP_ENDPOINTS } from '../../config/app'
 
 
 
 const MessageReaderReplyData = () => {
-    const { user } = useUser() 
+    const { user,accessToken } = useUser() 
     const { data } = useFormDataContext()
     const {note_id} = useParams()
     const [note,setNote] = useState<Record<string,any> | null>(null)
@@ -36,8 +37,8 @@ const MessageReaderReplyData = () => {
 
     useEffect(()=> {
         const loadMessage = async () => {
-            const url = `${process.env.REACT_APP_NOTES_API}/${note_id}`
-            let response = await sendRequest(HttpMethods.GET,url)
+            const url = `${APP_ENDPOINTS.NOTES.BASE}/${note_id}`
+            let response = await sendRequest(HttpMethods.GET,url,null,{Authorization:`Bearer ${accessToken}`})
             if(response){
                 setNote(response.data )
             }
@@ -48,32 +49,33 @@ const MessageReaderReplyData = () => {
     },[note_id])
 
     const handleSubmit = async() => {
-        const _data = {...data, subject:note?.subject, sender:user?.id,priorMessage:note?.id}
-        let url = `${process.env.REACT_APP_NOTES_API}/${replyTo}`
+        const _data = {...note, ...data,sender_id:user?.id,sender:user,recipient_id:note?.sender_id,recipient:note?.sender}
+        console.log(`sending ${JSON.stringify(_data)}`)
+        let url = `${APP_ENDPOINTS.NOTES.BASE}`
 
-        let response = await sendRequest(HttpMethods.POST,url,{"data":_data})
+        let response = await sendRequest(HttpMethods.POST,url,{"data":_data},{Authorization:`Bearer ${accessToken}`})
         if(response){
             setSuccessful(true)
         }
        
     }
     const handleReplyClick = () => {
-        setShowNotesBox( !showNotesBox )
+        setShowNotesBox(true )
     }
     return note && (
         <>
             <MainHolderComponent>
                 <Grid container justifyContent={"center"} alignItems={"center"}>
-                    <Grid item xs={1}> <Avatar alt={`${note.sender.fullname}`} src={`${note.sender.image}`} sx={{ width: 80, height: 80 }}/> </Grid>
+                    <Grid item xs={1}> <Avatar alt={`${note.sender.fullname}`} src={`${note.sender.profile_photo_path}`} sx={{ width: 80, height: 80 }}/> </Grid>
                     <Grid item xs={11}> 
                     <Typography variant='h5'>{note.sender.fullname}</Typography> 
-                    <Typography sx={{color:'#c7c7c7'}} variant='subtitle2'>{note.sender.role}</Typography>
+                    <Typography sx={{color:'#c7c7c7'}} variant='subtitle2'>{note.sender.role.type}</Typography>
                     </Grid>
 
               
                     
                     <Grid item xs={12}  mt={2} mb={2} sx={{border:"1px solid #c7c7c7",padding:"10px"}}> <Typography variant='h6'>Subject: {note.subject}</Typography></Grid>
-                    <Grid item xs={12} sx={{border:"1px solid #c7c7c7",borderBottom:'none',padding:"10px"}}> <Typography sx={{lineHeight:"2em"}} variant='subtitle1'>{note.note} </Typography></Grid>
+                    <Grid item xs={12} sx={{border:"1px solid #c7c7c7",borderBottom:'none',padding:"10px"}}> <Typography sx={{lineHeight:"2em"}} variant='subtitle1'>{note.message} </Typography></Grid>
                 </Grid>
                 
                 {
@@ -91,7 +93,7 @@ const MessageReaderReplyData = () => {
            
                { showNotesBox &&(
                 <>
-                    <IgnFormGenerate formStructures={NotesFormStructure.filter(structure => structure.label ==='note')} />
+                    <IgnFormGenerate formStructures={NotesFormStructure.filter(structure => structure.label ==='message')} />
                 <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={handleSubmit}>Send Note</Button>
                 </>
                 )}

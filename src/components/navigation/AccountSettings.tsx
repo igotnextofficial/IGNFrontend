@@ -66,13 +66,34 @@ const AccountSettings = () => {
 
         </Tooltip>
         <Menu
-          sx={{ mt: '45px' }}
+          sx={{ mt: '45px' ,
+
+            display: { xs: 'block', md: 'block' },
+            width: '100vw',
+            left: 0,
+            right: 0,
+            top: 0,
+            
+            '& .MuiPaper-root': {
+              width: '100vw', // Ensure the Menu content covers full width
+              maxWidth: '100vw',
+              paddingRight: '0px', // Removes extra right padding
+              
+         
+            },
+
+            '& .MuiList-root':{
+              padding: 0,
+            }
+          }}
           id="menu-appbar"
           anchorEl={anchorElUser}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'right',
           }}
+
+          
           keepMounted
           transformOrigin={{
             vertical: 'top',

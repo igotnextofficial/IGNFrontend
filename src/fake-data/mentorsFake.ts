@@ -5,7 +5,7 @@ const mentor_artist = ArtistFake.slice(0).map((artist,index) => {
   return {
     ...artist,
     progress:Math.min((index + 1) * 33.,((index + 1) * 33) - 100),
-    nextSession:"",
+    session_date:"",
     status:"pending",
     request_id:(Math.random() * 2 ** 9).toString()
 

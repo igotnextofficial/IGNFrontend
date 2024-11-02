@@ -18,6 +18,7 @@ import DisplayTextComponent from '../../components/users/DisplayTextComponent'
 import CurrentMentorDisplay from '../../components/users/artist/CurrentMentorDisplay'
 import ListMentors from '../../components/users/mentor/ListMentors'
 import NoDataAvailable from '../../utils/NoDataAvailable'
+import NotesFeedback from '../notes/NotesFeedback'
 
 
 
@@ -109,7 +110,7 @@ const ArtistDashboard = () => {
                         <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                             <Grid item xs={12}>
                                 <DashboardSectionBorder title="Mentor's Feedback:" >
-                                    {user.mentor ? <MentorsFeedback/> : <NoDataAvailable/>}
+                                    {user.mentor ? <NotesFeedback/> : <NoDataAvailable/>}
                                 </DashboardSectionBorder>
                             </Grid>
                             {user?.mentor !== null && <Grid item xs={12}>

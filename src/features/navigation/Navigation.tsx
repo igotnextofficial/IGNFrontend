@@ -132,9 +132,7 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
                 }
               }}
             >
-              <Grid container justifyContent={"flex-start"} alignItems={"center"} sx={{backgroundColor: "#f0e6dc", padding: "15px 20px 8px"}}>
-                  <Grid item> {Authenticated ? <AccountSettings /> : <SigninOrRegister/>}</Grid>
-              </Grid>
+           
               {pages.map(({name,slug}) => (
                 <MenuItem className='here-and-now' key={slug} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link
@@ -143,9 +141,14 @@ const ResponsiveAppBar  = ({Authenticated=false}) => {
                   style={{ textDecoration: 'none', color: 'black' }} 
                   >{name}</Link></Typography>
                 </MenuItem>
+
+
+                
               ))}
 
-
+   <Grid container justifyContent={"flex-start"} alignItems={"center"} sx={{backgroundColor: "#f0e6dc", padding: "15px 20px 8px"}}>
+                  <Grid item> {Authenticated ? <AccountSettings /> : <SigninOrRegister/>}</Grid>
+              </Grid>
             </Menu>
           </Box>
 

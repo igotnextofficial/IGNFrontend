@@ -7,7 +7,7 @@
 
 */
 import { createContext,useContext } from "react";
-import { httpDataObject } from "../types/DataTypes";
+import { httpDataObject, HttpMethods } from "../types/DataTypes";
 
 export interface HttpRequestContextType {
     data?:httpDataObject | null
@@ -15,14 +15,19 @@ export interface HttpRequestContextType {
     loading:boolean,
     error:string
     updateUrl:(url:string)=>void
- 
+    updateData:(data:httpDataObject | FormData | null) => void
+    updateMethod:(method:HttpMethods) => void 
+    updateSendRequest:(send:boolean)=>void   
 }
 export const HttpRequestContext = createContext<HttpRequestContextType | null>({
     data:null,
     responseStatus:null,
     loading:true,
     error:"",
-    updateUrl: () => {}
+    updateUrl: () => {},
+    updateData: () => {},
+    updateMethod: () => {},
+    updateSendRequest: () => {}
 });
 
 

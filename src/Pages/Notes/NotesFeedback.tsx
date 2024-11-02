@@ -5,6 +5,7 @@ import { Link } from  'react-router-dom'
 import { Button,Box } from "@mui/material"
 import NoDataAvailable from "../../utils/NoDataAvailable"
 import axios from "axios"
+import { APP_ENDPOINTS } from "../../config/app"
 
 
 const loadNotes = async (
@@ -13,7 +14,7 @@ const loadNotes = async (
     access_token?: string
 ) => {
     try {
-        const url = `${process.env.REACT_APP_NOTES_API}/${user_id}/${type}`;
+        const url = `${APP_ENDPOINTS.NOTES.BASE}/${user_id}/${type}`;
 
         const response = await axios.get(url, {
             headers: {
@@ -38,7 +39,7 @@ const NotesFeedback = () => {
             if(user){ 
                 try{
                     const response = await loadNotes(user.id,'recipient',accessToken);
-                    const data = response as Record<string,any>[]
+                    const data = response.data as Record<string,any>[]
                     if(data === null || data.length === 0 ){return []}
                     if(data){
 
@@ -80,15 +81,16 @@ const NotesFeedback = () => {
     return (
         notes && notes.length > 0 ? <>
         {notes.map(note => {
-            let mentor_message = note.note.length > 40 ? `${note.note.substring(0, 40)}...` : note.note
+            let mentor_message = note.message.length > 40 ? `${note.message.substring(0, 40)}...` : note.message
             const message = {
                 title: `subject: ${note.subject}`,
-                image_url: note.sender.image,
+                image_url: note.sender.profile_photo_path,
                 subtitle: `message: ${mentor_message}`,
                 meta: `sent on: ${ new Date(note.created_at).toDateString()}`
             
             }
             let status:string = note.status as string
+            note.id = note['_id']
 
            return(
             <React.Fragment key={note.id}>

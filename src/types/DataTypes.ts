@@ -41,7 +41,7 @@ export interface MenteeDataType extends ArtistDataType {
     request_id:string,
     mentor?: MentorDataType | null,
     mentorSession?:MentorSessionDataType[],
-    nextSession:string,
+    session_date:string,
     progress:number,
     status:string
 }

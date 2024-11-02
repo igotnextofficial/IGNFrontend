@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
     const [cannotSchedule,setCannotSchedule] = useState(false)
     useEffect(() => {
-        if(user.mentorSession && user.mentorSession.nextSession !== null ){
+        console.log(`user.mentorSession.session_date ${user.mentorSession } and the user us ${JSON.stringify(user)}`)
+        if( user.mentorSession.session_date  ){
                 setCannotSchedule(true)
         }
         else{

@@ -5,7 +5,7 @@ export const Endpoints = {
     MENTEES: process.env.REACT_APP_MENTEES_API || "",
     MENTOR: process.env.REACT_APP_MENTOR_API || "",
     NOTES: process.env.REACT_APP_NOTES_API || "",
-    SESSIONS: process.env.REACT_APP_SESSIONS_API || "",
+    SESSIONS: process.env.REACT_APP_SESSION_API || "",
     LOGIN: process.env.REACT_APP_LOGIN_API || "",
     LOGOUT: process.env.REACT_APP_LOGOUT_API || "",
     MEDIA: process.env.REACT_APP_MEDIA_API || "",
@@ -38,7 +38,22 @@ export const APP_ENDPOINTS = {
     MEDIA: {
         BASE: Endpoints.MEDIA,
         IMAGE: `${Endpoints.MEDIA}/upload/images`,
+    },
+    SESSIONS: {
+        BASE: Endpoints.SESSIONS,
+        MENTEE: `${Endpoints.SESSIONS}/mentee`,
+        MENTOR: `${Endpoints.SESSIONS}/mentor`,
+        MENTOR_SESSIONS: `${Endpoints.SESSIONS}/mentor/sessions`,
+        MENTEE_SESSIONS: `${Endpoints.SESSIONS}/mentee/sessions`,
+    },
+    NOTES: {
+        BASE: Endpoints.NOTES,
+        CREATE: Endpoints.NOTES,
+        NOTESFORUSER: `${Endpoints.NOTES}`, // /:recipient/:sender|:recipient
+        MENTOR: `${Endpoints.NOTES}/mentor`,
+        
     }
+
 }
 export const validEndpoints = [
     Endpoints.ARTICLES,

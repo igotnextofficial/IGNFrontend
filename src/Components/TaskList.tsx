@@ -16,7 +16,7 @@ const TaskList: React.FC<{task: TaskDataType, greyOut: boolean}> = ({ task }, gr
     >
     <Grid container spacing={2} columns={{xs: 12}}>
       <Grid item xs ={3}>  <Chip label="Task" color='info'/> </Grid>
-      <Grid xs={6} item>
+      <Grid item  xs={6}>
       <Typography
           sx={{ display: 'block',color:'#1d1917', fontSize:'1em' }}
           component="p"

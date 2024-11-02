@@ -5,9 +5,13 @@ import FeatureArticleComponent from "../components/article/FeatureArticleCompone
 import AboutUsComponent from "../components/generic/AboutUsComponent";
 import ArticleProvider from '../providers/ArticleProvider';
 import { FetchMode } from '../types/ArticleFetchMode';
+import { useErrorHandler } from '../contexts/ErrorContext';
 
 const Home = () => {
+    const {updateError} = useErrorHandler();
+
     useEffect(() => {
+        updateError("Testing error message ");
         // const getUsers = async () => {
 
         //     const response = await fetch('https://shield.igotnext.local/api/users');

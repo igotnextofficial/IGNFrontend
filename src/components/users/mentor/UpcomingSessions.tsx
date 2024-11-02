@@ -41,10 +41,10 @@ function formatDate(date:Date) {
   const getUpcomingSessionWithinMax = (mentee:MenteeDataType,max:number):MenteeDataType | null => {
     const today = dayjs()
     const maximumDate = dayjs().add(max,'day')
-    const upcomingSession = dayjs(mentee.nextSession);
+    const upcomingSession = dayjs(mentee.session_date);
     if( ((upcomingSession < today) || (upcomingSession > maximumDate)) ){return null}
-    const readableDate = formatDate(new Date(mentee.nextSession));
-        let updatedDate = {nextSession:readableDate}
+    const readableDate = formatDate(new Date(mentee.session_date));
+        let updatedDate = {session_date:readableDate}
         let updateData = {...mentee,...updatedDate}
 
 
@@ -62,8 +62,9 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     };
 
     useEffect(() => {
+        console.log(`The user ${JSON.stringify(user)} should be here with mentees ${JSON.stringify(user.mentees, null, 2)}`)
         if(user && user.mentees){
-            setData(user.mentees.filter((mentee) => mentee.status === "approved"))
+            setData(user.mentees)
         }
     }, [user])
     return (
@@ -83,8 +84,8 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                         {
                         
                         data.map(mentee => {
-                            if(!mentee.nextSession){return null}
-                                let updateData =  getUpcomingSessionWithinMax(mentee,7) 
+                            if(!mentee.session_date){return null}
+                                let updateData =  getUpcomingSessionWithinMax(mentee,30) 
                                 if(!updateData){return null}
 
                             return (

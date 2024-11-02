@@ -29,6 +29,7 @@ import EditProfile from './pages/EditProfile';
 import MessageReaderReply from './pages/notes/MessageReaderReply';
 
 import ScheduleSession from './pages/artists/ScheduleSession';
+import { useErrorHandler } from './contexts/ErrorContext';
 
 
 
@@ -45,7 +46,7 @@ const MainApplication = () => {
   /* 
   ================== Socket Connection ================== 
 
-   - Not currently used but will circle back after MVP is completed.
+   - Not currently used  but will circle back after MVP is completed.
    and will be used to send notifications to users.
 
        --- Neccessary imports: ---

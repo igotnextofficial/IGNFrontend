@@ -1,11 +1,13 @@
 
-import {httpDataObject,FieldErrorMaintainerType,validationObject } from "../../types/DataTypes";
+import {httpDataObject,FieldErrorMaintainerType,validationObject, UserDataType, HttpMethods } from "../../types/DataTypes";
 import IgnRequest from "../../features/http/IgnRequest";
 import { UserFields } from "../../types/UserFields";
 import { validateFullname, validateEmail,validatePassword,validateUsername, validateChoices } from '../../utils/validate';
 import { Roles } from "../../types/Roles";
 import Storage from "../../storage/StorageAbstract";
 import { StorageTypes } from "../../storage/StorageTypes";
+import { APP_ENDPOINTS } from "../../config/app";
+import { sendRequest } from "../../utils/helpers";
  
 
 
@@ -73,7 +75,7 @@ class User{
             let user_role_type = user_data?.role?.type ??  "";
            if(user_role_type === Roles.ARTIST){
                 
-                user_data.sessions = [];
+                user_data.mentorSession = [];
                 
                 // let resources = [
                 //     axios.get(Endpoints.MENTOR),
@@ -100,20 +102,36 @@ class User{
            if(user_role_type === Roles.WRITER){
 
            }
+           if(user_role_type === Roles.MENTOR){
+                const auth = {Authorization: `Bearer ${response.data['access_token']} `};
+                const session_url = `${APP_ENDPOINTS.SESSIONS.MENTOR }/${user_data.id}`;
+                const sessions = await sendRequest(HttpMethods.GET,session_url,null, auth);
+               
+                const mentees_with_sessions = user_data.mentees.map((mentee:UserDataType) => {
+                    sessions?.data.forEach((session:any) => {
+                        if(session.mentee_id === mentee.id){
+                            mentee.request_id = session.id
+                            mentee.session_date = session.session_date
+                            mentee.progress = 33;
+                        }
+                       
+                    }); 
+                    return mentee
+                });
 
-              if(user_role_type === Roles.MENTOR){
-    
+                console.log(`mentees with sessions ${JSON.stringify(mentees_with_sessions)}`)
+                user_data.mentees = mentees_with_sessions || [];
+
               }
-
            // save data to storage , be aware of xss attacks,
         //    local_storage.setItem(User.INFO,JSON.stringify(response.data['data']));
-           local_storage.save('user_info',user_data);
+            local_storage.save('user_info',user_data);
  
             return  response;
         }
         catch(error){
-            // console.log("We ran into an error when trying to login the user")
-            // console.log(error)
+            console.log("We ran into an error when trying to login the user")
+            console.log(error)
             return null
         }
 
@@ -150,11 +168,16 @@ class User{
     }
 
     fullnameValidation(){
-        return {method:validateFullname,'valid':false,'message':'Fullname is required should be between 3 - 30 characters'}
+        return {method:validateFullname,'valid':false,
+            'message': `Fullname is required and must meet the following criteria: \n 
+            
+            - Must be between [3] and [30] characters long.
+            \n  - Must not contain any numeric characters.
+            \n  - Must not contain any special characters.` }
     }
 
     emailValidation(){
-        return {method:validateEmail,'valid':false,'message':'E-Mail is required should be between 3 - 30 characters'}
+        return {method:validateEmail,'valid':false,'message':'E-Mail is required should be between 3 - 30 characters, and must be a valid email address'}
     }
     
     usernameValidation() {
@@ -184,7 +207,8 @@ class User{
     }
     
     validatingRoles(value:string){
-        let choiceList = [Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT]
+        // let choiceList = [Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT]
+        let choiceList = [Roles.ARTIST ]
         return validateChoices(choiceList,value)
     }
     roleValidation(){

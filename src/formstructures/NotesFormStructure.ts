@@ -13,12 +13,12 @@ export const NotesFormStructure = [
     },
     {
 
-      label: "note",
+      label: "message",
       visibility: true,
       display: displayType.TextValue,
       props:{
         id:"note",
-        label:"note",
+        label:"message",
         variant:"filled"
       },
       order:2

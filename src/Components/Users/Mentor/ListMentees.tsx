@@ -12,16 +12,18 @@ import NotesComponent from "../../NotesComponent";
 
 import { sendRequest } from "../../../utils/helpers";
 import NoDataAvailable from "../../../utils/NoDataAvailable";
+import { APP_ENDPOINTS } from "../../../config/app";
+import { useUser } from "../../../contexts/UserContext";
 
 const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
     const[data,setData] = useState<MenteeDataType[]>([])
     const [recipient,setRecipient] = useState<MenteeDataType | null>(null)
-
+    const {accessToken} = useUser();
 
 
     useEffect(()=>{
         if(mentor && mentor.mentees){
-            setData(mentor.mentees.filter(mentee => mentee.status === "approved"))
+            setData(mentor.mentees)
         }
        
     },[mentor])
@@ -30,13 +32,14 @@ const ListMentees = ({mentor}: {mentor:MentorDataType}) => {
 
 
     const submitNotes = async (notesData:httpDataObject,recipient:string) => {
-    const url = `${process.env.REACT_APP_TEST_API}/notes/${recipient}`
-    let response = await sendRequest(HttpMethods.POST,url,notesData)
+    const url = APP_ENDPOINTS.NOTES.CREATE
+    let response = await sendRequest(HttpMethods.POST,url,notesData,{Authorization:`Bearer ${accessToken}`})
         // console.log(`Sending ${JSON.stringify(notesData)}`)
         if(!response){return false}
 
         return true
     }
+
     return  data.length > 0 ? <>
 
                 {  data.map((mentee,index) => 

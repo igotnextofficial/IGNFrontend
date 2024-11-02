@@ -8,6 +8,7 @@ import { Button,Box, Typography , Grid} from '@mui/material';
 import { sendRequest } from '../utils/helpers';
 import { HttpMethods, MenteeDataType } from '../types/DataTypes';
 import { useUser } from '../contexts/UserContext';
+import { APP_ENDPOINTS } from '../config/app';
 
 
 
@@ -97,16 +98,17 @@ const ScheduleTime = () => {
 
     const scheduleDate = async() => {
         let data = {
-             nextSession:`${schedule} ${chosenTime}`,
-             mentee_id:`${user?.id}`
+             session_date:`${schedule} ${chosenTime}`,
+             mentee_id: user?.id,
+             mentor_id: user?.mentor.id
             }
 
-    
+           
             if(schedule && chosenTime){
                 let currentuser = user as MenteeDataType
                 const headers = { Authorization: `Bearer ${accessToken}` }
                 // console.log(JSON.stringify({data}))
-                let url = `${process.env.REACT_APP_SESSION_API}/${currentuser.mentor?.id}/schedule`;
+                let url = APP_ENDPOINTS.SESSIONS.BASE;
                 // console.log(`sending to ${url}`)
                 let response = await sendRequest(HttpMethods.POST,url,{data},headers)
 
@@ -144,11 +146,26 @@ const ScheduleTime = () => {
                 <Typography variant='h3'>{schedule?.toString()}</Typography>
                 <Grid container>
                 {availableTime.length > 0 && allTime.map((currentTime) => <Grid item xs={4}><AvailableTimes time={currentTime} handleTime={handleTimeChange} isAvailable={availableTime.includes(currentTime)}/></Grid> )}
+
+                
                 </Grid>
                 {
                     (chosenTime && schedule) &&
                     <Button  variant='contained' onClick={() => {  scheduleDate() }}>Schedule Appointment</Button>
-              }
+                }
+
+         
+
+            {scheduledSuccessfully && (
+                <Typography 
+                    variant="h6" 
+                    color="success" 
+                    sx={{ marginTop: 2 }}
+                >
+                    Appointment scheduled successfully!
+                </Typography>
+            )}
+               
         </LocalizationProvider>
     )
 }

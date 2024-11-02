@@ -13,7 +13,7 @@ import UpcomingSessions from "../../components/users/mentor/UpcomingSessions"
 
 import RequestMenteeComponent from "../../components/users/mentor/RequestMenteeComponent"
 import OpenUpForSessions from "../../components/users/mentor/OpenUpForSessions"
-import MenteeNotes from "../../components/users/mentor/MenteeNotes"
+import NotesFeedback from '../notes/NotesFeedback'
 
 import DashboardSectionBorder from "../../components/users/mentor/DashboardSectionComponentWithBorder"
 
@@ -78,8 +78,8 @@ const MentorDashboard = ()=>{
                         </Grid>
                         
                         <Grid item>
-                        <DashboardSectionBorder title="Mentee note(s)">
-                            <MenteeNotes/>
+                            <DashboardSectionBorder title="Mentee note(s)">
+                                <NotesFeedback/>
                             </DashboardSectionBorder>
                         </Grid>
                     </Grid>
@@ -90,13 +90,13 @@ const MentorDashboard = ()=>{
     
           
 
-                {/* <Grid item xs={6}>
+                 {/* <Grid item xs={6}>
                  {   data && <TopProfileSectionComponent user={data} bio={user.bio} />}
                 </Grid>
 
                 <Grid item xs={6}>
                     <ListMentees user={user as MentorDataType} />
-                </Grid> */}
+                </Grid>  */}
 
                 
 

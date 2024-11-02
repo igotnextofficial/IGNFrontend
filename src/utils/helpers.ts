@@ -69,6 +69,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
     if(response){
       return response as httpDataObject;
     }
+    console.log("The response was null", response)
     return null
   }
 

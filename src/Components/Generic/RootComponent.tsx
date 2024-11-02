@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { UserProvider } from '../../providers/UserProvider';
 import ErrorProvider from '../../providers/ErrorProvider';
+import HttpRequestProvider from '../../providers/HttpRequestProvider';
 
 interface RootComponentProps {
     children: ReactNode;
@@ -8,11 +9,14 @@ interface RootComponentProps {
 
 const RootComponent: React.FC<RootComponentProps> = ({ children }) => {
     return (
-        <UserProvider>
+ 
+            <UserProvider>
             <ErrorProvider>
                 {children}
             </ErrorProvider>
         </UserProvider>
+    
+        
     );
 };
 

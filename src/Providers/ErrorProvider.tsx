@@ -1,13 +1,15 @@
 import { ErrorContext } from "../contexts/ErrorContext"
-import { ReactNode,useState } from "react"
+import { ReactNode,useEffect,useState } from "react"
 const ErrorProvider = ({children} : {children:ReactNode}) => {
 
     const [errorMessage,setErrorMessage] = useState("");
 
     const updateError = (error = "") => {
+        console.log("error message updated to ",error)
         setErrorMessage(error)
     }
-    
+
+
 
 
 

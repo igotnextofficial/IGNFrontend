@@ -25,10 +25,10 @@ export default function CardContentComponent({data} : {data:MenteeDataType}) {
           <Grid container sx={{padding:"8px 10px"}} spacing={6} justifyContent={'center'} alignItems={"center"}>
             <Grid item xs={2}> <ScheduleIcon  sx={{color:"white",fontSize:50}}/></Grid>
             
-            <Grid item xs={9}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${data.nextSession} `}</Typography></Grid>
+            <Grid item xs={9}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${data.session_date} `}</Typography></Grid>
          </Grid>
           </Box>
-          <img src={data.image}  alt=""  style={styles.image}/>
+          <img src={data.profile_photo_path}  alt=""  style={styles.image}/>
         </Box>
         </Link>
       </>
@@ -72,6 +72,8 @@ const styles: Record<string, React.CSSProperties> = {
   image: {
     width: "100%",
     height: "100%",
-    objectFit: "cover", // This is now correctly typed
+    objectFit: "contain",
+    objectPosition: "top center",
+    backgroundColor:"black" // This is now correctly typed
   }
 };

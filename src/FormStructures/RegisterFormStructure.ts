@@ -64,7 +64,7 @@ export const RegisterFormStructure = [
           helperText:" Choose a role",
          
         },
-        options:[Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT],
+        options:[Roles.ARTIST ],
         order:5
   
       }
