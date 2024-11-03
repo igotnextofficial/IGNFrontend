@@ -99,6 +99,7 @@ export interface TaskDataType {
 
 export interface httpDataObject {
     data:Record<string,any>,
+    errors?:string[],
 }
 
 export interface HttpHeaders {

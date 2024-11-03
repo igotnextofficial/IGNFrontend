@@ -52,16 +52,22 @@ const RegisterDisplay = ()=>{
         event.preventDefault();
         if(isValid){
            const response = await RegisterUserAttempt({data});
-
-           if(response !== null){
-                const loginResponse = data !== null ? await attemptLoginOrLogout(true,{data}) : null;
-                if(loginResponse === null){
-                    updateError?.("The user could not be logged in"); 
+           if (response) {
+           
+            if (response.errors?.length) {
+                updateError?.(response.errors.join(' '));
+            } else {
+                // Proceed with login attempt if there are no registration errors
+                const loginResponse = await attemptLoginOrLogout(true, { data });
+                if (!loginResponse) {
+                    updateError?.("The user could not be logged in");
                 }
-           }
-           else{
-            updateError?.("Issues with registering user"); 
-           }
+            }
+        } else {
+            updateError?.("Issues with registering user");
+        }
+       
+         
         }
 
     }

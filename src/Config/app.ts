@@ -16,6 +16,7 @@ export const Endpoints = {
 export const APP_ENDPOINTS = {
     USER: {
         BASE: Endpoints.USER,
+      
         SINGLE: `${Endpoints.USER}/`,
         MENTORS: `${Endpoints.USER}/role/9d4eab70-b242-46e8-aab0-cd93fd5e5ac9`,
         MENTEE: `${Endpoints.USER}/mentee`,
@@ -56,11 +57,5 @@ export const APP_ENDPOINTS = {
 
 }
 export const validEndpoints = [
-    Endpoints.ARTICLES,
-    Endpoints.AUTH,
-    Endpoints.MENTEES,
-    Endpoints.MENTOR,
-    Endpoints.NOTES,
-    Endpoints.SESSIONS,
-    Endpoints.REFRESH_TOKEN
+  ...Object.values(APP_ENDPOINTS.USER),
 ]

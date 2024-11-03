@@ -141,7 +141,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                             // console.log(`this is when user should be logged in page load intial ${intialLoad.current}`);
                         }
                     }).catch((e) => {
-                        // console.error(`error -  failed refreshing token ${e}`)
+                        // console.error( `error -  failed refreshing token ${e}`)
                     }).finally(() => {
                         intialLoad.current = false
                     })
@@ -177,6 +177,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 const access_token =  response.data['access_token']
            
                 setAccessToken(access_token);
+
                 setUser(user_data as UserDataType); // Assuming response.data is the user data
                 setIsLoggedin(true);
           

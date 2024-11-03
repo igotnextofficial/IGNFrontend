@@ -16,6 +16,10 @@ interface optionsDataType{
   withCredentials?:boolean,
   data?:FormData | httpDataObject | null
 }
+
+interface CustomError extends Error{
+  response?:Record<string,any>
+}
 async function submit(submissionData: axiosDataObject, updatedData: FormData | httpDataObject | null, headers:Record<string,any> = {}) {
     try {
       headers = updatedData instanceof FormData ? {...headers} : { ...headers, 'Content-Type': 'application/json' };
@@ -27,15 +31,18 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
       if(updatedData !== null){
           options.data = updatedData;
       }
-
-
-
       const response = await axios(options);
+
       return response.data;
 
     } catch (error) {
-      if(error instanceof Error){
-        // console.error("Axios error:", error.message);
+      const custom_error = error as CustomError
+      if(custom_error && custom_error.response){
+        if(custom_error.response.data.errors){
+          return custom_error.response.data as httpDataObject;
+        }
+        console.error("Axios error:", error );
+        
       }
    
       return null;
@@ -69,7 +76,6 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
     if(response){
       return response as httpDataObject;
     }
-    console.log("The response was null", response)
     return null
   }
 

@@ -11,7 +11,7 @@ const DetectChange = () => {
       const timeout = setTimeout(()=>{
         updateError("")
       },toSeconds(10))
-      console.log("location changed to: ",location.pathname)
+  
       
 
       return () => clearTimeout(timeout)

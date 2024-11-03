@@ -11,7 +11,7 @@ const Home = () => {
     const {updateError} = useErrorHandler();
 
     useEffect(() => {
-        updateError("Testing error message ");
+      
         // const getUsers = async () => {
 
         //     const response = await fetch('https://shield.igotnext.local/api/users');
