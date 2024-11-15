@@ -114,7 +114,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
         if(!accessToken && !user){
             if(new LocalStorage().hasItem(User.INFO)){
-                let found_user = JSON.parse(new LocalStorage().load(User.INFO));
+                let found_user = new LocalStorage().load(User.INFO);
                 setUser(found_user)
                 setIsLoggedin(true)
                 
@@ -157,7 +157,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
      } ,[accessToken, user ])
 
 
-        
+     useEffect(() => {
+        const user_storage = new LocalStorage().load(User.INFO)
+ 
+     } , [])
+     useEffect(() => {
+        const local_storage = new LocalStorage()
+        if(local_storage.hasItem(User.INFO)){
+            let found_user = local_storage.load(User.INFO);
+            setUser(found_user)
+            setIsLoggedin(true)
+        }
+     } , [accessToken])
     /**
      * 
      * @param login - boolean representing whether to login or logout 
@@ -167,7 +178,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
 
         let response;
-     
+    /**
+     *  Login user
+     * send data to endpoint
+     * if endpoint returns a response
+     * set the user state to the response data and access token 
+     *  access token is now in database when i refresh the page 
+     *  use state access token might not exist so i need to  check if a user is in local storage if so get a new access token from the db using the access token saved 
+     * so this endpoint should not require authroization
+     * 
+     */
         if (login && data) {
             response = await UserObj.login(data); // state set in local storage
 
@@ -347,3 +367,5 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         </UserContext.Provider>
     );
 };
+
+

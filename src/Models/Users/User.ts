@@ -119,19 +119,20 @@ class User{
                     return mentee
                 });
 
-                console.log(`mentees with sessions ${JSON.stringify(mentees_with_sessions)}`)
+             
                 user_data.mentees = mentees_with_sessions || [];
 
               }
            // save data to storage , be aware of xss attacks,
         //    local_storage.setItem(User.INFO,JSON.stringify(response.data['data']));
             local_storage.save('user_info',user_data);
- 
+            
+            
+   
             return  response;
         }
         catch(error){
-            console.log("We ran into an error when trying to login the user")
-            console.log(error)
+  
             return null
         }
 

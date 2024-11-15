@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@google-apps/meet": "^0.3.0",
+    "@google-cloud/local-auth": "^3.0.1",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
     "@mui/x-date-pickers": "^7.1.1",
@@ -32,6 +34,7 @@
     "sass": "^1.80.3",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
+    "uuid": "^11.0.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

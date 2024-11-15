@@ -4,6 +4,7 @@ export enum FetchMode {
     USER,
     DRAFTS,
     FEATURED,
+    CATEGORY
     // Add other modes here as needed
   }
 
