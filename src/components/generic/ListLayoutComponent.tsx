@@ -36,18 +36,30 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
 
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar alt={title.replace(/\s/g, "_")} src={image_url} variant="square" />
+                        <Avatar alt={title.replace(/\s/g, "_")} src={image_url} variant="square"  sx={{ width:200 , height: 200, borderRadius:3}}/>
                     </ListItemAvatar>
                     <ListItemText
-                        primary={title}
+                        sx={{ padding: 2 }}
+                        primary={
+                            <React.Fragment>
+                                <Typography
+                                    sx={{ display: 'inline', textDecoration: "none",  fontSize: "1.6em !important" }}
+                                    component="span"
+                                    variant="h6"
+                                    color="text.primary"
+                                >
+                                    {title}
+                                </Typography>
+                            </React.Fragment>
+                        }
                         secondary={
                             <React.Fragment>
                                 <Typography
-                                    sx={{ display: 'inline' }}
+                                    sx={{ maxWidth: 300, display: 'inline', textDecoration: "none !important" ,fontSize: "1.5em !important", lineHeight: "1.7em" }}
                                     component="span"
                                     variant="body2"
                                     color="text.primary"
-                                    dangerouslySetInnerHTML={{ __html: content.slice(0, 200)  + ' ...' }} 
+                                    dangerouslySetInnerHTML={{ __html: content.slice(0, 300)  + ' ...' }} 
                                 />
                
                        
