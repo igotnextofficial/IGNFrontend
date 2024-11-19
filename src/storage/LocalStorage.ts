@@ -43,7 +43,20 @@ export default class LocalStorage implements storageInterface {
     }
 
     remove(key:string): void {
-        localStorage.removeItem(key);
+        
+         if(!this.hasItem(key)){
+            return; 
+        }
+
+        let data = localStorage.getItem(this.domain);
+        if(data !== null){
+
+            let decrypted_data = this.decryptAndConvertToObject(data);
+            let data_to_remove = this.load(key);
+            delete decrypted_data[key];
+            let new_data = this.encrypt(JSON.stringify(decrypted_data));
+            localStorage.setItem(this.domain,new_data);
+        }
     }
 
     hasItem(key: string): boolean {
@@ -62,7 +75,10 @@ export default class LocalStorage implements storageInterface {
         if(data.trim() === ""){return {}}
         return JSON.parse(data);
     }
-
+    
+    removeAll(): void {
+        localStorage.removeItem(this.domain);
+    }
 
     private encrypt(data: string): string {
         return CryptoJs.AES.encrypt(data, this.secret_key).toString();

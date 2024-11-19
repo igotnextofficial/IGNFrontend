@@ -23,7 +23,7 @@ const OpenCloseSession = () => {
         let open = checked ? "open" : "closed";
         let mentor_id = user?.id;
         let url = `${process.env.REACT_APP_MENTOR_API}/${mentor_id}/availability/${open}`;
-        let response = await sendRequest(HttpMethods.POST,url)
+        let response = await sendRequest(HttpMethods.PUT,url)
         if(response !== null) {
 
         }

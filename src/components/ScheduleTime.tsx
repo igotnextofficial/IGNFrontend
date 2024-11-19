@@ -100,7 +100,9 @@ const ScheduleTime = () => {
         let data = {
              session_date:`${schedule} ${chosenTime}`,
              mentee_id: user?.id,
-             mentor_id: user?.mentor.id
+             mentee:{fullname:user?.fullname,email:user?.email},
+             mentor_id: user?.mentor.id,
+             mentor:{fullname:user?.mentor.fullname,email:user?.mentor.email}
             }
 
            

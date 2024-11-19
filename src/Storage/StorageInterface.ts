@@ -3,4 +3,5 @@ export default interface storageInterface {
     load(key:string): any;
     remove(key:string): void;
     hasItem(key:string): boolean;
+    removeAll(): void;
 }

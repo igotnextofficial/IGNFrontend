@@ -54,6 +54,13 @@ class Storage implements StorageInterface {
         }
         return this.storage!.hasItem(key);
     }
+
+    removeAll(): void {
+        if(this.storageIsNotIntialized()){
+            throw new Error('Storage not initialized');
+        }
+        this.storage!.removeAll();
+    }
 }
 
 export default Storage;

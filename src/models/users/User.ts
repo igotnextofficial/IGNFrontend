@@ -112,13 +112,18 @@ class User{
                         if(session.mentee_id === mentee.id){
                             mentee.request_id = session.id
                             mentee.session_date = session.session_date
-                            mentee.progress = 33;
                         }
                        
                     }); 
+                
                     return mentee
                 });
 
+
+                if(!('availability' in user_data)){
+                    let response = await sendRequest(HttpMethods.POST,`${APP_ENDPOINTS.SESSIONS.BASE}/${user_data.id}/availability`,null,auth);
+                    user_data.availability = response ? response.data['availability'] : false;
+                }
              
                 user_data.mentees = mentees_with_sessions || [];
 
@@ -147,16 +152,10 @@ class User{
     async logout(access_token:string){
     
         let local_storage = new Storage(StorageTypes.LocalStorage);
-        
-        if(!local_storage.hasItem(User.INFO)){
-            return null
-        }
-
-        let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${access_token}`}});
-
         try{
+            let ignHttpRequest = new IgnRequest({baseURL:this.baseURI, headers:{'Authorization': `Bearer ${access_token}`}});
             const response = await ignHttpRequest.post(this.logoutEndpoint);
-            local_storage.remove(User.INFO);
+            local_storage.removeAll();
         
              return response
         }

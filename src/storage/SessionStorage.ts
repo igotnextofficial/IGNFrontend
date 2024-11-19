@@ -18,4 +18,6 @@ export default class SessionStorage implements StorageInterface {
         return sessionStorage.getItem(key) !== null;
     }
 
+    removeAll(): void { }
+
 }

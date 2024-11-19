@@ -21,4 +21,6 @@ export default class CookieStorage implements storageInterface{
     hasItem(key: string): boolean {
         return document.cookie.includes(key);
     }
+
+    removeAll(): void { }
 }
