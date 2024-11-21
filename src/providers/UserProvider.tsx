@@ -76,12 +76,11 @@ import { Endpoints } from "../config/app";
      * @returns - boolean representing whether the token was refreshed or not
      */
     const refreshToken = async (user_id: string,role:string): Promise<string> => {
-        let controller = new AbortController()
-        let signal = controller.signal
+ 
         try {
             let url = Endpoints.REFRESH_TOKEN;
             // console.log(`hitting endpoint url ${url} with user id ${user_id}`);
-            let response = await axios.post(url, { "data": { user_id,role } , signal});
+            let response = await axios.post(url, { "data": { user_id,role }  });
     
             if (response.status === 200) {
                 let new_token = response.data['data']['access_token'];
@@ -91,7 +90,8 @@ import { Endpoints } from "../config/app";
                 return new_token;
             }
         } catch (e) {
-            // console.error("Failed to refresh token:", e);
+
+            console.error("Failed to refresh token:", e);
         }
         return ""
     };

@@ -1,24 +1,25 @@
 ## Current To do List
-- [] setup http request provider
 - [] make sure all forms are submitting their data correctly
 - [] set up 404 page
-
-
 - [] Add calendly or some sort of scheduling system for mentors, check google api 
-- [] Zoom API or the like for video calls.
-
-
- 
-
-
+- [] genre list needs to be set up on the backend so when a user is pulled in so is the genre i can handle this on the shieldAuthService.
+- [] consider allowing number in username lol it looks tacky plus would an artist be named <artist-name>123? lol
+- [] Artist edit profile shoild show a count so users know how long their bio can be and the like.
+- [] in the dropdown, account should be changed to edit-profile
+- [] Find a mentor page needs to be adjusted to pull in the mentors from the db (this data should be cached.)
+- [] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
+- [] set up forgot password
+- []drop down for account holder does not go to new page unless texst is clicked directly, fix
 
 ## Upcoming updates
+
 ### Authentication
 - [] Most Important circle back around to authentication process and storing of tokens
 - [] Handle decoding token on frontend to verify the users scope and access any other needed info
 
 
 ### Dashobards
+
 #### Writer Dashboard
 
 
@@ -40,17 +41,17 @@
 - [] upload and streaming music.
 - [] Mentors should be able to adjust payment fee.? Need to think about this.
 - [] need to think of payment Models.
+- [] what does a regular subscriber see when they log on ? just articles?
     #### Regular User Dashboard - This whole section can wait!
     - [] should be able to create playlist
     - [] should be able to subscribe to an artist page
     - [] will get updates if subscribed to artist page.
 
  ### Noticeable Issues
-    - [] After clicking through the pages , the page goes blank and 
-        "enable JS Error" appears
+
     - [] endpoints are being hit unneccesarily , need some sort of cache system or pull from local storage if possible
     - [] Footer does not adhere to the bottom of all pages
-    - [] Article List pages need to be designed.
+
     
 ## Completed
 #### FBFAF9 BG Color
@@ -71,3 +72,12 @@ Artist Dashboard
 - [x]  Should be able to find a mentor and request session
 Editor Component
 - [x] Should be an Editor context that will wrap around the component this will allow the various seperate components to access and set the data it needs to set accordingly. 
+- [x] After clicking through the pages , the page goes blank and 
+        "enable JS Error" appears
+- [x] Article List pages need to be designed.
+- [x] setup http request provider
+- [x] Zoom API or the like for video calls.
+- [x] page crashes on refresh ,could be how i changed local storage
+- [x] sign up page role list should only allow a subscriber and a artist, Mentors will be created internally by an admin user.
+- [x] once a user books a mentor and that mentor is pending approval then it should remain this way on all page (text "pending approval should remain")
+- [x] when i have the session displaying it should have a link to enter the meeting, if it is like 5 mins before the scheduled meeting.

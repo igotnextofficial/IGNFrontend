@@ -33,3 +33,4 @@ certs/
 
 src/customhooks/credentials.json
 src/customhooks/useGoogleMeet.ts
+notes.md

@@ -74,28 +74,11 @@ class User{
            let user_data = response.data['data'];
             let user_role_type = user_data?.role?.type ??  "";
            if(user_role_type === Roles.ARTIST){
-                
-                user_data.mentorSession = [];
-                
-                // let resources = [
-                //     axios.get(Endpoints.MENTOR),
-                //     axios.get(Endpoints.SESSIONS),
-                //     axios.get(Endpoints.NOTES)
-                // ];
-
-                // axios.all(resources)
-                // .then(axios.spread((mentor, session, notes) => {
-                //     // Handle each response individually
-                //     console.log('Mentor Data:', mentor.data);
-                //     console.log('Session Data:', session.data);
-                //     console.log('Notes Data:', notes.data);
-              
-                //     // You can now work with the data, e.g., update state if using React
-                // }))
-                // .catch(error => {
-                //     // Handle error for any of the requests
-                //     console.error('Error fetching data:', error);
-                // });
+      
+                let sessions = await sendRequest(HttpMethods.GET,`${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user_data.id}`,null,{Authorization: `Bearer ${response.data['access_token']} `});
+ 
+                user_data.mentorSession = sessions?.data ?? []; // hit session endoint to get 
+            
 
            }
 
@@ -110,7 +93,7 @@ class User{
                 const mentees_with_sessions = user_data.mentees.map((mentee:UserDataType) => {
                     sessions?.data.forEach((session:any) => {
                         if(session.mentee_id === mentee.id){
-                            mentee.request_id = session.id
+                            mentee.id = session.id
                             mentee.session_date = session.session_date
                         }
                        
@@ -128,6 +111,8 @@ class User{
                 user_data.mentees = mentees_with_sessions || [];
 
               }
+
+            
            // save data to storage , be aware of xss attacks,
         //    local_storage.setItem(User.INFO,JSON.stringify(response.data['data']));
             local_storage.save('user_info',user_data);

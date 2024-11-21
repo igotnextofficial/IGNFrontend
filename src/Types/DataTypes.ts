@@ -38,7 +38,7 @@ export interface ArtistDataType extends UserDataType {
 }
 
 export interface MenteeDataType extends ArtistDataType {
-    request_id:string,
+    id:string,
     mentor?: MentorDataType | null,
     mentorSession?:MentorSessionDataType[],
     session_date:string,
@@ -57,6 +57,7 @@ export interface MentorSessionDataType {
     id:string,
     mentor_id:string,
     mentee_id:string,
+    session_link?:string,
     currentSessionNumber: number,
     maxSessionNumber:number,
     nextSession:string,
