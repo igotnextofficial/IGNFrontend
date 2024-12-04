@@ -3,6 +3,7 @@ export enum UserFields{
     EMAIL = "Email",
     USERNAME = "Username",
     PASSWORD = "Password",
-    ROLE = "Role"
+    ROLE = "Role",
+    PRICE="Price"
 
 }

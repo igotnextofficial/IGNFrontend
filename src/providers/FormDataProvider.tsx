@@ -18,6 +18,7 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
     useEffect(() => {
         let valids = []
         for(const fieldKey in formKeys){
+            console.log(`checking for key ${fieldKey}`)
             let valid = hasError[fieldKey].valid ?? false
             valids.push(valid )
         }
@@ -25,6 +26,9 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
         setIsValid(checkValid)
     },[formKeys, hasError])
     
+    useEffect(() => {
+        console.log(JSON.stringify(hasError))
+    },[hasError])   
     const updateData = useCallback((key:string,value:string)=>{
         try{
             let current_key = key.toLowerCase()

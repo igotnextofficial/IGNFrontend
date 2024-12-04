@@ -1,12 +1,10 @@
 import { send } from "process";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { sendRequest } from "../utils/helpers";
+import { HttpMethods } from "../types/DataTypes";
 
 interface FetchOptions {
     method?: string;
-    headers?: Record<string, string>;
-    data?: Record<string, any>; // JSON data wrapped in a `data` object
-    body?: FormData;            // FormData for media uploads
 }
 
 interface CustomError extends Error {
@@ -15,45 +13,48 @@ interface CustomError extends Error {
 
 const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
     const [data, setData] = useState(null);
+    const [sendData, setSendData] = useState<Record<string,any> | null>(null);
+    const [mediaData, setMediaData] = useState<FormData | null>(null);
+    const [headers, setHeaders] = useState<Record<string,any> | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [responseStatus, setResponseStatus] = useState<number | null>(null);
-    const [url, setUrl] = useState("");
+
     const [sendRequest, setSendRequest] = useState(false);
 
     // Memoize options if they are provided inline
     // const memoizedOptions = useMemo(() => options, [options]);
     // const url = useMemo(() => url, [url]);
 
-    useEffect(() => {
-    
-        if(url !== "" && sendRequest){
-             fetchData();
-        }
-        
-    }, [url,sendRequest]);
+
 
   
 
 
-    const fetchData = useCallback(async () => {
-        setLoading(true); // Set loading state before fetching
-        try {
-       
-            const isJsonData = options.data !== undefined;
-            const isFormData = options.body instanceof FormData;
+    const fetchData = useCallback(async ( url:string,method:HttpMethods,headers:Record<string,any>,data:string|Record<string,any> ,has_media=false ) => {
 
+        setLoading(true); // Set loading state before fetching
+        console.log(`making a request  to ${url} with method ${method} and data ${data}`)
+        const application_headers = new Headers()
+        // add all headers to the request
+        for(const key in headers){
+            application_headers.append(key,headers[key])
+        }
+        try {
+            let passed_data = null;
+            if(has_media){
+                passed_data = data as FormData;
+            }
+            else{
+                passed_data =  typeof data === 'string' ? data : JSON.stringify(data);
+            }
+             
             const response = await fetch(url, {
-                method: options.method,
-                headers: isFormData ? options.headers : {
-                    'Content-Type': 'application/json',
-                    ...options.headers,
-                },
-                body: options.method !== 'GET'
-                    ? isFormData
-                        ? options.body
-                        : JSON.stringify({ data: options.data })
-                    : null,
+                
+                method,
+                headers: application_headers,
+                body:  passed_data
+                   
             });
 
             const responseData = await response.json();
@@ -72,9 +73,9 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
             setLoading(false);
         }
       
-    }, [url, options]);
+    }, []);
 
-    return { data, loading, error, responseStatus,setUrl,setSendRequest };
+    return { fetchData,data, loading, error, responseStatus,setSendRequest,setSendData,setMediaData,setHeaders };
 };
 
 

@@ -10,7 +10,9 @@ import Dashboard from './pages/dashboards/Dashboard';
 import ComposeArticle from './pages/articles/ComposeArticle';
 import EditArticle from './pages/articles/EditArticle';
 import Login from './pages/authentication/Login';
+import Logout from './pages/authentication/Logout';
 import Register from './pages/authentication/Register';
+import RegisterMentor from './pages/authentication/RegisterMentor';
 
 
 import { useUser } from './contexts/UserContext';
@@ -106,7 +108,9 @@ const MainApplication = () => {
         <Routes>
           <Route path='/' element={<Home />} /> 
           <Route path='/login' element={<Login />} />
+          <Route path='/logout' element={<Logout />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/register-mentor' element={<RegisterMentor />} />
 
           {/* Articles */}
           <Route path='/articles/:category' element={<ArticleCategoryList />} />

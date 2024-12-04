@@ -9,7 +9,8 @@ export const Endpoints = {
     LOGIN: process.env.REACT_APP_LOGIN_API || "",
     LOGOUT: process.env.REACT_APP_LOGOUT_API || "",
     MEDIA: process.env.REACT_APP_MEDIA_API || "",
-    REFRESH_TOKEN: process.env.REACT_APP_AUTH_REFRESH_API_URL || ""
+    REFRESH_TOKEN: process.env.REACT_APP_AUTH_REFRESH_API_URL || "",
+    PRODUCTS: process.env.REACT_APP_PRODUCT_API || ""
 }
 
 
@@ -53,6 +54,15 @@ export const APP_ENDPOINTS = {
         NOTESFORUSER: `${Endpoints.NOTES}`, // /:recipient/:sender|:recipient
         MENTOR: `${Endpoints.NOTES}/mentor`,
         
+    },
+    PRODUCTS: {
+        BASE: Endpoints.PRODUCTS,
+        ALL: `${Endpoints.PRODUCTS}/all`,
+        SINGLE: `${Endpoints.PRODUCTS}`,
+        USER: `${Endpoints.PRODUCTS}/user`,
+        DRAFTS: `${Endpoints.PRODUCTS}/drafts`,
+        FEATURED: `${Endpoints.PRODUCTS}/category/featured`,
+        CATEGORY: `${Endpoints.PRODUCTS}/category`
     }
 
 }

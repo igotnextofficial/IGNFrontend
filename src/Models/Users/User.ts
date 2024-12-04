@@ -95,6 +95,8 @@ class User{
                         if(session.mentee_id === mentee.id){
                             mentee.id = session.id
                             mentee.session_date = session.session_date
+                            mentee.mentorSession = session
+
                         }
                        
                     }); 
@@ -107,7 +109,8 @@ class User{
                     let response = await sendRequest(HttpMethods.POST,`${APP_ENDPOINTS.SESSIONS.BASE}/${user_data.id}/availability`,null,auth);
                     user_data.availability = response ? response.data['availability'] : false;
                 }
-             
+                
+                user_data.specialties = user_data.specialties || [];
                 user_data.mentees = mentees_with_sessions || [];
 
               }
@@ -190,6 +193,16 @@ class User{
         - Must contain at least one uppercase letter.`
         };
     }
+
+
+    priceValidation(){
+        return {
+            method: this.validatePrice,
+            valid: true,
+            message: ` `
+        };
+    }
+
     
     validatingRoles(value:string){
         // let choiceList = [Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT]
@@ -201,18 +214,38 @@ class User{
         return {method:this.validatingRoles,'valid':false,'message':'Please choose a role'}
     }
 
-    validateRegistrationForm():validationObject{
+    generalRegisterForm(){
         const validate:validationObject = {
             'fullname': this.fullnameValidation(),
             'email':  this.emailValidation(),
             'username': this.usernameValidation(),
             'password': this.passwordValidation(),
-            'role': this.roleValidation()
+            'price': this.priceValidation()
+        }
+        return validate
+    }
+    validateRegistrationForm():validationObject{
+        const validate:validationObject = {
+            ... this.generalRegisterForm(),
+            'role': this.roleValidation() 
         }
 
         return validate
     }
 
+
+    validateMentorRegistrationForm():validationObject{
+        const validate:validationObject = {
+            ... this.generalRegisterForm(),
+            'price': this.priceValidation()
+        }
+
+        return validate
+
+    }
+    validatePrice(value?:any,value2?:any){
+        return true
+    }
     validateLoginForm():validationObject{
         const validate:validationObject = {
             'email':  this.emailValidation(),
@@ -241,6 +274,24 @@ class User{
 
         return updatedField
     }
+
+
+    validationMentorIntialStates():FieldErrorMaintainerType {
+        let updatedField:FieldErrorMaintainerType = {};
+         [
+             UserFields.FULLNAME,
+             UserFields.USERNAME,
+            UserFields.EMAIL,
+            UserFields.PASSWORD,
+            UserFields.PRICE
+        ].forEach(field => {
+            let currentField = field.toLocaleLowerCase()
+            updatedField[currentField] = {"valid":false,"message":""}
+        })
+
+        return updatedField
+    }
+
 
     async register(data:httpDataObject){
         try{

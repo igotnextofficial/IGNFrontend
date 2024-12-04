@@ -1,5 +1,5 @@
 import { ReactNode,useState,useEffect,useMemo } from "react";
-import { ArticleDataType } from "../types/DataTypes";
+import { ArticleDataType, HttpMethods } from "../types/DataTypes";
 import Article from "../models/users/Article";
 import { ArticleContext } from "../contexts/ArticleContext";
 import { FetchMode,Categories } from "../types/ArticleFetchMode";
@@ -31,13 +31,19 @@ interface ArticleProviderProps {
     const [userArticles, setArticles] = useState<ArticleDataType >(Article.defaultResponse);
     const [articleList,setArticleList] = useState<ArticleDataType[] | null>(null)
     const [error, setError] = useState<Error | null>(null); // To handle any errors during fetching
-    const {data,loading, responseStatus,setUrl,setSendRequest} = useFetch({method:"GET"});
+    const {data,loading, responseStatus,setSendRequest,fetchData} = useFetch({method:"GET"});
 
     const local_storage = new LocalStorage();
     
     useEffect(() => {
-      setUrl(endpoints[mode]);
-      setSendRequest(true);
+      const retrieveData = async () => { 
+        let response = await fetchData(endpoints[mode],HttpMethods.GET,{},"{}");
+        return response
+       }
+
+      retrieveData();
+      
+ 
     },[category,id])
 
     useEffect(() => {

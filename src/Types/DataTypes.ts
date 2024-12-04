@@ -229,7 +229,7 @@ export interface PaymentInformation{
 
 export interface validationObject {
     [key:string]:{
-        method:(value:any,value2?:any) =>  boolean, 
+        method:(value?:any,value2?:any) =>  boolean, 
         valid:boolean,
         message:string
     }

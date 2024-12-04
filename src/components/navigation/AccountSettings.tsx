@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Avatar, Box, IconButton, Tooltip, Menu, MenuItem, Typography, Grid } from '@mui/material';
 
@@ -61,7 +62,7 @@ const AccountSettings = () => {
                 <Avatar alt={user?.fullname} src={user?.profile_photo_path} />
               </IconButton>
             </Grid>
-            <Grid item> <Typography>Welcome, {user?.fullname} </Typography></Grid>
+            <Grid item> <Typography sx={{color:"#1d1917"}}>Welcome, {user?.fullname} </Typography></Grid>
           </Grid>
 
         </Tooltip>
@@ -104,10 +105,12 @@ const AccountSettings = () => {
         >
 
           {settings.map(({ title, slug }) => (
+            <Link to={slug}>
             <MenuItem key={slug} onClick={handleCloseUserMenu}>
 
               <CreateLink title={title} slug={slug} />
             </MenuItem>
+            </Link>
           ))}
 
         </Menu>

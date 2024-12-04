@@ -3,6 +3,8 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
 
+import { getUpcomingSessionWithinMax  } from "../../../utils/SessionsDates";
+
 import { MentorDataType, MenteeDataType } from "../../../types/DataTypes";
 
 import CardContentComponent from "../../../helpers/CardContentComponent";
@@ -14,43 +16,9 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule'; // Grid icon
 import ViewListIcon from '@mui/icons-material/ViewList'; // List icon
 import NoDataAvailable from "../../../utils/NoDataAvailable";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 
-function formatDate(date:Date) {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const suffixes = ["th", "st", "nd", "rd"];
-  
-    
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    // const year = date.getFullYear();
-    let hour = date.getHours();
-    // const minutes = date.getMinutes();
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-  
-    hour = hour % 12;
-    hour = hour ? hour : 12; // the hour '0' should be '12'
-    
-    const daySuffix = (day % 10 <= 3 && ![11, 12, 13].includes(day % 100)) ? suffixes[day % 10] : suffixes[0];
-  
-    return `${month} ${day}${daySuffix} at ${hour}${ampm.toLowerCase()}`;
-  }
-  
-
-
-  const getUpcomingSessionWithinMax = (mentee:MenteeDataType,max:number):MenteeDataType | null => {
-    const today = dayjs()
-    const maximumDate = dayjs().add(max,'day')
-    const upcomingSession = dayjs(mentee.session_date);
-    if( ((upcomingSession < today) || (upcomingSession > maximumDate)) ){return null}
-    const readableDate = formatDate(new Date(mentee.session_date));
-        let updatedDate = {session_date:readableDate}
-        let updateData = {...mentee,...updatedDate}
-
-
-        return updateData;
-  }
-  
 
 
 const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
@@ -85,13 +53,26 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                         
                         data.map(mentee => {
                             if(!mentee.session_date){return null}
+                                let session_link = "";
                                 let updateData =  getUpcomingSessionWithinMax(mentee,30) 
                                 if(!updateData){return null}
-
+                                
+                                if(mentee.mentorSession && mentee.mentorSession.length > 0){
+                                    let upcomingSession = mentee.mentorSession?.filter((session) => {
+                                        return (dayjs(session.nextSession).isAfter(dayjs()) || dayjs(session.nextSession).isSame(dayjs())) 
+                                    })
+                                    if( upcomingSession && upcomingSession.length > 0){
+                                        session_link = upcomingSession[0].session_link || ""
+                                    }
+                                }
                             return (
-                                <Grid item key={mentee.id} xs={12} sm={6} md={4}> {/* item specifies a grid item. xs, sm, md, etc., determine the size of the item across different screen sizes */}
-                                {gridView ? <CardContentComponent data={updateData} /> : <ListContentComponent data={updateData} />}
-                            </Grid>
+                                 
+                                <Grid item key={mentee.id} xs={12} sm={6} md={4} > {/* item specifies a grid item. xs, sm, md, etc., determine the size of the item across different screen sizes */}
+                                    {gridView ? <CardContentComponent data={updateData} /> : <ListContentComponent data={updateData} /> }
+                                    {dayjs(mentee.session_date).isSame(dayjs()) &&  <Link to={""}> Join Session with {mentee.fullname}</Link> }
+                                </Grid>
+                              
+                          
                             )
                         })}
                     </Grid>

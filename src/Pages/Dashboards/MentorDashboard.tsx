@@ -30,7 +30,7 @@ const MentorDashboard = ()=>{
     const {user}  = useUser()
     const [data,setData] = useState<listDisplayDataType>()
     useEffect(()=>{
-        if(user && 'specialties' in user){
+        if(user !== null){
             setData({
                 title:`${user?.fullname}'s Mentor Dashboard`,
                 image_url:user?.profile_photo_path ?? "",
