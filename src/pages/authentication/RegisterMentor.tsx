@@ -50,19 +50,17 @@ const RegisterDisplay = ()=>{
         method:HttpMethods.POST} );
 
 
-        useEffect(() => {
-            console.log(`the product url is : ${APP_ENDPOINTS.PRODUCTS.BASE}`)
-        },[])  
+   
 
     useEffect(() => {
         if(success){
- 
+          
             const createProduct = async (response:Record<string,any>) => {
           
                 const data:Record<string,any> = {
                     id: response.data.id,
                     name: `mentorship:${response.data.username}`,
-                    desctiption: `IGN Mentor: ${response.data.name}`,
+                    desctiption: `IGN Mentor: ${response.data.username}`,
                     default_price_data: {
                         currency: 'usd',
                         unit_amount: price +'00',
@@ -81,10 +79,9 @@ const RegisterDisplay = ()=>{
                 //  log the error 
             })
             
-            console.log('responded_with ')
-            console.log(data)
+          
         }
-    },[success,price])
+    },[success ])
 
     useEffect(() => {
         // console.log(`login is now ${isLoggedin} and user is ${user}`)
@@ -96,13 +93,13 @@ const RegisterDisplay = ()=>{
 
     const handleSubmit = async (event:  React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        console.log("handle submit is valid: ",isValid)
+ 
         if(isValid){
             data['role'] = "mentor";  
-            console.log(`sending data ${JSON.stringify(data)}`)
+            
            const data_response = await RegisterUserAttempt({data});
            if (data_response) {
-            console.log(`setting the price to be ${data_response.data['price']}`)
+ 
            setPrice(data['price'])
             setResponse(data_response);
             setSuccess(true);
@@ -112,8 +109,7 @@ const RegisterDisplay = ()=>{
                 
             }
         } else {
-            console.log("Issues with registering user");
-            console.log(data)
+          
             updateError?.("Issues with registering user");
         }
        

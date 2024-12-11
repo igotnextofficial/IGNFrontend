@@ -11,6 +11,9 @@ import FormDataProvider from "../providers/FormDataProvider";
 
 import { getFormData, sendRequest } from "../utils/helpers";
 import { APP_ENDPOINTS } from "../config/app";  
+import { MentorFormStructure } from "../formstructures/MentorFormStructure";
+import { ArtistFormStructure } from "../formstructures/ArtistFormStructure";
+import { spec } from "node:test/reporters";
 
 
 
@@ -19,15 +22,37 @@ const Profile = () => {
     const { data } = useFormDataContext()
     const [formStructure,setFormStructure] = useState<structureDataType[]>([])
     const [successfulUpdate,setSuccessfulUpdate] = useState(false)
+    const structures:Record<string,structureDataType[]> = {
+        "artist": ArtistFormStructure,
+        "mentor": MentorFormStructure,
+        "default": ArtistFormStructure
+    }
   
     useEffect(() => {
-        const artist = new Artist()
-        let userFormStructure = artist.structure as structureDataType[];
+        const user_type = user?.role?.type ?? "default";
+
+        let userFormStructure = structures[user_type];
         for(const structure of userFormStructure){
             if(user && structure.label in user){
-                structure.default = user[structure.label]
+              
+                if((typeof user[structure.label]) !==  "string"){
+                    let intial_data = user[structure.label];
+         
+                    let intial_data_to_string = intial_data.map((item:any)=>item.name).join(",") 
+                    structure.default = intial_data_to_string;
+                    
+                }
+                else{
+                    
+                    structure.default = user[structure.label];
+                }
+               
             }
         }
+        
+
+        console.log(JSON.stringify(userFormStructure,null,2))
+        
         setFormStructure(userFormStructure)
     },[user])
 
@@ -54,6 +79,7 @@ const Profile = () => {
 
         for(const key in data){
             if(key !== 'media'){
+         
                 data_to_send[key] = data[key]
             }
         }

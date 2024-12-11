@@ -30,7 +30,7 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     };
 
     useEffect(() => {
-        console.log(`The user ${JSON.stringify(user)} should be here with mentees ${JSON.stringify(user.mentees, null, 2)}`)
+   
         if(user && user.mentees){
             setData(user.mentees)
         }

@@ -1,15 +1,22 @@
 ## Current To do List
-- [] make sure all forms are submitting their data correctly
-- [] set up 404 page
-- [] Add calendly or some sort of scheduling system for mentors, check google api 
-- [] genre list needs to be set up on the backend so when a user is pulled in so is the genre i can handle this on the shieldAuthService.
-- [] consider allowing number in username lol it looks tacky plus would an artist be named <artist-name>123? lol
-- [] Artist edit profile shoild show a count so users know how long their bio can be and the like.
-- [] in the dropdown, account should be changed to edit-profile
-- [] Find a mentor page needs to be adjusted to pull in the mentors from the db (this data should be cached.)
-- [] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
-- [] set up forgot password
-- []drop down for account holder does not go to new page unless texst is clicked directly, fix
+### High Priority
+    - [] protect register-mentor page so only admin can access   
+    - [] set up forgot password
+    - [] Add specialties list for mentors.
+    - [] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
+    - [] set up 404 page
+    - [] Add calendly or some sort of scheduling system for mentors, check google api 
+    - [] genre list needs to be set up on the backend so when a user is pulled in so is the genre i can handle this on the shieldAuthService.
+    - [] Artist edit profile should show a count so users know how long their bio can be and the like.
+    - [] make sure all forms are submitting their data correctly
+
+
+    ### Low Priority
+    - [] Once the session happens their should be a list of past sessions for the users to view. ? (What is the benefits?)
+    - [] in the dropdown, account should be changed to edit-profile
+    - [] consider allowing number in username lol it looks tacky plus would an artist be named <artist-name>123? lol
+    - [] Find a mentor page needs to be adjusted to pull in the mentors from the db (this data should be cached.)
+
 
 ## Upcoming updates
 
@@ -55,6 +62,8 @@
     
 ## Completed
 #### FBFAF9 BG Color
+- [x] Allow Mentors to set their price per 6 sessions
+- [x] setup stripe payment API
 - [x] Add Fake Data, Articles,admin 
 - [x] make sure pagination is setup
 - [x] add expiration time to tokens
@@ -81,3 +90,8 @@ Editor Component
 - [x] sign up page role list should only allow a subscriber and a artist, Mentors will be created internally by an admin user.
 - [x] once a user books a mentor and that mentor is pending approval then it should remain this way on all page (text "pending approval should remain")
 - [x] when i have the session displaying it should have a link to enter the meeting, if it is like 5 mins before the scheduled meeting.
+- [x] on the upcoming session should be a link for the mentor to be able to join the session. 
+- [x] UpcomingSessions.tsx function to display date needs to be redone (formatDate func)
+- [x] export getUpcomingSessionWithinMax() func to be reused by other components
+- [x] bio should default to empty string not null
+- [x]drop down for account holder does not go to new page unless text is clicked directly, fix

@@ -8,15 +8,17 @@ import TextField from '@mui/material/TextField';
 import ListMentors from "../../components/users/mentor/ListMentors"
 import CategorySelection from "./CategorySelection"
 import DisplayMentorDropdown from "./DisplayMentorsDropdown"
+import { useUser } from "../../contexts/UserContext";
 
 
-const mentorObject = new Mentor()
-const allMentors = mentorObject.getAll();
+// const mentorObject = new Mentor()
+// const mentors = mentorObject.getAll();
 
 
 
 const SearchInputField = ({ handleChange }: { handleChange: (data: string) => void }) => {
     const [inputValue, setInputValue] = useState("")
+   
 
     useEffect(() => {
         handleChange(inputValue)
@@ -49,10 +51,11 @@ const SearchInputField = ({ handleChange }: { handleChange: (data: string) => vo
 const DisplaySearchField = ({ byCategory = false }) => {
     const [mentorsList, setMentorsList] = useState<MentorDataType[]>([]);
     const [specialtySelection, setSpecialtySelection] = useState<string[]>([]);
+    const {mentors} = useUser()
 
     useEffect(() => {
         let mentorListSet: MentorDataType[] = []
-        allMentors.filter((mentor) => {
+        mentors?.filter((mentor) => {
             for (const specialty of mentor.specialties) {
                 if (specialtySelection.includes(specialty)) {
                     mentorListSet.push(mentor)
@@ -70,11 +73,11 @@ const DisplaySearchField = ({ byCategory = false }) => {
     }, [specialtySelection])
 
     const handleChangeForMentorList = (data: string) => {
-        let searchedMentorList = data.trim().length === 0 ? [] : allMentors.filter((mentor) => {
+        let searchedMentorList = data.trim().length === 0 ? [] : mentors?.filter((mentor) => {
             return mentor.fullname.toLowerCase().startsWith(data.toLowerCase())
         })
 
-        setMentorsList(searchedMentorList)
+        setMentorsList(searchedMentorList || [])
 
     }
 

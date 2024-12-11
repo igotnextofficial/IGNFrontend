@@ -43,7 +43,7 @@ const ProfileTopSection = () => {
                         >
                        
                           {role === "artist" && 'genre' in user ? `Genre: ${ user.genre }` : ''}
-                          {role === "mentor" ? `specialties: ${(user as MentorDataType).specialties.join(",")}` : ''}
+                          {role === "mentor" ? `specialties: ${(user as MentorDataType).specialties.join(", ")}` : ''}
                         </Typography>
                     </React.Fragment>
                     }

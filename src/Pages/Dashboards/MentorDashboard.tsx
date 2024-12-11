@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react"
 
-import { MentorDataType } from "../../types/DataTypes"
+import { HttpMethods, MentorDataType } from "../../types/DataTypes"
 import { useUser } from "../../contexts/UserContext"
 import { listDisplayDataType } from "../../types/DataTypes"
 import TopProfileSectionComponent from "../../helpers/TopProfileSectionComponent"
@@ -16,6 +16,9 @@ import OpenUpForSessions from "../../components/users/mentor/OpenUpForSessions"
 import NotesFeedback from '../notes/NotesFeedback'
 
 import DashboardSectionBorder from "../../components/users/mentor/DashboardSectionComponentWithBorder"
+import LocalStorage from "../../storage/LocalStorage"
+import useFetch from "../../customhooks/useFetch"
+import { APP_ENDPOINTS } from "../../config/app"
 
 
 
@@ -28,14 +31,39 @@ import DashboardSectionBorder from "../../components/users/mentor/DashboardSecti
 
 const MentorDashboard = ()=>{
     const {user}  = useUser()
+    const {fetchData} = useFetch()
     const [data,setData] = useState<listDisplayDataType>()
+    useEffect(()=>{
+        const loadSpecialties = async ()=>{
+            const response = await fetchData(APP_ENDPOINTS.GENERIC.SPECIALTIES)
+          
+            if(response !== null){
+                const specialties = response.data.map((item:any)=>item.name)
+                local_storage.save("specialties",specialties)
+            }else{
+                throw new Error("issue loading specialties")
+            }
+        }
+        const local_storage = new LocalStorage();
+        if(!local_storage.hasItem("specialties")){
+              loadSpecialties().then(()=>{
+              }).catch((e)=>{
+              
+              })
+        }
+        else{
+            console.log("specialties already loaded")
+            console.log(local_storage.load("specialties"))
+        }  
+        
+    },[])
     useEffect(()=>{
         if(user !== null){
             setData({
                 title:`${user?.fullname}'s Mentor Dashboard`,
                 image_url:user?.profile_photo_path ?? "",
                 subtitle: "", 
-                meta:`specialties: ${user.specialties.join(",")}` 
+                meta:`specialties: ${user.specialties.join(", ")}` 
              })
         }
 

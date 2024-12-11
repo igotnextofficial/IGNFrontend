@@ -1,7 +1,8 @@
 import React, {  useEffect,useState } from "react"
 import { structureDataType, displayType } from "../types/DataTypes"
-import {SelectChangeEvent,RadioGroup,InputLabel, Radio, Grid, TextField, FormControlLabel,MenuItem,Select, FormLabel, FormControl } from "@mui/material"
+import {SelectChangeEvent,RadioGroup,InputLabel, Radio, Grid, TextField, FormControlLabel,MenuItem,Select, FormLabel, FormControl,FormGroup, Checkbox } from "@mui/material"
 import { useFormDataContext } from "../contexts/FormContext"
+ 
 
 
 
@@ -24,10 +25,15 @@ const Generate = ({ formStructures }: { formStructures: structureDataType[] }) =
 
 const FieldOutput = ({ structure }: { structure: structureDataType }) => {
     const { updateFormData,updateFileData,hasError } = useFormDataContext()
-    const [dataValue,setDataValue] = useState(structure.default ?? "")
+    const [dataValue, setDataValue] = useState("")
     const [current_key,setCurrentKey] = useState("")
+ 
+    useEffect(() => {
+        setDataValue(structure.default ?? "")
+  
+    },[])
 
-
+ 
     useEffect(() => {
         setCurrentKey(structure.label.toLowerCase())
     },[structure.label])
@@ -89,12 +95,37 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
 
      }
 
-    //     if (display === displayType.MultiChoiceList) {
+        if (structure.display === displayType.MultiChoiceList) {
 
-    //         return (<FormGroup>
-    //             <FormControlLabel control={<Checkbox />} label="Required" />
-    //         </FormGroup>)
-    //     }
+            return (
+                <Grid container>
+            
+                        {       structure.options?.map((option, index) => (
+                                <Grid key={index} item xs={4}>
+                                    <FormControlLabel  value={option} control={<Checkbox onChange={(e) => {
+                                        let current_selection = e.target.value;
+                        
+                                        let current_value_as_array = dataValue.split(',');
+                                        console.log(`Current value as array ${current_value_as_array}`)
+
+                                        if(current_value_as_array.includes(current_selection)){
+                                            current_value_as_array = current_value_as_array.filter((item) => item !== current_selection)
+                                        }else{
+                                            current_value_as_array.push(current_selection)
+                                        }
+                                        const data_to_string = current_value_as_array.filter(item => item.trim() !== "").join(',');
+                                        setDataValue(current_value_as_array.join(','))
+                                        updateFormData(current_key,data_to_string)
+                              
+                                    }} />} label={option} />
+                                </Grid>
+                            ))
+                        }
+           
+                    
+                </Grid>
+            );
+        }
 
     if(structure.display === displayType.DropDown){
         return (
@@ -104,6 +135,7 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
                     labelId='role-label' 
                     value={dataValue} label="Role" 
                     onChange={(event: SelectChangeEvent<typeof dataValue>) => {
+                        
                         setDataValue(event.target.value) 
                         updateFormData(current_key,event.target.value)
                     }}

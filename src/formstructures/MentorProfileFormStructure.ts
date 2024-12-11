@@ -3,11 +3,9 @@ import LocalStorage from "../storage/LocalStorage"
 
 const local_storage = new LocalStorage();
 const Specialties = local_storage.load("specialties") ?? []
- 
-
-export const MentorFormStructure = [
+export const MentorProfileFormStructure = [
     {
-      label: "fullname",
+      label: "name",
       visibility: true,
       display: displayType.InputValue,
 
@@ -21,8 +19,8 @@ export const MentorFormStructure = [
     {
 
       label: "image",
-      visibility: true,
-      display: displayType.Image,
+      visibility: false,
+      display: displayType.InputValue,
       placeholder: "",
       props:{
         id:"image",
@@ -33,17 +31,17 @@ export const MentorFormStructure = [
     },
     {
 
-      label: "specialties",
-      visibility:true,
-      display: displayType.MultiChoiceList,
-      placeholder: "specialties",
-      props:{
-        id:"specialties",
-        placeholder:"specialties"
+        label: "specialties",
+        visibility:true,
+        display: displayType.MultiChoiceList,
+        placeholder: "specialties",
+        props:{
+          id:"specialties",
+          placeholder:"specialties"
+        },
+        options: [...Specialties],
+        order:3
       },
-      options: [...Specialties],
-      order:3
-    },
   
     {
 
@@ -57,6 +55,6 @@ export const MentorFormStructure = [
       },
       order:4
 
-    }
+    },
 
   ]

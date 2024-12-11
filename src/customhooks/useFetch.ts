@@ -31,36 +31,37 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
   
 
 
-    const fetchData = useCallback(async ( url:string,method:HttpMethods,headers:Record<string,any>,data:string|Record<string,any> ,has_media=false ) => {
+    const fetchData = useCallback(async ( url:string,method:HttpMethods = HttpMethods.GET,headers:Record<string,any> = {},data:string|Record<string,any> = {} ,has_media=false ) => {
 
         setLoading(true); // Set loading state before fetching
-        console.log(`making a request  to ${url} with method ${method} and data ${data}`)
         const application_headers = new Headers()
         // add all headers to the request
         for(const key in headers){
             application_headers.append(key,headers[key])
         }
+        
         try {
-            let passed_data = null;
-            if(has_media){
-                passed_data = data as FormData;
+            const payload:Record<string,any> = {method:method,headers:application_headers}
+
+            if(method !== HttpMethods.GET){
+                let passed_data = null;
+                if(has_media){
+                    passed_data = data as FormData;
+                }
+                else{
+                    passed_data =  typeof data === 'string' ? data : JSON.stringify(data);
+                }
+                payload['body'] = passed_data
             }
-            else{
-                passed_data =  typeof data === 'string' ? data : JSON.stringify(data);
-            }
-             
-            const response = await fetch(url, {
-                
-                method,
-                headers: application_headers,
-                body:  passed_data
-                   
-            });
+            
+            const response = await fetch(url, payload );
 
             const responseData = await response.json();
             setData(responseData);
             setResponseStatus(response.status);
+            return responseData;
         } catch (error) {
+ 
             const customError = error as CustomError;
             if (customError && customError.response) {
                 if (customError.response.data.errors) {
@@ -72,6 +73,7 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
         } finally {
             setLoading(false);
         }
+        return null
       
     }, []);
 

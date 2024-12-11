@@ -14,7 +14,7 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
     const [, setFile] = useState<Record<string, File> | null>(null);
     const [hasError,setHasError] = useState<FieldErrorMaintainerType>(formKeys ?? {}  )
     const [isValid,setIsValid] = useState(false);
-    
+ 
     useEffect(() => {
         let valids = []
         for(const fieldKey in formKeys){
@@ -31,8 +31,10 @@ const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,
     },[hasError])   
     const updateData = useCallback((key:string,value:string)=>{
         try{
+            console.log(`updating ${key} with ${value}`)
             let current_key = key.toLowerCase()
             if(validations){
+                
                 let results = validations[current_key].method(value)
                 let error_message = ""
                 

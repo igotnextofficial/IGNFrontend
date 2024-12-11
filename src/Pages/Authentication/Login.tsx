@@ -41,8 +41,10 @@ const LoginDisplay = ()=>{
         if(isValid){
 
             const response = await attemptLoginOrLogout(true,{data})
-    
+           
             if(!response){
+                console.log("issue with logging in user")
+                console.log(JSON.stringify(response))
                 updateError("Issue with logging in user ")
             }
         }
@@ -65,7 +67,7 @@ const LoginDisplay = ()=>{
                 <Grid container component="main" sx={{ height:'100vh' }} xs spacing={2}>
                     <CssBaseline/>
                     <Grid item xs={0} sm={0} md={0}>
-                        <BackgroundCoverImage url="https://localhost:3000/images/login.jpg" />
+                        <BackgroundCoverImage url="https://localhost:3000/images/login.jpg" />  
                     </Grid>
                     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                         <Box sx={{ my: 8, mx: 4,position:'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', }} >

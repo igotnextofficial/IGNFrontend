@@ -110,7 +110,7 @@ class User{
                     user_data.availability = response ? response.data['availability'] : false;
                 }
                 
-                user_data.specialties = user_data.specialties || [];
+                user_data.specialties = user_data.specialties.map((specialty : Record<string,string>) => specialty.name) || [];
                 user_data.mentees = mentees_with_sessions || [];
 
               }
@@ -125,7 +125,7 @@ class User{
             return  response;
         }
         catch(error){
-  
+            console.log(`an error in the process somewhere : ${error}`);
             return null
         }
 

@@ -8,8 +8,7 @@ import { ErrorContext } from "../../contexts/ErrorContext";
 const ErrorComponent = () =>{
        const { error  } =  useContext(ErrorContext);
     useEffect(() => {
-        console.log("error message changed")
-        console.log(error)
+     
     }, [error])
   
     return (

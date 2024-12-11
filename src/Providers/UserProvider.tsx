@@ -1,13 +1,16 @@
 import  { useState, ReactNode, useRef, useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
 import User from "../models/users/User";
+import useFetch from "../customhooks/useFetch";
 import { socket } from "../socket";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../types/DataTypes";
 import LocalStorage from  "../storage/LocalStorage";
 import axios from "axios";
+import { APP_ENDPOINTS } from "../config/app";
 // import { useHttpRequest } from "../Contexts/HttpRequestContext";
 
 import { Endpoints } from "../config/app";
+import { get } from "node:http";
 
 
 // interface ApiErrorResponse extends Error {
@@ -102,9 +105,52 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
+    const {fetchData} = useFetch();
+    const [mentors, setMentorData] = useState<MentorDataType[] | null>(null);
+    const [artists, setArtistData] = useState<ArtistDataType[] | null>(null);
     // const {updateUrl} = useHttpRequest("")
    
-    
+    useEffect(() => {
+            getUsersData("mentors",APP_ENDPOINTS.USER.MENTORS).then((response) => {
+                if(response){
+                    let data = response.map((mentor:MentorDataType) => {
+                        mentor.specialties = mentor.specialties.map((item:any)=>item.name)
+                        return mentor
+                    })
+                    console.log(`mentors ${response}`);
+                    setMentorData(data)
+                }
+            })
+
+            getUsersData("artists",APP_ENDPOINTS.USER.ARTIST).then((response) => {
+                if(response){
+                   
+                    setArtistData(response)
+                }
+            })
+    }, []);
+
+  
+    async function getUsersData (data_to_load:string,endpoint:string){
+        let local_storage = new LocalStorage();
+        let userData = local_storage.load(data_to_load);
+        let users;
+        if(userData){
+            console.log("loading mentors from storage")
+            users= userData;
+            console.log(users)
+        }
+        else{
+            console.log("loading mentors from api")
+            await fetchData(endpoint).then((response) => {
+                if(response){
+                    users = response.data;
+                    // local_storage.save(data_to_load,users)
+                }
+            })
+        }
+       return users;
+    }
     useEffect(() => { 
         
         const attemptRefreshToken = ( async ( user_information:Record<string,string>) => {
@@ -193,14 +239,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
             if (response) {
                 const user_data = {...response.data['data']}
-      
                 const access_token =  response.data['access_token']
-           
                 setAccessToken(access_token);
-
                 setUser(user_data as UserDataType); // Assuming response.data is the user data
                 setIsLoggedin(true);
-          
                 return true;
             }
         } else {
@@ -362,7 +404,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     
 
     return (
-        <UserContext.Provider value={{ user, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken }}>
+        <UserContext.Provider value={{ user,mentors,artists, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken }}>
             {children}
         </UserContext.Provider>
     );

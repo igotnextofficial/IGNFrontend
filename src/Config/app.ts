@@ -10,24 +10,31 @@ export const Endpoints = {
     LOGOUT: process.env.REACT_APP_LOGOUT_API || "",
     MEDIA: process.env.REACT_APP_MEDIA_API || "",
     REFRESH_TOKEN: process.env.REACT_APP_AUTH_REFRESH_API_URL || "",
-    PRODUCTS: process.env.REACT_APP_PRODUCT_API || ""
+    PRODUCTS: process.env.REACT_APP_PRODUCT_API || "",
+    SPECIALTIES: process.env.REACT_APP_SPECIALTIES_API || "",
+    GENRE: process.env.REACT_APP_GENRE_API || "",
 }
 
 
 export const APP_ENDPOINTS = {
+    GENERIC:{
+        SPECIALTIES: Endpoints.SPECIALTIES,
+        GENRE: Endpoints.GENRE,
+    },
     USER: {
         BASE: Endpoints.USER,
       
         SINGLE: `${Endpoints.USER}/`,
-        MENTORS: `${Endpoints.USER}/role/9d4eab70-b242-46e8-aab0-cd93fd5e5ac9`,
+        MENTORS: `${Endpoints.USER}/role/mentor`,
         MENTEE: `${Endpoints.USER}/mentee`,
-        ARTIST: `${Endpoints.USER}/artist`,
+        ARTIST: `${Endpoints.USER}/role/artist`,
         ADMIN: `${Endpoints.USER}/admin`,
         ALL: `${Endpoints.USER}/all`,
         BATCH: `${Endpoints.USER}/batch`,
         LOGIN: `${Endpoints.USER}/login`,
         LOGOUT: `${Endpoints.USER}/logout`,
     },
+   
     ARTICLES: {
         BASE: Endpoints.ARTICLES,
         ALL: `${Endpoints.ARTICLES}/all`,

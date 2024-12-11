@@ -1,7 +1,13 @@
 import { displayType } from "../types/DataTypes"
+import LocalStorage from "../storage/LocalStorage"
+
+const local_storage = new LocalStorage();
+const Specialties = local_storage.load("specialties") ?? []
+ 
+
 export const MentorFormStructure = [
     {
-      label: "name",
+      label: "fullname",
       visibility: true,
       display: displayType.InputValue,
 
@@ -15,8 +21,8 @@ export const MentorFormStructure = [
     {
 
       label: "image",
-      visibility: false,
-      display: displayType.InputValue,
+      visibility: true,
+      display: displayType.Image,
       placeholder: "",
       props:{
         id:"image",
@@ -24,6 +30,19 @@ export const MentorFormStructure = [
       },
       order:2
 
+    },
+    {
+
+      label: "specialties",
+      visibility:true,
+      display: displayType.MultiChoiceList,
+      placeholder: "specialties",
+      props:{
+        id:"specialties",
+        placeholder:"specialties"
+      },
+      options: [...Specialties],
+      order:3
     },
   
     {
@@ -36,7 +55,7 @@ export const MentorFormStructure = [
         label:"bio",
         variant:"filled"
       },
-      order:3
+      order:4
 
     }
 

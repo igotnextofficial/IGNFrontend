@@ -63,12 +63,12 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
 
 
   return (
-    <Card sx={{ maxWidth: 345, marginBottom:"3rem" }}>
+    <Card sx={{ minWidth: 345, marginBottom:"3rem" }}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="350"
-          image={mentor.profile_photo_path}
+          image={mentor.profile_photo_path || '/images/default_male_image.jpg'}
           alt={mentor.fullname}
         />
         <CardContent>
@@ -84,9 +84,9 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
         <Grid container>
             <Grid item>
         
-            <Button size="small" color= "primary" data-src={mentor.id} onClick={(event) => handleBooking(event)} disabled={buttonLabel === "Current Mentor" || buttonLabel === "Pending Approval"}>
+            {user && <Button size="small" color= "primary" data-src={mentor.id} onClick={(event) => handleBooking(event)} disabled={buttonLabel === "Current Mentor" || buttonLabel === "Pending Approval"}>
  {buttonLabel}
-</Button>
+</Button>}
 
             </Grid>
             <Grid item>
