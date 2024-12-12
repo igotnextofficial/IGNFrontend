@@ -106,8 +106,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
     const {fetchData} = useFetch();
-    const [mentors, setMentorData] = useState<MentorDataType[] | null>(null);
-    const [artists, setArtistData] = useState<ArtistDataType[] | null>(null);
+    const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
+    const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
     // const {updateUrl} = useHttpRequest("")
    
     useEffect(() => {
@@ -117,14 +117,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                         mentor.specialties = mentor.specialties.map((item:any)=>item.name)
                         return mentor
                     })
-                    console.log(`mentors ${response}`);
                     setMentorData(data)
                 }
             })
 
             getUsersData("artists",APP_ENDPOINTS.USER.ARTIST).then((response) => {
                 if(response){
-                   
+                   response = response.map((artist:Record<string,any>) => {
+                        artist.genre = artist.genre.name
+                        return artist
+                   })
                     setArtistData(response)
                 }
             })

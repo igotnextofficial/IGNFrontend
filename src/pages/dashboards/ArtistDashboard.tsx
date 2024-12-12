@@ -20,6 +20,9 @@ import ListMentors from '../../components/users/mentor/ListMentors'
 import NoDataAvailable from '../../utils/NoDataAvailable'
 import NotesFeedback from '../notes/NotesFeedback'
 
+import { APP_ENDPOINTS } from '../../config/app'
+import useFetch from '../../customhooks/useFetch'
+import LocalStorage from '../../storage/LocalStorage'
 
 
 
@@ -44,12 +47,37 @@ const DefaultMessaging = () => {
 
 
 const ArtistDashboard = () => {
-    const { user  } = useUser() 
+    const { user  } = useUser()
+    const {fetchData} = useFetch() 
  
    
-    useEffect(() => {
-        // { console.log(JSON.stringify(user))}
-    }, [])
+    
+        useEffect(()=>{
+            const loadGenres = async ()=>{
+                const response = await fetchData(APP_ENDPOINTS.GENERIC.GENRE)
+              
+                if(response !== null){
+                    const  genres = response.data.map((item:any)=>item.name)
+                    local_storage.save("genres",genres)
+                }else{
+                    throw new Error("issue loading genres")
+                }
+            }
+            const local_storage = new LocalStorage();
+            if(!local_storage.hasItem("genres")){
+                  loadGenres().then(()=>{
+                    console.log('loading genres')
+                  }).catch((e)=>{
+                    console.log(`Error loading genres ${e}`)
+                  })
+            }
+            else{
+                console.log("specialties already loaded")
+                console.log(local_storage.load("genres"))
+            }  
+            
+        },[])
+  
  
     if (!user) {
         return <Typography>User not found or not logged in</Typography>;
