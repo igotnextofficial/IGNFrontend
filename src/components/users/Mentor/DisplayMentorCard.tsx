@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Grid ,Button, CardActionArea, CardActions } from '@mui/material';
+import { Grid ,Button, CardActionArea, CardActions, Box } from '@mui/material';
 import { HttpMethods, MentorDataType } from '../../../types/DataTypes';
 
 
@@ -18,7 +18,7 @@ const labels = {
   "default": "Book Mentor"
 
 }
-const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
+const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType,withoutInfo?:boolean}) => {
   const {user,accessToken}= useUser()
   const [buttonLabel, setButtonLabel] = useState(labels.default)
 
@@ -64,20 +64,31 @@ const DisplayMentorCard = ({mentor} : {mentor:MentorDataType}) => {
 
   return (
     <Card sx={{ minWidth: 345, marginBottom:"3rem" }}>
+      <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px",maxWidth:150, borderRadius:"5px",textAlign:'center'}}>
+      <Typography sx={{fontSize:14 ,color:"#FBFAF9"}} variant="button" color="text.secondary">
+           ${mentor.product.price} / 6 sessions
+          </Typography>
+      </Box>
       <CardActionArea>
         <CardMedia
           component="img"
           height="350"
           image={mentor.profile_photo_path || '/images/default_male_image.jpg'}
-          alt={mentor.fullname}
+          alt={mentor.fullname} 
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {mentor.fullname}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {mentor.bio}
+          <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px", borderRadius:"5px",textAlign:'center'}}>
+          <Typography sx={{color:"#FBFAF9"}} variant="body2" color="text.secondary">
+            Specialties: {mentor.specialties.join(", ")}
           </Typography>
+          </Box>
+          <Typography variant="body2" color="text.secondary">
+            {mentor.bio}   
+          </Typography>
+          
         </CardContent>
       </CardActionArea>
       <CardActions>

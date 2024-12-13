@@ -17,7 +17,7 @@ const loadData = async () => {
     }        
 }
 const ListMentors = () => {
-    const [mentors, setMentors] = useState<MentorDataType[]>([]); // Use useState to manage mentors state
+    const {mentors} = useUser() // Use useState to manage mentors state
     const [response,setResponse] = useState<httpDataObject | null>(null);
 
     const {accessToken} = useUser();
@@ -37,34 +37,16 @@ const ListMentors = () => {
       
 
     useEffect(() => {
-        if(response ){
-            try{
-                let response_data = response.data as MentorDataType[];
-                // console.log(`the response data is ${JSON.stringify(response_data)}`)
-                let data =  response_data.map(mentor => { 
-                    mentor.bio = `${mentor.bio?.substring(0,120)}...` 
-                    
-                
-                return mentor
-            })
-            setMentors(data as MentorDataType[])
-            }
-            catch(e){
-                // console.error(`Error loading mentors ${e}`)
-            }
-      
-        }
-
-
+ 
 
 
     }, [response]); // Empty dependency array means this effect runs once on mount
     return (
-        mentors.length === 0 ? (
+        mentors?.length === 0 ? (
             <NoDataAvailable/>
         ) : (
             <Grid container sx={styles.Container}>
-                {mentors.map((mentor, index) => (
+                {mentors?.map((mentor, index) => (
                     <Grid item sx={{ padding: "1rem" }} key={mentor.id || index}> 
                         <DisplayMentorCard mentor={mentor} />
                     </Grid>
