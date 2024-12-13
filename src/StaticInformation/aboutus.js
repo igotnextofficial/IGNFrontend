@@ -1,4 +1,4 @@
 export const AboutIGN = {
-    title:"Discovering IGN",
-    content:"IGN, short for 'Independent Global Network,' is a dynamic platform that celebrates the diversity and creativity within the music industry. We're passionate about showcasing independent musicians, artists, and bands from around the world. Our mission is to provide a stage for emerging talent, share insightful music news, and connect music enthusiasts. Join us on a journey to explore new sounds, discover fresh voices, and immerse yourself in the vibrant world of independent music."
+    title:"Discover Music, Build Connections, Grow Together",
+    content:"The platform where rising artists take center stage and connect with industry icons. At IGN, we are passionate about showcasing new talent, amplifying their stories, and fostering mentorship opportunities that drive collaboration across the music landscape. Our mission is to celebrate fresh voices, cultivate creativity, and bridge the gap between emerging talent and seasoned legends. Whether you’re here to discover groundbreaking music, learn from those who paved the way, or join a thriving community of music enthusiasts, IGN is your destination for inspiration, connection, and growth."
 }

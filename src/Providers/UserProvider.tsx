@@ -10,7 +10,7 @@ import { APP_ENDPOINTS } from "../config/app";
 // import { useHttpRequest } from "../Contexts/HttpRequestContext";
 
 import { Endpoints } from "../config/app";
-import { get } from "node:http";
+
 
 
 // interface ApiErrorResponse extends Error {
@@ -124,7 +124,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             getUsersData("artists",APP_ENDPOINTS.USER.ARTIST).then((response) => {
                 if(response){
                    response = response.map((artist:Record<string,any>) => {
-                        artist.genre = artist.genre.name
+    
                         return artist
                    })
                     setArtistData(response)

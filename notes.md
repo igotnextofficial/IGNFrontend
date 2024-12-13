@@ -2,7 +2,7 @@
 ### High Priority
     - [] protect register-mentor page so only admin can access   
     - [] set up forgot password
-    - [] Add specialties list for mentors.
+    - [x] Add specialties list for mentors.
     - [] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
     - [] set up 404 page
     - [] Add calendly or some sort of scheduling system for mentors, check google api 

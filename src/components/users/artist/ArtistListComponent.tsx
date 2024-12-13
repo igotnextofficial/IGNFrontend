@@ -9,7 +9,6 @@ import { useUser } from "../../../contexts/UserContext";
 const ArtistListComponent = () => {
     const ShowArtists = () =>{
         const {artists} = useUser();
-        let allArtists = new Artist()
     
         return(
             <Grid container sx={styles.ArtistContainer}>
