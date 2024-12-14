@@ -12,7 +12,7 @@ const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
         <>
         <Box sx={styles.mainContainer} >
                 <Box sx={styles.container}>
-                    <Avatar className="display-image-list-ign" src={artist.image} alt={artist.fullname} sx={{width:250, height:250}} />
+                    <Avatar className="display-image-list-ign" src={artist.profile_photo_path} alt={artist.fullname} sx={{width:250, height:250}} />
                     <Box sx={styles.pillHolder}>
                         <IgnPillComponent description={artist.genre} />
                     </Box>

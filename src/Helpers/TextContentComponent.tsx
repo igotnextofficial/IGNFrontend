@@ -9,6 +9,7 @@ export default TextContentComponent;
 const styles={
     content:{
         fontSize:"1.2rem",
+        textTransform:"capitalize"
   
     }
 }

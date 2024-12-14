@@ -45,9 +45,9 @@ const ListMentors = () => {
         mentors?.length === 0 ? (
             <NoDataAvailable/>
         ) : (
-            <Grid container sx={styles.Container}>
+            <Grid spacing={10} container sx={styles.Container}>
                 {mentors?.map((mentor, index) => (
-                    <Grid item sx={{ padding: "1rem" }} key={mentor.id || index}> 
+                    <Grid xs={12} sm={6} md={4} item sx={{ padding: "1rem" }} key={mentor.id || index}> 
                         <DisplayMentorCard mentor={mentor} />
                     </Grid>
                 ))}

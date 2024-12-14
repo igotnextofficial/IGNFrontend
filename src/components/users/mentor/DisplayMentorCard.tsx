@@ -73,20 +73,22 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
         <CardMedia
           component="img"
           height="350"
+          width={350}
+          
           image={mentor.profile_photo_path || '/images/default_male_image.jpg'}
           alt={mentor.fullname} 
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography sx={{textTransform:'capitalize'}} gutterBottom variant="h5" component="div">
             {mentor.fullname}
           </Typography>
-          <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px", borderRadius:"5px",textAlign:'center'}}>
+          <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px", borderRadius:"5px",textAlign:'center', margin:"20px 0"}}>
           <Typography sx={{color:"#FBFAF9"}} variant="body2" color="text.secondary">
             Specialties: {mentor.specialties.join(", ")}
           </Typography>
           </Box>
           <Typography variant="body2" color="text.secondary">
-            {mentor.bio}   
+            {mentor.bio?.slice(0,300)}...   
           </Typography>
           
         </CardContent>

@@ -38,7 +38,7 @@ const Profile = () => {
                 if((typeof user[structure.label]) !==  "string"){
                     let intial_data = user[structure.label];
          
-                    let intial_data_to_string = intial_data.map((item:any)=>item.name).join(",") 
+                    let intial_data_to_string = intial_data?.map((item:any)=>item.name).join(",") 
                     structure.default = intial_data_to_string;
                     
                 }
