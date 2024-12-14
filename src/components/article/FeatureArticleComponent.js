@@ -35,9 +35,11 @@ const GridArticle = ({ article }) => (
         textAlign: "center",
       }}
     >
+      <Link to={`/articles/${article.category.replaceAll(" ", "-")}/${article.id}`}>
       <Button variant="contained" sx={{ bgcolor: "#fd2f30", color: "#FBFAF9", "&:hover": { bgcolor: "#d8090a" } }}>
           Read More
         </Button>
+      </Link>
       <Typography  variant="subtitle1" sx={styles.title}>{article.title}</Typography>
     </CardContent>
   </Card>
@@ -59,8 +61,8 @@ const FeaturedArticle = ({ article }) => {
           position: "absolute",
           top: 16,
           left: 16,
-          width: 80,
-          height: 80,
+          width: 120,
+          height: 120,
           borderRadius: "50%",
           bgcolor: "rgba(255, 255, 255, 0.9)",
           display: "flex",
@@ -75,10 +77,10 @@ const FeaturedArticle = ({ article }) => {
         <Typography
           variant="subtitle1"
           sx={{
-            fontSize: 30,
+            fontSize: 35,
             fontWeight: "bold",
             lineHeight: "1",
-            color: "#ff5722",
+            color: "#fd2f30",
           }}
         >
           IGN
@@ -86,7 +88,7 @@ const FeaturedArticle = ({ article }) => {
         <Typography
           variant="subtitle2"
           sx={{
-            fontSize: 10,
+            fontSize: 15,
             textTransform: "uppercase",
             fontWeight: "bold",
             lineHeight: "1",
@@ -112,7 +114,7 @@ const FeaturedArticle = ({ article }) => {
           bottom: 0,
           left: 0,
           right: 0,
-          background: "linear-gradient(to top, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0) 100%)",
+          background: "linear-gradient(to top, rgba(0, 0, 0, 0.9) 40%, rgba(0, 0, 0, 0) 100%)",
           color: "white",
           p: 4,
           textAlign: "center",
@@ -121,9 +123,19 @@ const FeaturedArticle = ({ article }) => {
         <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
           {article.title}
         </Typography>
-        <Typography variant="body1" sx={{ mb: 3 }}>
-          {article.summary}
-        </Typography>
+    
+        <Typography
+  variant="body1"
+  sx={{
+    mb: 3,
+    maxWidth: '900px',
+    textAlign: 'center',
+    margin: '0 auto',
+    fontSize: '5em',
+  }}
+>
+  <span dangerouslySetInnerHTML={{ __html: article.content.slice(0, 400) + "..." }} />
+</Typography>
         <Link
           to={`/articles/${article.category.replaceAll(" ", "-")}/${article.id}`}
           style={{ textDecoration: "none" }}

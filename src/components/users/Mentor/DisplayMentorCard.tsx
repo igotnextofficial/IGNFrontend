@@ -79,14 +79,26 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
           alt={mentor.fullname} 
         />
         <CardContent>
-          <Typography sx={{textTransform:'capitalize'}} gutterBottom variant="h5" component="div">
+          <Typography sx={{textTransform:'capitalize',marginBottom:0}} gutterBottom variant="h5" component="div">
             {mentor.fullname}
           </Typography>
-          <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px", borderRadius:"5px",textAlign:'center', margin:"20px 0"}}>
-          <Typography sx={{color:"#FBFAF9"}} variant="body2" color="text.secondary">
-            Specialties: {mentor.specialties.join(", ")}
-          </Typography>
-          </Box>
+          <Typography sx={{marginTop :2 , marginBottom:1}} variant="body2" color="text.secondary">
+             Specialties:
+            </Typography>        
+          <Grid  container columnSpacing={2} rowSpacing={1} xs={12} sx={{marginBottom:2}} >
+  
+          {
+            mentor.specialties.map((specialty,index) => (
+              <Grid item xs={12} xl={4}> 
+              <Box key={index} sx={{backgroundColor:"#1d1917", minWidth:180,padding:"8px 10px", borderRadius:"5px",textAlign:'center'}}>
+              <Typography sx={{color:"#FBFAF9"}} variant="body2" color="text.secondary">
+                #{specialty}
+              </Typography>
+              </Box>
+              </Grid>
+            ))
+         }
+       </Grid>
           <Typography variant="body2" color="text.secondary">
             {mentor.bio?.slice(0,300)}...   
           </Typography>
