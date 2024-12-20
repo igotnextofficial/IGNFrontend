@@ -27,12 +27,19 @@ export const APP_ENDPOINTS = {
         SINGLE: `${Endpoints.USER}/`,
         MENTORS: `${Endpoints.USER}/role/mentor`,
         MENTEE: `${Endpoints.USER}/mentee`,
-        ARTIST: `${Endpoints.USER}/role/artist`,
         ADMIN: `${Endpoints.USER}/admin`,
         ALL: `${Endpoints.USER}/all`,
         BATCH: `${Endpoints.USER}/batch`,
         LOGIN: `${Endpoints.USER}/login`,
         LOGOUT: `${Endpoints.USER}/logout`,
+        ARTIST: {
+            BASE:`${Endpoints.USER}/role/artist}`,
+            FEATURED: `${Endpoints.USER}/role/artist/featured`,
+        },
+        MENTOR: { 
+            BASE:`${Endpoints.USER}/role/mentor}`,
+            FEATURED: `${Endpoints.USER}/role/mentor/featured`,
+          }
     },
    
     ARTICLES: {

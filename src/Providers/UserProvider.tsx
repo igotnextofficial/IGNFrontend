@@ -111,7 +111,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     // const {updateUrl} = useHttpRequest("")
    
     useEffect(() => {
-            getUsersData("mentors",APP_ENDPOINTS.USER.MENTORS).then((response) => {
+         
+            getUsersData("mentors",APP_ENDPOINTS.USER.MENTOR.FEATURED).then((response) => {
                 if(response){
                     let data = response.map((mentor:MentorDataType) => {
                         mentor.specialties = mentor.specialties.map((item:any)=>item.name)
@@ -121,7 +122,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 }
             })
 
-            getUsersData("artists",APP_ENDPOINTS.USER.ARTIST).then((response) => {
+            getUsersData("artists",APP_ENDPOINTS.USER.ARTIST.FEATURED).then((response) => {
                 if(response){
                    response = response.map((artist:Record<string,any>) => {
     

@@ -41,7 +41,7 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
         }
         
         try {
-            const payload:Record<string,any> = {method:method,headers:application_headers}
+            const payload:Record<string,any> = {method:method,headers:application_headers,credentials:'include'};
 
             if(method !== HttpMethods.GET){
                 let passed_data = null;
@@ -54,14 +54,16 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
                 payload['body'] = passed_data
             }
             
+
             const response = await fetch(url, payload );
 
             const responseData = await response.json();
             setData(responseData);
             setResponseStatus(response.status);
             return responseData;
-        } catch (error) {
- 
+        } catch (error) {   
+            console.log('error fetching data')
+            console.log(error)
             const customError = error as CustomError;
             if (customError && customError.response) {
                 if (customError.response.data.errors) {

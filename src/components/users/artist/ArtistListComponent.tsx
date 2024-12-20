@@ -13,7 +13,7 @@ const ArtistListComponent = () => {
         return(
             <Grid container sx={styles.ArtistContainer}>
             {artists?.map(artist => {
-                console.log(`Artist ${JSON.stringify(artist)}`)
+             
                 return <Grid key={`${uuidv4()}`} xs={6} md={3} sx={{padding:"1rem"}} item><DisplayArtistComponent artist={artist} /></Grid>
             })}
 

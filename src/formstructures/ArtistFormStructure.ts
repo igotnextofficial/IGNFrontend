@@ -3,6 +3,7 @@ import LocalStorage from "../storage/LocalStorage"
 
 const local_storage = new LocalStorage();
 const musicGenres = local_storage.load("genres") ?? []
+ 
 export const ArtistFormStructure = [
     {
         label: "fullname",

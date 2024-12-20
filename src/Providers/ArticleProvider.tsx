@@ -38,6 +38,8 @@ interface ArticleProviderProps {
     useEffect(() => {
       const retrieveData = async () => { 
         let response = await fetchData(endpoints[mode],HttpMethods.GET,{},"{}");
+        console.log('articles response')
+        console.log(response)
         return response
        }
 

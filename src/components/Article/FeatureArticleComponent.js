@@ -40,7 +40,7 @@ const GridArticle = ({ article }) => (
           Read More
         </Button>
       </Link>
-      <Typography  variant="subtitle1" sx={styles.title}>{article.title}</Typography>
+      <Typography   variant="subtitle1" sx={styles.title}>{article.title}</Typography>
     </CardContent>
   </Card>
 );
@@ -123,19 +123,21 @@ const FeaturedArticle = ({ article }) => {
         <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
           {article.title}
         </Typography>
-    
+        
+        {!isMobile && 
         <Typography
-  variant="body1"
-  sx={{
-    mb: 3,
-    maxWidth: '900px',
-    textAlign: 'center',
-    margin: '0 auto',
-    fontSize: '5em',
-  }}
->
-  <span dangerouslySetInnerHTML={{ __html: article.content.slice(0, 400) + "..." }} />
-</Typography>
+            variant="body1"
+            sx={{
+              mb: 3,
+              maxWidth: '900px',
+              textAlign: 'center',
+              margin: '0 auto',
+              fontSize: '5em',
+            }}
+        >   
+          <span dangerouslySetInnerHTML={{ __html: article.content.slice(0, 400) + "..." }} />
+        </Typography>
+        }
         <Link
           to={`/articles/${article.category.replaceAll(" ", "-")}/${article.id}`}
           style={{ textDecoration: "none" }}
@@ -154,7 +156,14 @@ const FeaturedArticle = ({ article }) => {
 
 const FeatureArticleComponent = () => {
   const { allArticles } = useContext(ArticleContext);
-  if (allArticles === null || allArticles.length === 0) return null;
+
+  useEffect(() => {
+    console.log("FeatureArticleComponent");
+    console.log(allArticles);
+  }, [allArticles]);
+  if (allArticles === null || allArticles.length === 0 || 'error' in allArticles) {return null};
+
+  console.log(allArticles);
 
   const gridArticles = allArticles.slice(0, 4);
   const featuredArticle = allArticles[4];
@@ -163,7 +172,7 @@ const FeatureArticleComponent = () => {
     <Box sx={{ p: 0 }}>
       <Grid container spacing={0}>
         {gridArticles.map((article) => (
-          <Grid item xs={6} sm={3} key={article.id}>
+          <Grid item xs={12} sm={3} key={article.id}>
             <GridArticle article={article} />
           </Grid>
         ))}
@@ -187,6 +196,9 @@ const styles = {
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
+    fontSize:{
+      xs: "1em", // Smaller font size for mobile
+    }
   },
 };
 

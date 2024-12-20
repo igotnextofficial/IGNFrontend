@@ -4,10 +4,7 @@ import TextContentComponent from "../../../helpers/TextContentComponent";
 import { ArtistDataType } from "../../../types/DataTypes";
 import { useEffect } from "react";
 const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
-    useEffect(() => {
 
-        console.log(`Artist ${JSON.stringify(artist)}`)
-    }, [artist])
     return (
         <>
         <Box sx={styles.mainContainer} >
