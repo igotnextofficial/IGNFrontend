@@ -55,12 +55,12 @@ interface ArticleProviderProps {
           if(mode === FetchMode.FEATURED){
       
             if(local_storage.hasItem("featured:articles")){
-              const articles = local_storage.load("featured:articles");
+              // const articles = local_storage.load("featured:articles");
               setArticleList(articles);
             }
             else{
               setArticleList(articles);
-              local_storage.save("featured:articles",articles);
+              // local_storage.save("featured:articles",articles);
             }
        
           }
