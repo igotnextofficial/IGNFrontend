@@ -8,7 +8,7 @@ const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
         <Link href={`book-a-mentor/${mentor.id}`}>
             <ListItem className="listSelection" sx={styles.mentorListView} alignItems="center">
                 <ListItemAvatar>
-                    <Avatar alt={mentor.fullname} src={mentor.image} />
+                    <Avatar alt={mentor.fullname} src={mentor.profile_photo_path} />
                 </ListItemAvatar>
                 <ListItemText
                     primary={

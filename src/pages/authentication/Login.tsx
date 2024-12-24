@@ -41,7 +41,9 @@ const LoginDisplay = ()=>{
         if(isValid){
 
             const response = await attemptLoginOrLogout(true,{data})
-           
+           console.log("response from login ")
+           console.log(`the response from login is ${response}`)
+           console.log(response)
             if(!response){
                 console.log("issue with logging in user")
                 console.log(JSON.stringify(response))
@@ -59,7 +61,7 @@ const LoginDisplay = ()=>{
         <>
 
 {isLoggedin && user  &&(
-                <Navigate to={`/dashboard/${user.role.type}`} replace={true} />
+                <Navigate to={`/dashboard/${user?.role.type}`} replace={true} />
             )}
 
 

@@ -10,6 +10,7 @@ import { APP_ENDPOINTS } from "../config/app";
 // import { useHttpRequest } from "../Contexts/HttpRequestContext";
 
 import { Endpoints } from "../config/app";
+import { response } from "express";
 
 
 
@@ -93,7 +94,7 @@ import { Endpoints } from "../config/app";
                 return new_token;
             }
         } catch (e) {
-
+                
             console.error("Failed to refresh token:", e);
         }
         return ""
@@ -102,18 +103,22 @@ import { Endpoints } from "../config/app";
 const UserObj = new User()
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const intialLoad = useRef(true);
+    const local_storage = new LocalStorage();
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
     const {fetchData} = useFetch();
     const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
     const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
+    const [count, setCount] = useState(0);
     // const {updateUrl} = useHttpRequest("")
    
-    useEffect(() => {
-         
+    useEffect(() => {   
+    
+           
             getUsersData("mentors",APP_ENDPOINTS.USER.MENTOR.FEATURED).then((response) => {
-                if(response){
+            
+                if(response !== null){
                     let data = response.map((mentor:MentorDataType) => {
                         mentor.specialties = mentor.specialties.map((item:any)=>item.name)
                         return mentor
@@ -123,28 +128,32 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             })
 
             getUsersData("artists",APP_ENDPOINTS.USER.ARTIST.FEATURED).then((response) => {
-                if(response){
+                if(response !== null){
                    response = response.map((artist:Record<string,any>) => {
-    
-                        return artist
+                    return artist
                    })
                     setArtistData(response)
                 }
             })
+
+    
     }, []);
 
   
     async function getUsersData (data_to_load:string,endpoint:string){
         let local_storage = new LocalStorage();
-        let userData = local_storage.load(data_to_load);
-        let users;
-        if(userData){
-            console.log("loading mentors from storage")
-            users= userData;
+        let data_is_stored = local_storage.hasItem(data_to_load);
+        let userData =  null;
+
+      
+        let users = null;
+        if( data_is_stored){
+         
+            users = local_storage.load(data_to_load);
             console.log(users)
         }
         else{
-            console.log("loading mentors from api")
+         
             await fetchData(endpoint).then((response) => {
                 if(response){
                     users = response.data;
@@ -152,72 +161,135 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 }
             })
         }
+      
        return users;
     }
+
+
     useEffect(() => { 
-        
+      
         const attemptRefreshToken = ( async ( user_information:Record<string,string>) => {
             return await refreshToken(user_information.id,user_information.role)
         })
 
 
-        if(!accessToken && !user){
-            if(new LocalStorage().hasItem(User.INFO)){
-                let found_user = new LocalStorage().load(User.INFO);
+        if((!accessToken && !user) && local_storage.hasItem(User.INFO)){
+            
+            let data = JSON.parse(local_storage.load(User.INFO));
+            let found_user = data[User.INFO]
+             if(found_user){
                 setUser(found_user)
                 setIsLoggedin(true)
-                
-                if(intialLoad.current !== false){
-                    const user_information = {
-                        id: found_user.id,
-                        role: found_user.role?.type
+
+                const user_information = {
+                    id: found_user.id,
+                    role: found_user.role?.type
+                }
+
+                attemptRefreshToken(user_information).then((response) => {
+                    if(!response){
+                        setUser(null);
+                        setIsLoggedin(false);
+                        setAccessToken("");
+                        local_storage.remove(User.INFO);
                     }
+                    else{
+                        setUser(found_user)
+                        setAccessToken(response);
+                        setIsLoggedin(true);
+                    }
+                }).catch((e) => {
+                    setUser(null);
+                    setIsLoggedin(false);
+                    setAccessToken("");
+                    local_storage.remove(User.INFO);
+                }).finally(() => {
+                     
+                })
+             }
+           
+                // let found_user = JSON.parse(new LocalStorage().load(User.INFO));
+             
+                // console.log(`found user and setting ${ JSON.stringify(found_user[User.INFO])}`);
+                // setUser(found_user)
+                // setIsLoggedin(true)
+                
+                // if(intialLoad.current !== false){
+                //     const user_information = {
+                //         id: found_user.id,
+                //         role: found_user.role?.type
+                //     }
 
                   
-                    attemptRefreshToken(user_information).then((response) => {
+                //     attemptRefreshToken(user_information).then((response) => {
                     
-                        if(!response){
-                        //    console.log(`this is when user should be logged out page load intial ${intialLoad.current}`);  
-                            setUser(null);
-                            setIsLoggedin(false);
-                            setAccessToken("");
-                            new LocalStorage().remove(User.INFO);
+                //         if(!response){
+                 
+                //             setUser(null);
+                //             setIsLoggedin(false);
+                //             setAccessToken("");
+                //             new LocalStorage().remove(User.INFO);
     
     
-                        }
-                        else{
-                            setAccessToken(response)
-                            // console.log(`this is when user should be logged in page load intial ${intialLoad.current}`);
-                        }
-                    }).catch((e) => {
-                        // console.error( `error -  failed refreshing token ${e}`)
-                    }).finally(() => {
-                        intialLoad.current = false
-                    })
+                //         }
+                //         else{
+                //             let user_found = new LocalStorage().load(User.INFO);
+                      
+                //             setUser(user_found)
+                //             setAccessToken(response);
+                //             setIsLoggedin(true);
+                //             // console.log(`this is when user should be logged in page load intial ${intialLoad.current}`);
+                //         }
+                //     }).catch((e) => {
+                //         setUser(null);
+                //         setIsLoggedin(false);
+                //         setAccessToken("");
+                //         new LocalStorage().remove(User.INFO);
+                //         // console.error( `error -  failed refreshing token ${e}`)
+                //     }).finally(() => {
+                //         intialLoad.current = false
+                //     })
                     
      
-                }
-                } 
+                // }
+
         } 
 
         return () => {
 
         }
      } ,[accessToken, user ])
-
-
-     useEffect(() => {
-        const user_storage = new LocalStorage().load(User.INFO)
  
-     } , [])
-     useEffect(() => {
-        const local_storage = new LocalStorage()
-        if(local_storage.hasItem(User.INFO)){
-            let found_user = local_storage.load(User.INFO);
-            setUser(found_user)
-            setIsLoggedin(true)
+     const loginUser = async (data: httpDataObject) => {
+        let successful = false;
+        if(!data){ return successful}
+        let response = await UserObj.login(data);
+        if(!response){return successful}
+
+        const user_data = {...response.data['data']};
+        const access_token =  response.data['access_token'];
+        setAccessToken(access_token);
+        setUser(user_data as UserDataType);
+        setIsLoggedin(true); // I do not need this
+        local_storage.save(User.INFO,user_data);
+        
+        successful = true;
+        return successful;
+        
+     }
+
+     const LogoutUser = async () => {
+        let response = await UserObj.logout(accessToken);
+        if(response){
+            localStorage.removeItem(User.INFO);
+            setUser(null);
+            setIsLoggedin(false);
+            setAccessToken("");
+            socket.disconnect()
+            return true;
         }
-     } , [accessToken])
+        return false;
+     }
     /**
      * 
      * @param login - boolean representing whether to login or logout 
@@ -227,39 +299,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
 
         let response;
-    /**
-     *  Login user
-     * send data to endpoint
-     * if endpoint returns a response
-     * set the user state to the response data and access token 
-     *  access token is now in database when i refresh the page 
-     *  use state access token might not exist so i need to  check if a user is in local storage if so get a new access token from the db using the access token saved 
-     * so this endpoint should not require authroization
-     * 
-     */
+        let successful = false;
         if (login && data) {
-            response = await UserObj.login(data); // state set in local storage
-
-            if (response) {
-                const user_data = {...response.data['data']}
-                const access_token =  response.data['access_token']
-                setAccessToken(access_token);
-                setUser(user_data as UserDataType); // Assuming response.data is the user data
-                setIsLoggedin(true);
-                return true;
-            }
+            response = await loginUser(data);
+            successful = response;
         } else {
-            response = await UserObj.logout(accessToken); // state removed from local storage
-            if (response) {
-                setUser(null); // Reset user state to default on logout
-                setIsLoggedin(false);
-                setAccessToken("");
-                socket.disconnect()
-                return true;
-            }
+            response = await LogoutUser();
+            successful = response; 
         }
 
-        return false; // Return false if login or logout fails
+        return successful;  
     };
     
     /**  

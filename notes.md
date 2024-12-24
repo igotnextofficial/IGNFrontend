@@ -2,11 +2,8 @@
 ### High Priority
     - [] protect register-mentor page so only admin can access   
     - [] set up forgot password
-    - [x] Add specialties list for mentors.
-    - [] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
     - [] set up 404 page
     - [] Add calendly or some sort of scheduling system for mentors, check google api 
-    - [] genre list needs to be set up on the backend so when a user is pulled in so is the genre i can handle this on the shieldAuthService.
     - [] Artist edit profile should show a count so users know how long their bio can be and the like.
     - [] make sure all forms are submitting their data correctly
 
@@ -46,7 +43,6 @@
 ## Backlog
 
 - [] upload and streaming music.
-- [] Mentors should be able to adjust payment fee.? Need to think about this.
 - [] need to think of payment Models.
 - [] what does a regular subscriber see when they log on ? just articles?
     #### Regular User Dashboard - This whole section can wait!
@@ -62,6 +58,10 @@
     
 ## Completed
 #### FBFAF9 BG Color
+- [x] Mentors should be able to adjust payment fee.? Need to think about this.
+- [x] Add specialties list for mentors.
+- [x] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
+- [x] genre list needs to be set up on the backend so when a user is pulled in so is the genre i can handle this on the shieldAuthService.
 - [x] Allow Mentors to set their price per 6 sessions
 - [x] setup stripe payment API
 - [x] Add Fake Data, Articles,admin 

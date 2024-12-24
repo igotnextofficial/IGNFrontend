@@ -12,19 +12,25 @@ import { useUser } from '../../contexts/UserContext';
 
 const AccountSettings = () => {
   const [role,setRole] = useState("")
+  const [settings, setSettings] = useState<Record<string,string>[]>([])
   const { user } = useUser()
 
   useEffect(() => {
-  
+  console.log(`looking at the user  role ${user?.role.type}`)
     const user_role = user?.role.type || "artist"
     setRole(user_role)
+    console.log(`The user role is ${user_role}`)
+
   }, [user])
  
 
-  const settings: Settings[] = [
-    { title: 'Account', slug: '/edit-profile' }, 
-    { title: 'Dashboard', slug: `dashboard/${user?.role.type}` }, 
-    { title: 'Logout', slug: '/logout' }];
+  useEffect(() => {
+    setSettings([
+      { title: 'Account', slug: '/edit-profile' }, 
+      { title: 'Dashboard', slug: `dashboard/${role}` }, 
+      { title: 'Logout', slug: '/logout' }
+    ]);
+  }, [role])
 
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);

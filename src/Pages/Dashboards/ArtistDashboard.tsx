@@ -53,11 +53,12 @@ const ArtistDashboard = () => {
    
     
         useEffect(()=>{
+          
             const loadGenres = async ()=>{
                 const response = await fetchData(APP_ENDPOINTS.GENERIC.GENRE)
               
                 if(response !== null){
-                    const  genres = response.data.map((item:any)=>item.name)
+                    const  genres = response.data.map((item:any)=> {return item.name})
                     local_storage.save("genres",genres)
                 }else{
                     throw new Error("issue loading genres")
@@ -65,14 +66,15 @@ const ArtistDashboard = () => {
             }
             const local_storage = new LocalStorage();
             if(!local_storage.hasItem("genres")){
-                  loadGenres().then(()=>{
-                    console.log('loading genres')
+                  loadGenres().then((response)=>{
+           
+                     
                   }).catch((e)=>{
                     console.log(`Error loading genres ${e}`)
                   })
             }
             else{
-                console.log("specialties already loaded")
+                console.log("genre already loaded")
                 console.log(local_storage.load("genres"))
             }  
             

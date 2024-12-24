@@ -2,7 +2,9 @@ import { displayType } from "../types/DataTypes"
 import LocalStorage from "../storage/LocalStorage"
 
 const local_storage = new LocalStorage();
-const musicGenres = local_storage.load("genres") ?? []
+const musicGenres = local_storage.load("genres") ?? [];
+// console.log(`The Music Genres Loaded are`)
+// console.log(musicGenres)
  
 export const ArtistFormStructure = [
     {

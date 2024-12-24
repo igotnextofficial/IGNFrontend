@@ -4,25 +4,24 @@ import CryptoJs from 'crypto-js';
 export default class LocalStorage implements storageInterface {
     private domain = process.env.REACT_APP_DOMAIN ?? "";
     private readonly secret_key = process.env.REACT_APP_SECURE_SERCET_KEY_STORAGE ?? ""
-    save(key: string, value: any,secure:boolean = true) {
+    save(key: string, value: any,secure:boolean = false) {
         try{
-            const converted_value = JSON.stringify({[key]:value});
+            let previous_data = localStorage.getItem(this.domain) || "";
+            let previous_data_object = previous_data ? this.convertToObject(previous_data) : {};
+            let new_data = {...previous_data_object,[key]:value};
+            const converted_value = JSON.stringify(new_data);
             console.log(`saving  ${converted_value} and domain ${this.domain}`);
             if(!secure){
               localStorage.setItem(this.domain,converted_value );  
             }
             else{
-
-                if(typeof value === 'object'){
-                    value = JSON.stringify({[key]:value});
-                }
-                let cipher_text = CryptoJs.AES.encrypt( value, this.secret_key).toString();
+                let cipher_text = this.encrypt(converted_value);
                 localStorage.setItem(this.domain, cipher_text);
             }
 
         }
         catch(e){
-       
+            console.log(`error in saving data ${e}`);
         }
 
     }
@@ -33,12 +32,13 @@ export default class LocalStorage implements storageInterface {
         @params secure: boolean
         @returns any
     */
-    load(key: string,secure:boolean = true): any {
+    load(key: string,secure:boolean = false): any {
         let data = localStorage.getItem(this.domain) ?? "";
         if(!secure){
             return data;
         }
         let decrypted_data = this.decryptAndConvertToObject(data)
+        console.log(`decrypted data is ${decrypted_data} and the key is key ${key}` );
         return decrypted_data[key];
     }
 
@@ -63,15 +63,18 @@ export default class LocalStorage implements storageInterface {
         console.log(`checking if ${key} exists`);
         let domain_name_exist_in_storage = localStorage.getItem(this.domain) !== null;
         if(!domain_name_exist_in_storage){
+            console.log(`domain ${this.domain} does not exist in storage`);
             return false;
         }
         let data = localStorage.getItem(this.domain) ?? "";
+        console.log(`data in storage ${data}`);
         let decrypted_data = this.decryptAndConvertToObject(data);
 
         return key in decrypted_data
     }
 
     convertToObject(data: string){
+        console.log(`converting data to object ${data}`);
         if(data.trim() === ""){return {}}
         return JSON.parse(data);
     }
@@ -81,16 +84,34 @@ export default class LocalStorage implements storageInterface {
     }
 
     private encrypt(data: string): string {
-        return CryptoJs.AES.encrypt(data, this.secret_key).toString();
+        try{
+            return data;
+            const bytes = CryptoJs.AES.encrypt(data, this.secret_key);
+            return bytes.toString();
+        }
+        catch(e){
+            console.error(`failed L error in encrypting data ${e}`);
+            return data;
+        }       
+        
     }
 
     private decrypt(data: string): string {
-        const bytes = CryptoJs.AES.decrypt(data, this.secret_key);
-        return bytes.toString(CryptoJs.enc.Utf8);
+        try{
+            return data;
+            const bytes = CryptoJs.AES.decrypt(data, this.secret_key);
+            return bytes.toString(CryptoJs.enc.Utf8);
+        }
+        catch(e){
+            console.error(`failed L error in decrypting data ${e}`);
+            return "";
+        }
+     
     }
 
     private decryptAndConvertToObject(data: string): any {
         const decryptedData = this.decrypt(data);
+        console.log(`passed in data is ${data} and decrypted data is ${decryptedData}`);
         return this.convertToObject(decryptedData);
     }
     
