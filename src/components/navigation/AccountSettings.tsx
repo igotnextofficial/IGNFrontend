@@ -12,7 +12,11 @@ import { useUser } from '../../contexts/UserContext';
 
 const AccountSettings = () => {
   const [role,setRole] = useState("")
-  const [settings, setSettings] = useState<Record<string,string>[]>([])
+  const [settings, setSettings] = useState<Record<string,string>[]>([
+    { title: 'Account', slug: '/edit-profile' }, 
+    { title: 'Dashboard', slug: `dashboard/${role}` }, 
+    { title: 'Logout', slug: '/logout' }
+  ])
   const { user } = useUser()
 
   useEffect(() => {
@@ -25,22 +29,23 @@ const AccountSettings = () => {
  
 
   useEffect(() => {
-    setSettings([
-      { title: 'Account', slug: '/edit-profile' }, 
-      { title: 'Dashboard', slug: `dashboard/${role}` }, 
-      { title: 'Logout', slug: '/logout' }
-    ]);
+    if(role ===  Roles.ARTIST && user?.mentor === null){
+      setSettings( (prevSettings) => {
+          return  [{title: 'Find a mentor', slug: '/mentors/find-a-mentor'}, ...prevSettings]
+      });
+  }
+ 
   }, [role])
 
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
 
-  if(role ===  Roles.ARTIST && user?.mentor === null){
-    settings.unshift({
-       title: 'Find a mentor', slug: '/mentors/find-a-mentor' 
-    })
-  }
+  // if(role ===  Roles.ARTIST && user?.mentor === null){
+  //   settings.unshift({
+  //      title: 'Find a mentor', slug: '/mentors/find-a-mentor' 
+  //   })
+  // }
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);

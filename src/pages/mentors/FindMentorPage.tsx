@@ -57,17 +57,22 @@ const DisplaySearchField = ({ byCategory = false }) => {
         let mentorListSet: MentorDataType[] = []
         mentors?.filter((mentor) => {
             for (const specialty of mentor.specialties) {
+                console.log(`specialty ${specialty}`)
+                console.log(`searching mentor ${mentor.fullname} with specialty and looking for ${specialty} | ${mentor.specialties}`)
                 if (specialtySelection.includes(specialty)) {
+                    console.log(`mentor ${mentor.fullname} has specialty ${specialty}`)
                     mentorListSet.push(mentor)
-                    break;
+                  
                 }
             }
             return mentorListSet
         })
 
+        console.log(`looking for mentors with specialties ${specialtySelection}`)
+        console.log(`mentors with specialties ${mentorListSet}`)
         setMentorsList(mentorListSet)
         return () => {
-            setMentorsList([])
+            // setMentorsList([])
         }
 
     }, [specialtySelection])
