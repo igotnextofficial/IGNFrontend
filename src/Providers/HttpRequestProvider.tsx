@@ -74,7 +74,7 @@ const submit = async (request: any) => {
     } 
     catch (error) {
       if (error instanceof Error) {
-        console.log("Fetch error:", error);
+        // console.log("Fetch error:", error);
         setError(error.message);
         setResponseStatus(error instanceof Response ? error.status : 500);
       }

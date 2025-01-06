@@ -29,7 +29,7 @@ const CreateMeetingSpace = (()=>{
       const credentials = JSON.parse(content);
       return auth.fromJSON(credentials);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return null;
     }
   }
@@ -86,7 +86,7 @@ const CreateMeetingSpace = (()=>{
   
     // Run request
     const response = await meetClient.createSpace(request);
-    console.log(`Meet URL: ${response[0].meetingUri}`);
+    // console.log(`Meet URL: ${response[0].meetingUri}`);
   }
   
 

@@ -41,12 +41,12 @@ const LoginDisplay = ()=>{
         if(isValid){
 
             const response = await attemptLoginOrLogout(true,{data})
-           console.log("response from login ")
-           console.log(`the response from login is ${response}`)
-           console.log(response)
+        //    console.log("response from login ")
+        //    console.log(`the response from login is ${response}`)
+        //    console.log(response)
             if(!response){
-                console.log("issue with logging in user")
-                console.log(JSON.stringify(response))
+                // console.log("issue with logging in user")
+                // console.log(JSON.stringify(response))
                 updateError("Issue with logging in user ")
             }
         }

@@ -18,7 +18,7 @@ const ArticlesList = () => {
                 const articles = await article.retreiveAll();
                 setArticles(articles);
             } catch (error) {
-                console.error("Error fetching articles:", error);
+                // console.error("Error fetching articles:", error);
                 // Handle error as needed
             }
         };

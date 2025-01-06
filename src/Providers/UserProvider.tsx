@@ -95,7 +95,7 @@ import { response } from "express";
             }
         } catch (e) {
                 
-            console.error("Failed to refresh token:", e);
+            // console.error("Failed to refresh token:", e);
         }
         return ""
     };
@@ -150,7 +150,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         if( data_is_stored){
          
             users = local_storage.load(data_to_load);
-            console.log(users)
+            // console.log(users)
         }
         else{
          

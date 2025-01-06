@@ -62,8 +62,8 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
             setResponseStatus(response.status);
             return responseData;
         } catch (error) {   
-            console.log('error fetching data')
-            console.log(error)
+            // console.log('error fetching data')
+            // console.log(error)
             const customError = error as CustomError;
             if (customError && customError.response) {
                 if (customError.response.data.errors) {

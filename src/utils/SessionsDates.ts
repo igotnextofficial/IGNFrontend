@@ -13,7 +13,7 @@ export const getUpcomingSessionWithinMax = (mentee:MenteeDataType,max:number):Me
     const today = dayjs()
     const maximumDate = dayjs().add(max,'day')
     const upcomingSession = dayjs(mentee.session_date);
-    console.log(`Today is ${today} and the upcoming session is ${upcomingSession} and the maximum date is ${maximumDate}`)
+    // console.log(`Today is ${today} and the upcoming session is ${upcomingSession} and the maximum date is ${maximumDate}`)
     if( ((upcomingSession < today) || (upcomingSession > maximumDate)) ){return null}
     const readableDate = formatDate(new Date(mentee.session_date));
         let updatedDate = {session_date:readableDate}

@@ -52,8 +52,8 @@ const MentorDashboard = ()=>{
               })
         }
         else{
-            console.log("specialties already loaded")
-            console.log(local_storage.load("specialties"))
+            // console.log("specialties already loaded")
+            // console.log(local_storage.load("specialties"))
         }  
         
     },[])

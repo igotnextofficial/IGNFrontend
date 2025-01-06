@@ -1,5 +1,6 @@
 ## Current To do List
 ### High Priority
+    - [] Search for mentors page needs to be updated , to go to the mentors profile when it is clicked on also page should update UI on Search for category and name 
     - [] protect register-mentor page so only admin can access   
     - [] set up forgot password
     - [] set up 404 page
@@ -58,6 +59,7 @@
     
 ## Completed
 #### FBFAF9 BG Color
+- [x] Being logged out for some reason on Refresh 
 - [x] Mentors should be able to adjust payment fee.? Need to think about this.
 - [x] Add specialties list for mentors.
 - [x] Learn more underneath the mentor card should link to the mentor profile page which will include the fee they charge.
@@ -95,3 +97,12 @@ Editor Component
 - [x] export getUpcomingSessionWithinMax() func to be reused by other components
 - [x] bio should default to empty string not null
 - [x]drop down for account holder does not go to new page unless text is clicked directly, fix
+
+Setting up mail so mentors can access it through gmail :
+Sure To allow users to access the email accounts through Gmail, you'll need to set up mail forwarding and configure Gmail to retrieve mail from the email accounts using POP3.
+
+Here's a quick guide:
+
+In your cPanel, set up email forwarding from the cPanel email account to the users' Gmail addresses.
+
+In Gmail, go to Settings > Accounts and Import > Check mail from other accounts, and add the cPanel email account using POP3.

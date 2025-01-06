@@ -29,8 +29,8 @@ const CreatePageForm = () => {
     const ign_request = new IgnRequest();
     let update = ign_request.init(config);
     update.then((res) => {
-      console.dir(res);
-      console.dir(ign_request.responseData);
+      // console.dir(res);
+      // console.dir(ign_request.responseData);
     });
   };
 

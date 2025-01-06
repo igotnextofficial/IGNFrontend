@@ -24,7 +24,7 @@ export const APP_ENDPOINTS = {
     USER: {
         BASE: Endpoints.USER,
       
-        SINGLE: `${Endpoints.USER}/`,
+        SINGLE: `${Endpoints.USER}`,
         MENTORS: `${Endpoints.USER}/role/mentor`,
         MENTEE: `${Endpoints.USER}/mentee`,
         ADMIN: `${Endpoints.USER}/admin`,

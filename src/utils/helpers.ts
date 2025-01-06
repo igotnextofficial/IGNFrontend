@@ -41,7 +41,7 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
         if(custom_error.response.data.errors){
           return custom_error.response.data as httpDataObject;
         }
-        console.error("Axios error:", error );
+        // console.error("Axios error:", error );
         
       }
    

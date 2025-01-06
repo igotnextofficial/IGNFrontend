@@ -1,29 +1,42 @@
 import { Box,Avatar } from "@mui/material";
+import { Link, useParams } from "react-router-dom";
 import IgnPillComponent from "../../../helpers/IgnPillComponent";
 import TextContentComponent from "../../../helpers/TextContentComponent";
 import { ArtistDataType } from "../../../types/DataTypes";
 import { useEffect } from "react";
+import { text } from "stream/consumers";
+import { Opacity } from "@mui/icons-material";
 const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
 
     return (
         <>
-        <Box sx={styles.mainContainer} >
-                <Box sx={styles.container}>
-                    <Avatar className="display-image-list-ign" src={artist.profile_photo_path} alt={artist.fullname} sx={{width:250, height:250}} />
-                    <Box sx={styles.pillHolder}>
-                        <IgnPillComponent description={artist.genre} />
+            <Link to={`profile/artist/${artist.id}`} style={styles.linkWrapper}>
+                <Box sx={styles.mainContainer} >
+                    <Box sx={styles.container}>
+                        <Avatar className="display-image-list-ign" src={artist.profile_photo_path} alt={artist.fullname} sx={{width:250, height:250}} />
+                        <Box sx={styles.pillHolder}>
+                            <IgnPillComponent description={artist.genre} />
+                        </Box>
                     </Box>
+                    <Box>
+                        <TextContentComponent content={artist.fullname} />
+                    </Box>
+            
                 </Box>
-                <Box>
-                    <TextContentComponent content={artist.fullname} />
-                </Box>
-        
-            </Box>
+            </Link>
         </>
+       
     )
 }
 
 const styles = {
+    linkWrapper:{
+        textDecoration:"none",
+        color:"black",
+        "&:hover":{
+            Opacity:0.5
+        },
+    },
     mainContainer:{
         maxWidth:"250px",
         textAlign:"center"

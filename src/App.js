@@ -32,6 +32,7 @@ import MessageReaderReply from './pages/notes/MessageReaderReply';
 
 import ScheduleSession from './pages/artists/ScheduleSession';
 import { useErrorHandler } from './contexts/ErrorContext';
+import UserProfile from './pages/UserProfile';
 
 
 
@@ -104,8 +105,10 @@ const MainApplication = () => {
    
       <Router>
         <DetectChange />
+                 
         <Navigation Authenticated={isAuthenticated} />
         <Routes>
+        <Route path='/profile/:role/:user_id' element={<UserProfile />} />
           <Route path='/' element={<Home />} /> 
           <Route path='/login' element={<Login />} />
           <Route path='/logout' element={<Logout />} />
@@ -117,9 +120,11 @@ const MainApplication = () => {
      
           <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />
           
-          <Route path='/profile/:role' element={< Dashboard />} />
+    
 
           {/* Profile */}
+          <Route path='/profile/:role' element={< Dashboard />} />
+
           <Route path='/schedule' element={<ScheduleSession />} /> 
           
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>

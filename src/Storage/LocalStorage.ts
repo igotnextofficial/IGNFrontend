@@ -10,7 +10,7 @@ export default class LocalStorage implements storageInterface {
             let previous_data_object = previous_data ? this.convertToObject(previous_data) : {};
             let new_data = {...previous_data_object,[key]:value};
             const converted_value = JSON.stringify(new_data);
-            console.log(`saving  ${converted_value} and domain ${this.domain}`);
+            // console.log(`saving  ${converted_value} and domain ${this.domain}`);
             if(!secure){
               localStorage.setItem(this.domain,converted_value );  
             }
@@ -21,7 +21,7 @@ export default class LocalStorage implements storageInterface {
 
         }
         catch(e){
-            console.log(`error in saving data ${e}`);
+            // console.log(`error in saving data ${e}`);
         }
 
     }
@@ -38,7 +38,7 @@ export default class LocalStorage implements storageInterface {
             return data;
         }
         let decrypted_data = this.decryptAndConvertToObject(data)
-        console.log(`decrypted data is ${decrypted_data} and the key is key ${key}` );
+        // console.log(`decrypted data is ${decrypted_data} and the key is key ${key}` );
         return decrypted_data[key];
     }
 
@@ -60,21 +60,21 @@ export default class LocalStorage implements storageInterface {
     }
 
     hasItem(key: string): boolean {
-        console.log(`checking if ${key} exists`);
+        // console.log(`checking if ${key} exists`);
         let domain_name_exist_in_storage = localStorage.getItem(this.domain) !== null;
         if(!domain_name_exist_in_storage){
-            console.log(`domain ${this.domain} does not exist in storage`);
+            // console.log(`domain ${this.domain} does not exist in storage`);
             return false;
         }
         let data = localStorage.getItem(this.domain) ?? "";
-        console.log(`data in storage ${data}`);
+        // console.log(`data in storage ${data}`);
         let decrypted_data = this.decryptAndConvertToObject(data);
 
         return key in decrypted_data
     }
 
     convertToObject(data: string){
-        console.log(`converting data to object ${data}`);
+        // console.log(`converting data to object ${data}`);
         if(data.trim() === ""){return {}}
         return JSON.parse(data);
     }
@@ -90,7 +90,7 @@ export default class LocalStorage implements storageInterface {
             return bytes.toString();
         }
         catch(e){
-            console.error(`failed L error in encrypting data ${e}`);
+            // console.error(`failed L error in encrypting data ${e}`);
             return data;
         }       
         
@@ -103,7 +103,7 @@ export default class LocalStorage implements storageInterface {
             return bytes.toString(CryptoJs.enc.Utf8);
         }
         catch(e){
-            console.error(`failed L error in decrypting data ${e}`);
+            // console.error(`failed L error in decrypting data ${e}`);
             return "";
         }
      
@@ -111,7 +111,7 @@ export default class LocalStorage implements storageInterface {
 
     private decryptAndConvertToObject(data: string): any {
         const decryptedData = this.decrypt(data);
-        console.log(`passed in data is ${data} and decrypted data is ${decryptedData}`);
+        // console.log(`passed in data is ${data} and decrypted data is ${decryptedData}`);
         return this.convertToObject(decryptedData);
     }
     

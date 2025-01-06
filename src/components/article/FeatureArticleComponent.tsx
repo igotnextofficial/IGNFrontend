@@ -2,6 +2,8 @@ import React, { useContext,useState,useEffect } from "react";
 import { ArticleContext } from "../../contexts/ArticleContext";
 import { Link } from "react-router-dom";
 import { Box, Grid, Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
+import { ArticleDataType } from "../../types/DataTypes";
+import { Article } from "@mui/icons-material";
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 500);
@@ -15,7 +17,7 @@ const useIsMobile = () => {
   return isMobile;
 };
 
-const GridArticle = ({ article }) => (
+const GridArticle = ({ article }: {article:ArticleDataType}) => (
   <Card sx={{ position: "relative", overflow: "hidden" , borderRadius:0,cursor:'pointer'}}>
     <CardMedia
       component="img"
@@ -35,7 +37,7 @@ const GridArticle = ({ article }) => (
         textAlign: "center",
       }}
     >
-      <Link to={`/articles/${article.category.replaceAll(" ", "-")}/${article.id}`}>
+      <Link to={article.category ? `/articles/${article.category.replaceAll(" ", "-")}/${article.id}` : '#'}>
       <Button variant="contained" sx={{ bgcolor: "#fd2f30", color: "#FBFAF9", "&:hover": { bgcolor: "#d8090a" } }}>
           Read More
         </Button>
@@ -45,7 +47,7 @@ const GridArticle = ({ article }) => (
   </Card>
 );
 
-const FeaturedArticle = ({ article }) => {
+const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
   const isMobile = useIsMobile(); // Check if the screen is mobile-sized
 
   // Dynamically set the image URL for the featured article
@@ -53,7 +55,7 @@ const FeaturedArticle = ({ article }) => {
     ? article.image_url.replace(".jpg", "_mobile.jpg")
     : article.image_url;
 
-  return (
+  return article ? (
     <Card sx={{ position: "relative", mt: 0, mb: 15 }}>
       {/* Featured Badge */}
       <Box
@@ -135,11 +137,11 @@ const FeaturedArticle = ({ article }) => {
               fontSize: '5em',
             }}
         >   
-          <span dangerouslySetInnerHTML={{ __html: article.content.slice(0, 400) + "..." }} />
+          <span dangerouslySetInnerHTML={{ __html: (article.content || "").slice(0, 400) + "..." }} />
         </Typography>
         }
         <Link
-          to={`/articles/${article.category.replaceAll(" ", "-")}/${article.id}`}
+          to={article.category ? `/articles/${article.category.replaceAll(" ", "-")}/${article.id}` : '#'}
           style={{ textDecoration: "none" }}
         >
           <Button
@@ -151,24 +153,39 @@ const FeaturedArticle = ({ article }) => {
         </Link>
       </CardContent>
     </Card>
-  );
+  ) : null;
 };
 
 const FeatureArticleComponent = () => {
   const { allArticles } = useContext(ArticleContext);
+  const [gridArticles, setGridArticles] = useState<ArticleDataType[]>([]);
+  const [featuredArticle, setFeaturedArticle] = useState<ArticleDataType>( {} as ArticleDataType);
 
   useEffect(() => {
-    console.log("FeatureArticleComponent");
-    console.log(allArticles);
+    if(allArticles){
+      // console.log('all articles')
+      // console.log(allArticles)
+      if(allArticles.length > 0){
+        console.log('settings articles')
+        setGridArticles(allArticles.slice(0, 4));
+        setFeaturedArticle(allArticles[4]);
+      }
+      else{
+        // console.log('no articles length small' )
+      }
+    }
+    else{
+      // console.log('no articles')
+    }
   }, [allArticles]);
-  if (allArticles === null || allArticles.length === 0 || 'error' in allArticles) {return null};
 
-  console.log(allArticles);
+  
 
-  const gridArticles = allArticles.slice(0, 4);
-  const featuredArticle = allArticles[4];
 
-  return (
+  // const gridArticles = allArticles.slice(0, 4);
+  // const featuredArticle = allArticles[4];
+
+  return featuredArticle ? (
     <Box sx={{ p: 0 }}>
       <Grid container spacing={0}>
         {gridArticles.map((article) => (
@@ -178,14 +195,18 @@ const FeatureArticleComponent = () => {
         ))}
       </Grid>
 
-      {featuredArticle && <FeaturedArticle article={featuredArticle} />}
+      <FeaturedArticle article={featuredArticle} />
     </Box>
-  );
+  ) : null;
 };
 
 const styles = {
   title: {
-    fontSize: "1.2em",
+ 
+    fontSize:{
+      xs: "1em",
+      md:"1.2em" // Smaller font size for mobile
+    },
     lineHeight: "1.2em",
     fontWeight: "bold",
     margin: "8px 0",
@@ -195,10 +216,7 @@ const styles = {
     minHeight: "50px",
     justifyContent: "center",
     alignContent: "center",
-    alignItems: "center",
-    fontSize:{
-      xs: "1em", // Smaller font size for mobile
-    }
+    alignItems: "center"
   },
 };
 

@@ -50,7 +50,7 @@ const MessageReaderReplyData = () => {
 
     const handleSubmit = async() => {
         const _data = {...note, ...data,sender_id:user?.id,sender:user,recipient_id:note?.sender_id,recipient:note?.sender}
-        console.log(`sending ${JSON.stringify(_data)}`)
+        // console.log(`sending ${JSON.stringify(_data)}`)
         let url = `${APP_ENDPOINTS.NOTES.BASE}`
 
         let response = await sendRequest(HttpMethods.POST,url,{"data":_data},{Authorization:`Bearer ${accessToken}`})

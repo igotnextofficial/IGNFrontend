@@ -29,7 +29,7 @@ interface ArticleProviderProps {
 
   
     const [userArticles, setArticles] = useState<ArticleDataType >(Article.defaultResponse);
-    const [articleList,setArticleList] = useState<ArticleDataType[] | null>(null)
+    const [articleList,setArticleList] = useState<ArticleDataType[] | null>([]);
     const [error, setError] = useState<Error | null>(null); // To handle any errors during fetching
     const {data,loading, responseStatus,setSendRequest,fetchData} = useFetch({method:"GET"});
 
@@ -38,8 +38,8 @@ interface ArticleProviderProps {
     useEffect(() => {
       const retrieveData = async () => { 
         let response = await fetchData(endpoints[mode],HttpMethods.GET,{},"{}");
-        console.log('articles response')
-        console.log(response)
+        // console.log('articles response')
+        // console.log(response)
         return response
        }
 

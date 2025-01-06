@@ -70,12 +70,12 @@ const ArtistDashboard = () => {
            
                      
                   }).catch((e)=>{
-                    console.log(`Error loading genres ${e}`)
+                    // console.log(`Error loading genres ${e}`)
                   })
             }
             else{
-                console.log("genre already loaded")
-                console.log(local_storage.load("genres"))
+                // console.log("genre already loaded")
+                // console.log(local_storage.load("genres"))
             }  
             
         },[])

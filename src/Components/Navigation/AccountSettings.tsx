@@ -10,37 +10,45 @@ import CreateLink from './CreateLink';
 import { Settings } from '../../types/DataTypes';
 import { useUser } from '../../contexts/UserContext';
 
+const addMenuItem  = (current_menu:Record<string,string>[], menu_item:Record<string,string>) => {
+  let has_menu_item = current_menu.some((item) => item.title === menu_item.title);
+  if(has_menu_item){
+    return current_menu;
+  }
+  return [ menu_item,...current_menu]
+}
 const AccountSettings = () => {
   const [role,setRole] = useState("")
   const [settings, setSettings] = useState<Record<string,string>[]>([])
   const { user } = useUser()
 
   useEffect(() => {
-  console.log(`looking at the user  role ${user?.role.type}`)
+  // console.log(`looking at the user  role ${user?.role.type}`)
     const user_role = user?.role.type || "artist"
     setRole(user_role)
-    console.log(`The user role is ${user_role}`)
+    // console.log(`The user role is ${user_role}`)
 
   }, [user])
  
 
   useEffect(() => {
-    setSettings([
+    let user_settings:Record<string,string>[] = [
       { title: 'Account', slug: '/edit-profile' }, 
       { title: 'Dashboard', slug: `dashboard/${role}` }, 
       { title: 'Logout', slug: '/logout' }
-    ]);
+    ];
+    
+    if(role ===  Roles.ARTIST){
+      user_settings = addMenuItem(user_settings, { title: 'Find a mentor', slug: '/mentors/find-a-mentor' })
+    }
+    setSettings(user_settings);
   }, [role])
 
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
 
-  if(role ===  Roles.ARTIST && user?.mentor === null){
-    settings.unshift({
-       title: 'Find a mentor', slug: '/mentors/find-a-mentor' 
-    })
-  }
+
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);

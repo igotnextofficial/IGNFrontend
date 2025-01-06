@@ -180,7 +180,7 @@ TempArticles: ArticleDataType[]  = [
             return response;
         }
         catch(error){
-            console.error(error)
+            // console.error(error)
             return null;
         }
     }
@@ -202,7 +202,7 @@ TempArticles: ArticleDataType[]  = [
             userArticles.data['data']['link']=`${category}/${userArticles.data['data']['id']}`
             return userArticles.data['data'];
         } catch (error) {
-            console.error("Error retrieving articles:", error);
+            // console.error("Error retrieving articles:", error);
             return null; // Return empty array in case of error, or handle it as per your requirement
         }
     }
@@ -212,7 +212,7 @@ TempArticles: ArticleDataType[]  = [
             let featuredArticles = await this.ignHttpRequest.get(APP_ENDPOINTS.ARTICLES.FEATURED);
             return featuredArticles.data['data'];
         } catch (error) {
-            console.error("Error retrieving articles:", error);
+            // console.error("Error retrieving articles:", error);
             return []; // Return empty array in case of error, or handle it as per your requirement
         }  
     }
@@ -222,7 +222,7 @@ TempArticles: ArticleDataType[]  = [
             let featuredArticles = await this.ignHttpRequest.get(APP_ENDPOINTS.ARTICLES.FEATURED);
             return featuredArticles.data['data'];
         } catch (error) {
-            console.error("Error retrieving articles:", error);
+            // console.error("Error retrieving articles:", error);
             return []; // Return empty array in case of error, or handle it as per your requirement
         }  
     }
@@ -234,7 +234,7 @@ TempArticles: ArticleDataType[]  = [
             return response.data;
         }
         catch(error){
-            console.error(error)
+            // console.error(error)
             return null;
         }
        
@@ -245,7 +245,7 @@ TempArticles: ArticleDataType[]  = [
             let userArticles = null;
             return userArticles;
         } catch (error) {
-            console.error("Error retrieving articles:", error);
+            // console.error("Error retrieving articles:", error);
             return null; // Return empty array in case of error, or handle it as per your requirement
         }  
     }
@@ -255,7 +255,7 @@ TempArticles: ArticleDataType[]  = [
             if(!response){return null}
             return response.data['data'];
         } catch (error) {
-            console.error("Error retrieving articles:", error);
+            // console.error("Error retrieving articles:", error);
             return []; // Return empty array in case of error, or handle it as per your requirement
         }  
     }
@@ -265,7 +265,7 @@ TempArticles: ArticleDataType[]  = [
             let userArticles = await this.getAll();
             return userArticles;
         } catch (error) {
-            console.error("Error retrieving articles:", error);
+            // console.error("Error retrieving articles:", error);
             return []; // Return empty array in case of error, or handle it as per your requirement
         }  
     }
@@ -289,7 +289,7 @@ TempArticles: ArticleDataType[]  = [
             return response;
         }
         catch(error){
-            console.error(error)
+            // console.error(error)
             return null;
         }
     }
@@ -311,7 +311,7 @@ TempArticles: ArticleDataType[]  = [
             return response;
         }
         catch(error){
-            console.error(error)
+            // console.error(error)
             return null;
         }
     }
@@ -334,7 +334,7 @@ TempArticles: ArticleDataType[]  = [
           
             return response;
           } catch (error) {
-            console.error(error);
+            // console.error(error);
             return null;
           }
     }
@@ -352,7 +352,7 @@ TempArticles: ArticleDataType[]  = [
             return response;
         }
         catch(error){
-            console.error(error);
+            // console.error(error);
             return null; 
         }
 

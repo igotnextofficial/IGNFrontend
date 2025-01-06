@@ -27,7 +27,7 @@ const ArticleCategoryPrepareList = ({ category }: { category: string }) => {
     };
 
     useEffect(() => {
-        console.log(`the passed in list is ${allArticles}`);
+        // console.log(`the passed in list is ${allArticles}`);
         if (allArticles) {
             // Convert all articles to ListDataType format
             const convertedArticles = allArticles.map(convertToListData);

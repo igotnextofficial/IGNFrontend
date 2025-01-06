@@ -17,8 +17,8 @@ const CreateLink = ({ title, slug }: { title: string; slug: string }) => {
         setRefresh(refresh)
       }
     } catch (error) {
-      console.error("Logout error: ", error);
-      alert("unsuccessful");
+      // console.error("Logout error: ", error);
+      // alert("unsuccessful");
     }
   };
 

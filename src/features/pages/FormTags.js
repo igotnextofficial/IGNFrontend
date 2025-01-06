@@ -61,7 +61,7 @@ try {
       
       setManageInput(passedValue);
       props.formContentValues[inputel.current.id] = inputel.current.checked;
-      console.dir(props.formContentValues)
+      // console.dir(props.formContentValues)
     }
     else{
       setManageInput(inputel.current.value)

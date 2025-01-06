@@ -106,7 +106,7 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
                                         let current_selection = e.target.value;
                         
                                         let current_value_as_array = dataValue.split(',');
-                                        console.log(`Current value as array ${current_value_as_array}`)
+                                        // console.log(`Current value as array ${current_value_as_array}`)
 
                                         if(current_value_as_array.includes(current_selection)){
                                             current_value_as_array = current_value_as_array.filter((item) => item !== current_selection)

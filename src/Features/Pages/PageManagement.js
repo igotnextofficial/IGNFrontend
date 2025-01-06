@@ -50,7 +50,7 @@ function PageManagement() {
         ('Article submitted successfully');
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 

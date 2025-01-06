@@ -24,7 +24,7 @@ const loadNotes = async (
 
         return response.data;
     } catch (error) {
-        console.error("Error loading notes:", error);
+        // console.error("Error loading notes:", error);
         return null;
     }
 };
@@ -67,7 +67,7 @@ const NotesFeedback = () => {
                     }
                 }
                 catch(error){
-                    console.error("Error loading notes:", error);
+                    // console.error("Error loading notes:", error);
                     return null;
                 }
                

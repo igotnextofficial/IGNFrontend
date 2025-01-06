@@ -125,7 +125,7 @@ class User{
             return  response;
         }
         catch(error){
-            console.log(`an error in the process somewhere : ${error}`);
+            // console.log(`an error in the process somewhere : ${error}`);
             return null
         }
 
