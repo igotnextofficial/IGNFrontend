@@ -1,10 +1,10 @@
 ## Current To do List
 ### High Priority
     - [] Search for mentors page needs to be updated , to go to the mentors profile when it is clicked on also page should update UI on Search for category and name 
+    - [] Add calendly or some sort of scheduling system for mentors, check google api 
     - [] protect register-mentor page so only admin can access   
     - [] set up forgot password
     - [] set up 404 page
-    - [] Add calendly or some sort of scheduling system for mentors, check google api 
     - [] Artist edit profile should show a count so users know how long their bio can be and the like.
     - [] make sure all forms are submitting their data correctly
 
@@ -106,3 +106,15 @@ Here's a quick guide:
 In your cPanel, set up email forwarding from the cPanel email account to the users' Gmail addresses.
 
 In Gmail, go to Settings > Accounts and Import > Check mail from other accounts, and add the cPanel email account using POP3.
+
+
+
+# Working GCP SIGNED_URL LINK
+
+Q LEwis : Uploaded from dev site
+https://storage.googleapis.com/ignmagazine-assets/uploads/9db7cd7e-d6d4-4770-a3c5-74f8b774f9d8/images/quinnlewis-1735606562922.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=media-upload-manager%40ign-magazine.iam.gserviceaccount.com%2F20241231%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241231T005603Z&X-Goog-Expires=604800&X-Goog-SignedHeaders=host&X-Goog-Signature=9a95c0677c286c0efb8a7fe17ce9213f37ec47fbb94bd8600a8e63d54d99a434f4c392e9d77f4fde461bb187039d18cc65a288a56176a4bbfb18a694215d94f11342ab9b7793ce4cf6b00ebbbd3f273146867fde74db9e4fdec4dfc8e21c274b45969887eb7966a93173ecf41728581f3e2d6e099f7d677d5c113cf174f9819916feb99ded5121975a995c4d3f659213bbec920f7baace8aecc6042c43f46ad07cfc45ebde6da5b4d510547c1d7af1d4b28445db769caabb05c5a2671fc9d7fe02ca1a0540b37b66849d96ea3274a332842f3f8a05d9346ffd5646043a426e2f4d291cd01708d4bac81d1439d7af69369617e1503c5eae467116399b0d35b3a8
+
+
+
+George fuller - uploaded from local :
+https://storage.googleapis.com/ignmagazine-assets/uploads/9db7cff5-6322-4146-8081-4aaee0ea3238/images/georgefiuller-1735160172819.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=media-upload-manager%40ign-magazine.iam.gserviceaccount.com%2F20241230%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241230T201305Z&X-Goog-Expires=604800&X-Goog-SignedHeaders=host&X-Goog-Signature=385642289836ef9c032b8660fb46f6f70667f8c254787dcb9bc661b36cae0238e932ee443c8811ebb0a7a51763defa3aa59a5224bbfdb6b88156ef94b1a01e810d1c68c3d252e92be6a191640710edbd3eb65b0318c048d551b871dbbdcb00572cd571d26c0c4882a9908b1b7e099f8245e0420ea654a4e03af0dde203c306785c8f88f5001d2498217b058fcd763878bc61767636de030a008e3f7e91b768ede44534b8823d62256f7e616a7a73d9579e5404eeea04bba779aabead932254a4e637a0d54c424c96271481264def6e3c446e02e78438726a847ec9d67bd55deacc06871e8b0e589affab5e797f7ee90c1333fcabf15dc36dd9ac8cc11223dd01

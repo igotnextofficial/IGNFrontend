@@ -11,6 +11,7 @@ export default class SessionStorage implements StorageInterface {
     }
 
     remove(): void {
+
         sessionStorage.removeItem('data');
     }
 

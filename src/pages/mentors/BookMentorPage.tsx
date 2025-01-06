@@ -7,22 +7,24 @@ import SectionComponent from "../../helpers/SectionComponent"
 import PaymentForm from "../../helpers/PaymentForm"
 
 import IgnPillComponent from "../../helpers/IgnPillComponent"
+import { useUser } from "../../contexts/UserContext"
 
 const BookMentorPage = () => {
-    const [mentors, setMentors] = useState<MentorDataType[]>([])
+    // const [mentors, setMentors] = useState<MentorDataType[]>([])
     const [currentMentor, setCurrentMentor] = useState<MentorDataType>()
-    const { mentorId } = useParams()
+    const { mentorId } = useParams();
+    const { mentors } = useUser();
 
 
     useEffect(() => {
-        const mentorClass = new Mentor()
-        setMentors(mentorClass.getAll());
+        // const mentorClass = new Mentor()
+        // setMentors(mentorClass.getAll());
 
 
     }, [])
 
     useEffect(() => {
-        setCurrentMentor(mentors.find((mentor) => { return mentor.id === mentorId }))
+        setCurrentMentor(mentors?.find((mentor) => { return mentor.id === mentorId }))
     }, [mentors, mentorId])
 
 
@@ -40,7 +42,7 @@ const BookMentorPage = () => {
 
                         <Box sx={{ maxWidth: '600px' }}>
                             <IgnPillComponent description={`Mentor: ${currentMentor?.fullname}`} link="" />
-                            <img style={{ width: "100%",border:"2px solid #ecdb22 " }} src={currentMentor?.image} alt={currentMentor?.fullname} />
+                            <img style={{ width: "100%",border:"2px solid #ecdb22 " }} src={currentMentor?.profile_photo_path} alt={currentMentor?.fullname} />
                         </Box>
                         <Typography sx={{ paddingTop: 2, paddingBottom: 2 }} variant="body1" >Mentorship Duration: 6 weeks</Typography>
 

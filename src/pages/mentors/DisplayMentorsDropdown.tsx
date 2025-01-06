@@ -1,11 +1,11 @@
 import { Avatar,Box,ListItem,ListItemAvatar,ListItemText,Typography } from "@mui/material"
 import { MentorDataType } from "../../types/DataTypes"
-import { Link } from "@mui/material";
+import {Link} from "react-router-dom"
 const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
     return (
         <>
         
-        <Link href={`book-a-mentor/${mentor.id}`}>
+        <Link to={`/mentors/book-a-mentor/${mentor.id}`}>
             <ListItem className="listSelection" sx={styles.mentorListView} alignItems="center">
                 <ListItemAvatar>
                     <Avatar alt={mentor.fullname} src={mentor.profile_photo_path} />

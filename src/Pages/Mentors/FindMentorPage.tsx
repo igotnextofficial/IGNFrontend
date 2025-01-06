@@ -54,21 +54,22 @@ const DisplaySearchField = ({ byCategory = false }) => {
     const {mentors} = useUser()
 
     useEffect(() => {
-        let mentorListSet: MentorDataType[] = []
-        mentors?.filter((mentor) => {
-            for (const specialty of mentor.specialties) {
-                if (specialtySelection.includes(specialty)) {
-                    mentorListSet.push(mentor)
-                    break;
-                }
-            }
-            return mentorListSet
-        })
+        // let mentorListSet: MentorDataType[] = []
+        // mentors?.filter((mentor) => {
+        //     for (const specialty of mentor.specialties) {
+        //         console.log(`selected: ${specialty} in ${specialtySelection}`)
+        //         if (specialtySelection.includes(specialty)) {
+        //             mentorListSet.push(mentor)
+        //             break;
+        //         }
+        //     }
+        //     return mentorListSet
+        // })
 
-        setMentorsList(mentorListSet)
-        return () => {
-            setMentorsList([])
-        }
+        // setMentorsList(mentorListSet)
+        // return () => {
+        //     setMentorsList([])
+        // }
 
     }, [specialtySelection])
 
@@ -82,8 +83,22 @@ const DisplaySearchField = ({ byCategory = false }) => {
     }
 
     const handleChangeForCategory = (event: SelectChangeEvent<string[]>) => {
-        let value = event.target.value;
-        setSpecialtySelection(typeof value === 'string' ? value.split(',') : value,)
+        let value = event.target.value as string[];
+        let mentorListSet: Set<MentorDataType> = new Set();
+        mentors?.filter((mentor) => {
+            let hasSpecialty = mentor.specialties.some((specialty) => { 
+                return value.map(v  => v.toLowerCase()).includes(specialty.toLocaleLowerCase());
+               })
+          
+
+            if (hasSpecialty) {
+                mentorListSet.add(mentor);
+            }
+               
+        })
+
+        setMentorsList(Array.from(mentorListSet))
+        setSpecialtySelection(typeof value === 'string' ? [value] : value,)
     }
 
     return (
