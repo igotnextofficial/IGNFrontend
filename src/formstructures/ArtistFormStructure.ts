@@ -1,10 +1,19 @@
 import { displayType } from "../types/DataTypes"
-import LocalStorage from "../storage/LocalStorage"
+// import LocalStorage from "../storage/LocalStorage"
 
-const local_storage = new LocalStorage();
-const musicGenres = JSON.parse(local_storage.load("genres"))['genres'] ?? [];
-console.log(`The Music Genres Loaded are`)
-console.log(musicGenres)
+let storage = localStorage.getItem("igotnextmagazine:com")
+let musicGenres:string[] = [];
+
+if(storage){
+ let storage_data = JSON.parse(storage)
+
+  if(storage && 'genres' in storage_data){
+    musicGenres = storage_data.genres
+  }
+}
+
+ 
+ 
  
 export const ArtistFormStructure = [
     {

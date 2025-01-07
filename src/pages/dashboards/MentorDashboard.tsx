@@ -39,7 +39,7 @@ const MentorDashboard = ()=>{
           
             if(response !== null){
                 const specialties = response.data.map((item:any)=>item.name)
-                // local_storage.save("specialties",specialties)
+                local_storage.save("specialties",specialties)
             }else{
                 throw new Error("issue loading specialties")
             }

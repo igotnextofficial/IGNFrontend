@@ -51,7 +51,7 @@ const Profile = () => {
         }
         
 
-        console.log(JSON.stringify(userFormStructure,null,2))
+        // console.log(JSON.stringify(userFormStructure,null,2))
         
         setFormStructure(userFormStructure)
     },[user])

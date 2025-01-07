@@ -1,9 +1,20 @@
 import { displayType } from "../types/DataTypes"
-import LocalStorage from "../storage/LocalStorage"
+// import LocalStorage from "../storage/LocalStorage"
 
-const local_storage = new LocalStorage();
-const Specialties = local_storage.load("specialties") ?? []
- 
+// const local_storage = new LocalStorage();
+// const Specialties = local_storage.load("specialties") ?? []
+
+let storage = localStorage.getItem("igotnextmagazine:com")
+let Specialties:string[] = [];
+
+if(storage){
+ let storage_data = JSON.parse(storage)
+  console.log(storage_data)
+  if(storage && 'specialties' in storage_data){
+    Specialties = storage_data.specialties
+  }
+}
+
 
 export const MentorFormStructure = [
     {

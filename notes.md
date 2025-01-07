@@ -1,6 +1,5 @@
 ## Current To do List
 ### High Priority
-    - [] Search for mentors page needs to be updated , to go to the mentors profile when it is clicked on also page should update UI on Search for category and name 
     - [] Add calendly or some sort of scheduling system for mentors, check google api 
     - [] protect register-mentor page so only admin can access   
     - [] set up forgot password
@@ -59,6 +58,7 @@
     
 ## Completed
 #### FBFAF9 BG Color
+- [x] Search for mentors page needs to be updated , to go to the mentors profile when it is clicked on also page should update UI on Search for category and name 
 - [x] Being logged out for some reason on Refresh 
 - [x] Mentors should be able to adjust payment fee.? Need to think about this.
 - [x] Add specialties list for mentors.
