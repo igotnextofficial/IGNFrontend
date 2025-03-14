@@ -6,6 +6,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import MentorDashboard from "./MentorDashboard";
 import ArtistDashboard from "./ArtistDashboard";
+import AdminDashboard from "./AdminDashboard";
 
 // const isCorrectRole = (role,user) => {
 //     return user.role === role
@@ -14,7 +15,8 @@ import ArtistDashboard from "./ArtistDashboard";
 const dashboards = {
     mentor: <MentorDashboard/>,
     artist: <ArtistDashboard/>,
-    writer: <WriterDashboard/>
+    writer: <WriterDashboard/>,
+    admin: <AdminDashboard/>
 };
 
 // Define a type for the role keys

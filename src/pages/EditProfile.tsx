@@ -4,16 +4,16 @@ import { useUser } from "../contexts/UserContext"
 import { HttpMethods, UserDataType, structureDataType } from "../types/DataTypes";
 import { Button, Grid, Typography } from "@mui/material";
 import ContentContainer from "../utils/ContentContainer";
-import Artist from "../models/users/Artist";
+ 
 import IgnFormGenerate from "../components/IgnFormGenerate";
 import { useFormDataContext } from "../contexts/FormContext";
 import FormDataProvider from "../providers/FormDataProvider";
 
-import { getFormData, sendRequest } from "../utils/helpers";
+import {  sendRequest } from "../utils/helpers";
 import { APP_ENDPOINTS } from "../config/app";  
 import { MentorFormStructure } from "../formstructures/MentorFormStructure";
 import { ArtistFormStructure } from "../formstructures/ArtistFormStructure";
-import { spec } from "node:test/reporters";
+
 
 
 
@@ -29,12 +29,13 @@ const Profile = () => {
     }
   
     useEffect(() => {
+
         const user_type = user?.role?.type ?? "default";
 
         let userFormStructure = structures[user_type];
         for(const structure of userFormStructure){
             if(user && structure.label in user){
-              
+
                 if((typeof user[structure.label]) !==  "string"){
                     let intial_data = user[structure.label];
          
@@ -51,7 +52,7 @@ const Profile = () => {
         }
         
 
-        // console.log(JSON.stringify(userFormStructure,null,2))
+       console.log(JSON.stringify(userFormStructure,null,2))
         
         setFormStructure(userFormStructure)
     },[user])

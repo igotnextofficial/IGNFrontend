@@ -85,7 +85,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
           <Typography sx={{marginTop :2 , marginBottom:1}} variant="body2" color="text.secondary">
              Specialties:
             </Typography>        
-          <Grid  container columnSpacing={2} rowSpacing={1} xs={12} sx={{marginBottom:2}} >
+          <Grid  container columnSpacing={2} rowSpacing={1}  sx={{marginBottom:2}} >
   
           {
             mentor.specialties.map((specialty,index) => (

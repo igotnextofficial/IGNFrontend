@@ -66,7 +66,7 @@ const LoginDisplay = ()=>{
 
 
             <ThemeProvider theme={theme}>
-                <Grid container component="main" sx={{ height:'100vh' }} xs spacing={2}>
+                <Grid container component="main" sx={{ height:'100vh' }}  spacing={2}>
                     <CssBaseline/>
                     <Grid item xs={0} sm={0} md={0}>
                         <BackgroundCoverImage url="https://localhost:3000/images/login.jpg" />  
@@ -89,12 +89,12 @@ const LoginDisplay = ()=>{
                                 <IGNButton buttonLabel='Sign in'/>
                                  
                                 <Grid container>
-                                    <Grid item xs> 
+                                    <Grid item  > 
                                         <Link href="#" variant="body2"  >
                                             Forgot password?
                                         </Link>
                                     </Grid>
-                                    <Grid item xs sx={{textAlign:'right'}}>
+                                    <Grid item   sx={{textAlign:'right'}}>
                                         <Link href="/register" variant="body2">
                                             {"Don't have an account? Sign Up"}
                                         </Link>

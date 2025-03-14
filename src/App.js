@@ -1,6 +1,6 @@
 import './App.css';
 
-
+import { useEffect, useState } from 'react';
 import Navigation from './features/navigation/Navigation';
 import ProtectedRoutes from './utils/ProtectedRoute';
 
@@ -33,6 +33,9 @@ import MessageReaderReply from './pages/notes/MessageReaderReply';
 import ScheduleSession from './pages/artists/ScheduleSession';
 import { useErrorHandler } from './contexts/ErrorContext';
 import UserProfile from './pages/UserProfile';
+import CloseSession from './pages/mentors/CloseSession';
+import HealthCheck from './pages/healthcheck' 
+import { Roles } from './types/Roles';
 
 
 
@@ -42,9 +45,14 @@ import UserProfile from './pages/UserProfile';
 
 
 const MainApplication = () => {
-  const { isLoggedin } = useUser();
-
-  const isAuthenticated = isLoggedin
+  const { isLoggedin,user } = useUser();
+  const [currentUser,setCurrentUser] = useState(null)
+  const [isAuthenticated,setIsAuthenticated] = useState(false)
+  useEffect(() => {
+      setIsAuthenticated(isLoggedin);
+      setCurrentUser(user)
+  },[user,isLoggedin])
+ 
 
   /* 
   ================== Socket Connection ================== 
@@ -103,42 +111,41 @@ const MainApplication = () => {
 
     <>
    
-      <Router>
+      <Router
+        future={{v7_startTransition:true,}}
+      >
         <DetectChange />
                  
         <Navigation Authenticated={isAuthenticated} />
         <Routes>
-        <Route path='/profile/:role/:user_id' element={<UserProfile />} />
-          <Route path='/' element={<Home />} /> 
+          <Route path='/' element={<Home />} />
+          <Route path='/profile/:role/:user_id' element={<UserProfile />} />
+          <Route path='/health-check' element={<HealthCheck/>} /> 
           <Route path='/login' element={<Login />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/register-mentor' element={<RegisterMentor />} />
-
-          {/* Articles */}
-          <Route path='/articles/:category' element={<ArticleCategoryList />} />
-     
-          <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />
           
-    
+          <Route path='/articles/:category' element={<ArticleCategoryList />} />
+          <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />
 
-          {/* Profile */}
           <Route path='/profile/:role' element={< Dashboard />} />
 
-          <Route path='/schedule' element={<ScheduleSession />} /> 
+          <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isAuthenticated} />}>     
+
+              <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
+              <Route path='/dashboard/:role' element={<Dashboard />} />
+              <Route path='/notes/:note_id' element={<MessageReaderReply />} />
+
+              <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
+              <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> 
+              <Route path='/schedule' element={<ScheduleSession />} />           
+
+            <Route path='/session/:user_id/closeout/:mentee_id'  element={<CloseSession/>}/>
+ 
+            <Route path='/compose-article' element={<ComposeArticle />} /> 
+            <Route path='/edit-article/:article_id' element={<EditArticle />} /> 
           
-          <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
-            <Route path='/edit-profile' element={<EditProfile />} /> {/* Sends Request */}
-            <Route path='/dashboard/:role' element={<Dashboard />} /> 
-     
-            
-            <Route path='mentors/find-a-mentor' element={<FindMentorPage />} />
-            <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} /> {/* Sends Request */}
-          
-            <Route path='/notes/:note_id' element={<MessageReaderReply />} /> 
-            
-            <Route path='/compose-article' element={<ComposeArticle />} />  {/* Sends Request */}
-            <Route path='/edit-article/:article_id' element={<EditArticle />} />{/* Sends Request */}
+            <Route path='/register-mentor' element={<RegisterMentor />} />   
           </Route>
 
 

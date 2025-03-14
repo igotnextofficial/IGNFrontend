@@ -9,6 +9,7 @@ import CreateLink from './CreateLink';
 
 import { Settings } from '../../types/DataTypes';
 import { useUser } from '../../contexts/UserContext';
+import {v4 as uuidv4} from 'uuid'
 
 const addMenuItem  = (current_menu:Record<string,string>[], menu_item:Record<string,string>) => {
   let has_menu_item = current_menu.some((item) => item.title === menu_item.title);
@@ -119,10 +120,14 @@ const AccountSettings = () => {
         >
 
           {settings.map(({ title, slug }) => (
-            <Link to={slug}>
+            <Link key={uuidv4()} to={slug}>
             <MenuItem key={slug} onClick={handleCloseUserMenu}>
 
-              <CreateLink title={title} slug={slug} />
+              <Typography
+                             sx={{ display: 'block',color:'#1d1917', fontSize:'1.2em'   }}
+                             component="p"
+                             variant="body2"
+              >{title}</Typography>
             </MenuItem>
             </Link>
           ))}

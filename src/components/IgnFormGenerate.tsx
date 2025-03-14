@@ -3,6 +3,11 @@ import { structureDataType, displayType } from "../types/DataTypes"
 import {SelectChangeEvent,RadioGroup,InputLabel, Radio, Grid, TextField, FormControlLabel,MenuItem,Select, FormLabel, FormControl,FormGroup, Checkbox } from "@mui/material"
 import { useFormDataContext } from "../contexts/FormContext"
  
+function formatNumber(num:number) {
+    return new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num);
+}
+
+
 
 
 
@@ -24,12 +29,15 @@ const Generate = ({ formStructures }: { formStructures: structureDataType[] }) =
 }
 
 const FieldOutput = ({ structure }: { structure: structureDataType }) => {
-    const { updateFormData,updateFileData,hasError } = useFormDataContext()
+    const { updateFormData,updateFileData,hasError,data } = useFormDataContext()
     const [dataValue, setDataValue] = useState("")
     const [current_key,setCurrentKey] = useState("")
  
     useEffect(() => {
         setDataValue(structure.default ?? "")
+        console.log("the data in generate component")
+        console.log(JSON.stringify(data))
+        console.log(`structure default is ${structure.default} data ${dataValue}`)
   
     },[])
 
@@ -60,15 +68,20 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
 
 
     if (structure.display === displayType.InputValue) {
+ 
+   
         return (
             <TextField
                 label={structure.label}
                 {...structure.props}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            
                     setDataValue(event.currentTarget.value) 
                     updateFormData(current_key,event.currentTarget.value)
                 }}
-                value={dataValue}
+
+          
+                value={current_key in data ? data[current_key]: dataValue}
                 variant="outlined"
                 fullWidth
                 error={current_key in hasError ? !(hasError[current_key].valid) : dataValue.trim() === "" }
@@ -87,7 +100,7 @@ const FieldOutput = ({ structure }: { structure: structureDataType }) => {
                 setDataValue(event.currentTarget.value) 
                 updateFormData(current_key,event.currentTarget.value)
             }}
-             value={dataValue}
+             value={current_key in data ? data[current_key]: dataValue}
              label={structure.label}
              fullWidth
 

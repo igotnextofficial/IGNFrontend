@@ -1,4 +1,4 @@
-import  { useState, ReactNode, useRef, useEffect, useCallback } from "react";
+import  { useState, ReactNode,  useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
 import User from "../models/users/User";
 import useFetch from "../customhooks/useFetch";
@@ -7,10 +7,11 @@ import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataO
 import LocalStorage from  "../storage/LocalStorage";
 import axios from "axios";
 import { APP_ENDPOINTS } from "../config/app";
-// import { useHttpRequest } from "../Contexts/HttpRequestContext";
+ 
 
 import { Endpoints } from "../config/app";
-import { response } from "express";
+import { Collections } from "@mui/icons-material";
+ 
 
 
 
@@ -76,48 +77,57 @@ import { response } from "express";
 
     /**
      * 
-     * @param user_id - user id to be refreshed
+     * 
      * @returns - boolean representing whether the token was refreshed or not
      */
-    const refreshToken = async (user_id: string,role:string): Promise<string> => {
+    const refreshToken = async ( ): Promise<Record<string,any> | null> => {
  
         try {
             let url = Endpoints.REFRESH_TOKEN;
             // console.log(`hitting endpoint url ${url} with user id ${user_id}`);
-            let response = await axios.post(url, { "data": { user_id,role }  });
+        
+            let response = await axios.get(url,{withCredentials:true});
     
             if (response.status === 200) {
                 let new_token = response.data['data']['access_token'];
                 // console.log(`refreshed token ${new_token}`);
                 // setAccessToken(new_token);
-          
-                return new_token;
+                
+                return response.data['data'];
             }
         } catch (e) {
                 
             // console.error("Failed to refresh token:", e);
         }
-        return ""
+        return null
     };
-
+ 
 const UserObj = new User()
+ 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const intialLoad = useRef(true);
-    const local_storage = new LocalStorage();
-    const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
+    const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(() => {
+        const savedUser = sessionStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null;
+      });
+ 
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
     const {fetchData} = useFetch();
     const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
     const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
-    const [count, setCount] = useState(0);
+    const [loading,setLoading] = useState(true);
+ 
     // const {updateUrl} = useHttpRequest("")
-   
+   useEffect(() => {
+
+        if(isLoggedin && user && accessToken){
+            setLoading(false)
+        }
+   },[isLoggedin,accessToken,user])
     useEffect(() => {   
-    
            
             getUsersData("mentors",APP_ENDPOINTS.USER.MENTOR.FEATURED).then((response) => {
-            
+
                 if(response !== null){
                     let data = response.map((mentor:MentorDataType) => {
                         mentor.specialties = mentor.specialties.map((item:any)=>item.name)
@@ -136,8 +146,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 }
             })
 
+   
     
-    }, []);
+    },[] );
 
   
     async function getUsersData (data_to_load:string,endpoint:string){
@@ -167,124 +178,66 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 
     useEffect(() => { 
-      
-        const attemptRefreshToken = ( async ( user_information:Record<string,string>) => {
-            return await refreshToken(user_information.id,user_information.role)
-        })
 
+        const attemptRefreshToken = ( async () => {
+            return await refreshToken()//
+        });
 
-        if((!accessToken && !user) && local_storage.hasItem(User.INFO)){
-            
-            let data = JSON.parse(local_storage.load(User.INFO));
-            let found_user = data[User.INFO]
-             if(found_user){
-                setUser(found_user)
-                setIsLoggedin(true)
-
-                const user_information = {
-                    id: found_user.id,
-                    role: found_user.role?.type
-                }
-
-                attemptRefreshToken(user_information).then((response) => {
-                    if(!response){
-                        setUser(null);
-                        setIsLoggedin(false);
-                        setAccessToken("");
-                        local_storage.remove(User.INFO);
-                    }
-                    else{
-                        setUser(found_user)
-                        setAccessToken(response);
-                        setIsLoggedin(true);
-                    }
-                }).catch((e) => {
-                    setUser(null);
-                    setIsLoggedin(false);
-                    setAccessToken("");
-                    local_storage.remove(User.INFO);
-                }).finally(() => {
-                     
-                })
-             }
+        const refreshTokenIfNeeded = async () => {
+            try{
+               let response = await attemptRefreshToken();
+               if(!response){throw new Error("cannot refresh the token")} setAccessToken(response['access_token']);
            
-                // let found_user = JSON.parse(new LocalStorage().load(User.INFO));
-             
-                // console.log(`found user and setting ${ JSON.stringify(found_user[User.INFO])}`);
-                // setUser(found_user)
-                // setIsLoggedin(true)
-                
-                // if(intialLoad.current !== false){
-                //     const user_information = {
-                //         id: found_user.id,
-                //         role: found_user.role?.type
-                //     }
+            }
+            catch(error){
+                setIsLoggedin(false);
+                sessionStorage.removeItem('user');
+            }
+        }
 
-                  
-                //     attemptRefreshToken(user_information).then((response) => {
-                    
-                //         if(!response){
-                 
-                //             setUser(null);
-                //             setIsLoggedin(false);
-                //             setAccessToken("");
-                //             new LocalStorage().remove(User.INFO);
-    
-    
-                //         }
-                //         else{
-                //             let user_found = new LocalStorage().load(User.INFO);
-                      
-                //             setUser(user_found)
-                //             setAccessToken(response);
-                //             setIsLoggedin(true);
-                //             // console.log(`this is when user should be logged in page load intial ${intialLoad.current}`);
-                //         }
-                //     }).catch((e) => {
-                //         setUser(null);
-                //         setIsLoggedin(false);
-                //         setAccessToken("");
-                //         new LocalStorage().remove(User.INFO);
-                //         // console.error( `error -  failed refreshing token ${e}`)
-                //     }).finally(() => {
-                //         intialLoad.current = false
-                //     })
-                    
-     
-                // }
-
+        if((!accessToken && user)){
+            setIsLoggedin(true)
+            refreshTokenIfNeeded();
         } 
 
-        return () => {
-
-        }
+       
      } ,[accessToken, user ])
  
      const loginUser = async (data: httpDataObject) => {
-        let successful = false;
-        if(!data){ return successful}
-        let response = await UserObj.login(data);
-        if(!response){return successful}
-
-        const user_data = {...response.data['data']};
-        const access_token =  response.data['access_token'];
-        setAccessToken(access_token);
-        setUser(user_data as UserDataType);
-        setIsLoggedin(true); // I do not need this
-        local_storage.save(User.INFO,user_data);
+        try{
+            if(!data){ return false}
+            let response = await axios.post(Endpoints.LOGIN,data,{withCredentials:true})
+            // let response = await UserObj.login(data);
+            if(!response){return false}
         
-        successful = true;
-        return successful;
+            const user_data = {...response.data['data']};
+            
+            const access_token =  response.data['access_token'];
+            setAccessToken(access_token);
+            if(`role` in user_data)
+       
+            setUser(user_data as UserDataType);
+            sessionStorage.setItem('user', JSON.stringify(user_data));
+            setIsLoggedin(true); 
+            return true;
+        }
+        catch(err){
+            return false
+        }
+
         
      }
 
      const LogoutUser = async () => {
+        setIsLoggedin(false);
         let response = await UserObj.logout(accessToken);
         if(response){
             localStorage.removeItem(User.INFO);
             setUser(null);
-            setIsLoggedin(false);
+            sessionStorage.removeItem('user');
+
             setAccessToken("");
+            
             socket.disconnect()
             return true;
         }
@@ -424,10 +377,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const updateUser = useCallback((user: UserDataType | MentorDataType | ArtistDataType) => {
         const local_storage = new LocalStorage()
         local_storage.save(User.INFO,user)
-        setUser((currentUser) => ({
-            ...currentUser,
-            ...user
-        }));
+        setUser( user );
     }, []); // Assuming setUser doesn't need external dependencies
     
 
@@ -456,7 +406,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     
 
     return (
-        <UserContext.Provider value={{ user,mentors,artists, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken }}>
+        <UserContext.Provider value={{ user,mentors,artists, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken,loading }}>
             {children}
         </UserContext.Provider>
     );

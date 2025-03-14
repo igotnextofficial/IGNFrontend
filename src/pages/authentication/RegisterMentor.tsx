@@ -11,7 +11,7 @@ import IGNButton from '../../components/Button';
 import { useUser } from '../../contexts/UserContext';
 import { useErrorHandler } from '../../contexts/ErrorContext';
 
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { sendRequest } from '../../utils/helpers';
 
@@ -25,6 +25,10 @@ import useFetch from '../../customhooks/useFetch';
 import { APP_ENDPOINTS } from '../../config/app';
 import { data } from '../../fake-data';
 
+
+function formatNumber(num:string) {
+    return Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 const user = new User()
 const RegisterUserAttempt = async (data:httpDataObject) => {
@@ -46,11 +50,17 @@ const RegisterDisplay = ()=>{
     const [refreshPage, setRefreshPage] = React.useState<boolean>(false);
     const [success, setSuccess] = React.useState<boolean>(false);
     const [price, setPrice] = React.useState<number>(0);
+    const navigate = useNavigate();
     const { setSendRequest,setSendData,fetchData} = useFetch({ 
         method:HttpMethods.POST} );
 
 
-   
+
+        // useEffect(() => {
+        //     if (user && user.role && user.role.type !== "admin") {
+        //         navigate(`/`, { replace: true });
+        //       }
+        // },[user,navigate])
 
     useEffect(() => {
         if(success){
@@ -82,14 +92,7 @@ const RegisterDisplay = ()=>{
           
         }
     },[success ])
-
-    useEffect(() => {
-        // console.log(`login is now ${isLoggedin} and user is ${user}`)
-        if(isLoggedin && user){
-            // console.log(`login has changed and user `)
-           setRefreshPage(true);
-        }
-    },[isLoggedin,user]);
+ 
 
     const handleSubmit = async (event:  React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -100,7 +103,7 @@ const RegisterDisplay = ()=>{
            const data_response = await RegisterUserAttempt({data});
            if (data_response) {
  
-           setPrice(data['price'])
+            setPrice(data['price'])
             setResponse(data_response);
             setSuccess(true);
             if (data_response.errors?.length) {
@@ -122,11 +125,9 @@ const RegisterDisplay = ()=>{
 
     const theme = createTheme()
     return (
+ 
         <>
-              {refreshPage &&(
-                <Navigate to={`/dashboard/mentor`} replace={true} />
-            )}
-
+          
             <ThemeProvider theme={theme}>
                
                 <Grid container component="main" sx={{ height: '100vh' }} spacing={2}>

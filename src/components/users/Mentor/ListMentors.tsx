@@ -17,18 +17,15 @@ const loadData = async () => {
     }        
 }
 const ListMentors = () => {
-    const {mentors} = useUser() // Use useState to manage mentors state
+    const {mentors, accessToken} = useUser();
     const [response,setResponse] = useState<httpDataObject | null>(null);
 
-    const {accessToken} = useUser();
-
+  
     useEffect(() => {
     
 
         let data = loadData().then(response => {
-            // console.log('loading mentors')
-            // console.log(`Response ${JSON.stringify(response)}`)
-            if  (response === undefined){return []}
+            if  (!response || response === null){return []}
       
             setResponse(response.data)
         })

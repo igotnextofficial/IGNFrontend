@@ -16,6 +16,21 @@ export const Endpoints = {
 }
 
 
+
+export const HealthChecksEndpoints = {
+    ARTICLES: process.env.REACT_APP_ARTICLES_API  ?? "",
+    USER: process.env.REACT_APP_USER_API_URI ?? "",
+    AUTH: process.env.REACT_APP_AUTH_API ?? "",
+    MENTEES: process.env.REACT_APP_MENTEES_API ?? "",
+    MENTOR: process.env.REACT_APP_MENTOR_API ?? "",
+    NOTES: process.env.REACT_APP_NOTES_API ?? "",
+    SESSIONS: process.env.REACT_APP_SESSION_API ?? "",
+    MEDIA: ` ${Endpoints.MEDIA.slice(0,Endpoints.MEDIA.lastIndexOf('/'))}` ,
+    PRODUCTS:  Endpoints.PRODUCTS.slice(0,Endpoints.PRODUCTS.lastIndexOf('/')),
+    SPECIALTIES: process.env.REACT_APP_SPECIALTIES_API ?? "",
+    GENRE: process.env.REACT_APP_GENRE_API ?? "",
+}
+
 export const APP_ENDPOINTS = {
     GENERIC:{
         SPECIALTIES: Endpoints.SPECIALTIES,
@@ -62,6 +77,7 @@ export const APP_ENDPOINTS = {
         MENTOR_SESSIONS: `${Endpoints.SESSIONS}/mentor/sessions`,
         MENTEE_SESSIONS: `${Endpoints.SESSIONS}/mentee/sessions`,
     },
+    // /api/mentors/9e5a4e35-4491-408e-935c-558edf0af202/availability/open
     NOTES: {
         BASE: Endpoints.NOTES,
         CREATE: Endpoints.NOTES,

@@ -6,7 +6,7 @@ let musicGenres:string[] = [];
 
 if(storage){
  let storage_data = JSON.parse(storage)
-
+  
   if(storage && 'genres' in storage_data){
     musicGenres = storage_data.genres
   }
