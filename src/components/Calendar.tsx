@@ -128,6 +128,53 @@ const WorkHoursList = ({
   const handleMouseDown = (time: string, dayIndex: number) => {
     if (isTimeBlocked(time, dayIndex) || isPastDate(dayIndex)) return;
     
+    // Check if time is already blocked
+    const existingBlock = selectedTimeBlocks.find(block => {
+      const timeIndex = times.indexOf(time);
+      const blockStartIndex = times.indexOf(block.startTime);
+      const blockEndIndex = times.indexOf(block.endTime);
+      return block.dayIndices.includes(dayIndex) && 
+             timeIndex >= blockStartIndex && 
+             timeIndex < blockEndIndex;
+    });
+
+    if (existingBlock) {
+      // Split the existing block
+      const timeIndex = times.indexOf(time);
+      const nextTimeIndex = timeIndex + 1;
+      
+      // Remove the existing block
+      const otherBlocks = selectedTimeBlocks.filter(b => b !== existingBlock);
+      
+      // Create two new blocks if needed
+      if (times.indexOf(existingBlock.startTime) < timeIndex) {
+        const firstBlock = {
+          startTime: existingBlock.startTime,
+          endTime: time,
+          dayIndices: [dayIndex]
+        };
+        otherBlocks.push(firstBlock);
+        onTimeBlockSelect(firstBlock.startTime, firstBlock.endTime, [dayIndex]);
+      }
+      
+      if (times.indexOf(existingBlock.endTime) > nextTimeIndex) {
+        const secondBlock = {
+          startTime: times[nextTimeIndex],
+          endTime: existingBlock.endTime,
+          dayIndices: [dayIndex]
+        };
+        otherBlocks.push(secondBlock);
+        onTimeBlockSelect(secondBlock.startTime, secondBlock.endTime, [dayIndex]);
+      }
+      
+      setSelectedTimeBlocks(otherBlocks);
+      
+      // Remove the original block
+      onTimeBlockSelect(existingBlock.startTime, existingBlock.endTime, [dayIndex], true);
+      
+      return;
+    }
+
     setSelectedStartTime({time, dayIndex});
     setIsDragging(true);
     setCurrentEndTime(time);
