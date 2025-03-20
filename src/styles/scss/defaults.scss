@@ -89,7 +89,8 @@ a,p,h1,h2,h3,h4,h5,h6{
   overflow: hidden;
   padding: 10px 20px;
   border-radius: 3px;
-  transition: color 0.3s ease-in-out; /* Fallback for browsers that don't support clip-path */
+  transition: color 0.3s ease-in-out; 
+  text-wrap: no-wrap;
 }
 
 #ign-navigation .ign-links a::before {

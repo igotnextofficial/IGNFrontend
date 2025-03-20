@@ -8,7 +8,7 @@ import LocalStorage from  "../storage/LocalStorage";
 import axios from "axios";
 import { APP_ENDPOINTS } from "../config/app";
  
-
+import { Roles } from "../types/Roles";
 import { Endpoints } from "../config/app";
 import { Collections } from "@mui/icons-material";
  
@@ -202,6 +202,46 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
        
      } ,[accessToken, user ])
+
+     useEffect(() => {
+        const loadAdditionalData = async () => {
+            if(!user) {return null}
+
+            const otherRequests = [];
+            if(user.role.type === Roles.ARTIST){
+               const menteeSessionsUrl = `${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user.id}`
+                otherRequests.push(menteeSessionsUrl);
+            }
+
+            if(user.role.type === Roles.MENTOR){
+                const availabilityUrl = `${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`;
+                const mentorSessionsUrl = `${APP_ENDPOINTS.SESSIONS.MENTOR }/${user.id}`;
+
+                otherRequests.push(availabilityUrl);
+                otherRequests.push(mentorSessionsUrl);
+            }
+
+
+            try{
+                const additionalRequests = otherRequests.map(req_url => {
+                    return axios.get(req_url,{headers:{Authorization:`Bearer ${accessToken}`}})
+                })
+    
+                const responses = await Promise.all(additionalRequests);
+
+                responses.map(response => {
+                    console.log(response.data);
+                })
+            }
+            catch(error){
+                console.log(`error running parallel requests.`)
+            }
+        }
+
+        if(isLoggedin ){
+            loadAdditionalData();
+        }
+     },[isLoggedin,user])
  
      const loginUser = async (data: httpDataObject) => {
         try{
@@ -211,14 +251,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             if(!response){return false}
         
             const user_data = {...response.data['data']};
-            
             const access_token =  response.data['access_token'];
             setAccessToken(access_token);
-            if(`role` in user_data)
-       
             setUser(user_data as UserDataType);
             sessionStorage.setItem('user', JSON.stringify(user_data));
             setIsLoggedin(true); 
+   
             return true;
         }
         catch(err){
@@ -413,3 +451,4 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 };
 
 
+ 

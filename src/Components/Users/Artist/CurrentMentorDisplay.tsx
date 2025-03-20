@@ -20,7 +20,7 @@ const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
     const [hasUpcomingSession,setHasUpcomingSession] = useState(false)
     const [mentorSession,setMentorSession] = useState<MentorSessionDataType>()
     useEffect(() => {
-
+   
         if(user.mentorSession.length > 0){
             let upcoming_sessions = user.mentorSession.filter((session:MenteeDataType) => {
                   return dayjs(session.session_date).tz('America/New_York').isSame(dayjs().tz('America/New_York')) || dayjs(session.session_date).tz('America/New_York').isAfter(dayjs().tz('America/New_York'));
@@ -35,7 +35,7 @@ const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
         }
         
         
-    },[ ])
+    },[])
 
 
 

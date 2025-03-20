@@ -13,6 +13,7 @@ import Login from './pages/authentication/Login';
 import Logout from './pages/authentication/Logout';
 import Register from './pages/authentication/Register';
 import RegisterMentor from './pages/authentication/RegisterMentor';
+import ScheduleAvailability from './pages/mentors/ScheduleAvailability';
 
 
 import { useUser } from './contexts/UserContext';
@@ -124,6 +125,7 @@ const MainApplication = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/register' element={<Register />} />
+          <Route path="/schedule-avail" element={<ScheduleAvailability/>}/>
           
           <Route path='/articles/:category' element={<ArticleCategoryList />} />
           <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />
