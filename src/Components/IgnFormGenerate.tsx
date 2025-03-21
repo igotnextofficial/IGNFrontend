@@ -1,209 +1,268 @@
-import React, {  useEffect,useState } from "react"
-import { structureDataType, displayType } from "../types/DataTypes"
-import {SelectChangeEvent,RadioGroup,InputLabel, Radio, Grid, TextField, FormControlLabel,MenuItem,Select, FormLabel, FormControl,FormGroup, Checkbox } from "@mui/material"
+import React, { useEffect, useState } from "react"
+import { FormField, displayType } from "../types/DataTypes"
+import { SelectChangeEvent, RadioGroup, InputLabel, Radio, Grid, TextField, FormControlLabel, MenuItem, Select, FormLabel, FormControl, FormGroup, Checkbox, Box, Typography, CircularProgress, FormHelperText } from "@mui/material"
 import { useFormDataContext } from "../contexts/FormContext"
- 
-function formatNumber(num:number) {
+import LoadingScreen from "./LoadingScreen"
+
+function formatNumber(num: number) {
     return new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(num);
 }
 
-
-
-
-
-const Generate = ({ formStructures }: { formStructures: structureDataType[] }) => {
-    let sortedFields = [...formStructures].sort((a, b) => a.order - b.order)
-    let output = sortedFields.map((formStructure,index) => {
-
+const Generate = ({ formStructures }: { formStructures: FormField[] }) => {
+    const sortedFields = [...formStructures].sort((a, b) => a.order - b.order)
+    const output = sortedFields.map((formStructure, index) => {
         if (formStructure.visibility) {
             return <DisplayFormField key={index} structure={formStructure} />
         }
         return null
     })
 
-    return (
-        <>
-            {output}
-        </>
-    )
+    return <>{output}</>
 }
 
-const FieldOutput = ({ structure }: { structure: structureDataType }) => {
-    const { updateFormData,updateFileData,hasError,data } = useFormDataContext()
-    const [dataValue, setDataValue] = useState("")
-    const [current_key,setCurrentKey] = useState("")
- 
-    useEffect(() => {
-        setDataValue(structure.default ?? "")
-        console.log("the data in generate component")
-        console.log(JSON.stringify(data))
-        console.log(`structure default is ${structure.default} data ${dataValue}`)
-  
-    },[])
+interface FieldOutputProps {
+    structure: FormField;
+}
 
- 
-    useEffect(() => {
-        setCurrentKey(structure.label.toLowerCase())
-    },[structure.label])
+const FieldOutput = ({ structure }: FieldOutputProps) => {
+    const { data, updateFormData } = useFormDataContext();
+    const [dataValue, setDataValue] = useState("");
+    const [isFieldLoading, setIsFieldLoading] = useState(false);
+    const [current_key, setCurrentKey] = useState("");
+    const [hasError, setHasError] = useState<Record<string, { valid: boolean; message: string }>>({});
 
+    useEffect(() => {
+        setCurrentKey(structure.label.toLowerCase());
+    }, [structure.label]);
+
+    useEffect(() => {
+        if (structure.defaultValue) {
+            setDataValue(structure.defaultValue);
+        }
+    }, [structure.defaultValue]);
+
+    const handleChange = async (field: string, value: any) => {
+        try {
+            setIsFieldLoading(true);
+            setDataValue(value);
+            await updateFormData(field, value);
+        } finally {
+            setIsFieldLoading(false);
+        }
+    };
 
     if (structure.display === displayType.Image) {
-
         return (
-            <TextField
-            type="file"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                if(event.target.files){
-              
-               
-                    // console.log(JSON.stringify(event.currentTarget.files))
-                    updateFileData('media',event.target.files[0])}
-                }
-           
-            }
-            inputProps={{ accept: 'image/*' }} // Accept only images
-          />
-        )
-    }
-
-
-    if (structure.display === displayType.InputValue) {
- 
-   
-        return (
-            <TextField
-                label={structure.label}
-                {...structure.props}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            
-                    setDataValue(event.currentTarget.value) 
-                    updateFormData(current_key,event.currentTarget.value)
-                }}
-
-          
-                value={current_key in data ? data[current_key]: dataValue}
-                variant="outlined"
-                fullWidth
-                error={current_key in hasError ? !(hasError[current_key].valid) : dataValue.trim() === "" }
-                helperText={current_key in hasError ? hasError[current_key].message : ``}
-            />
-        )
-    }
-
-     if (structure.display === displayType.TextValue) {
-
-         return (<TextField
-             {...structure.props}
-             multiline
-             rows={12}
-             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setDataValue(event.currentTarget.value) 
-                updateFormData(current_key,event.currentTarget.value)
-            }}
-             value={current_key in data ? data[current_key]: dataValue}
-             label={structure.label}
-             fullWidth
-
-         />)
-
-     }
-
-        if (structure.display === displayType.MultiChoiceList) {
-
-            return (
-                <Grid container>
-            
-                        {       structure.options?.map((option, index) => (
-                                <Grid key={index} item xs={4}>
-                                    <FormControlLabel  value={option} control={<Checkbox onChange={(e) => {
-                                        let current_selection = e.target.value;
-                        
-                                        let current_value_as_array = dataValue.split(',');
-                                        // console.log(`Current value as array ${current_value_as_array}`)
-
-                                        if(current_value_as_array.includes(current_selection)){
-                                            current_value_as_array = current_value_as_array.filter((item) => item !== current_selection)
-                                        }else{
-                                            current_value_as_array.push(current_selection)
-                                        }
-                                        const data_to_string = current_value_as_array.filter(item => item.trim() !== "").join(',');
-                                        setDataValue(current_value_as_array.join(','))
-                                        updateFormData(current_key,data_to_string)
-                              
-                                    }} />} label={option} />
-                                </Grid>
-                            ))
+            <Box sx={{ position: 'relative' }}>
+                <TextField
+                    key={structure.label}
+                    fullWidth
+                    type="file"
+                    label={structure.label}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const target = e.target as HTMLInputElement;
+                        const file = target.files?.[0];
+                        if (file) {
+                            handleChange(structure.label, file);
                         }
-           
-                    
-                </Grid>
-            );
-        }
-
-    if(structure.display === displayType.DropDown){
-        return (
-            <FormControl fullWidth variant='filled'>
-                <InputLabel id="role-label">{structure.label}</InputLabel>
-                <Select 
-                    labelId='role-label' 
-                    value={dataValue} label="Role" 
-                    onChange={(event: SelectChangeEvent<typeof dataValue>) => {
-                        
-                        setDataValue(event.target.value) 
-                        updateFormData(current_key,event.target.value)
                     }}
-                >
-                    {structure.options?.map((option, index) => (
-                        <MenuItem key={index} value={option}>{option}</MenuItem>
-                 
-                        ))}
-                </Select>
-            </FormControl>
-        )
-    }
-    if (structure.display === displayType.ChoiceList) {
-        return (
-            <Grid container>
-                <FormControl>
-                    <FormLabel id="row-radio-buttons-group-label">{structure.label}</FormLabel>
-                    <RadioGroup row value={dataValue} onChange={(event) => { 
-                        setDataValue(event.target.value)
-                        updateFormData(structure.label, event.target.value) 
-                        
-                        }}>
-                        {structure.options?.map((option, index) => (
-                            <Grid key={index} item xs={3}>
-                                <FormControlLabel  value={option} control={<Radio />} label={option} />
-                            </Grid>
-                        ))}
-                    </RadioGroup>
-                </FormControl>
-            </Grid>
+                    {...structure.props}
+                    helperText={structure.helperText}
+                    error={!!hasError[current_key]?.message}
+                />
+                {isFieldLoading && (
+                    <CircularProgress
+                        size={20}
+                        sx={{
+                            position: 'absolute',
+                            right: 10,
+                            top: 10
+                        }}
+                    />
+                )}
+            </Box>
         );
     }
 
-    return null
+    if (structure.display === displayType.InputValue) {
+        return (
+            <Box sx={{ position: 'relative' }}>
+                <TextField
+                    key={structure.label}
+                    fullWidth
+                    label={structure.label}
+                    value={dataValue}
+                    onChange={(e) => handleChange(structure.label, e.target.value)}
+                    {...structure.props}
+                    error={current_key in hasError ? !hasError[current_key].valid : dataValue.trim() === ""}
+                    helperText={current_key in hasError ? hasError[current_key].message : structure.helperText}
+                    disabled={isFieldLoading}
+                />
+                {isFieldLoading && (
+                    <CircularProgress
+                        size={20}
+                        sx={{
+                            position: 'absolute',
+                            right: 10,
+                            top: 10
+                        }}
+                    />
+                )}
+            </Box>
+        );
+    }
 
-}
+    if (structure.display === displayType.TextValue) {
+        return (
+            <Box sx={{ position: 'relative' }}>
+                <TextField
+                    key={structure.label}
+                    fullWidth
+                    multiline
+                    rows={4}
+                    label={structure.label}
+                    value={dataValue}
+                    onChange={(e) => handleChange(structure.label, e.target.value)}
+                    {...structure.props}
+                    error={current_key in hasError ? !hasError[current_key].valid : dataValue.trim() === ""}
+                    helperText={current_key in hasError ? hasError[current_key].message : structure.helperText}
+                    disabled={isFieldLoading}
+                />
+                {isFieldLoading && (
+                    <CircularProgress
+                        size={20}
+                        sx={{
+                            position: 'absolute',
+                            right: 10,
+                            top: 10
+                        }}
+                    />
+                )}
+            </Box>
+        );
+    }
 
-const DisplayFormField = ({ structure }: { structure: structureDataType }) => {
+    if (structure.display === displayType.MultiChoiceList) {
+        return (
+            <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
+                <InputLabel>{structure.label}</InputLabel>
+                <Select
+                    multiple
+                    value={dataValue ? dataValue.split(",") : []}
+                    onChange={(e) => handleChange(structure.label, (e.target.value as string[]).join(","))}
+                    label={structure.label}
+                    {...structure.props}
+                >
+                    {structure.options?.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
+                {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
+                {hasError[current_key]?.message && (
+                    <FormHelperText error>{hasError[current_key].message}</FormHelperText>
+                )}
+            </FormControl>
+        );
+    }
 
+    if (structure.display === displayType.DropDown) {
+        return (
+            <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
+                <InputLabel>{structure.label}</InputLabel>
+                <Select
+                    value={dataValue}
+                    onChange={(e) => handleChange(structure.label, e.target.value)}
+                    label={structure.label}
+                    {...structure.props}
+                >
+                    {structure.options?.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
+                {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
+                {hasError[current_key]?.message && (
+                    <FormHelperText error>{hasError[current_key].message}</FormHelperText>
+                )}
+            </FormControl>
+        );
+    }
 
-    return (<>
+    if (structure.display === displayType.ChoiceList) {
+        return (
+            <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
+                <InputLabel>{structure.label}</InputLabel>
+                <Select
+                    value={dataValue}
+                    onChange={(e) => handleChange(structure.label, e.target.value)}
+                    label={structure.label}
+                    {...structure.props}
+                >
+                    {structure.options?.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
+                {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
+                {hasError[current_key]?.message && (
+                    <FormHelperText error>{hasError[current_key].message}</FormHelperText>
+                )}
+            </FormControl>
+        );
+    }
 
-        <Grid item xs={12}> <FieldOutput structure={structure} /> </Grid>
-    </>)
-}
+    return null;
+};
 
-
-const IgnFormGenerate = ({ formStructures }: { formStructures: structureDataType[] }) => {
+const DisplayFormField = ({ structure }: { structure: FormField }) => {
     return (
-        <>
-        
-            <Grid container spacing={2}><Generate formStructures={formStructures} /></Grid>
-        </>
+        <Grid item xs={12}>
+            <FieldOutput structure={structure} />
+        </Grid>
     )
+}
 
+const IgnFormGenerate = ({ formStructures }: { formStructures: FormField[] }) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const initializeForm = async () => {
+            try {
+                setIsLoading(true);
+                // Simulate a small delay to prevent flash of loading screen
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to load form');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        initializeForm();
+    }, [formStructures]);
+
+    if (error) {
+        return (
+            <Box sx={{ p: 2, color: 'error.main' }}>
+                <Typography variant="body1">{error}</Typography>
+            </Box>
+        );
+    }
+
+    if (isLoading) {
+        return <LoadingScreen message="Loading form..." />;
+    }
+
+    return (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {formStructures.map((field) => field.visibility && <FieldOutput key={field.label} structure={field} />)}
+        </Box>
+    );
 }
 
 export default IgnFormGenerate

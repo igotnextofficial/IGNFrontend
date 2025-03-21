@@ -21,12 +21,19 @@ interface ProtectedRoutesProps {
    grantedAccess = [...defaultAccess],
    children
  }) => {
+ const {user, isLoggedin,loading} = useUser();
+
+ if(loading){
+  return <>Loading...</>
+ }
  
- 
-   if(!isAuthenticated){
+   if(!isLoggedin){
       return <Navigate to={redirectPath} replace />
    }
- 
+
+   if (!user?.role || !grantedAccess.includes(user.role.type)) {
+    return <Navigate to="/" replace />;
+  }
    return children ? children : <Outlet/>
 }
 

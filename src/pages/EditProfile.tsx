@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { useUser } from "../contexts/UserContext"
-import { HttpMethods, UserDataType, structureDataType } from "../types/DataTypes";
+import { HttpMethods, UserDataType, FormField } from "../types/DataTypes";
 import { Button, Grid, Typography } from "@mui/material";
 import ContentContainer from "../utils/ContentContainer";
  
@@ -20,41 +20,34 @@ import { ArtistFormStructure } from "../formstructures/ArtistFormStructure";
 const Profile = () => {
     const { user, updateUser,accessToken} = useUser();
     const { data } = useFormDataContext()
-    const [formStructure,setFormStructure] = useState<structureDataType[]>([])
+    const [formStructure,setFormStructure] = useState<FormField[]>([])
     const [successfulUpdate,setSuccessfulUpdate] = useState(false)
-    const structures:Record<string,structureDataType[]> = {
+    const structures:Record<string,FormField[]> = {
         "artist": ArtistFormStructure,
         "mentor": MentorFormStructure,
         "default": ArtistFormStructure
     }
   
     useEffect(() => {
-
         const user_type = user?.role?.type ?? "default";
-
         let userFormStructure = structures[user_type];
-        for(const structure of userFormStructure){
-            if(user && structure.label in user){
 
-                if((typeof user[structure.label]) !==  "string"){
-                    let intial_data = user[structure.label];
-         
-                    let intial_data_to_string = intial_data?.map((item:any)=>item.name).join(",") 
-                    structure.default = intial_data_to_string;
-                    
+        // Create a deep copy of the form structure
+        const updatedStructure = userFormStructure.map(structure => {
+            const newStructure = { ...structure };
+            if (user && structure.label in user) {
+                if (typeof user[structure.label] !== "string") {
+                    let initial_data = user[structure.label];
+                    let initial_data_to_string = initial_data?.map((item: any) => item.name).join(",");
+                    newStructure.defaultValue = initial_data_to_string;
+                } else {
+                    newStructure.defaultValue = user[structure.label];
                 }
-                else{
-                    
-                    structure.default = user[structure.label];
-                }
-               
             }
-        }
-        
+            return newStructure;
+        });
 
-       console.log(JSON.stringify(userFormStructure,null,2))
-        
-        setFormStructure(userFormStructure)
+        setFormStructure(updatedStructure);
     },[user])
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Grid, Typography, Box } from "@mui/material"
-import Mentor from "../../models/users/Mentor"
+import { Mentor } from "../../models/users/Mentor"
 import { MentorDataType } from "../../types/DataTypes"
 import SectionComponent from "../../helpers/SectionComponent"
 import PaymentForm from "../../helpers/PaymentForm"

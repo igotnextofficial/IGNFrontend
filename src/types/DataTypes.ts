@@ -241,3 +241,110 @@ export interface FieldErrorMaintainerType {
         message: string;
     };
 }
+
+export type DisplayType = typeof displayType[keyof typeof displayType];
+
+export interface ValidationRule {
+    required?: boolean;
+    pattern?: RegExp;
+    minLength?: number;
+    maxLength?: number;
+    custom?: (value: any) => boolean;
+}
+
+export interface FieldDependency {
+    field: string;
+    condition: (value: any) => boolean;
+}
+
+export interface BaseFormField {
+    label: string;
+    visibility: boolean;
+    display: DisplayType;
+    order: number;
+    props?: {
+        id: string;
+        placeholder?: string;
+        required?: boolean;
+        disabled?: boolean;
+        type?: string;
+        variant?: 'outlined' | 'filled' | 'standard';
+        fullWidth?: boolean;
+        multiline?: boolean;
+        rows?: number;
+        label?: string;
+        accept?: string;
+        helperText?: string;
+    };
+    validation?: ValidationRule;
+    errorMessage?: string;
+    helperText?: string;
+    dependsOn?: FieldDependency;
+    style?: React.CSSProperties;
+    className?: string;
+    ariaLabel?: string;
+    ariaDescribedBy?: string;
+    defaultValue?: any;
+}
+
+export interface InputField extends BaseFormField {
+    display: typeof displayType.InputValue;
+}
+
+export interface TextField extends BaseFormField {
+    display: typeof displayType.TextValue;
+}
+
+export interface MultiChoiceField extends BaseFormField {
+    display: typeof displayType.MultiChoiceList;
+    options: string[];
+}
+
+export interface DropDownField extends BaseFormField {
+    display: typeof displayType.DropDown;
+    options: string[];
+}
+
+export interface ChoiceListField extends BaseFormField {
+    display: typeof displayType.ChoiceList;
+    options: string[];
+}
+
+export interface ImageField extends BaseFormField {
+    display: typeof displayType.Image;
+}
+
+export interface FormField {
+    label: string;
+    visibility: boolean;
+    display: displayType;
+    props?: {
+        id?: string;
+        placeholder?: string;
+        required?: boolean;
+        disabled?: boolean;
+        type?: string;
+        variant?: "outlined" | "filled" | "standard";
+        fullWidth?: boolean;
+        multiline?: boolean;
+        rows?: number;
+        label?: string;
+        accept?: string;
+        helperText?: string;
+        min?: number;
+        max?: number;
+    };
+    order: number;
+    defaultValue?: string;
+    options?: string[];
+    helperText?: string;
+    validation?: {
+        required?: boolean;
+        minLength?: number;
+        maxLength?: number;
+        pattern?: RegExp;
+        custom?: (value: any) => boolean;
+    };
+    errorMessage?: string;
+    ariaLabel?: string;
+}

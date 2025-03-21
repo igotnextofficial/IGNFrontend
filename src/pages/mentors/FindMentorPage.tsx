@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { Grid, Radio, RadioGroup, FormControlLabel, FormLabel, SelectChangeEvent } from "@mui/material"
-
+import { Grid, Radio, RadioGroup, FormControlLabel, FormLabel, SelectChangeEvent, Typography, Box } from "@mui/material"
+import { useParams } from "react-router-dom"
+import { Mentor } from "../../models/users/Mentor"
 import { MentorDataType } from "../../types/DataTypes"
-import Mentor from "../../models/users/Mentor"
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import ListMentors from "../../components/users/mentor/ListMentors"
 import CategorySelection from "./CategorySelection"
