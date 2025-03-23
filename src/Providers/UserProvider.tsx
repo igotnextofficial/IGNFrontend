@@ -7,94 +7,12 @@ import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataO
 import LocalStorage from  "../storage/LocalStorage";
 import axios from "axios";
 import { APP_ENDPOINTS } from "../config/app";
- 
 import { Roles } from "../types/Roles";
 import { Endpoints } from "../config/app";
 import { Collections } from "@mui/icons-material";
- 
 
-
-
-// interface ApiErrorResponse extends Error {
-//     response?: {
-//         status: number;
-//         data: {
-//             message: string;
-//         };
-//     };
-// }
-
-
-
-     
-
-// const isUserLoggedIn = async (user_id:string) => { 
-//     try{
-        
-//         if(!accessToken){
-//             throw new Error("No access token found");
-//         }
-         
-//         const verification_url = process.env.REACT_AUTH_API_URL || "";
-//          let response = await axios.get(verification_url,{
-//                 headers:{
-//                     'Authorization': `Bearer ${accessToken}`
-//                 }
-//          })
-//             console.log(`the user is loggedin ${response.status} with data ${response.data} and access token ${accessToken} The url was ${verification_url}  ` )
-//             return response.status === 200 ? true : false
-//      }
-//      catch(e ){
-
-//             let refreshed = await refreshToken(user_id)
-//             console.log(`refreshed token ${refreshed}`)
-//             let valid = refreshed ? true : false
-//             return valid
-
-
-        
-//      }
-
-    
-// }
-
-// if(user && user.id){
-    
-//     isUserLoggedIn(user.id).then((response) =>{
-//         setIsLoggedin(response)
-//         if(!response){
-//             if(accessToken){
-//                 attemptLoginOrLogout(false)
-//             }
-//             else{
-//                 new LocalStorage().remove(User.INFO)
-//                 setIsLoggedin(false)
-//                 setUser(null)
-//             }
-//         }
-
-//     }).catch(() => {return false});
-
-    /**
-     * 
-     * 
-     * @returns - boolean representing whether the token was refreshed or not
-     */
-
-    const refreshToken = async (): Promise<Record<string,any> | null> => {
-        try {
-            const response = await axios.get(Endpoints.REFRESH_TOKEN, {withCredentials: true});
-            if (response.status === 200) {
-                return response.data['data'];
-            }
-        } catch (e) {
-            console.error("Failed to refresh token:", e);
-        }
-        return null;
-    };
- 
 const UserObj = new User()
- 
+
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(() => {
         const savedUser = sessionStorage.getItem('user');
@@ -103,16 +21,94 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [refreshQueue, setRefreshQueue] = useState<Promise<any> | null>(null);
     const {fetchData} = useFetch();
     const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
     const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
     const [loading, setLoading] = useState(true);
+    const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
+    const handleLogout = useCallback(() => {
+        setIsLoggedin(false);
+        setUser(null);
+        setAccessToken("");
+        sessionStorage.removeItem('user');
+        socket.disconnect();
+    }, []);
+
+    const refreshToken = useCallback(async (): Promise<Record<string,any> | null> => {
+        // If already refreshing, return the existing promise
+        if (refreshQueue) {
+            return refreshQueue;
+        }
+
+        // If we're already in the process of refreshing, don't start another one
+        if (isRefreshing) {
+            return null;
+        }
+
+        setIsRefreshing(true);
+        
+        // Create a new promise for this refresh attempt
+        const refreshPromise = (async () => {
+            try {
+                const response = await axios.get(Endpoints.REFRESH_TOKEN, {withCredentials: true});
+                if (response.status === 200) {
+                    const newToken = response.data['data']['access_token'];
+                    setAccessToken(newToken);
+                    return response.data['data'];
+                }
+            } catch (e) {
+                console.error("Failed to refresh token:", e);
+                // If we get a 404, the refresh token is invalid
+                if (axios.isAxiosError(e) && e.response?.status === 404) {
+                    handleLogout();
+                }
+            } finally {
+                setIsRefreshing(false);
+                setRefreshQueue(null);
+            }
+            return null;
+        })();
+
+        // Store the promise in the queue
+        setRefreshQueue(refreshPromise);
+
+        return refreshPromise;
+    }, [refreshQueue, isRefreshing, handleLogout]);
+
+    // Handle initial session verification
     useEffect(() => {
-        if(isLoggedin && user && accessToken) {
+        const verifyInitialSession = async () => {
+            try {
+                if (user && !accessToken) {
+                    const tokenData = await refreshToken();
+                    if (tokenData) {
+                        setIsLoggedin(true);
+                    } else {
+                        handleLogout();
+                    }
+                } else if (user && accessToken) {
+                    setIsLoggedin(true);
+                }
+            } catch (error) {
+                console.error('Error verifying initial session:', error);
+                handleLogout();
+            } finally {
+                setInitialLoadComplete(true);
+            }
+        };
+
+        verifyInitialSession();
+    }, [user, accessToken, refreshToken, handleLogout]);
+
+    // Update loading state after initial verification
+    useEffect(() => {
+        if (initialLoadComplete) {
             setLoading(false);
         }
-    }, [isLoggedin, accessToken, user]);
+    }, [initialLoadComplete]);
 
     useEffect(() => {
         const loadInitialData = async () => {
@@ -133,24 +129,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
         loadInitialData();
     }, []);
-
-    useEffect(() => {
-        const verifySession = async () => {
-            if(!accessToken && user) {
-                const tokenData = await refreshToken();
-                if(tokenData) {
-                    setAccessToken(tokenData['access_token']);
-                    setIsLoggedin(true);
-                } else {
-                    setIsLoggedin(false);
-                    sessionStorage.removeItem('user');
-                    setUser(null);
-                }
-            }
-        };
-
-        verifySession();
-    }, [accessToken, user]);
 
     useEffect(() => {
         const loadUserSpecificData = async () => {
@@ -263,20 +241,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const getUserRole = () => user?.role?.type || "";
 
-
-    // const login = () => {
-    //     updateUrl(Endpoints.LOGIN)
-    // }
-
-    // const logout = () => {
-    //     updateUrl(Endpoints.LOGOUT)
-    // }
-
-    // const register = () => {}
-    
-
     return (
-        <UserContext.Provider value={{ user,mentors,artists, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken,loading }}>
+        <UserContext.Provider value={{ user, mentors, artists, isLoggedin, attemptLoginOrLogout, updateUser, getUserRole, accessToken, loading }}>
             {children}
         </UserContext.Provider>
     );

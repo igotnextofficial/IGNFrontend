@@ -786,5 +786,5 @@ const Calendar = () => {
   );
 };
 
-// Prevent text overlap in time blocks
+
 export default Calendar;

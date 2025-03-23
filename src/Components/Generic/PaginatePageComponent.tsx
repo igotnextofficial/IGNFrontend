@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import ListLayoutComponent from './ListLayoutComponent';
-import Pagination from '@mui/material/Pagination'; // Assuming you're using Material-UI's Pagination component
-
+import { Box, Pagination } from '@mui/material';
 import { ListDataType } from '../../types/DataTypes';
 
 interface PaginatedPageProps {
-    initialData: ListDataType[] ;
+    initialData: ListDataType[];
 }
 
 const PaginatedPageComponent = ({ initialData }: PaginatedPageProps) => {
@@ -17,24 +16,22 @@ const PaginatedPageComponent = ({ initialData }: PaginatedPageProps) => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = initialData.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Change page handler
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setCurrentPage(value);
-    };
-
     return (
-        <div>
-            {/* Render the paginated list */}
+        <Box>
             <ListLayoutComponent data={currentItems} />
-
-            {/* Pagination controls */}
-            <Pagination
-                count={Math.ceil(initialData.length / itemsPerPage)} // Total number of pages
-                page={currentPage} // Current page
-                onChange={handlePageChange} // Page change handler
-                color="primary" // Customize color (optional)
-            />
-        </div>
+            <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                mt: 4 
+            }}>
+                <Pagination
+                    count={Math.ceil(initialData.length / itemsPerPage)}
+                    page={currentPage}
+                    onChange={(_, value) => setCurrentPage(value)}
+                    color="primary"
+                />
+            </Box>
+        </Box>
     );
 };
 

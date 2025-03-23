@@ -82,56 +82,40 @@ const AccountSettings = () => {
 
         </Tooltip>
         <Menu
-          sx={{ mt: '45px' ,
-
-            display: { xs: 'block', md: 'block' },
-            width: '100vw',
-            left: 0,
-            right: 0,
-            top: 0,
-            
+          sx={{ 
+            mt: '30px',
             '& .MuiPaper-root': {
-              width: '100vw', // Ensure the Menu content covers full width
-              maxWidth: '100vw',
-              paddingRight: '0px', // Removes extra right padding
-              
-         
-            },
-
-            '& .MuiList-root':{
-              padding: 0,
+              width: '100vw',
+            
             }
           }}
           id="menu-appbar"
           anchorEl={anchorElUser}
           anchorOrigin={{
-            vertical: 'top',
+            vertical: 'bottom',
             horizontal: 'right',
           }}
-
-          
-          keepMounted
           transformOrigin={{
             vertical: 'top',
             horizontal: 'right',
           }}
+          keepMounted
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-
           {settings.map(({ title, slug }) => (
             <Link key={uuidv4()} to={slug}>
-            <MenuItem key={slug} onClick={handleCloseUserMenu}>
-
-              <Typography
-                             sx={{ display: 'block',color:'#1d1917', fontSize:'1.2em'   }}
-                             component="p"
-                             variant="body2"
-              >{title}</Typography>
-            </MenuItem>
+              <MenuItem key={slug} onClick={handleCloseUserMenu}>
+                <Typography
+                  sx={{ display: 'block', color: '#1d1917', fontSize: '1.2em' }}
+                  component="p"
+                  variant="body2"
+                >
+                  {title}
+                </Typography>
+              </MenuItem>
             </Link>
           ))}
-
         </Menu>
       </Box>
     </>

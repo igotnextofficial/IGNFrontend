@@ -7,7 +7,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Link from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
 import { ListDataType } from '../../types/DataTypes';
 
@@ -16,15 +15,7 @@ interface ListLayoutComponentProps {
 }
 
 const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
-    const [page, setPage] = React.useState<number>(1);
-    const itemsPerPage = 5;
-    const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-
-    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number): void => {
-        setPage(newPage);
-    };
-
-    const output = paginatedData.map((list, index) => {
+    const output = data.map((list, index) => {
         const { id, title, image_url, content, category } = list;
         return (
             <React.Fragment key={index}>
@@ -130,12 +121,6 @@ const ListLayoutComponent: React.FC<ListLayoutComponentProps> = ({ data }) => {
             >
                 {output}
             </List>
-            <Pagination
-                count={Math.ceil(data.length / itemsPerPage)}
-                page={page}
-                onChange={handleChangePage}
-                sx={{ marginY: 2 }}
-            />
         </Box>
     );
 };

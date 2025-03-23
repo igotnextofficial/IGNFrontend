@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ArtistListComponent from "../components/users/artist/ArtistListComponent";
-import MentorListComponent from "../components/users/mentor/MentorListComponent";
+import FeaturedMentors from "../components/sections/FeaturedMentors";
 import FeatureArticleComponent from "../components/article/FeatureArticleComponent";
 import AboutUsComponent from "../components/generic/AboutUsComponent";
 import ArticleProvider from '../providers/ArticleProvider';
@@ -29,7 +29,7 @@ const Home = () => {
            
             <AboutUsComponent/>
             <ArtistListComponent/>
-            <MentorListComponent/>
+            <FeaturedMentors/>
 
         </>
     );

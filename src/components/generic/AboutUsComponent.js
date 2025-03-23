@@ -3,29 +3,22 @@ import { AboutIGN } from "../../staticinformation/aboutus";
 import InformationComponent from "../../helpers/InformationComponent";
 import SectionComponent from "../../helpers/SectionComponent";
 
- 
- 
-
-
 const AboutUsComponent = () => {
     return( 
       <Box sx={styles.backgroundContainer}>
         <Grid container spacing={2}>
             <Grid item md={5} sx={styles.contentInfoHolder}>
-
-          <Typography variant="h3" sx={styles.title}>{AboutIGN.title}</Typography>
-            <Typography sx={styles.content}>{AboutIGN.content}</Typography>
-       
+              <Typography variant="h3" sx={styles.title}>{AboutIGN.title}</Typography>
+              <Typography sx={styles.content}>{AboutIGN.content}</Typography>
             </Grid>
-            <Grid item  md={7}>
+            <Grid item md={7}>
                 <Box sx={{}}>
                     {/* <img style={{width:"100%",boderRadius:"10%"}} src="https://png.pngtree.com/background/20230611/original/pngtree-artistic-abstract-music-concept-for-headphones-picture-image_3162681.jpg" alt="-about" /> */}
                 </Box>
             </Grid>
         </Grid>
-       
-        </Box>
-        )
+      </Box>
+    )
 }   
 
 const styles={
@@ -36,14 +29,10 @@ const styles={
         padding: "2rem",
         display:'flex',
         minHeight: "50dvh",
-      
-        
     },
     contentInfoHolder:{
-    
         margin: "auto"
     },
-
     title: {
         fontSize: {
           xs: "1.8em", // Smaller font size for extra small screens
@@ -65,7 +54,6 @@ const styles={
         lineHeight: "2em", // Adjusted for mobile readability
         color: "#020000",
       },
-
-
 }
-export default AboutUsComponent
+
+export default AboutUsComponent;

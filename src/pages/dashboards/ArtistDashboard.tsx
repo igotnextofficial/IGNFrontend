@@ -47,7 +47,7 @@ const DefaultMessaging = () => {
 
 
 const ArtistDashboard = () => {
-    const { user  } = useUser()
+    const { user  } = useUser();
     const {fetchData} = useFetch() 
  
    

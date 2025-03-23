@@ -48,9 +48,8 @@ const GridArticle = ({ article }: {article:ArticleDataType}) => (
 );
 
 const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
-  const isMobile = useIsMobile(); // Check if the screen is mobile-sized
+  const isMobile = useIsMobile();
 
-  // Dynamically set the image URL for the featured article
   const imageUrl = isMobile
     ? article.image_url.replace(".jpg", "_mobile.jpg")
     : article.image_url;
@@ -134,7 +133,7 @@ const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
               maxWidth: '900px',
               textAlign: 'center',
               margin: '0 auto',
-              fontSize: '5em',
+              fontSize: '1em',
             }}
         >   
           <span dangerouslySetInnerHTML={{ __html: (article.content || "").slice(0, 400) + "..." }} />
@@ -159,31 +158,20 @@ const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
 const FeatureArticleComponent = () => {
   const { allArticles } = useContext(ArticleContext);
   const [gridArticles, setGridArticles] = useState<ArticleDataType[]>([]);
-  const [featuredArticle, setFeaturedArticle] = useState<ArticleDataType>( {} as ArticleDataType);
+  const [featuredArticle, setFeaturedArticle] = useState<ArticleDataType>({} as ArticleDataType);
 
   useEffect(() => {
-    if(allArticles){
-      // console.log('all articles')
-      // console.log(allArticles)
-      if(allArticles.length > 0){
-        console.log('settings articles')
-        setGridArticles(allArticles.slice(0, 4));
-        setFeaturedArticle(allArticles[4]);
-      }
-      else{
-        // console.log('no articles length small' )
-      }
-    }
-    else{
-      // console.log('no articles')
+    if (allArticles && allArticles.length > 0) {
+      // Find the featured article
+      const featured = allArticles.find(article => article.is_featured) || allArticles[allArticles.length - 1];
+      
+      // Get all non-featured articles for the grid
+      const nonFeatured = allArticles.filter(article => article.id !== featured.id);
+      
+      setFeaturedArticle(featured);
+      setGridArticles(nonFeatured.slice(0, 4)); // Take first 4 non-featured articles for the grid
     }
   }, [allArticles]);
-
-  
-
-
-  // const gridArticles = allArticles.slice(0, 4);
-  // const featuredArticle = allArticles[4];
 
   return featuredArticle ? (
     <Box sx={{ p: 0 }}>

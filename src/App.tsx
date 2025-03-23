@@ -6,7 +6,7 @@ import Navigation from './features/navigation/Navigation';
 import ProtectedRoutes from './utils/ProtectedRoute';
 import FooterComponent from './components/generic/FooterComponent';
 
-import { BrowserRouter as Router,Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router,Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/dashboards/Dashboard';
 import ComposeArticle from './pages/articles/ComposeArticle';
 import EditArticle from './pages/articles/EditArticle';
@@ -15,6 +15,7 @@ import Logout from './pages/authentication/Logout';
 import Register from './pages/authentication/Register';
 import RegisterMentor from './pages/authentication/RegisterMentor';
 import ScheduleAvailability from './pages/mentors/ScheduleAvailability';
+import About from './pages/About';
 
 import { useUser } from './contexts/UserContext';
 
@@ -36,6 +37,8 @@ import UserProfile from './pages/UserProfile';
 import CloseSession from './pages/mentors/CloseSession';
 import HealthCheck from './pages/healthcheck';
 import { Roles } from './types/Roles';
+import FeatureSubmission from './pages/FeatureSubmission';
+import Mentors from './pages/mentors/Mentors';
 
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
@@ -71,6 +74,7 @@ const MainApplication: React.FC = () => {
         <main style={{ flex: 1 }}>
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/about' element={<About />} />
             <Route path='/profile/:role/:user_id' element={<UserProfile />} />
             <Route path='/health-check' element={<HealthCheck />} />
             <Route path='/login' element={<Login />} />
@@ -82,6 +86,7 @@ const MainApplication: React.FC = () => {
             <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />
 
             <Route path='/profile/:role' element={<Dashboard />} />
+            <Route path='/mentors' element={<Mentors />} />
 
             <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isAuthenticated} />}>
               <Route path='/edit-profile' element={<EditProfile />} />
@@ -99,6 +104,8 @@ const MainApplication: React.FC = () => {
 
               <Route path='/register-mentor' element={<RegisterMentor />} />
             </Route>
+
+            <Route path='/want-to-be-featured' element={<FeatureSubmission />} />
           </Routes>
         </main>
       </Router>

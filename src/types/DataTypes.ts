@@ -21,12 +21,13 @@ export interface UserDataType {
     username?:string,
     role: RoleDataType,
     profile_photo_path?:string,
-    bio?:string,
+    bio?:string
 }
 export interface MentorDataType extends UserDataType {
     availability:boolean,
     specialties:string[],
-    mentees:MenteeDataType[]
+    mentees:MenteeDataType[],
+    product: ProductDataType
 }
 
 
@@ -66,7 +67,7 @@ export interface MentorSessionDataType {
 
 
 export interface ArticleDataType {
-    id?:""
+    id:string
     title:string,
     image_url:string,
     content:string,
@@ -76,6 +77,7 @@ export interface ArticleDataType {
     user_id?:string,
     drafts?:ArticleDataType[], 
     created_at?:string,
+    is_featured?:boolean,
 }
 
 export interface ArticleSavedDataType {
@@ -347,4 +349,11 @@ export interface FormField {
     };
     errorMessage?: string;
     ariaLabel?: string;
+}
+
+export interface ProductDataType {
+    id: string,
+    name: string,
+    price: number,
+    description?: string
 }
