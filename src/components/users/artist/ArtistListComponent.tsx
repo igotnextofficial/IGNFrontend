@@ -1,42 +1,34 @@
 import SectionComponent from "../../../helpers/SectionComponent";
 import InformationComponent from "../../../helpers/InformationComponent";
 import { Grid } from "@mui/material";
-import Artist from "../../../models/users/Artist";
 import DisplayArtistComponent from "./DisplayArtistComponent";
-import {v4 as uuidv4} from "uuid";
-import { useUser } from "../../../contexts/UserContext";
+import { useArtists } from "../../../customhooks/useArtists";
 
 const ArtistListComponent = () => {
-    const ShowArtists = () =>{
-        const {artists} = useUser();
+    const { artists, loading, error } = useArtists();
     
-        return(
-            <Grid container sx={styles.ArtistContainer}>
-            {artists?.map(artist => {
-             
-                return <Grid key={`${uuidv4()}`} xs={6} md={3} sx={{padding:"1rem"}} item><DisplayArtistComponent artist={artist} /></Grid>
-            })}
-
-            </Grid>
-        )
-    }
-   
-    return( 
-        <SectionComponent  alternate={true} >
-            <InformationComponent title="Music Artist you should know!" ><></></InformationComponent>
-                <ShowArtists/>
-            
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    
+    return (
+        <SectionComponent alternate={true}>
+            <InformationComponent title="Music Artists you should know!">
+                <Grid container sx={styles.ArtistContainer}>
+                    {artists?.map(artist => (
+                        <Grid key={artist.id} xs={6} md={3} sx={{padding:"1rem"}} item>
+                            <DisplayArtistComponent artist={artist} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </InformationComponent>
         </SectionComponent>
-       
-    )
+    );
 }
 
 const styles = {
-    ArtistContainer:{
-      
+    ArtistContainer: {
         marginTop: "3rem"
     }
-    
 }
 
-export default ArtistListComponent
+export default ArtistListComponent;

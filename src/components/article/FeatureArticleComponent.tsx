@@ -50,6 +50,10 @@ const GridArticle = ({ article }: {article:ArticleDataType}) => (
 const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
   const isMobile = useIsMobile();
 
+  if (!article || !article.image_url) {
+    return null;
+  }
+
   const imageUrl = isMobile
     ? article.image_url.replace(".jpg", "_mobile.jpg")
     : article.image_url;
@@ -158,12 +162,12 @@ const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
 const FeatureArticleComponent = () => {
   const { allArticles } = useContext(ArticleContext);
   const [gridArticles, setGridArticles] = useState<ArticleDataType[]>([]);
-  const [featuredArticle, setFeaturedArticle] = useState<ArticleDataType>({} as ArticleDataType);
+  const [featuredArticle, setFeaturedArticle] = useState<ArticleDataType | null>(null);
 
   useEffect(() => {
     if (allArticles && allArticles.length > 0) {
       // Find the featured article
-      const featured = allArticles.find(article => article.is_featured) || allArticles[allArticles.length - 1];
+      const featured = allArticles.find(article => article.is_featured) || allArticles[0];
       
       // Get all non-featured articles for the grid
       const nonFeatured = allArticles.filter(article => article.id !== featured.id);
@@ -172,6 +176,10 @@ const FeatureArticleComponent = () => {
       setGridArticles(nonFeatured.slice(0, 4)); // Take first 4 non-featured articles for the grid
     }
   }, [allArticles]);
+
+  if (!allArticles || allArticles.length === 0) {
+    return null;
+  }
 
   return featuredArticle ? (
     <Box sx={{ p: 0 }}>

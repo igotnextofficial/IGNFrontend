@@ -88,6 +88,7 @@ const MainApplication: React.FC = () => {
             <Route path='/profile/:role' element={<Dashboard />} />
             <Route path='/mentors' element={<Mentors />} />
 
+            {/* Routes that require authentication */}
             <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isAuthenticated} />}>
               <Route path='/edit-profile' element={<EditProfile />} />
               <Route path='/dashboard/:role' element={<Dashboard />} />
@@ -101,9 +102,15 @@ const MainApplication: React.FC = () => {
 
               <Route path='/compose-article' element={<ComposeArticle />} />
               <Route path='/edit-article/:article_id' element={<EditArticle />} />
-
-              <Route path='/register-mentor' element={<RegisterMentor />} />
             </Route>
+
+            {/* Routes that require admin role */}
+            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isAuthenticated} grantedAccess={[Roles.ADMIN]} />}>
+              <Route path='/register-mentor' element={<RegisterMentor />} />
+              <Route path='/admin-dashboard' element={<Dashboard />} />
+            </Route>
+
+  
 
             <Route path='/want-to-be-featured' element={<FeatureSubmission />} />
           </Routes>
