@@ -130,7 +130,7 @@ export const useArtists = () => {
         const fetchArtists = async () => {
             try {
                 // In development, use mock data
-                if (process.env.NODE_ENV !== 'production') {
+                if (process.env.REACT_APP_ENVIRONMENT === 'local') {
                     setArtists(mockArtists);
                     setLoading(false);
                     return;
@@ -146,7 +146,9 @@ export const useArtists = () => {
             } catch (err) {
                 console.error('Error fetching artists:', err);
                 setError('Failed to fetch artists');
-                setArtists(mockArtists); // Fallback to mock data on error
+                if (process.env.REACT_APP_ENVIRONMENT === 'local') {
+                 setArtists(mockArtists); // Fallback to mock data on error
+                }
             } finally {
                 setLoading(false);
             }

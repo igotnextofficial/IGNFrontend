@@ -106,7 +106,7 @@ export const useMentors = () => {
         const fetchMentors = async () => {
             try {
                 // In development, use mock data
-                if (process.env.NODE_ENV !== 'production') {
+                if (process.env.REACT_APP_ENVIRONMENT === 'local') {
                     setMentors(mockMentors);
                     setLoading(false);
                     return;
@@ -122,7 +122,10 @@ export const useMentors = () => {
             } catch (err) {
                 console.error('Error fetching mentors:', err);
                 setError('Failed to fetch mentors');
-                setMentors(mockMentors); // Fallback to mock data on error
+                if(process.env.REACT_APP_ENVIRONMENT === 'local'){
+                    setMentors(mockMentors);
+                }
+       
             } finally {
                 setLoading(false);
             }

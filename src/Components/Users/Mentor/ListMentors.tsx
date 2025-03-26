@@ -7,6 +7,7 @@ import { useUser } from '../../../contexts/UserContext';
 import axios from 'axios';
 import NoDataAvailable from '../../../utils/NoDataAvailable';
 import { APP_ENDPOINTS } from '../../../config/app';
+import { useMentors } from '../../../customhooks/useMentors';
 const loadData = async () => {
     try{
         return await axios.get(`${APP_ENDPOINTS.USER.MENTORS}`); // should load with all the home page data then saved to a cache
@@ -17,13 +18,14 @@ const loadData = async () => {
     }        
 }
 const ListMentors = () => {
-    const {mentors, accessToken} = useUser();
+    const { mentors } = useMentors();
     const [response,setResponse] = useState<httpDataObject | null>(null);
 
   
     useEffect(() => {
     
-
+            console.log("Loading mentors")
+            console.log(mentors)
         let data = loadData().then(response => {
             if  (!response || response === null){return []}
       
@@ -42,7 +44,7 @@ const ListMentors = () => {
         mentors?.length === 0 ? (
             <NoDataAvailable/>
         ) : (
-            <Grid spacing={10} container sx={styles.Container}>
+            <Grid container spacing={10} sx={styles.Container}>
                 {mentors?.map((mentor, index) => (
                     <Grid  sm={12} md={6} lg={4} item sx={{ padding: "1rem" }} key={mentor.id || index}> 
                         <DisplayMentorCard mentor={mentor} />

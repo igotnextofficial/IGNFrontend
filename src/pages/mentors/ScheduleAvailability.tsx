@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Calendar from "../../components/Calendar";
 import { UserDataType } from "../../types/DataTypes";
 import { Roles } from "../../types/Roles";
+import { useUser } from "../../contexts/UserContext";
 
 const mockUser: UserDataType = {
   id: "123",
@@ -14,10 +15,14 @@ const mockUser: UserDataType = {
 const ScheduleAvailability = () => {
   // In a real implementation, we would use:
   // const user = useContext(UserContext);
-  const user = mockUser; // Using mock data for now
+  const { user }= useUser(); // Using mock data for now
   const [showTooltip, setShowTooltip] = useState(false);
 
-  return (
+  if(!user){
+    return null
+  }
+  
+  return   (
     <div style={{
       backgroundColor: 'white',
       padding: '2rem',

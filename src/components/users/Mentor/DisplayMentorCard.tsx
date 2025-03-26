@@ -63,7 +63,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
 
 
   return (
-    <Card sx={{ minWidth: 345, marginBottom:"3rem" }}>
+    <Card sx={{ marginBottom:"3rem" }}>
       <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px",maxWidth:150, borderRadius:"5px",textAlign:'center'}}>
       <Typography sx={{fontSize:14 ,color:"#FBFAF9"}} variant="button" color="text.secondary">
            ${mentor.product.price} / 6 sessions

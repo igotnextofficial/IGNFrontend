@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { Grid, Typography, Box, IconButton, Button, Tooltip, styled, tooltipClasses, TooltipProps } from "@mui/material";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { useUser } from "../contexts/UserContext";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -49,7 +50,7 @@ interface BlockedTime {
 }
 
 interface BlockedTimeSubmission {
-  mentorId: string;
+  user_id: string;
   schedule: {
     date: string;
     timeSlots: {
@@ -98,6 +99,7 @@ const WorkHoursList = ({
   }[]>([]);
   const [mouseDownTimer, setMouseDownTimer] = useState<NodeJS.Timeout | null>(null);
   const [currentEndTime, setCurrentEndTime] = useState<string | null>(null);
+
 
   useEffect(() => {
     // Convert blockedTimes to selectedTimeBlocks format when date changes
@@ -577,10 +579,76 @@ const DaysOfWeek = ({ currentDate }: { currentDate: dayjs.Dayjs }) => {
 };
 
 const Calendar = () => {
+  const { user } = useUser();
   const [currentDate, setCurrentDate] = useState(dayjs().startOf('week'));
   const [scheduledSessions, setScheduledSessions] = useState<ScheduledSession[]>([]);
   const [blockedTimes, setBlockedTimes] = useState<BlockedTime[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [submissionData,setSubmissionData] = 
+  useState<BlockedTimeSubmission | null>(null);
+
+  const hasLoadedTimeSlotsRef = useRef(false); // clearer that it's a one-time check
+  const [availableTimeSlotsWithId, setAvailableTimeSlotsWithId] = useState(new Map<string, string>());
+
+  useEffect(() => {
+    if(hasLoadedTimeSlotsRef.current) return;
+  
+    const fetchBlockedTimes = async () => {
+      try {
+        let allTimes = new Map<string, string>();
+        const response = await fetch('https://api.example.com/blocked-times');
+        if (!response.ok) {
+          throw new Error('Failed to fetch blocked times');
+        }
+        const data = await response.json();
+        data.forEach((item: { id: string; timeSlot: string }) => {
+          const {id,timeSlot} = item;
+          if(!allTimes.has(timeSlot)){
+            allTimes.set(timeSlot,id);
+          }
+        })
+       
+        return allTimes;
+      } catch (error) {
+
+        console.error(error);
+        return null;
+      }
+    };
+
+    let times = fetchBlockedTimes().then((times) => {
+      if(times){
+        setAvailableTimeSlotsWithId(times);
+        hasLoadedTimeSlotsRef.current = true;
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+ 
+  }, []);
+
+  useEffect(() => {
+    if(!submissionData) return;
+    const submitData = async () => {
+      try {
+        const response = await fetch('https://shield.igotnext.local/api/schedule', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({data:submissionData})
+        });
+        if (!response.ok) {
+          throw new Error('Failed to submit data');
+        }
+        console.log('Data submitted successfully');
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    submitData();
+  }, [submissionData]);
 
   // Add validation for date range
   const isDateWithinRange = (date: dayjs.Dayjs) => {
@@ -721,20 +789,22 @@ const Calendar = () => {
         endTime: dayjs(block.endTime, 'h:mm A').format('HH:mm:ss')
       });
       return acc;
-    }, {} as Record<string, { startTime: string; endTime: string; }[]>);
+    }, {} as Record<string, {startTime: string; endTime: string; }[]>);
 
     // Format data for submission
     const submissionData: BlockedTimeSubmission = {
-      mentorId: "mentor_123", // This should come from your auth context or props
+      user_id: user?.id || '', // This should come from your auth context or props
       schedule: Object.entries(groupedByDate).map(([date, timeSlots]) => ({
         date,
         timeSlots
       }))
     };
 
+    setSubmissionData(submissionData);
     // Here you would typically make an API call to submit the data
     console.log('Submitting blocked times:', submissionData);
-    
+
+
     // Clear the blocked times after submission
     setBlockedTimes([]);
   };

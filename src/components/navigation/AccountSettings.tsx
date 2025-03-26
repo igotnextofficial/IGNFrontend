@@ -25,7 +25,7 @@ const AccountSettings = () => {
 
   useEffect(() => {
   // console.log(`looking at the user  role ${user?.role.type}`)
-    const user_role = user?.role.type || "artist"
+    const user_role = user?.role.type || ""; 
     setRole(user_role)
     // console.log(`The user role is ${user_role}`)
 
@@ -35,12 +35,16 @@ const AccountSettings = () => {
   useEffect(() => {
     let user_settings:Record<string,string>[] = [
       { title: 'Account', slug: '/edit-profile' }, 
-      { title: 'Dashboard', slug: `dashboard/${role}` }, 
+      { title: 'Dashboards', slug: `dashboard/${role}` }, 
       { title: 'Logout', slug: '/logout' }
     ];
     
     if(role ===  Roles.ARTIST){
       user_settings = addMenuItem(user_settings, { title: 'Find a mentor', slug: '/mentors/find-a-mentor' })
+    }
+    
+    if(role ===  Roles.MENTOR){
+      user_settings = addMenuItem(user_settings, { title: 'Schedule Availability', slug: '/schedule-availability' })
     }
     setSettings(user_settings);
   }, [role])

@@ -80,7 +80,7 @@ const MainApplication: React.FC = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/logout' element={<Logout />} />
             <Route path='/register' element={<Register />} />
-            <Route path="/schedule-avail" element={<ScheduleAvailability />} />
+            <Route path="/schedule-availability" element={<ScheduleAvailability />} />
 
             <Route path='/articles/:category' element={<ArticleCategoryList />} />
             <Route path='articles/:category/:article_id' element={<ArticlePageComponent />} />

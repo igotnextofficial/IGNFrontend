@@ -48,11 +48,11 @@ export const APP_ENDPOINTS = {
         LOGIN: `${Endpoints.USER}/login`,
         LOGOUT: `${Endpoints.USER}/logout`,
         ARTIST: {
-            BASE:`${Endpoints.USER}/role/artist}`,
+            BASE:`${Endpoints.USER}/role/artist`,
             FEATURED: `${Endpoints.USER}/role/artist/featured`,
         },
         MENTOR: { 
-            BASE:`${Endpoints.USER}/role/mentor}`,
+            BASE:`${Endpoints.USER}/role/mentor`,
             FEATURED: `${Endpoints.USER}/role/mentor/featured`,
           }
     },

@@ -1,4 +1,4 @@
-import  { useState, ReactNode,  useEffect, useCallback } from "react";
+import  { useState, ReactNode, useRef, useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
 import User from "../models/users/User";
 import useFetch from "../customhooks/useFetch";
@@ -17,7 +17,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(() => {
         const savedUser = sessionStorage.getItem('user');
         return savedUser ? JSON.parse(savedUser) : null;
-    });
+      });
+    const hasLoadedUserExtras = useRef(false);
+
+
+    const [extraUserData,setExtraUserData] = useState< Record<string,any> | null>(null)
 
     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>("");
@@ -132,7 +136,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const loadUserSpecificData = async () => {
-            if (!user || !isLoggedin || !accessToken) return;
+            if (!user || !isLoggedin || !accessToken ||  hasLoadedUserExtras.current) return;
 
             try {
                 if (user.role.type === Roles.ARTIST) {
@@ -142,8 +146,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         }
                     );
-                    updateUser({
-                        ...user,
+                    setExtraUserData({
                         mentorSession: response?.data || []
                     });
                 }
@@ -171,13 +174,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                         return mentee;
                     });
 
-                    updateUser({
-                        ...user,
+                    setExtraUserData({
                         availability: availabilityResponse?.data?.availability || false,
                         specialties: user.specialties.map((specialty: Record<string,string>) => specialty.name),
                         mentees
                     });
+
+                 
                 }
+                hasLoadedUserExtras.current = true;
             } catch (error) {
                 console.error('Error loading user specific data:', error);
             }
@@ -185,6 +190,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
         loadUserSpecificData();
     }, [isLoggedin, user, accessToken]);
+
+    useEffect(() => {
+        if (!extraUserData) return;
+
+        setUser((prev) => {
+            if (!prev) return null;
+
+            return {
+                ...prev,
+                ...extraUserData
+            };
+        })
+    }, [extraUserData]);
 
     async function getUsersData(data_to_load: string, endpoint: string) {
         const local_storage = new LocalStorage();
