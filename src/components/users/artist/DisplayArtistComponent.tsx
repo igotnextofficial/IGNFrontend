@@ -6,6 +6,7 @@ import { ArtistDataType } from "../../../types/DataTypes";
 import { useEffect } from "react";
 import { text } from "stream/consumers";
 import { Opacity } from "@mui/icons-material";
+import { Typography } from "@mui/material";
 const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
 
     return (
@@ -15,7 +16,7 @@ const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
                     <Box sx={styles.container}>
                         <Avatar className="display-image-list-ign" src={artist.profile_photo_path} alt={artist.fullname} sx={{width:250, height:250}} />
                         <Box sx={styles.pillHolder}>
-                            <IgnPillComponent description={artist.genre} />
+                            < Typography sx={{backgroundColor:"#ebd805",padding:"5px 8px", borderRadius:"3px",textWrap:"nowrap"}} variant="subtitle1" >{artist.genre} </Typography>
                         </Box>
                     </Box>
                     <Box>

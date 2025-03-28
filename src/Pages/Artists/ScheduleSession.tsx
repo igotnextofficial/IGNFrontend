@@ -38,9 +38,11 @@ const ScheduleSession = () => {
     const [scheduledSuccessfully,setScheduledSuccessfully] = useState<boolean>(false)
 
     useEffect(() => {
+        if(!user){return }
         let currentUser = user as MenteeDataType
         if( currentUser && 'mentorSession' in currentUser){
             let sessions = currentUser.mentorSession || [];
+            console.log(currentUser)
              let upcomingSession = sessions.find(session => dayjs(session.nextSession) >= dayjs())
              if(upcomingSession){
                 setScheduledSuccessfully(true)

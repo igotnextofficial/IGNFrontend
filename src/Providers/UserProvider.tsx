@@ -147,7 +147,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                         }
                     );
                     setExtraUserData({
-                        mentorSession: response?.data || []
+                        mentorSession: response?.data['data'] || []
                     });
                 }
 

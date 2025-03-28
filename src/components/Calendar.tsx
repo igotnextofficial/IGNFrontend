@@ -99,6 +99,40 @@ const WorkHoursList = ({
   }[]>([]);
   const [mouseDownTimer, setMouseDownTimer] = useState<NodeJS.Timeout | null>(null);
   const [currentEndTime, setCurrentEndTime] = useState<string | null>(null);
+  const [userIntialSchedule,setUserIntialSchedule] = useState<{
+    startTime: string,
+    endTime: string,
+    dayIndices: number[]
+  }[]>([]);
+  const { user } = useUser();
+
+
+  useEffect(() => {
+   const intialSchedule = user?.schedule.map((schedule: Record<string, any>) => {
+
+      const start = schedule.date_time.start_time;
+      const end = schedule.date_time.end_time;
+
+      const startTime = dayjs(`${schedule.date} ${start}`,'YYYY-MM-DD HH:MM:SS').format('h:mm A');
+      const endTime = dayjs(`${schedule.date} ${end}`,'YYYY-MM-DD HH:MM:SS').format('h:mm A');
+      const dayIndex = dayjs(schedule.date).day();
+
+      return {
+        startTime,
+        endTime,
+        dayIndices: [dayIndex]
+      }
+    });
+
+
+    
+    setUserIntialSchedule(intialSchedule);
+  },[user?.schedule])
+
+  useEffect(() => {
+    setSelectedTimeBlocks(userIntialSchedule);
+  },[userIntialSchedule])
+
 
 
   useEffect(() => {

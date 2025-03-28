@@ -11,30 +11,51 @@ import { useUser } from '../contexts/UserContext';
 import { APP_ENDPOINTS } from '../config/app';
  
 
+interface AvailableTimeDisplayProps {
+    chosenDate:string;
+    chosenTime:string;
+    currentTime:string;
+    mentorSchedule: Map<string, string[]>;
+    handleTime: (time: string, available: boolean) => void;
+}
 
-const AvailableTimes = ({ activeTime = false, time, handleTime, isAvailable} : {activeTime:boolean ,time:string, handleTime:(time:string,available:boolean) => void, isAvailable:boolean})  => {
-
+const AvailableTimesDisplay: React.FC<AvailableTimeDisplayProps> = ({
+    chosenDate,
+    chosenTime,
+    currentTime,
+    mentorSchedule,
+    handleTime
+}) => {
     const [currentStyle,setCurrentStyle] = useState({})
+    const [isAvailable,setIsAvailable] = useState(true)
     useEffect(() => {
-        if(activeTime){
-            setCurrentStyle(styles.active)
+        if(!mentorSchedule.has(chosenDate)){
+           setCurrentStyle(styles.pill)
+        
         }
         else{
-            if(isAvailable){
-                setCurrentStyle(styles.pill)
+            let mentorBookedTimes = mentorSchedule.get(chosenDate) || [];
+            if(mentorBookedTimes.includes(chosenTime)){
+                setCurrentStyle(styles.default);
+                setIsAvailable(false)
+            }
+            else if(chosenTime === currentTime) {
+                setCurrentStyle(styles.active)
             }
             else{
-                setCurrentStyle(styles.default)
+                setCurrentStyle(styles.pill)
             }
         }
-    },[activeTime])
+ 
+    },[chosenDate,chosenTime,currentTime])
+ 
     return (
         <>
-        <Button onClick={() => {handleTime(time,isAvailable)}}>
-        <Box sx={[currentStyle, styles.timePill]}>
-           <Typography variant='subtitle1'> {time} </Typography>
-        </Box>
-        </Button>
+            <Button onClick={() => {handleTime(currentTime,isAvailable)}}>
+            <Box sx={[styles.timePill,currentStyle]}>
+            <Typography variant='subtitle1'> {currentTime} </Typography>
+            </Box>
+            </Button>
         </>
     )
 }
@@ -45,15 +66,11 @@ const ScheduleTime = () => {
     const [mentor,setMentor] = useState<MenteeDataType | null>(null)
     const [schedule,setSchedule] = useState<string | null>(null)
     const [chosenTime,setChosenTime] = useState<string>("") 
-
-    const [availableTime,setAvailableTime] = useState<string[]>([])
     const [mentorScheduledTimes,setMentorScheduledTimes] = useState<Map<string,string[]>>(new Map())
     const [scheduledSuccessfully,setScheduledSuccessfully] = useState<boolean>(false)
-
     const [allTime,setAllTime] = useState<string[]>([])
-
-    const today = dayjs();
-    const maxDate = today.add(14,'day');
+    const tomorrow = dayjs().add(1,'day');
+    const maxDate = tomorrow.add(14,'day');
 
     useEffect(() => {
         setMentor(user?.mentor);
@@ -61,159 +78,105 @@ const ScheduleTime = () => {
 
     // set all possible times
     useEffect(() => {
- 
         let scheduledTimes = new Set();
-        
-        let startTime = dayjs("06:00:00 AM","HH:mm:ss A");
+        let startTime = dayjs("05:00:00 AM","HH:mm:ss A");
         let endTime = dayjs("11:59:00 PM","HH:mm:ss A");
-            
+        
         while(startTime.isBefore(endTime)){
             scheduledTimes.add(startTime.format('h:mm A'));
             startTime = startTime.add(60,'minute');
-        
         }
         let times = [ ...Array.from(scheduledTimes) ]
         setAllTime(times as string [])
      },[])
+     
+     useEffect(() => { // set the mentors schedule of available times
+        if(!mentor){ return }
+        
+        const mentorScheduleRecord = new Map<string, string[]>();
+        const mentorSchedule = mentor.schedule || [];
+        
+        mentorSchedule.forEach((schedule: Record<string, any>) => {
+            const date = schedule.date;
+            let currentStartTime = dayjs(`${date} ${schedule.date_time.start_time}`, "YYYY-MM-DD HH:mm:ss");
+            const currentEndTime = dayjs(`${date} ${schedule.date_time.end_time}`, "YYYY-MM-DD HH:mm:ss");const timeInterval: string[] = [];
+            
+            while (currentStartTime.isBefore(currentEndTime)) {
+                timeInterval.push(currentStartTime.format('h:mm A'));
+                currentStartTime = currentStartTime.add(1, 'hour');
+            }
+            
+            if (mentorScheduleRecord.has(date)) {
+                const existingTimes = mentorScheduleRecord.get(date) || [];
+                mentorScheduleRecord.set(date, [...existingTimes, ...timeInterval]);
+            } 
+            else {
+                mentorScheduleRecord.set(date, timeInterval);
+            }
+        });
+        
+        setMentorScheduledTimes(mentorScheduleRecord);
     
-     // set the mentors schedule of available times
-    useEffect(() => {
-        if(mentor){
-            let mentorScheduleRecord = new Map();
-            console.log(mentor)
-            let mentorSchedule = mentor.schedule || [];
-            mentorSchedule.forEach((schedule:Record<string,any>) => {
-                if(schedule.status !== "available"){return}
-
-                let date = schedule.date;
-                let time = dayjs(schedule.datetime.time,"HH:mm:ss").format('h:mm A');
-                
-                
-                if(mentorScheduleRecord.has(date)){
-                    let times = mentorScheduleRecord.get(date);
-                    times.push(time)
-                    mentorScheduleRecord.set(date,times)
-                }
-                else{
-                    mentorScheduleRecord.set(date,[time])
-                }
-               
-            })
-
-            setMentorScheduledTimes(mentorScheduleRecord);
-        }
+        
     },[mentor])
 
-
-    useEffect(() => {
-        let today = dayjs();
-        let chosenDate = dayjs(schedule);
-        if(!(today.isSame(chosenDate,'day'))){
-            let compareDate = chosenDate.format('YYYY-MM-DD');
-            let BookedSession = mentorScheduledTimes.has(compareDate);
-            
-            if (BookedSession){
-                let bookedTimes = mentorScheduledTimes.get(compareDate) as string[]
-                 let availableTimes = allTime.filter((time) => 
-                    {
-                        let timeIsFree = !bookedTimes.includes(time);
-                        if (timeIsFree){
-                            return time
-                        }
-                             
-                    }
-                );
-                setAvailableTime(availableTimes)
-            }
-            else{
-                setAvailableTime(allTime)
-            }
-
-        }
-        else{
-            setAvailableTime([])
-        }
-    
-    },[schedule])
-
-
-    useEffect(() => {},[scheduledSuccessfully])
- 
-
- 
-
     const scheduleDate = async() => {
-        
         let data = {
-             session_date:`${schedule} ${chosenTime}`,
-             mentee_id: user?.id,
-             mentee:{fullname:user?.fullname,email:user?.email},
-             mentor_id: user?.mentor.id,
-             mentor:{fullname:user?.mentor.fullname,email:user?.mentor.email,schedule:user?.mentor.schedule}
-            }
-
-            
-
-           
-            if(schedule && chosenTime){
-                let currentuser = user as MenteeDataType
-                const headers = { Authorization: `Bearer ${accessToken}` }
-         
+          session_date:`${schedule} ${chosenTime}`,
+          mentee_id: user?.id,
+          mentee:{fullname:user?.fullname,email:user?.email},
+          mentor_id: user?.mentor.id,
+          mentor:{fullname:user?.mentor.fullname,email:user?.mentor.email,schedule:user?.mentor.schedule},
+          start_time:dayjs(`${schedule} ${chosenTime}`,"MM/DD/YYYY h:mm A").toISOString(),
+          end_time: dayjs(`${schedule} ${chosenTime}`,"MM/DD/YYYY h:mm A").add(1,'hour').toISOString()
+        }
+        
+        if(schedule && chosenTime){
+            let currentuser = user as MenteeDataType
+            const headers = { Authorization: `Bearer ${accessToken}` }
                 let url = APP_ENDPOINTS.SESSIONS.BASE;
-              
                 let response = await sendRequest(HttpMethods.POST,url,{data},headers)
-
-                if(response !== null){
+                if(response){
                     setScheduledSuccessfully(true)
                 }
-            }
-        
-    }
-
-
-
-
-    const handleTimeChange = (value:string,available:boolean) => {
-        if(available){
-            setChosenTime(value)
         }
+    }
+    
+    const handleTimeChange = (value:string,available:boolean) => {
+        if(!available) return;
+        setChosenTime(value)
     }
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker value={dayjs(schedule)} onChange={(value) => { 
-   
-                    if(value){ setSchedule(value?.format('MM/DD/YYYY')) }
-                 }}
-             
-                minDate={today}
+                if(value){ setSchedule(value?.format('MM/DD/YYYY')) }
+                }}
+                minDate={tomorrow}
                 maxDate={maxDate}
-                />
-
-
-                
-                <Grid container>
-                {  allTime.map((currentTime) => {
-              
-                    let currentlyActive = chosenTime === currentTime ? true : false;
-                    return <Grid item xs={4}><AvailableTimes activeTime={currentlyActive} time={currentTime} handleTime={handleTimeChange} isAvailable={(availableTime.includes(currentTime))}/></Grid>
-                    
-                    })}
-
-                
-                </Grid>
-                {
-                    (chosenTime && schedule) &&
-                    <>
-                    <Button  variant='contained' onClick={() => {  scheduleDate() }}>Schedule Appointment for {schedule?.toString() } @ {chosenTime}</Button>
-                    
+            />
+            
+            <Grid container>
+            { 
+                allTime.map((currentTime) => { 
+                    return <>
+                        <Grid item xs={4}>
+                        <AvailableTimesDisplay currentTime={currentTime} chosenDate={schedule || ""} chosenTime={chosenTime} handleTime={handleTimeChange} mentorSchedule={ mentorScheduledTimes}/>
+                        </Grid> 
                     </>
                     
+                })
+            }
+            </Grid>
+            {
+              (chosenTime && schedule) &&
+                <>
+                    <Button  variant='contained' onClick={() => {  scheduleDate() }}>Schedule Appointment for {schedule?.toString() } @ {chosenTime}</Button>
                     
-                }
-
-         
-
+                </>
+                    
+                    
+            } 
             {scheduledSuccessfully && (
                 <Typography 
                     variant="h6" 
