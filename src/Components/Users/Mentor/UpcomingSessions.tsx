@@ -22,7 +22,8 @@ import { Link } from "react-router-dom";
 
 
 const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
-    const [data, setData] = useState<MenteeDataType[]>([])
+    const [data, setData] = useState<MenteeDataType[]>([]);
+    const [menteeSessions,setMenteeSessions] = useState<MenteeDataType[]>([]);
     const [gridView, setGridView] = useState(true);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +34,26 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
    
         if(user && user.mentees){
             setData(user.mentees)
+            setMenteeSessions(user.mentees)
         }
     }, [user])
+
+
+    useEffect(() => {
+        const today = dayjs();
+        const twoWeeks = today.add(2,'week');
+        const filteredData = menteeSessions.filter(mentee => {
+           let sessionDate = dayjs(mentee.session_date);
+           return sessionDate.isSameOrAfter(today) && sessionDate.isBefore(twoWeeks) && mentee.mentorSession?.status === 'confirmed'
+        })
+
+        const dataWithDateConversion = filteredData.map(mentee => {
+            mentee.session_date = dayjs(mentee.session_date).format('dddd MMM D [@] hh:mm A');
+            return mentee
+        })
+
+        setData(dataWithDateConversion)
+    },[menteeSessions])
     return (
         <>
 
@@ -52,23 +71,11 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                         {
                         
                         data.map(mentee => {
-                            if(!mentee.session_date){return null}
-                                let session_link = "";
-                                let updateData =  getUpcomingSessionWithinMax(mentee,30) 
-                                if(!updateData){return null}
-                                
-                                if(mentee.mentorSession && mentee.mentorSession.length > 0){
-                                    let upcomingSession = mentee.mentorSession?.filter((session) => {
-                                        return (dayjs(session.nextSession).isAfter(dayjs()) || dayjs(session.nextSession).isSame(dayjs())) 
-                                    })
-                                    if( upcomingSession && upcomingSession.length > 0){
-                                        session_link = upcomingSession[0].session_link || ""
-                                    }
-                                }
+                      
                             return (
                                  
                                 <Grid item key={mentee.id} xs={12} sm={6} md={4} > {/* item specifies a grid item. xs, sm, md, etc., determine the size of the item across different screen sizes */}
-                                    {gridView ? <CardContentComponent data={updateData} /> : <ListContentComponent data={updateData} /> }
+                                    {gridView ? <CardContentComponent data={mentee} /> : <ListContentComponent data={mentee} /> }
                                     {dayjs(mentee.session_date).isSame(dayjs()) &&  <Link to={""}> Join Session with {mentee.fullname}</Link> }
                                 </Grid>
                               

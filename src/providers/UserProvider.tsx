@@ -156,13 +156,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                         axios.get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`, {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         }),
+                        
                         axios.get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`, {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         })
+                   
                     ]);
 
+                    console.log(`The session response i received`)
+                    console.log(sessionsResponse)
+
                     const mentees = user.mentees.map((mentee: UserDataType) => {
-                        const session = sessionsResponse?.data?.find((s: any) => s.mentee_id === mentee.id);
+                        const session = sessionsResponse?.data['data'].find((s: any) => s.mentee_id === mentee.id);
+                        console.log(`looking at mentee ${mentee}`)
+                        console.log(`found session`)
+                        console.log(session)
                         if (session) {
                             return {
                                 ...mentee,

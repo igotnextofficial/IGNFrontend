@@ -41,7 +41,7 @@ export interface ArtistDataType extends UserDataType {
 export interface MenteeDataType extends ArtistDataType {
     id:string,
     mentor?: MentorDataType | null,
-    mentorSession?:MentorSessionDataType[],
+    mentorSession?:MentorSessionDataType,
     session_date:string,
     progress:number,
     status:string
@@ -54,7 +54,19 @@ export interface CalendarDataType{
 }
 
 
-export interface MentorSessionDataType {
+export interface MentorSessionDataType { // should just be session
+    id:string,
+    mentor_id:string,
+    mentee_id:string,
+    session_link?:string,
+    currentSessionNumber: number,
+    maxSessionNumber:number,
+    nextSession:string,
+    previousSession:string,
+    status: 'pending' | 'confirmed' | 'cancelled'
+}
+
+export interface SessionDataType { // should just be session
     id:string,
     mentor_id:string,
     mentee_id:string,
@@ -64,7 +76,6 @@ export interface MentorSessionDataType {
     nextSession:string,
     previousSession:string,
 }
-
 
 export interface ArticleDataType {
     id:string
