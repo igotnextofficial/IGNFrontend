@@ -13,6 +13,7 @@ export const Endpoints = {
     PRODUCTS: process.env.REACT_APP_PRODUCT_API || "",
     SPECIALTIES: process.env.REACT_APP_SPECIALTIES_API || "",
     GENRE: process.env.REACT_APP_GENRE_API || "",
+    PAYMENT: process.env.REACT_APP_PAYMENT_API || ""
 }
 
 
@@ -93,6 +94,10 @@ export const APP_ENDPOINTS = {
         DRAFTS: `${Endpoints.PRODUCTS}/drafts`,
         FEATURED: `${Endpoints.PRODUCTS}/category/featured`,
         CATEGORY: `${Endpoints.PRODUCTS}/category`
+    },
+    PAYMENT: {
+        BASE:Endpoints.PAYMENT,
+        PAY:`${Endpoints.PAYMENT}/payment`
     }
 
 }

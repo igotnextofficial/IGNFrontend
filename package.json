@@ -2,6 +2,10 @@
   "name": "ign",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Joseph Buapim"
+  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -10,8 +14,8 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
     "@mui/x-date-pickers": "^7.1.1",
-    "@stripe/react-stripe-js": "^2.5.0",
-    "@stripe/stripe-js": "^3.0.5",
+    "@stripe/react-stripe-js": "^3.5.1",
+    "@stripe/stripe-js": "^6.1.0",
     "@testing-library/user-event": "^12.6.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",

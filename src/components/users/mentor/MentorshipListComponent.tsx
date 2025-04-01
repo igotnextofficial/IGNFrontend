@@ -92,9 +92,13 @@ const MentorshipListComponent = () => {
                       borderRadius: 1
                     }}
                   >
-                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                      ${mentor.product.price}
-                    </Typography>
+                   <Typography sx={{ fontSize: 14, color: "#FBFAF9" }} variant="button" color="text.secondary">
+  {new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format((mentor.product.price || 0) / 100 / 6)} per session
+</Typography>
+
                   </Box>
 
                   <Typography variant="h5" component="div" sx={{ mb: 1 }}>

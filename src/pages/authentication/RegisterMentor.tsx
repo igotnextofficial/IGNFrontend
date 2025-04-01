@@ -69,14 +69,15 @@ const RegisterDisplay = ()=>{
           
                 const data:Record<string,any> = {
                     id: response.data.id,
-                    name: `mentorship:${response.data.username}`,
+                    name: `mentorship:${response.data.id}`,
+                    email: response.data.email,
                     desctiption: `IGN Mentor: ${response.data.username}`,
                     default_price_data: {
                         currency: 'usd',
-                        unit_amount: price +'00',
+                        unit_amount: price,
                         recurring: {interval: 'month'}
                     },
-                    "unit_amount": price + '00',
+                    "unit_amount": price,
                 }
                 const successful_response = await fetchData(APP_ENDPOINTS.PRODUCTS.BASE,HttpMethods.POST,{'content-type':'application/json'},{data});
           
@@ -91,7 +92,7 @@ const RegisterDisplay = ()=>{
             
           
         }
-    },[success ])
+    },[success,price])
  
 
     const handleSubmit = async (event:  React.MouseEvent<HTMLButtonElement>) => {

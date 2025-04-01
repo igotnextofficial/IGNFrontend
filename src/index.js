@@ -7,6 +7,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import RootComponent from './components/generic/RootComponent';
 const container =  document.getElementById('root');
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.  REACT_APP_STRIPE_API_PUBLISHABLE_KEY);
 
 const ROOT = createRoot(container);
 
@@ -14,11 +18,12 @@ const ROOT = createRoot(container);
 ROOT.render(
 
   <React.StrictMode>
+      <Elements stripe={stripePromise}>
     <RootComponent>
       
       <App />
       </RootComponent>
-
+      </Elements>
   </React.StrictMode>
 
 );

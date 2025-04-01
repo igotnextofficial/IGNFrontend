@@ -10,7 +10,7 @@ import ListMentees from "../../components/users/mentor/ListMentees"
 
 
 import UpcomingSessions from "../../components/users/mentor/UpcomingSessions"
-
+import PendingSessions from "../../components/users/mentor/PendingSessions"
 import RequestMenteeComponent from "../../components/users/mentor/RequestMenteeComponent"
 import OpenUpForSessions from "../../components/users/mentor/OpenUpForSessions"
 import NotesFeedback from '../notes/NotesFeedback'
@@ -88,6 +88,11 @@ const MentorDashboard = ()=>{
             <Grid item xs={12}>
                  <DashboardSectionBorder title="Upcoming Session(s)">
                     <UpcomingSessions user={user as MentorDataType} />
+                    </DashboardSectionBorder>
+                </Grid>
+            <Grid item xs={12}>
+                 <DashboardSectionBorder title="Pending Session Requests">
+                    <PendingSessions user={user as MentorDataType} />
                     </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={8}>
