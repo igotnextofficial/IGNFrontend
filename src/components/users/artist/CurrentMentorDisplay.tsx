@@ -52,7 +52,7 @@ const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
             <Box sx={{backgroundImage:`url(${user?.mentor?.profile_photo_path})`, width:"100%", height:"100dvh", maxHeight:"300px" ,backgroundSize:"cover",opacity:0.7}}></Box>
           </Box>
          {!cannotSchedule && <Button disabled={cannotSchedule} sx={{margin:"10px 0 ", color:"white"}} variant='contained'> {cannotSchedule ? "Schedule Next Session" : <Link to="/schedule">Schedule Next Session</Link> }</Button>}
-         {sessionIsNow && <Box sx={styles.button_ign}><Link  to={mentorSession?.session_link || ""} >  Join Session Now </Link></Box>} 
+         {sessionIsNow && <Box sx={styles.button_ign}><Link  to={mentorSession?.join_url|| ""} >  Join Session Now </Link></Box>} 
         {hasUpcomingSession && <Box sx={{color:"#FBFAF9",backgroundColor:"#1d1917",textAlign:"center",borderRadius:"5px" , padding:"5px 0" , margin:"10px 0"}}>Next Session: {sessionDate} </Box>}
         </>
     )

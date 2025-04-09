@@ -66,10 +66,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
     <Card sx={{ marginBottom:"3rem" }}>
       <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px",maxWidth:150, borderRadius:"5px",textAlign:'center'}}>
       <Typography sx={{ fontSize: 14, color: "#FBFAF9" }} variant="button" color="text.secondary">
-  {new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format((mentor.product.price || 0) / 100 / 6)} per session
+  {mentor.product.price} per session
 </Typography>
 
       </Box>

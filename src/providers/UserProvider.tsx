@@ -13,6 +13,70 @@ import { Collections } from "@mui/icons-material";
 
 const UserObj = new User()
 
+
+
+const loadDataForUser = async (user:UserDataType,user_type:string,access_token:string) => {
+    if (!user ) return;
+    let data = {}
+    console.log(`attempting to load data for user ${user_type} with id ${user.id}`)
+    try {
+        if (user_type === Roles.ARTIST) {
+            const response = await axios.get(
+                `${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user.id}`,
+                {
+                    headers: { Authorization: `Bearer ${access_token}` }
+                }
+            );
+             
+            data = {...user,mentorSession: response?.data['data'] || []}
+            
+        }
+
+        if (user.role.type === Roles.MENTOR) {
+            const [availabilityResponse, sessionsResponse] = await Promise.all([
+                axios.get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`, {
+                    headers: { Authorization: `Bearer ${access_token}` }
+                }),
+                
+                axios.get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`, {
+                    headers: { Authorization: `Bearer ${access_token}` }
+                })
+           
+            ]);
+
+            const mentees = user.mentees.map((mentee: UserDataType) => {
+                const session = sessionsResponse?.data['data'].filter((s: any) => s.mentee_id === mentee.id);
+    
+                console.log(JSON.stringify(session,null,2))
+      
+                    return {
+                        ...mentee,
+                        session_date: session.session_date || "",
+                        mentorSession: session  || []
+                    };
+         
+            });
+
+          
+
+             data = {
+                ...user,
+                availability: availabilityResponse?.data?.availability || false,
+                specialties: user.specialties.map((specialty: Record<string,string>) => specialty.name),
+                mentees
+            }
+
+         
+        }
+
+        console.log(`the data loaded for user ${user_type} is ${JSON.stringify(data,null,2)}`)
+        return data;
+    } catch (error) {
+        console.error('Error loading user specific data:', error);
+    }
+}
+
+
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(() => {
         const savedUser = sessionStorage.getItem('user');
@@ -118,10 +182,23 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         const loadInitialData = async () => {
             const mentorResponse = await getUsersData("mentors", APP_ENDPOINTS.USER.MENTOR.FEATURED);
             if(mentorResponse) {
-                const data = mentorResponse.map((mentor: MentorDataType) => ({
-                    ...mentor,
-                    specialties: mentor.specialties.map((item: any) => item.name)
-                }));
+               
+                const data = mentorResponse.map((mentor: MentorDataType) => {
+                    const formattedPrice = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                    }).format(mentor.product.price);
+                
+                    return {
+                        ...mentor,
+                        product: {
+                            ...mentor.product,
+                            price: formattedPrice
+                        },
+                        specialties: mentor.specialties.map((item: any) => item.name)
+                    };
+                });
+                
                 setMentorData(data);
             }
 
@@ -135,68 +212,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     useEffect(() => {
-        const loadUserSpecificData = async () => {
-            if (!user || !isLoggedin || !accessToken ||  hasLoadedUserExtras.current) return;
+        if (!user) return;
+        sessionStorage.setItem('user', JSON.stringify(user || {}));
 
-            try {
-                if (user.role.type === Roles.ARTIST) {
-                    const response = await axios.get(
-                        `${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user.id}`,
-                        {
-                            headers: { Authorization: `Bearer ${accessToken}` }
-                        }
-                    );
-                    setExtraUserData({
-                        mentorSession: response?.data['data'] || []
-                    });
-                }
-
-                if (user.role.type === Roles.MENTOR) {
-                    const [availabilityResponse, sessionsResponse] = await Promise.all([
-                        axios.get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`, {
-                            headers: { Authorization: `Bearer ${accessToken}` }
-                        }),
-                        
-                        axios.get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`, {
-                            headers: { Authorization: `Bearer ${accessToken}` }
-                        })
-                   
-                    ]);
-
-                    console.log(`The session response i received`)
-                    console.log(sessionsResponse)
-
-                    const mentees = user.mentees.map((mentee: UserDataType) => {
-                        const session = sessionsResponse?.data['data'].find((s: any) => s.mentee_id === mentee.id);
-                        console.log(`looking at mentee ${mentee}`)
-                        console.log(`found session`)
-                        console.log(session)
-                        if (session) {
-                            return {
-                                ...mentee,
-                                id: session.id,
-                                session_date: session.session_date,
-                                mentorSession: session
-                            };
-                        }
-                        return mentee;
-                    });
-
-                    setExtraUserData({
-                        availability: availabilityResponse?.data?.availability || false,
-                        specialties: user.specialties.map((specialty: Record<string,string>) => specialty.name),
-                        mentees
-                    });
-
-                 
-                }
-                hasLoadedUserExtras.current = true;
-            } catch (error) {
-                console.error('Error loading user specific data:', error);
-            }
-        };
-
-        loadUserSpecificData();
+        // loadUserSpecificData();
     }, [isLoggedin, user, accessToken]);
 
     useEffect(() => {
@@ -231,9 +250,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             const userData = response.data['data'];
             const accessToken = response.data['access_token'];
             
-            setAccessToken(accessToken);
-            setUser(userData as UserDataType);
-            sessionStorage.setItem('user', JSON.stringify(userData));
+     
+            loadDataForUser(userData, userData.role.type, accessToken).then((data) => {
+                console.log(`User data loaded: ${JSON.stringify(data),null, 2} loaded...`);
+                setAccessToken(accessToken);
+                setUser(data as UserDataType);
+            }).catch((error) => {
+                throw new Error(`Error loading user data: ${error}`);
+            })
+ 
+
             setIsLoggedin(true);
 
             return true;

@@ -22,6 +22,7 @@ const mockMentors: MentorDataType[] = [
         specialties: ["Hip Hop Production", "Artist Development", "Business Strategy"],
         mentees: [],
         product: {
+            formattedPrice:'',
             id: "prod_1",
             name: "Legacy Production Masterclass",
             price: 299.99,
@@ -44,6 +45,7 @@ const mockMentors: MentorDataType[] = [
         specialties: ["Vocal Training", "Artist Branding", "Stage Performance"],
         mentees: [],
         product: {
+            formattedPrice:'',
             id: "prod_2",
             name: "R&B Vocal Excellence",
             price: 279.99,
@@ -66,6 +68,7 @@ const mockMentors: MentorDataType[] = [
         specialties: ["Songwriting", "Production", "Artist Development"],
         mentees: [],
         product: {
+            formattedPrice:'',
             id: "prod_3",
             name: "Hit Songwriting Workshop",
             price: 199.99,
@@ -78,7 +81,7 @@ const mockMentors: MentorDataType[] = [
         username: "jimmyjamterrylewis",
         role: { id: "1", type: Roles.MENTOR },
         profile_photo_path: "/images/fakeusers/user4.jpg",
-        bio: "Legendary production duo with multiple Grammy awards. Known for creating timeless hits and innovative production techniques. Experts in R&B, pop, and contemporary music production.",
+        bio: "Legendary production duo with multiple Grammy awards. Known for creating timeless hits and innovative production tecshniques. Experts in R&B, pop, and contemporary music production.",
         genre: "R&B/Pop",
         expertise: ["Music Production", "Songwriting", "Artist Development"],
         session_date: "2024-03-28",
@@ -88,6 +91,7 @@ const mockMentors: MentorDataType[] = [
         specialties: ["Production", "Songwriting", "Artist Development"],
         mentees: [],
         product: {
+            formattedPrice:'',
             id: "prod_4",
             name: "Production Dream Team",
             price: 229.99,
@@ -115,7 +119,28 @@ export const useMentors = () => {
                 // In production, fetch from the API
                 const response = await fetchData(APP_ENDPOINTS.USER.MENTOR.BASE, HttpMethods.GET);
                 if (response && response.data && response.data.length > 0) {
-                    setMentors(response.data);
+                    const mentorsWithProducts = response.data.map((mentor: MentorDataType) => {
+                        const price = mentor.product.price;
+
+                        const formattedPrice = new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD'
+                        }).format(price);
+                    
+                        const product: ProductDataType = {
+                            id: mentor.product.id,
+                            name: mentor.product.name,
+                            price,
+                            formattedPrice,
+                            description: mentor.product.description,
+                        };
+                    
+                        return {
+                            ...mentor,
+                            product: product,
+                        };
+                    });
+                    setMentors(mentorsWithProducts);
                 } else {
                     setMentors(mockMentors); // Fallback to mock data if API returns no data
                 }

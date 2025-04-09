@@ -13,7 +13,9 @@ export const Endpoints = {
     PRODUCTS: process.env.REACT_APP_PRODUCT_API || "",
     SPECIALTIES: process.env.REACT_APP_SPECIALTIES_API || "",
     GENRE: process.env.REACT_APP_GENRE_API || "",
-    PAYMENT: process.env.REACT_APP_PAYMENT_API || ""
+    PAYMENT: process.env.REACT_APP_PAYMENT_API || "",
+    HOME: process.env.REACT_APP_HOME_URL || "",
+   VIDEO_LINK: process.env.REACT_APP_GENERATE_MEETING_LINK_API || "",
 }
 
 
@@ -36,7 +38,9 @@ export const APP_ENDPOINTS = {
     GENERIC:{
         SPECIALTIES: Endpoints.SPECIALTIES,
         GENRE: Endpoints.GENRE,
+        VIDEO_LINK: `${Endpoints.VIDEO_LINK}/meeting`,
     },
+
     USER: {
         BASE: Endpoints.USER,
       
@@ -97,7 +101,8 @@ export const APP_ENDPOINTS = {
     },
     PAYMENT: {
         BASE:Endpoints.PAYMENT,
-        PAY:`${Endpoints.PAYMENT}/payment`
+        PAY:`${Endpoints.PAYMENT}/payment`,
+        CREATE_INTENT:`${Endpoints.PAYMENT}/create-payment-intent`
     }
 
 }

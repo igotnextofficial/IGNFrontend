@@ -49,7 +49,7 @@ const MentorListComponent = ({ mentors }: MentorListComponentProps) => {
                   }}
                 >
                   <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                    ${mentor.product.price}
+                    {mentor.product.formattedPrice}
                   </Typography>
                 </Box>
 

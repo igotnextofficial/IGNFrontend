@@ -4,11 +4,20 @@ import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useUser } from "../contexts/UserContext";
 
+import { MenteeDataType, MentorSessionDataType } from "../types/DataTypes";
+
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(customParseFormat); // Enable custom format parsing
 
 const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -343,7 +352,7 @@ const WorkHoursList = ({
   };
 
   const getSessionStatusText = (session: ScheduledSession) => {
-    if (!session.previousSession) {
+    if (session.currentSessionNumber === 1) {
       return {
         text: 'New Mentee',
         color: '#1d1917',
@@ -495,7 +504,7 @@ const WorkHoursList = ({
                                 <Button 
                                   variant="text" 
                                   size="small" 
-                                  href={`/profile/${session.menteeId}`}
+                                  href={`/profile/${session.role.type}/${session.menteeId}`}
                                   sx={{ mt: 1, color: 'black', textDecoration: 'underline' }}
                                 >
                                   View Profile
@@ -620,46 +629,8 @@ const Calendar = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [submissionData,setSubmissionData] = 
   useState<BlockedTimeSubmission | null>(null);
-
-  const hasLoadedTimeSlotsRef = useRef(false); // clearer that it's a one-time check
-  const [availableTimeSlotsWithId, setAvailableTimeSlotsWithId] = useState(new Map<string, string>());
-
-  useEffect(() => {
-    if(hasLoadedTimeSlotsRef.current) return;
-  
-    const fetchBlockedTimes = async () => {
-      try {
-        let allTimes = new Map<string, string>();
-        const response = await fetch('https://api.example.com/blocked-times');
-        if (!response.ok) {
-          throw new Error('Failed to fetch blocked times');
-        }
-        const data = await response.json();
-        data.forEach((item: { id: string; timeSlot: string }) => {
-          const {id,timeSlot} = item;
-          if(!allTimes.has(timeSlot)){
-            allTimes.set(timeSlot,id);
-          }
-        })
-       
-        return allTimes;
-      } catch (error) {
-
-        console.error(error);
-        return null;
-      }
-    };
-
-    let times = fetchBlockedTimes().then((times) => {
-      if(times){
-        setAvailableTimeSlotsWithId(times);
-        hasLoadedTimeSlotsRef.current = true;
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
  
-  }, []);
+ 
 
   useEffect(() => {
     if(!submissionData) return;
@@ -770,7 +741,37 @@ const Calendar = () => {
         maxSessionNumber: 3 // Final session
       }
     ];
-    setScheduledSessions(mockSessions);
+    let mentor_confirmed_sessions:ScheduledSession[] =  [];
+
+    user?.mentees.forEach((mentee:MenteeDataType) => {
+ 
+      const {fullname,username,bio,profile_photo_path} = mentee;
+      mentee.mentorSession?.forEach((session: MentorSessionDataType) => {
+        if(session.status !=='confirmed') return;
+        const mentor_scheduled_sessions ={
+          fullname,
+          username,
+          profile_photo_path,
+          menteeId: mentee.id,
+          bio,
+          role: {type:'artist'},
+          previousSession: dayjs(session.previousSession).format('YYYY-MM-DD'),
+          startTime: dayjs(session.start_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
+          endTime: dayjs(session.end_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
+          currentSessionNumber: session.currentSessionNumber,
+          maxSessionNumber: session.maxSessionNumber
+        }
+
+        mentor_confirmed_sessions.push(mentor_scheduled_sessions as ScheduledSession);
+
+      });
+  
+
+        console.log(`the scheduled sessions are ${JSON.stringify(mentor_confirmed_sessions,null,2)}`)
+
+        console.log(`mocked sessions are ${JSON.stringify(mockSessions,null,2)}`)
+    })
+    setScheduledSessions(mentor_confirmed_sessions);
   }, [currentDate]);
 
   const handlePrevWeek = () => {

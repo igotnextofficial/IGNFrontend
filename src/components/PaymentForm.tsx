@@ -11,7 +11,7 @@ import {
   Alert as MuiAlert
 } from '@mui/material';
 import { useUser } from '../contexts/UserContext';
-import { APP_ENDPOINTS } from '../config/app';
+import { APP_ENDPOINTS, Endpoints } from '../config/app';
 
 const Alert = React.forwardRef(function Alert(props: any, ref: React.Ref<any>) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -60,48 +60,48 @@ const PaymentForm = ({ amount, productId, mentorId, onSuccess }: any) => {
       setLoading(false);
       return;
     }
-
+    
     const cardElement = elements.getElement(CardElement);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement!,
-      billing_details: {
-        name,
-        address: {
-          line1: address,
-          city,
-          state,
-          postal_code: zip
-        }
-      }
-    });
-
-    if (error) {
-      showSnackbar(error.message || "Payment method creation failed", "error");
-      setLoading(false);
-      return;
+    
+    if(!cardElement){
+      throw new Error('Card element did not load.')
     }
 
     try {
-      const res = await fetch(`${APP_ENDPOINTS.PAYMENT.PAY}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          paymentMethodId: paymentMethod.id,
-          amount,
-          productId,
-          mentorId,
-          menteeId: user?.id
-        })
-      });
+      const paymentIntentResponse = await fetch(`${APP_ENDPOINTS.PAYMENT.CREATE_INTENT}`,{
+        method:'POST',
+        headers:{'Content-Type': 'application/json'},
+        body: JSON.stringify({amount})
+      })
 
-      if (res.ok) {
-        onSuccess?.();
-        showSnackbar("Payment successful! Your session has been booked.", "success");
-      } else {
-        const err = await res.json();
-        showSnackbar(err.error || "Payment failed", "error");
+      if(!paymentIntentResponse.ok){
+         throw new Error('issue with creating the payment intent')
+ 
       }
+      
+      const { client_secret } = await paymentIntentResponse.json();
+      const result =  await stripe.confirmCardPayment(client_secret,{
+        payment_method:{
+          card: cardElement,
+          billing_details:{
+            name,
+            address: {
+              line1: address,
+              city,
+              state,
+              postal_code: zip
+            }
+          }
+        }
+      })
+
+      if(result.error){
+        throw new Error("An unexpected error occurred. Please try again." );
+      }
+       onSuccess?.();
+       showSnackbar("Payment successful! Your session has been booked.", "success");
+
+      
     } catch (err: any) {
       showSnackbar("An unexpected error occurred. Please try again.", "error");
       console.error("Payment error:", err);

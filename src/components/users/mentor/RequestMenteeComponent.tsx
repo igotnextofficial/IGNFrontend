@@ -50,16 +50,18 @@ const RequestMenteeComponent = ({ mentor }: { mentor: MentorDataType }) => {
 
     const handleApproved = async (mentee: MenteeDataType) => {
         const headers = { Authorization: `Bearer ${accessToken}` }
-        console.log(`the headers i am sending to approve mentee are ${JSON.stringify(headers)}`)
+
         let url = `${Endpoints.MENTOR}/${user?.id}/mentees/${mentee.id}/approve`
         let statusUpdate = { status: "approved" }
         let updatedMentee = { ...mentee, ...statusUpdate }
         let currentUser = user as MentorDataType
         let currentMentees = currentUser.mentees.filter(item => item.id !== updatedMentee.id)
+
         let newMentee = { mentees: [updatedMentee, ...currentMentees] }
         let updatedUser = { ...user, ...newMentee }
         let data_without_approved_user = data.filter(item => item.id !== updatedMentee.id);
         setData(data_without_approved_user)
+        
         updateUser(updatedUser as MentorDataType)
         let response = await sendRequest(HttpMethods.PUT, url, null, headers)
         if (response === null) {

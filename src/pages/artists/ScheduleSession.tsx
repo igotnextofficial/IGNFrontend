@@ -77,10 +77,7 @@ const SessionPaymentForm = ({
             <Typography sx={{ fontWeight: 500 }}>
               Price:
               <span style={{ fontWeight: 400 }}>
-                {new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD'
-                }).format((product?.price || 0) / 100)}
+                {product?.price}
               </span>
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
