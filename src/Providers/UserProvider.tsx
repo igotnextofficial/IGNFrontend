@@ -2,6 +2,7 @@ import  { useState, ReactNode, useRef, useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
 import User from "../models/users/User";
 import useFetch from "../customhooks/useFetch";
+import useHttp from "../customhooks/useHttp";
 import { socket } from "../socket";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../types/DataTypes";
 import LocalStorage from  "../storage/LocalStorage";
@@ -10,6 +11,7 @@ import { APP_ENDPOINTS } from "../config/app";
 import { Roles } from "../types/Roles";
 import { Endpoints } from "../config/app";
 import { Collections } from "@mui/icons-material";
+import { HttpMethods } from "../types/DataTypes";
 
 const UserObj = new User()
 
@@ -18,7 +20,7 @@ const UserObj = new User()
 const loadDataForUser = async (user:UserDataType,user_type:string,access_token:string) => {
     if (!user ) return;
     let data = {}
-    console.log(`attempting to load data for user ${user_type} with id ${user.id}`)
+ 
     try {
         if (user_type === Roles.ARTIST) {
             const response = await axios.get(
@@ -47,7 +49,7 @@ const loadDataForUser = async (user:UserDataType,user_type:string,access_token:s
             const mentees = user.mentees.map((mentee: UserDataType) => {
                 const session = sessionsResponse?.data['data'].filter((s: any) => s.mentee_id === mentee.id);
     
-                console.log(JSON.stringify(session,null,2))
+    
       
                     return {
                         ...mentee,
@@ -68,11 +70,10 @@ const loadDataForUser = async (user:UserDataType,user_type:string,access_token:s
 
          
         }
-
-        console.log(`the data loaded for user ${user_type} is ${JSON.stringify(data,null,2)}`)
+ 
         return data;
     } catch (error) {
-        console.error('Error loading user specific data:', error);
+ 
     }
 }
 
@@ -92,6 +93,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [refreshQueue, setRefreshQueue] = useState<Promise<any> | null>(null);
     const {fetchData} = useFetch();
+    const { post, get } = useHttp();
     const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
     const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
     const [loading, setLoading] = useState(true);
@@ -128,7 +130,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     return response.data['data'];
                 }
             } catch (e) {
-                console.error("Failed to refresh token:", e);
+          
                 // If we get a 404, the refresh token is invalid
                 if (axios.isAxiosError(e) && e.response?.status === 404) {
                     handleLogout();
@@ -161,7 +163,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setIsLoggedin(true);
                 }
             } catch (error) {
-                console.error('Error verifying initial session:', error);
+          
                 handleLogout();
             } finally {
                 setInitialLoadComplete(true);
@@ -244,21 +246,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const loginUser = async (data: httpDataObject) => {
         try {
             if(!data) return false;
-            const response = await axios.post(Endpoints.LOGIN, data, {withCredentials: true});
+            console.log(`logging in user with new http hook`)
+            const response = await post(Endpoints.LOGIN, data, { requiresAuth: false });
             if(!response) return false;
 
             const userData = response.data['data'];
             const accessToken = response.data['access_token'];
             
-     
             loadDataForUser(userData, userData.role.type, accessToken).then((data) => {
-                console.log(`User data loaded: ${JSON.stringify(data),null, 2} loaded...`);
+    
                 setAccessToken(accessToken);
                 setUser(data as UserDataType);
             }).catch((error) => {
                 throw new Error(`Error loading user data: ${error}`);
-            })
- 
+            });
 
             setIsLoggedin(true);
 
@@ -270,7 +271,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const LogoutUser = async () => {
         try {
-            await UserObj.logout(accessToken);
+            // Log the access token for debugging
+            console.log(`Logging out with access token: ${accessToken ? 'Token exists' : 'No token'}`);
+            
+            // Make sure we're using the current access token
+            await post(Endpoints.LOGOUT, {}, { 
+                requiresAuth: true,
+                headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+            });
+            
             setIsLoggedin(false);
             setUser(null);
             setAccessToken("");
@@ -278,6 +287,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             socket.disconnect();
             return true;
         } catch(err) {
+            console.error("Logout error:", err);
             return false;
         }
     };

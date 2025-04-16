@@ -101,7 +101,7 @@ export const APP_ENDPOINTS = {
     },
     PAYMENT: {
         BASE:Endpoints.PAYMENT,
-        PAY:`${Endpoints.PAYMENT}/payment`,
+        PAY:`${Endpoints.PAYMENT}`,
         CREATE_INTENT:`${Endpoints.PAYMENT}/create-payment-intent`
     }
 

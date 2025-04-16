@@ -18,6 +18,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_1',
       name: 'Legacy Production Masterclass',
       price: 299.99,
+      formattedPrice: '$299.99',
       description: 'Learn production techniques from a living legend'
     }
   },
@@ -35,6 +36,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_2',
       name: 'West Coast Production Mastery',
       price: 249.99,
+      formattedPrice: '$249.99',
       description: 'Learn the art of hip-hop production and mixing'
     }
   },
@@ -52,6 +54,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_3',
       name: 'R&B Vocal Excellence',
       price: 279.99,
+      formattedPrice: '$279.99',
       description: 'Master the art of R&B vocal performance'
     }
   },
@@ -69,6 +72,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_4',
       name: 'Hit Songwriting Workshop',
       price: 199.99,
+      formattedPrice: '$199.99',
       description: 'Create timeless R&B songs with legendary techniques'
     }
   },
@@ -86,6 +90,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_5',
       name: 'Production Dream Team',
       price: 229.99,
+      formattedPrice: '$229.99',
       description: 'Learn duo production techniques that created countless hits'
     }
   },
@@ -103,6 +108,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_6',
       name: 'Vocal Supremacy',
       price: 189.99,
+      formattedPrice: '$189.99',
       description: 'Develop your vocal range and songwriting abilities'
     }
   },
@@ -120,6 +126,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_7',
       name: 'New Jack Swing Masterclass',
       price: 259.99,
+      formattedPrice: '$259.99',
       description: 'Learn the genre-defining sound of the late 80s and 90s'
     }
   },
@@ -137,6 +144,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_8',
       name: 'Funk & Dance Production',
       price: 239.99,
+      formattedPrice: '$239.99',
       description: 'Master the art of groove and dance music production'
     }
   },
@@ -154,6 +162,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_9',
       name: 'Music Industry Mastery',
       price: 219.99,
+      formattedPrice: '$219.99',
       description: 'Learn the business and creative sides of music'
     }
   },
@@ -171,6 +180,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_10',
       name: 'Entertainment 360',
       price: 209.99,
+      formattedPrice: '$209.99',
       description: 'Master the art of entertainment and business'
     }
   },
@@ -188,6 +198,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_11',
       name: 'Latin Pop Excellence',
       price: 229.99,
+      formattedPrice: '$229.99',
       description: 'Master the art of Latin pop music and performance'
     }
   },
@@ -205,6 +216,7 @@ export const mockMentors: MentorDataType[] = [
       id: 'prod_12',
       name: 'Gospel Excellence',
       price: 199.99,
+      formattedPrice: '$199.99',
       description: 'Develop your gospel vocals and songwriting'
     }
   }

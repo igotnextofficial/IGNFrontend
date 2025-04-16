@@ -11,6 +11,7 @@ interface CustomError extends Error {
     response?: Record<string, any>;
 }
 
+// @Deprecated use usHttp.ts instead
 const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
     const [data, setData] = useState(null);
     const [sendData, setSendData] = useState<Record<string,any> | null>(null);

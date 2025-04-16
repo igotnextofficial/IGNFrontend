@@ -21,7 +21,7 @@ const PaymentForm = ({ amount, productId, mentorId, onSuccess }: any) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
-  const { user } = useUser();
+  const { user,accessToken } = useUser();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -70,8 +70,17 @@ const PaymentForm = ({ amount, productId, mentorId, onSuccess }: any) => {
     try {
       const paymentIntentResponse = await fetch(`${APP_ENDPOINTS.PAYMENT.CREATE_INTENT}`,{
         method:'POST',
-        headers:{'Content-Type': 'application/json'},
-        body: JSON.stringify({amount})
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({data:{
+          amount,
+          mentorId:user?.mentor.id,
+          productName:user?.mentor.product.name,  
+          productId:user?.mentor.product.id,
+          menteeId: user?.id
+        }})
       })
 
       if(!paymentIntentResponse.ok){

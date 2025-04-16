@@ -9,6 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { Visibility } from '@mui/icons-material';
 import {v4 as uuidv4} from 'uuid'
+import { useUser } from '../../contexts/UserContext';
 /* a mentor will cose out a session by the following
 
 // did the session happen 
@@ -96,6 +97,7 @@ const feedback: FormField = {
 };
 
 const CloseSessionPage = () => {
+    const {user} = useUser();
     const {data} = useFormDataContext();
     const [sessionHappened, setSessionHappened] = useState(true);
     const [sessionLongEnough, setSessionLongEnough] = useState(true);
@@ -104,6 +106,10 @@ const CloseSessionPage = () => {
     const [currentGoal, setCurrentGoal] = useState("");
     const [taskCount, setTaskCount] = useState(0);
 
+
+    useEffect(() => {
+    
+    },[])
     useEffect(() => {
         let form: FormField[] = [task, description, feedback];
         if(currentGoal.length === 0) {
@@ -141,6 +147,10 @@ const CloseSessionPage = () => {
             }
         }
         data_to_send = {data: {goal, objectives, feedback}};
+
+        // make api call to assign task
+        // on success make api call to close session
+        // make api call for payments
     };
 
     useEffect(() => {
