@@ -4,12 +4,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Grid ,Button, CardActionArea, CardActions, Box } from '@mui/material';
-import { HttpMethods, MentorDataType } from '../../../types/DataTypes';
-
-
+import { MentorDataType } from '../../../types/DataTypes';
 import { useUser } from '../../../contexts/UserContext';
-import { sendRequest } from '../../../utils/helpers';
 import { Endpoints } from '../../../config/app';
+import useHttp from '../../../customhooks/useHttp';
+import { useErrorHandler } from '../../../contexts/ErrorContext';
  
 
 const labels = {
@@ -21,6 +20,8 @@ const labels = {
 const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType,withoutInfo?:boolean}) => {
   const {user,accessToken}= useUser()
   const [buttonLabel, setButtonLabel] = useState(labels.default)
+  const { post } = useHttp();
+  const { updateError } = useErrorHandler();
 
   useEffect(() => {
       if(mentor && mentor.mentees){
@@ -45,17 +46,28 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
       setButtonLabel(labels.pending)
       let mentor_id = event.currentTarget.dataset.src;
       let endpoint = `${Endpoints.MENTOR}/${mentor_id}/request/${user?.id}` // request to book mentor
-        event.currentTarget.disabled = true
-        let response = await sendRequest(HttpMethods.POST,endpoint,null,{Authorization:`Bearer ${accessToken}`});
-        if(response === null){
-          event.currentTarget.disabled = false
-          setButtonLabel(labels.default)
-        }
+      event.currentTarget.disabled = true
+      
+      const response = await post(endpoint, {}, { 
+        requiresAuth: true,
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+      });
+      
+      if(!response) {
+        event.currentTarget.disabled = false
+        setButtonLabel(labels.default)
+        updateError("Failed to book mentor. Please try again.");
+      }
     }
     catch(error){
         if(error instanceof Error){
           console.error(error.message)
+          updateError(error.message);
+        } else {
+          updateError("An unexpected error occurred");
         }
+        event.currentTarget.disabled = false
+        setButtonLabel(labels.default)
     }
   }
 
@@ -98,7 +110,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
               </Box>
               </Grid>
             ))
-         }
+          }
        </Grid>
           <Typography variant="body2" color="text.secondary">
             {mentor.bio?.slice(0,300)}...   

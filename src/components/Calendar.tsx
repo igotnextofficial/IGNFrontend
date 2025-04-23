@@ -7,7 +7,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-
+import { APP_ENDPOINTS } from "../config/app";
 
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useUser } from "../contexts/UserContext";
@@ -636,7 +636,7 @@ const Calendar = () => {
     if(!submissionData) return;
     const submitData = async () => {
       try {
-        const response = await fetch('https://shield.igotnext.local/api/schedule', {
+        const response = await fetch( APP_ENDPOINTS.SCHEDULE.CREATE, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

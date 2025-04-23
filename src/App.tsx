@@ -98,7 +98,7 @@ const MainApplication: React.FC = () => {
               <Route path='/mentors/book-a-mentor/:mentorId' element={<BookMentorPage />} />
               <Route path='/schedule' element={<ScheduleSession />} />
 
-              <Route path='/session/:user_id/closeout/:mentee_id' element={<CloseSession />} />
+              <Route path='/session/:mentee_id/closeout/:session_id' element={<CloseSession />} />
 
               <Route path='/compose-article' element={<ComposeArticle />} />
               <Route path='/edit-article/:article_id' element={<EditArticle />} />

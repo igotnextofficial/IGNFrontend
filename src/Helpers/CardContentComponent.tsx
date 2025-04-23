@@ -24,8 +24,8 @@ export default function CardContentComponent({user,session} : {user:MenteeDataTy
           <Box component="div" sx={styles.overlayText}/>
           <Box sx={{position:"absolute",bottom:0}}>
 
-          <Grid container sx={{padding:"8px 10px"}} spacing={6} justifyContent={'center'} alignItems={"center"}>
-            <Grid item xs={2}> <ScheduleIcon  sx={{color:"white",fontSize:50}}/></Grid>
+          <Grid container sx={{padding:"8px 10px"}} spacing={4} justifyContent={'center'} alignItems={"center"}>
+            <Grid item xs={2}> <ScheduleIcon  sx={{color:"white",fontSize:30}}/></Grid>
             
             <Grid item xs={10}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${ dayjs(session.start_time).format('dddd MMM D [@] hh:mm A')} `}</Typography></Grid>
          </Grid>

@@ -22,7 +22,16 @@ useEffect(() => {
      })
 },[recipientOfNote])
     const handleSubmit = async ()=>{
-        const _data = {...data, recipient_id:recipientOfNote.id, sender_id:user?.id}
+        // Generate a conversation_id if this is a new conversation
+        // Format: sender_id-recipient_id-timestamp
+        const conversation_id = `${user?.id}-${recipientOfNote.id}-${Date.now()}`
+        
+        const _data = {
+            ...data, 
+            recipient_id: recipientOfNote.id, 
+            sender_id: user?.id,
+            conversation_id: conversation_id
+        }
         let response = await handleClick({"data":_data},recipientOfNote.id)
         sent(response)
     }

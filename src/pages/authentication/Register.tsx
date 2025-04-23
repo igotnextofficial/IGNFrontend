@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { httpDataObject, HttpMethods } from '../../types/DataTypes';
+import { httpDataObject } from '../../types/DataTypes';
 import { Avatar, Box, CssBaseline, Grid, Paper, Typography, Link, Container, Divider, Fade, Slide } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -10,12 +10,12 @@ import IGNButton from '../../components/Button';
 import { useUser } from '../../contexts/UserContext';
 import { useErrorHandler } from '../../contexts/ErrorContext';
 import { Navigate } from 'react-router-dom';
-import { sendRequest } from '../../utils/helpers';
 import IgnFormGenerate from '../../components/IgnFormGenerate';
 import { RegisterFormStructure } from '../../formstructures/RegisterFormStructure';
 import FormDataProvider from '../../providers/FormDataProvider';
 import User from '../../models/users/User';
 import { useFormDataContext } from '../../contexts/FormContext';
+import LoadingComponent from "../../components/common/LoadingComponent";
 
 const fadeIn = keyframes`
   from {
@@ -30,21 +30,11 @@ const fadeIn = keyframes`
 
 const user = new User();
 
-const RegisterUserAttempt = async (data: httpDataObject) => {
-    let url = process.env.REACT_APP_REGISTER_API || "";
-    const response = await sendRequest(HttpMethods.POST, url, data);
-    if (response !== null) {
-        return response;
-    }
-    else return null;
-}
-
 const RegisterDisplay = () => {
-    const { user, isLoggedin, attemptLoginOrLogout } = useUser();
+    const { user, isLoggedin, registerUser, loading } = useUser();
     const { data, isValid } = useFormDataContext();
     const { updateError } = useErrorHandler();
     const [refreshPage, setRefreshPage] = React.useState<boolean>(false);
-    const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         if (isLoggedin && user) {
@@ -55,23 +45,17 @@ const RegisterDisplay = () => {
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         if (isValid) {
-            setIsLoading(true);
             try {
-                const response = await RegisterUserAttempt({ data });
-                if (response) {
-                    if (response.errors?.length) {
-                        updateError?.(response.errors.join(' '));
-                    } else {
-                        const loginResponse = await attemptLoginOrLogout(true, { data });
-                        if (!loginResponse) {
-                            updateError?.("The user could not be logged in");
-                        }
-                    }
+                await registerUser({ data });
+                // If we get here, registration was successful
+            } catch (error) {
+                console.error("Registration error:", error);
+                // Handle the error message
+                if (error instanceof Error) {
+                    updateError?.(error.message);
                 } else {
-                    updateError?.("Issues with registering user");
+                    updateError?.("An error occurred during registration");
                 }
-            } finally {
-                setIsLoading(false);
             }
         }
     }
@@ -130,6 +114,8 @@ const RegisterDisplay = () => {
             {refreshPage && (
                 <Navigate to={`/dashboard/${user?.role.type}`} replace={true} />
             )}
+
+            {loading && <LoadingComponent />}
 
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height: '100vh' }}>
@@ -254,7 +240,7 @@ const RegisterDisplay = () => {
                                         
                                         <IGNButton 
                                             buttonLabel='Register'
-                                            disabled={isLoading}
+                                            disabled={loading}
                                             onClick={handleSubmit}
                                             sx={{ 
                                                 mt: 3, 

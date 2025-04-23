@@ -14,6 +14,7 @@ import PendingSessions from "../../components/users/mentor/PendingSessions"
 import RequestMenteeComponent from "../../components/users/mentor/RequestMenteeComponent"
 import OpenUpForSessions from "../../components/users/mentor/OpenUpForSessions"
 import NotesFeedback from '../notes/NotesFeedback'
+import CloseOutSessions from "../../components/users/mentor/CloseOutSessions"
 
 import DashboardSectionBorder from "../../components/users/mentor/DashboardSectionComponentWithBorder"
 import LocalStorage from "../../storage/LocalStorage"
@@ -93,6 +94,11 @@ const MentorDashboard = ()=>{
             <Grid item xs={12}>
                  <DashboardSectionBorder title="Pending Session Requests">
                     <PendingSessions user={user as MentorDataType} />
+                    </DashboardSectionBorder>
+                </Grid>
+                <Grid item xs={12}>
+                    <DashboardSectionBorder title="Close Out Session(s)">
+                        <CloseOutSessions user={user as MentorDataType} />
                     </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={8}>

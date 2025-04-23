@@ -16,6 +16,8 @@ export const Endpoints = {
     PAYMENT: process.env.REACT_APP_PAYMENT_API || "",
     HOME: process.env.REACT_APP_HOME_URL || "",
    VIDEO_LINK: process.env.REACT_APP_GENERATE_MEETING_LINK_API || "",
+   GOALS: process.env.REACT_APP_GOALS_API || "",
+   SCHEDULE: process.env.REACT_APP_SCHEDULE_API || "",
 }
 
 
@@ -39,6 +41,7 @@ export const APP_ENDPOINTS = {
         SPECIALTIES: Endpoints.SPECIALTIES,
         GENRE: Endpoints.GENRE,
         VIDEO_LINK: `${Endpoints.VIDEO_LINK}/meeting`,
+        GENERATE_ZOOM_LINK: `${Endpoints.SESSIONS}/generate-zoom-link`
     },
 
     USER: {
@@ -81,6 +84,7 @@ export const APP_ENDPOINTS = {
         MENTOR: `${Endpoints.SESSIONS}/mentor`,
         MENTOR_SESSIONS: `${Endpoints.SESSIONS}/mentor/sessions`,
         MENTEE_SESSIONS: `${Endpoints.SESSIONS}/mentee/sessions`,
+ 
     },
     // /api/mentors/9e5a4e35-4491-408e-935c-558edf0af202/availability/open
     NOTES: {
@@ -89,6 +93,14 @@ export const APP_ENDPOINTS = {
         NOTESFORUSER: `${Endpoints.NOTES}`, // /:recipient/:sender|:recipient
         MENTOR: `${Endpoints.NOTES}/mentor`,
         
+    },
+    GOALS:{
+        BASE: Endpoints.GOALS,
+        SINGLE: `${Endpoints.GOALS}`,
+        MENTOR: `${Endpoints.GOALS}/mentor`,
+        MENTEE: `${Endpoints.GOALS}/mentee`,
+        MENTOR_GOALS: `${Endpoints.GOALS}/mentor`,
+        MENTEE_GOALS: `${Endpoints.GOALS}/mentee`,
     },
     PRODUCTS: {
         BASE: Endpoints.PRODUCTS,
@@ -103,6 +115,10 @@ export const APP_ENDPOINTS = {
         BASE:Endpoints.PAYMENT,
         PAY:`${Endpoints.PAYMENT}`,
         CREATE_INTENT:`${Endpoints.PAYMENT}/create-payment-intent`
+    },
+    SCHEDULE: {
+        BASE: Endpoints.SCHEDULE,
+        CREATE: `${Endpoints.SCHEDULE}/schedule`,
     }
 
 }

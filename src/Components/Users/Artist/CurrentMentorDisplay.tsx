@@ -66,6 +66,18 @@ const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
         }
         
     },[sessionDate])
+
+    // Check if a session is within 5 minutes of starting or up to 30 minutes after starting
+    const isSessionActive = () => {
+        if (!mentorSession?.start_time) return false;
+        
+        const sessionStartTime = dayjs(mentorSession.start_time);
+        const now = dayjs();
+        const fiveMinutesBeforeStart = sessionStartTime.subtract(5, 'minutes');
+        const thirtyMinutesAfterStart = sessionStartTime.add(30, 'minutes');
+        
+        return now.isAfter(fiveMinutesBeforeStart) && now.isBefore(thirtyMinutesAfterStart);
+    };
  
     return (
         <>
@@ -73,7 +85,7 @@ const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
             <Box sx={{backgroundImage:`url(${user?.mentor?.profile_photo_path})`, width:"100%", height:"100dvh", maxHeight:"300px" ,backgroundSize:"cover",opacity:0.7}}></Box>
           </Box>
          {!cannotSchedule && <Button disabled={cannotSchedule} sx={{margin:"10px 0 ", color:"white"}} variant='contained'> {cannotSchedule ? "Schedule Next Session" : <Link to="/schedule">Schedule Next Session</Link> }</Button>}
-         {sessionIsNow && <Box sx={styles.button_ign}><Link  to={mentorSession?.join_url|| ""} >  Join Session Now </Link></Box>} 
+         {isSessionActive() && <Box sx={styles.button_ign}><Link  to={mentorSession?.join_url|| ""} >  Join Session Now </Link></Box>} 
         {hasUpcomingSession && <Box sx={{color:"#FBFAF9",backgroundColor:"#1d1917",textAlign:"center",borderRadius:"5px" , padding:"5px 0" , margin:"10px 0"}}>Next Session: {sessionDate} </Box>}
         {pendingSession && <Box sx={{color:"#FBFAF9",backgroundColor:"#1d1917",textAlign:"center",borderRadius:"5px" , padding:"5px 0" , margin:"10px 0"}}>Waiting on Approval for Session On: {sessionDate} </Box>}
         </>

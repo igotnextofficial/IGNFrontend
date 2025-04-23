@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,6 +21,7 @@ import FormDataProvider from '../../providers/FormDataProvider';
 import User from '../../models/users/User';
 import { useFormDataContext } from '../../contexts/FormContext';
 import { useErrorHandler } from '../../contexts/ErrorContext';
+import LoadingComponent from '../../components/common/LoadingComponent';
 
 const userClass = new User()
 
@@ -36,22 +37,28 @@ const fadeIn = keyframes`
 `;
 
 const LoginDisplay = () => {
-    const { updateError } = useErrorHandler()
-    const { user, isLoggedin, attemptLoginOrLogout } = useUser();
-    const { data, isValid } = useFormDataContext()
-    const [isLoading, setIsLoading] = React.useState(false);
+    const { user, isLoggedin, attemptLoginOrLogout, loading } = useUser();
+    const { data, isValid } = useFormDataContext();
+    const { updateError } = useErrorHandler();
+    const [refreshPage, setRefreshPage] = React.useState<boolean>(false);
+
+    useEffect(() => {
+        if (isLoggedin && user) {
+            setRefreshPage(true);
+        }
+    }, [isLoggedin, user]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isValid) {
-            setIsLoading(true);
             try {
-                const response = await attemptLoginOrLogout(true, { data })
+                const response = await attemptLoginOrLogout(true, { data });
                 if (!response) {
-                    updateError("Issue with logging in user")
+                    updateError?.("Issue with logging in user");
                 }
-            } finally {
-                setIsLoading(false);
+            } catch (error) {
+                console.error("Login error:", error);
+                updateError?.("Issue with logging in user");
             }
         }
     }
@@ -105,12 +112,14 @@ const LoginDisplay = () => {
         },
     })
 
-    if (isLoggedin && user) {
-        return <Navigate to={`/dashboard/${user?.role.type}`} replace={true} />
-    }
-
     return (
         <ThemeProvider theme={theme}>
+            {refreshPage && (
+                <Navigate to={`/dashboard/${user?.role.type}`} replace={true} />
+            )}
+
+            {loading && <LoadingComponent />}
+
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 {/* Left side - Background Image */}
@@ -235,7 +244,8 @@ const LoginDisplay = () => {
                                     
                                     <IGNButton 
                                         buttonLabel='Sign in'
-                                        disabled={isLoading}
+                                        disabled={loading}
+                                        onClick={handleSubmit}
                                         sx={{ 
                                             mt: 3, 
                                             mb: 2, 

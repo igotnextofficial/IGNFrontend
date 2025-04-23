@@ -1,8 +1,9 @@
 import {useContext, useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
 import FormDataProvider from '../../providers/FormDataProvider';
 import IgnFormGenerate from '../../components/IgnFormGenerate';
 import { useFormDataContext } from "../../contexts/FormContext";
-import { displayType, FormField } from "../../types/DataTypes"
+import { displayType, FormField, MenteeDataType } from "../../types/DataTypes"
 import { Box, Button, Typography } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,6 +11,14 @@ import Switch from '@mui/material/Switch';
 import { Visibility } from '@mui/icons-material';
 import {v4 as uuidv4} from 'uuid'
 import { useUser } from '../../contexts/UserContext';
+import { Router } from 'express';
+import { MentorSessionDataType } from '../../types/DataTypes';
+import useHttp from '../../customhooks/useHttp';
+import { APP_ENDPOINTS } from '../../config/app';
+import { ErrorContext } from '../../contexts/ErrorContext';
+import { useNavigate } from 'react-router-dom';
+import CircularImage from '../../utils/CircularImage';
+import { Stack } from '@mui/material';
 /* a mentor will cose out a session by the following
 
 // did the session happen 
@@ -71,12 +80,12 @@ const whyTheSessionDidntHappen: FormField = {
 };
 
 const description: FormField = {
-    label: "Additional details",
+    label: DESCRIPTION,
     visibility: true,
     display: displayType.TextValue,
     order: 2,
     props: {
-        id: "session-cancellation-details",
+        id: "session-description-details",
         placeholder: "Please provide any additional details about why the session didn't take place",
         multiline: true,
         rows: 4
@@ -96,20 +105,109 @@ const feedback: FormField = {
     order: 4
 };
 
+const SuccessfullyClosedSessionDisplay = ({ mentee }: { mentee: MenteeDataType }) => {
+    const navigate = useNavigate();
+  
+    return (
+      <Box
+        role="dialog"
+        aria-label="Session closed"
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh",
+          bgcolor: "rgba(0, 0, 0, 0.7)",
+          zIndex: (theme) => theme.zIndex.modal,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          p: 3
+        }}
+      >
+        <Stack 
+          spacing={3} 
+          alignItems="center"
+          sx={{
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            p: 4,
+            maxWidth: "90%",
+            width: "400px"
+          }}
+        >
+          <CircularImage 
+            image={mentee.profile_photo_path ?? ""} 
+            size={160} 
+          />
+          <Typography variant="h6">
+            Session closed successfully for {mentee.fullname}
+          </Typography>
+          <Button 
+            fullWidth
+            variant="contained" 
+            onClick={() => navigate("/dashboard/mentor")}
+            sx={{
+              bgcolor: "black",
+              "&:hover": { 
+                bgcolor: "rgba(0, 0, 0, 0.7)"
+              }
+            }}
+          >
+            Continue to Dashboard
+          </Button>
+        </Stack>
+      </Box>
+    );
+  };
 const CloseSessionPage = () => {
     const {user} = useUser();
+    const {mentee_id, session_id} = useParams();
+    const {post, put} = useHttp();
     const {data} = useFormDataContext();
+    const {updateError} = useContext(ErrorContext);
     const [sessionHappened, setSessionHappened] = useState(true);
     const [sessionLongEnough, setSessionLongEnough] = useState(true);
     const [displayForm, setDisplayForm] = useState(false);
     const [closeSessionForm, setCloseSessionForm] = useState<FormField[]>([]);
     const [currentGoal, setCurrentGoal] = useState("");
     const [taskCount, setTaskCount] = useState(0);
+    const [mentee, setMentee] = useState<MenteeDataType | null>(null);
+    const [session, setSession] = useState<MentorSessionDataType | null>(null);
+
+   
+    const [successfullyClosedSession, setSuccessfullyClosedSession] = useState(false);
 
 
     useEffect(() => {
-    
+        if(!user || !user.mentees ) return;
+        const mentee = user?.mentees.find((mentee:MenteeDataType) => mentee.id === mentee_id)
+        if(mentee) {
+            setMentee(mentee);
+        }
+
     },[])
+
+    useEffect(() => {
+        if(!mentee || !mentee.mentorSession) return;
+        console.log(`mentee: ${JSON.stringify(mentee)}`);
+        const session = mentee.mentorSession.find((session:MentorSessionDataType) => session.id === session_id)
+        if(session) {
+            setSession(session);
+            if(session.status === "completed" || session.status === "cancelled") {
+                setSuccessfullyClosedSession(true);
+            }
+        }
+    },[mentee])
+
+    useEffect(() => {
+        if(session?.status === "completed" || session?.status === "cancelled") {
+            setSuccessfullyClosedSession(true);
+        }
+    }, [session?.status]);
+
     useEffect(() => {
         let form: FormField[] = [task, description, feedback];
         if(currentGoal.length === 0) {
@@ -125,12 +223,30 @@ const CloseSessionPage = () => {
         };
     }, [sessionHappened, sessionLongEnough]);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         let data_to_send = {};
         if(!displayForm) {
-            data_to_send = {data: {reason: data.reason, description: data.description}};
-            console.log(data_to_send);
-            return;
+            // session didnt happen
+            try{
+                data_to_send = {data: {reason: data.reason, description: data.description}};
+                const close_session_response =  put(`${APP_ENDPOINTS.SESSIONS.BASE}/${session_id}/cancelled`, { });
+                const [close_session_result] = await Promise.allSettled([close_session_response]);
+                    if(close_session_result.status !== "fulfilled") {
+                        throw new Error("Failed to close session");
+                    }
+
+                    setSession((prevState) => ({...prevState, status: "cancelled"} as MentorSessionDataType));
+                    setSuccessfullyClosedSession(true);
+                   
+            }
+            catch(error: unknown) {
+                if (error instanceof Error) {
+                    updateError(error.message);
+                } else {
+                    updateError('An unknown error occurred');
+                }
+            }
+
         }
         const goal = data.goal ?? "";
         const objectives = [];
@@ -146,7 +262,36 @@ const CloseSessionPage = () => {
                 objectives.push({task: data[key], description: data[DESCRIPTION]});
             }
         }
-        data_to_send = {data: {goal, objectives, feedback}};
+        data_to_send = {data: {goal, objectives, feedback,assigned_by_id: user?.id, assigned_to_id: mentee_id }};
+        console.log(`sending data to server ${JSON.stringify(data_to_send)}`);
+
+        try{
+            const save_tasks_response =  post(APP_ENDPOINTS.GOALS.SINGLE, data_to_send);
+            const close_session_response =  put(`${APP_ENDPOINTS.SESSIONS.BASE}/${session_id}/completed`, { });
+            const [save_tasks_result, close_session_result] = await Promise.allSettled([save_tasks_response, close_session_response]);
+            
+            if(save_tasks_result.status !== "fulfilled") {
+                throw new Error("Failed to save tasks");
+                
+            }
+            if(close_session_result.status !== "fulfilled") {
+                throw new Error("Failed to close session");
+      
+            }
+
+            setSession((prevState) => ({...prevState, status: "completed"} as MentorSessionDataType));
+   
+
+        }
+        catch(error: unknown) {
+            if (error instanceof Error) {
+                updateError(error.message);
+       
+            } else {
+                updateError('An unknown error occurred');
+                console.log('Unknown error:', error);
+            }
+        }
 
         // make api call to assign task
         // on success make api call to close session
@@ -162,26 +307,34 @@ const CloseSessionPage = () => {
         setCloseSessionForm((prevState) => {
             const new_task = {...task};
             const new_description = {...description};
+            let default_order = 0;
 
-            let all_tasks = prevState.filter(item => item.label.includes(TASK));
-            let all_descriptions = prevState.filter(item => item.label.includes(DESCRIPTION));
 
-            let starting_order_from = all_descriptions[all_descriptions.length - 1].order;
+            let all_tasks = prevState.filter(item => item.label.includes(TASK)) || [];
+            let task_order = all_tasks.length > 0 ? all_tasks.map(item => item.order) : [];
+            let task_max_order = Math.max(...task_order,default_order) + 1;
+           
+            let all_descriptions = prevState.filter(item => item.label.includes(DESCRIPTION)) || [];
+            let description_order = all_descriptions.length > 0 ? all_descriptions.map(item => item.order) : [];
+            let description_max_order = Math.max(...description_order,default_order) + 1;
+            
+            new_task.order =  task_max_order ;
+            new_description.order = description_max_order  ;
 
-            new_task.order = starting_order_from + 1;
-            new_description.order = new_task.order + 1;
-
-            new_task.label = `${TASK}(${all_tasks.length + 1})`;
-            new_description.label = `${DESCRIPTION}(${all_descriptions.length + 1})`;
+            new_task.label = `${TASK}(${task_max_order})`;
+            new_description.label = `${DESCRIPTION}(${description_max_order})`;
 
             return [...prevState, new_task, new_description];
         });
     };
 
-    return (
+    return ( 
         <Box style={{maxWidth: "1000px", margin: "5em auto"}}>
+            {mentee && successfullyClosedSession && (
+                <SuccessfullyClosedSessionDisplay mentee={mentee} />
+            )}
             <Typography sx={{color: "black", margin: "1em 0"}} variant={'h4'}>
-                Close out your session with {`<mentee-name>`}
+                Close out your session with { mentee?.fullname}
             </Typography>
             <FormGroup>
                 <FormControlLabel 
@@ -262,6 +415,7 @@ const CloseSessionPage = () => {
 
 const CloseSession = () => {
     return (
+
         <FormDataProvider>
             <CloseSessionPage/>
         </FormDataProvider>

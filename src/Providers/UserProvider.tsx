@@ -10,8 +10,8 @@ import axios from "axios";
 import { APP_ENDPOINTS } from "../config/app";
 import { Roles } from "../types/Roles";
 import { Endpoints } from "../config/app";
-import { Collections } from "@mui/icons-material";
-import { HttpMethods } from "../types/DataTypes";
+ 
+import { useErrorHandler } from "../contexts/ErrorContext";
 
 const UserObj = new User()
 
@@ -73,7 +73,9 @@ const loadDataForUser = async (user:UserDataType,user_type:string,access_token:s
  
         return data;
     } catch (error) {
- 
+        // console.log(`there was an error in the process of loading more data so set to false`);
+        // console.log(error)
+        throw new Error('Error loading intial data for user')
     }
 }
 
@@ -94,6 +96,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [refreshQueue, setRefreshQueue] = useState<Promise<any> | null>(null);
     const {fetchData} = useFetch();
     const { post, get } = useHttp();
+    const { updateError } = useErrorHandler();
     const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
     const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
     const [loading, setLoading] = useState(true);
@@ -245,8 +248,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     const loginUser = async (data: httpDataObject) => {
         try {
+            setLoading(true);
             if(!data) return false;
-            console.log(`logging in user with new http hook`)
+       
             const response = await post(Endpoints.LOGIN, data, { requiresAuth: false });
             if(!response) return false;
 
@@ -258,19 +262,31 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 setAccessToken(accessToken);
                 setUser(data as UserDataType);
             }).catch((error) => {
-                throw new Error(`Error loading user data: ${error}`);
+                console.log(`The error with loging in was:`)
+                console.log(error)
+                updateError(`Error loading user data `);
+                return false;
             });
 
             setIsLoggedin(true);
 
             return true;
         } catch(err) {
-            return false;
+     
+            setIsLoggedin(false);
+            setUser(null)
+         
+            updateError('Could not login in user')
+ 
+        } finally {
+            setLoading(false);
         }
+        return false
     };
 
     const LogoutUser = async () => {
         try {
+            setLoading(true);
             // Log the access token for debugging
             console.log(`Logging out with access token: ${accessToken ? 'Token exists' : 'No token'}`);
             
@@ -287,8 +303,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             socket.disconnect();
             return true;
         } catch(err) {
+    
             console.error("Logout error:", err);
             return false;
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -301,10 +320,44 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setUser(userData);
     }, []);
 
+
+    const registerUser = async (data: httpDataObject) => {
+        try {
+            setLoading(true);
+            if(!data) throw new Error("No data provided");
+            
+            const url = process.env.REACT_APP_REGISTER_API || "";
+            const response = await post(url, data, { requiresAuth: false });
+            
+            if(!response) throw new Error("Issues with registering user");
+            
+            if (response.data.errors?.length) {
+                throw new Error(`Invalid data: ${response.data.errors.join(' ')}`);
+            }
+            
+            // If registration is successful, attempt to log in
+            const loginResponse = await attemptLoginOrLogout(true, data);
+            if (!loginResponse) {
+                throw new Error("The user could not be logged in");
+            }
+            
+            return true;
+        } catch (error) {
+            if (error instanceof Error) {
+                updateError(error.message);
+            } else {
+                updateError("An unexpected error occurred during registration");
+            }
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const getUserRole = () => user?.role?.type || "";
 
     return (
-        <UserContext.Provider value={{ user, mentors, artists, isLoggedin, attemptLoginOrLogout, updateUser, getUserRole, accessToken, loading }}>
+        <UserContext.Provider value={{ user, mentors, artists, isLoggedin, attemptLoginOrLogout, updateUser, getUserRole, accessToken, loading, registerUser }}>
             {children}
         </UserContext.Provider>
     );
