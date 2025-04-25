@@ -263,7 +263,7 @@ const CloseSessionPage = () => {
             }
         }
         data_to_send = {data: {goal, objectives, feedback,assigned_by_id: user?.id, assigned_to_id: mentee_id }};
-        console.log(`sending data to server ${JSON.stringify(data_to_send)}`);
+        
 
         try{
             const save_tasks_response =  post(APP_ENDPOINTS.GOALS.SINGLE, data_to_send);

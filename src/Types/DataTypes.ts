@@ -27,7 +27,8 @@ export interface MentorDataType extends UserDataType {
     availability:boolean,
     specialties:string[],
     mentees:MenteeDataType[],
-    product: ProductDataType
+    product: ProductDataType,
+    sessions?:SessionDataType[]
 }
 
 
@@ -41,10 +42,12 @@ export interface ArtistDataType extends UserDataType {
 export interface MenteeDataType extends ArtistDataType {
     id:string,
     mentor?: MentorDataType | null,
+    sessions?:SessionDataType[],
     mentorSession?:MentorSessionDataType[],
     session_date:string,
     progress:number,
-    status:string
+    status:string,
+    tasks:TaskDataType[]
 }
 
 export interface CalendarDataType{
@@ -109,7 +112,8 @@ export interface Settings {
 
 export interface TaskDataType {
     title:string,
-    assignedBy:string,
+    assigned_by_id:string,
+    assigned_to_id:string,
     dueDate:string,
     status:string,
     type:string

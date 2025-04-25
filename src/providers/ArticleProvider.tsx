@@ -6,7 +6,7 @@ import { FetchMode,Categories } from "../types/ArticleFetchMode";
 import LocalStorage from "../storage/LocalStorage";
 import useFetch from "../customhooks/useFetch";
 import { APP_ENDPOINTS } from "../config/app";
-import { mockArticles } from "../data/mockArticles";
+// import { mockArticles } from "../data/mockArticles";
 
 interface ArticleProviderProps {
     children: ReactNode;
@@ -52,17 +52,19 @@ const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id=""
             } else {
                 id !== "" ? setArticles(articles) : setArticleList(articles);
             }
-        } else if (process.env.NODE_ENV !== 'production') {
-            // Use mock data in development when no API data is available
-            if (mode === FetchMode.FEATURED) {
-                setArticleList(mockArticles);
-            } else if (id !== "") {
-                const singleArticle = mockArticles.find(article => article.id === id) || Article.defaultResponse;
-                setArticles(singleArticle);
-            } else {
-                setArticleList(mockArticles);
-            }
-        }
+        } 
+        // Commenting out mock articles usage in development mode
+        // else if (process.env.NODE_ENV !== 'production') {
+        //     // Use mock data in development when no API data is available
+        //     if (mode === FetchMode.FEATURED) {
+        //         setArticleList(mockArticles);
+        //     } else if (id !== "") {
+        //         const singleArticle = mockArticles.find(article => article.id === id) || Article.defaultResponse;
+        //         setArticles(singleArticle);
+        //     } else {
+        //         setArticleList(mockArticles);
+        //     }
+        // }
 
         if(responseStatus === 401) {
             setError(new Error("Unauthorized request"));
