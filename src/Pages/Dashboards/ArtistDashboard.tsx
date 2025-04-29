@@ -9,7 +9,7 @@ import DashboardSectionBorder from '../../components/users/mentor/DashboardSecti
 import ContentContainer from '../../utils/ContentContainer'
 
 
-import { ArtistDataType } from '../../types/DataTypes'
+import { ArtistDataType, MenteeDataType } from '../../types/DataTypes'
 import MentorsFeedback from '../../components/users/artist/MentorsFeedback'
 import IconOnlyTopSection from '../../components/users/IconOnlyTopSection'
 import DisplayTextComponent from '../../components/users/DisplayTextComponent'
@@ -145,7 +145,7 @@ const ArtistDashboard = () => {
                             </Grid>
                             {user?.mentor !== null && <Grid item xs={12}>
                                 <DashboardSectionBorder title={user.mentor.fullname ? `Current Mentor: ${user?.mentor?.fullname}` : ''} >
-                                  <CurrentMentorDisplay user={user as ArtistDataType}/>
+                                  <CurrentMentorDisplay user={user as MenteeDataType}/>
                                 
                                 </DashboardSectionBorder>
                             </Grid>}

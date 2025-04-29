@@ -3,23 +3,23 @@ import React, {useEffect} from 'react';
 import Typography from '@mui/material/Typography';
 import {Box,Grid} from '@mui/material';
 
-import { MenteeDataType, MentorSessionDataType } from '../types/DataTypes';
+import { SessionWithMenteeDataType } from '../types/DataTypes';
 
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 
-export default function CardContentComponent({user,session} : {user:MenteeDataType,session:MentorSessionDataType}) {
+export default function CardContentComponent({session} : { session:SessionWithMenteeDataType}) {
  
   return (
       <>
 
-      <Link to={`/profile/artist/${user?.id}`} >
+      <Link to={`/profile/${session.mentee?.role?.type}/${session.mentee?.id}`} >
         <Box component="div"  sx={styles.mainCardHolder}>
    
           <Box component="div" sx={styles.overlay} />
-          <Box sx={styles.nameHolder} ><Typography variant='subtitle2' sx={{fontSize:"1.3em",color:"#000000"}}>{user.fullname}</Typography></Box>
+          <Box sx={styles.nameHolder} ><Typography variant='subtitle2' sx={{fontSize:"1.3em",color:"#000000"}}>{session.mentee.fullname}</Typography></Box>
 
           <Box component="div" sx={styles.overlayText}/>
           <Box sx={{position:"absolute",bottom:0}}>
@@ -30,7 +30,7 @@ export default function CardContentComponent({user,session} : {user:MenteeDataTy
             <Grid item xs={10}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${ dayjs(session.start_time).format('dddd MMM D [@] hh:mm A')} `}</Typography></Grid>
          </Grid>
           </Box>
-          <img src={user.profile_photo_path}  alt=""  style={styles.image}/>
+          <img src={session.mentee?.profile_photo_path}  alt=""  style={styles.image}/>
         </Box>
         </Link>
       </>

@@ -1,19 +1,19 @@
 import * as React from 'react';
 
 
-import {MenteeDataType, MentorSessionDataType } from '../types/DataTypes';
+import {MenteeDataType, SessionWithMenteeDataType } from '../types/DataTypes';
 import {List,ListItem,ListItemText,ListItemAvatar,Avatar } from "@mui/material"
 
 
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
+ 
 
 
-export default function  ListContentComponent({user,session} : {user:MenteeDataType,session: MentorSessionDataType}) {
+export default function  ListContentComponent({session} : {session: SessionWithMenteeDataType}) {
   return (
       <>
-      <Link  to={`/profile/artist/${user?.id}`}>
+      <Link  to={`/profile/${session.mentee?.role.type.toLowerCase()}/${session.mentee?.id}`}>
 
       <List sx={{width: '100%'}}>
       <ListItem sx={styles.nameHolder}>
@@ -22,7 +22,7 @@ export default function  ListContentComponent({user,session} : {user:MenteeDataT
             <ScheduleIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={`${user.fullname}`} secondary={`${dayjs(session.start_time).format('dddd MMM D [@] hh:mm A')}`} />
+        <ListItemText primary={`${session.mentee.fullname}`} secondary={ `${session.start_time}`} />
       </ListItem>
        
         </List> 

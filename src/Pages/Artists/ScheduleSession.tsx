@@ -130,6 +130,8 @@ const ScheduleSession = () => {
 
     useEffect(() => {
         if (!user) return;
+        console.log(`the current user is ${JSON.stringify(user,null,2)}`)
+
         let currentUser = user as MenteeDataType;
         if (currentUser && 'mentorSession' in currentUser) {
             const sessions = currentUser.mentorSession;

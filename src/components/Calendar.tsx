@@ -12,7 +12,7 @@ import { APP_ENDPOINTS } from "../config/app";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useUser } from "../contexts/UserContext";
 
-import { MenteeDataType, MentorSessionDataType } from "../types/DataTypes";
+import { BookingDataType, MenteeDataType, MentorSessionDataType, SessionDataType } from "../types/DataTypes";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -743,34 +743,26 @@ const Calendar = () => {
     ];
     let mentor_confirmed_sessions:ScheduledSession[] =  [];
 
-    user?.mentees.forEach((mentee:MenteeDataType) => {
- 
-      const {fullname,username,bio,profile_photo_path} = mentee;
-      mentee.mentorSession?.forEach((session: MentorSessionDataType) => {
-        if(session.status !=='confirmed') return;
-        const mentor_scheduled_sessions ={
-          fullname,
-          username,
-          profile_photo_path,
-          menteeId: mentee.id,
-          bio,
-          role: {type:'artist'},
-          previousSession: dayjs(session.previousSession).format('YYYY-MM-DD'),
-          startTime: dayjs(session.start_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
-          endTime: dayjs(session.end_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
-          currentSessionNumber: session.currentSessionNumber,
-          maxSessionNumber: session.maxSessionNumber
-        }
-
-        mentor_confirmed_sessions.push(mentor_scheduled_sessions as ScheduledSession);
-
-      });
-  
-
-        console.log(`the scheduled sessions are ${JSON.stringify(mentor_confirmed_sessions,null,2)}`)
-
-        console.log(`mocked sessions are ${JSON.stringify(mockSessions,null,2)}`)
+    user?.bookings.sessions.forEach((session:SessionDataType) => {
+      if(session.status !=='scheduled') return;
+      const booking = user?.bookings.find((booking:BookingDataType) => booking.id === session.booking_id);
+      const mentee = user?.mentees.find((mentee:MenteeDataType) => mentee.id ===  booking?.mentee_id);
+      const mentor_scheduled_sessions ={
+        fullname: mentee.fullname,
+        username: mentee.username,
+        profile_photo_path: mentee.profile_photo_path,
+        bio: mentee.bio,
+        role: mentee.role,
+        startTime: dayjs(session.start_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
+        endTime: dayjs(session.end_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
+        menteeId: mentee.id,
+        previousSession: dayjs(session.start_time).isBefore(dayjs()) ? dayjs(session.start_time).format('YYYY-MM-DD') : null,
+        currentSessionNumber: session.session_number,
+        maxSessionNumber: booking.session_limit
+      }
+      mentor_confirmed_sessions.push(mentor_scheduled_sessions as ScheduledSession);
     })
+ 
     setScheduledSessions(mentor_confirmed_sessions);
   }, [currentDate]);
 

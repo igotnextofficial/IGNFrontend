@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
 import { Button } from "@mui/material";
 
-import { MentorDataType, MenteeDataType, MentorSessionDataType } from "../../../types/DataTypes";
+import { MentorDataType, MenteeDataType, MentorSessionDataType, SessionWithMenteeDataType, SessionStatus, SessionDataType } from "../../../types/DataTypes";
 
 import CardContentComponent from "../../../helpers/CardContentComponent";
 
@@ -25,12 +25,12 @@ import { Roles } from "../../../types/Roles";
 
 
 
-const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
+const UpcomingSessions = ({ sessions }: { sessions:SessionWithMenteeDataType[] }) => {
  
     const [gridView, setGridView] = useState(true);
-    const { accessToken } = useUser();
+    const { user,accessToken } = useUser();
     const [menteeSessionLookup,setMenteeSessionLookup] = useState<Map<string,MenteeDataType>>(new Map());
-    const [upcominSessions,setUpcomingSessions] = useState<MentorSessionDataType[]>([]);
+    const [upcominSessions,setUpcomingSessions] = useState<SessionWithMenteeDataType[]>([]);
     const [loading, setLoading] = useState<{[key: string]: boolean}>({});
     const [sessionUrls, setSessionUrls] = useState<{[key: string]: string}>({});
 
@@ -40,39 +40,20 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     const today = dayjs();
     const twoWeeks = today.add(2,'week');
 
-    useEffect(() => {
-        console.log(`user is ${JSON.stringify(user,null,2)} `);
-        if(user && user.mentees){
-            let menteesList = new Map<string,MenteeDataType>();
-            user.mentees.forEach(mentee => {
-                let confirmedSessions = mentee.mentorSession?.filter(session => {
-                    const sessionDateTime = dayjs(session.start_time).add(30,'minutes');
-                    return session.status === "confirmed" && sessionDateTime.isBetween(today,twoWeeks) ;
-                });
 
-                confirmedSessions?.forEach(session => {
-                    menteesList.set(session.mentee_id, {...mentee, mentorSession:confirmedSessions});
-                })
-                 
-            });
-            setMenteeSessionLookup(menteesList); 
+     useEffect(()=>{
+        if(sessions.length === 0) return;
 
-      
-        }
-    }, [user])
+        const upcomingMentorSessions = sessions.filter((session: SessionWithMenteeDataType) => {
+            const sessionDateTime = dayjs(session.start_time).add(30,'minutes');
+            return session.status === SessionStatus.SCHEDULED && sessionDateTime.isBetween(today,twoWeeks) ;
+        });
+        setUpcomingSessions(upcomingMentorSessions);
+     },[sessions])
 
 
-    // && dayjs(session.session_date).isSameOrAfter(today) && dayjs(session.session_date).isBefore(twoWeeks)
 
-    useEffect(() => {
-        if(menteeSessionLookup.size === 0) return;
-        const allUpcomingSessions = Array.from(menteeSessionLookup.values())
-  .flatMap(mentee => mentee.mentorSession || []);
-        setUpcomingSessions(allUpcomingSessions);
-
-    }, [menteeSessionLookup])
-
-    const generateSessionUrls = async (session: MentorSessionDataType) => {
+    const generateSessionUrls = async (session: SessionDataType) => {
         try {
             setLoading(prev => ({...prev, [session.id]: true}));
             
@@ -114,7 +95,7 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     };
 
     // Check if a session is within 15 minutes of starting or up to 30 minutes after starting
-    const isSessionStartingSoon = (session: MentorSessionDataType) => {
+    const isSessionStartingSoon = (session: SessionDataType) => {
         const sessionStartTime = dayjs(session.start_time);
         const now = dayjs();
         const fifteenMinutesBeforeStart = sessionStartTime.subtract(15, 'minutes');
@@ -124,7 +105,7 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
     };
 
     // Check if a session has URLs
-    const hasSessionUrls = (session: MentorSessionDataType) => {
+    const hasSessionUrls = (session: SessionDataType) => {
         return (session.start_url && session.join_url && 
                 session.start_url.length > 0 && session.join_url.length > 0) || 
                sessionUrls[session.id];
@@ -155,7 +136,7 @@ const UpcomingSessions = ({ user }: { user: MentorDataType }) => {
                             return (
                                  
                                 <Grid item key={session.id} xs={12} sm={6} md={4} > {/* item specifies a grid item. xs, sm, md, etc., determine the size of the item across different screen sizes */}
-                                    {gridView ? <CardContentComponent user={menteeSessionLookup.get(session.mentee_id)!} session={session} /> : <ListContentComponent user={menteeSessionLookup.get(session.mentee_id)!} session={session} /> }
+                                    {gridView ? <CardContentComponent  session={session} /> : <ListContentComponent  session={session} /> }
                                     
                                     {hasUrls && sessionUrl && (
                                         <Box sx={{ mt: 1 }}>

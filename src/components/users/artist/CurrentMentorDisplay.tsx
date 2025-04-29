@@ -12,7 +12,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 
-const CurrentMentorDisplay = ({user}:{user:ArtistDataType}) => {
+const CurrentMentorDisplay = ({user}:{user:MenteeDataType}) => {
     const [cannotSchedule,setCannotSchedule] = useState(false)
     const [sessionDate,setSessionDate] = useState("")
     const [currentTime,setCurrentTime] = useState(dayjs().tz('America/New_York').format('MM/DD/YYYY [AT] hh:mm A'))

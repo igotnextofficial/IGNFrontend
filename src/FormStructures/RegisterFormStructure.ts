@@ -95,7 +95,7 @@ export const RegisterFormStructure: FormField[] = [
             variant: "filled",
             helperText: "Choose a role"
         },
-        options: [Roles.ARTIST],
+        options: [Roles.MENTEE],
         validation: {
             required: true
         },

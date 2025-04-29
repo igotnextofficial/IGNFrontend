@@ -16,7 +16,8 @@ const dashboards = {
     mentor: <MentorDashboard/>,
     artist: <ArtistDashboard/>,
     writer: <WriterDashboard/>,
-    admin: <AdminDashboard/>
+    admin: <AdminDashboard/>,
+    mentee: <ArtistDashboard/>
 };
 
 // Define a type for the role keys

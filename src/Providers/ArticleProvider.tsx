@@ -72,7 +72,12 @@ const ArticleProvider: React.FC<ArticleProviderProps> = ({ children, mode, id=""
     }, [mode, data, category, id]);
     
     return (
-        <ArticleContext.Provider value={{ article: userArticles, error, allArticles: articleList }}>
+        <ArticleContext.Provider value={{ 
+            article: userArticles, 
+            error, 
+            allArticles: articleList,
+            loading: loading
+        }}>
             {children}
         </ArticleContext.Provider>
     );

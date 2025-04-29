@@ -8,6 +8,7 @@ import AccountSettings from '../../components/navigation/AccountSettings';
 import BrowserNavigation from '../../components/navigation/BrowserNavigation';
 import SigninOrRegister from '../../components/navigation/SigninOrRegister';
 import Ignlogo from '../../components/Ignlogo';
+import { useUser } from '../../contexts/UserContext';
 
 interface ChildPage {
   slug: string;
@@ -47,13 +48,14 @@ const pages: Page[] = [
   { slug: '/about', name: "About", order: 5, display: true },
 ];
 
-const Navigation = ({ Authenticated = false }) => {
+const Navigation = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [articlesOpen, setArticlesOpen] = useState(false);
+  const { isLoggedin, user } = useUser();
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const handleArticlesToggle = (event: React.MouseEvent) => {
@@ -184,7 +186,7 @@ const Navigation = ({ Authenticated = false }) => {
           </React.Fragment>
         ))}
         <ListItem sx={{ mt: 2 }}>
-          {Authenticated ? <AccountSettings /> : <SigninOrRegister />}
+          {isLoggedin && user ? <AccountSettings /> : <SigninOrRegister />}
         </ListItem>
       </List>
     </Box>
@@ -276,7 +278,7 @@ const Navigation = ({ Authenticated = false }) => {
 
           {!isMobile && (
             <Box sx={{ display: 'flex', alignItems: 'center', flex: '0 0 auto' }}>
-              {Authenticated ? <AccountSettings /> : <SigninOrRegister />}
+              {isLoggedin && user ? <AccountSettings /> : <SigninOrRegister />}
             </Box>
           )}
         </Toolbar>

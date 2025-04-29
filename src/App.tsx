@@ -43,12 +43,10 @@ import Mentors from './pages/mentors/Mentors';
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
   const [currentUser, setCurrentUser] = useState<any>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsAuthenticated(isLoggedin);
     setCurrentUser(user);
-  }, [user, isLoggedin]);
+  }, [user]);
 
   /* 
   ================== Socket Connection ================== 
@@ -70,7 +68,7 @@ const MainApplication: React.FC = () => {
     }}>
       <Router future={{ v7_startTransition: true }}>
         <DetectChange />
-        <Navigation Authenticated={isAuthenticated} />
+        <Navigation />
         <main style={{ flex: 1 }}>
           <Routes>
             <Route path='/' element={<Home />} />
@@ -89,7 +87,7 @@ const MainApplication: React.FC = () => {
             <Route path='/mentors' element={<Mentors />} />
 
             {/* Routes that require authentication */}
-            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isAuthenticated} />}>
+            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} />}>
               <Route path='/edit-profile' element={<EditProfile />} />
               <Route path='/dashboard/:role' element={<Dashboard />} />
               <Route path='/notes/:note_id' element={<MessageReaderReply />} />
@@ -105,7 +103,7 @@ const MainApplication: React.FC = () => {
             </Route>
 
             {/* Routes that require admin role */}
-            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isAuthenticated} grantedAccess={[Roles.ADMIN]} />}>
+            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} grantedAccess={[Roles.ADMIN]} />}>
               <Route path='/register-mentor' element={<RegisterMentor />} />
               <Route path='/admin-dashboard' element={<Dashboard />} />
             </Route>

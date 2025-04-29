@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Grid, Button, Stack } from "@mui/material";
-import { MentorDataType, MenteeDataType, MentorSessionDataType  } from "../../../types/DataTypes";
+import { Typography, Box, Grid, Button, Stack, CircularProgress } from "@mui/material";
+import { MentorDataType, MenteeDataType, MentorSessionDataType, SessionWithMenteeDataType, SessionStatus } from "../../../types/DataTypes";
  
 import ListContentComponent from "../../../helpers/ListContentComponent";
 import { Switch, FormControlLabel } from '@mui/material';
@@ -12,81 +12,97 @@ import { useUser } from "../../../contexts/UserContext";
 import { useErrorHandler } from "../../../contexts/ErrorContext";
 import { APP_ENDPOINTS } from "../../../config/app";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 
-const SessionCard = ({ session, mentee }: { 
-  session: MentorSessionDataType, 
-  mentee: MenteeDataType
+const SessionCard = ({ session, callback }: { 
+  session: SessionWithMenteeDataType,
+  callback: (success:boolean,session_id:string)=>void
+ 
 }) => {
-  if (!mentee) return null;
-  
+  const { accessToken } = useUser();
+  const { updateError } = useErrorHandler();
+  const [isLoading, setIsLoading] = useState(false);
+ 
+  const handleCloseOutSession = ()=>{
+    console.log("Closing out session", session);
+    setIsLoading(true);
+    axios.put(`${APP_ENDPOINTS.SESSIONS.BASE}/${session.id}/complete`,{
+      session_id: session.id,
+    },{
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+    .then((response) => {
+      console.log("Session closed", response);
+ 
+      callback(true,session.id);
+    })
+    .catch((error) => {
+      updateError(error);
+      callback(false,session.id);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  }
   return (
     <Box>
-      <ListContentComponent user={mentee} session={session} />
+      <ListContentComponent   session={session} />
       <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
         <Button 
-          component={RouterLink}
-          to={`/session/${mentee.id}/closeout/${session.id}`}
-          variant="contained" 
+          onClick={handleCloseOutSession}
+        
+          variant="contained"   
           color="primary"
         >
           Close Out Session
         </Button>
+       {isLoading && <CircularProgress size={20} />}
       </Stack>
     </Box>
   );
 }
 
-const closeOutSessions = ({ user }: { user: MentorDataType }) => {
+const closeOutSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }) => {
   const [gridView, setGridView] = useState(true);
-  const { accessToken } = useUser();
-  const { updateError } = useErrorHandler();
-
-  const [pastSessions, setPastSessions] = useState<MentorSessionDataType[]>([]);
-  const [mentees, setMentees] = useState<Map<string, MenteeDataType>>(new Map());
+   const [pastSessions, setPastSessions] = useState<SessionWithMenteeDataType[]>([]);
+ 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGridView(event.target.checked);
   };
 
-  useEffect(() => {
-    if (user && user.mentees) {
-      let menteesList = new Map<string, MenteeDataType>();
-      user.mentees.forEach((mentee: MenteeDataType) => {
-        const id = mentee.id;
-        if (!menteesList.has(id)) {
-          menteesList.set(id, {
-            ...mentee
-          });
-        }
-      });
-
-      setMentees(menteesList);
-    }
-  }, [user]);
+ 
 
   useEffect(() => {
-    const pastConfirmedSessions: MentorSessionDataType[] = [];
+    const pastConfirmedSessions: SessionWithMenteeDataType[] = [];
     const now = dayjs().add(1,'hour');
 
-    mentees.forEach((mentee) => {
-      if (mentee.mentorSession) {
-        mentee.mentorSession.forEach((session: MentorSessionDataType) => {
-          // Format the session date for display
-          session.session_date = dayjs(session.session_date).format('dddd MMM D [@] hh:mm A');
-          
-          // Check if session is confirmed and in the past
-          if (session.status === 'confirmed') {
-            const sessionDate = dayjs(session.start_time);
-            if (sessionDate.isBefore(now)) {
+    sessions.forEach((session) => {
+      // Format the session date for display
+      session.start_time = dayjs(session.start_time).format('dddd MMM D [@] hh:mm A');
+      
+      // Check if session is confirmed and in the past
+      if (session.status === SessionStatus.SCHEDULED) {
+        const sessionDate = dayjs(session.start_time);
+        if (sessionDate.isBefore(now)) {
               pastConfirmedSessions.push(session);
-            }
-          }
-        });
+        }
       }
     });
+ 
 
     setPastSessions(pastConfirmedSessions);
-  }, [mentees]);
+  }, [sessions]);
+
+  const handleCloseOutSession = (success: boolean,session_id:string) => {
+    if (success) {
+      // Refresh the sessions list or update UI as needed
+    
+      setPastSessions(pastSessions.filter((session) => session.id !== session_id));
+    } 
+  };
 
   return (
     <>
@@ -107,13 +123,13 @@ const closeOutSessions = ({ user }: { user: MentorDataType }) => {
 
       {pastSessions.length > 0 ? (
         <Grid container spacing={2}>
-          {pastSessions.map((session: MentorSessionDataType) => {
-            const mentee = mentees.get(session.mentee_id);
+          {pastSessions.map((session:  SessionWithMenteeDataType) => {
+            const mentee =  session.mentee
             return mentee ? (
               <Grid item key={session.id} xs={12} sm={6} md={4}>
                 <SessionCard 
                   session={session} 
-                  mentee={mentee} 
+                  callback={handleCloseOutSession}
                 />
               </Grid>
             ) : null;

@@ -3,7 +3,9 @@ export enum Roles {
     MANAGER = 'manager', 
     WRITER = 'writer' ,
     MENTOR = 'mentor' ,
-    ARTIST = 'artist',
+    MENTEE = 'mentee' ,
+    // THESE ARE NOT ROLES 
+    ARTIST = 'artist', 
     SUBSCRIBER = 'subscriber',
-    DEFAULT = 'default' 
+    DEFAULT = 'default'
 }

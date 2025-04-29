@@ -1,148 +1,371 @@
-// import  { useState, ReactNode,  useEffect, useCallback } from "react";
+// @depracated
+
+// import  { useState, ReactNode, useRef, useEffect, useCallback } from "react";
 // import { UserContext } from "../contexts/UserContext";
 // import User from "../models/users/User";
 // import useFetch from "../customhooks/useFetch";
+// import useHttp from "../customhooks/useHttp";
 // import { socket } from "../socket";
 // import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../types/DataTypes";
 // import LocalStorage from  "../storage/LocalStorage";
 // import axios from "axios";
 // import { APP_ENDPOINTS } from "../config/app";
-// import useLogger from "../customhooks/UseLogger";
- 
-
+// import { Roles } from "../types/Roles";
 // import { Endpoints } from "../config/app";
-// import { error } from "console";
  
- 
- 
+// import { useErrorHandler } from "../contexts/ErrorContext";
+// import { deprecate } from "util";
 
-//     /**
-//      * 
-//      * @param user_id - user id to be refreshed
-//      * @returns - boolean representing whether the token was refreshed or not
-//      */
-//     const refreshToken = async (user_id: string,role:string): Promise<string> => {
- 
-//         try {
-//             let url = Endpoints.REFRESH_TOKEN;
-//             // console.log(`hitting endpoint url ${url} with user id ${user_id}`);
-//             let response = await axios.post(url, { "data": { user_id,role }  });
-    
-//             if (response.status === 200) {
-//                 let new_token = response.data['data']['access_token'];
-//                 // console.log(`refreshed token ${new_token}`);
-//                 // setAccessToken(new_token);
-          
-//                 return new_token;
-//             }
-//         } catch (e) {
-                
-//             // console.error("Failed to refresh token:", e);
-//         }
-//         return ""
-//     };
- 
 // const UserObj = new User()
+
+
+
+// const loadDataForUser = async (user:UserDataType,user_type:string,access_token:string) => {
+//     if (!user ) return;
+//     let data = {}
  
+//     try {
+//         if (user_type === Roles.ARTIST) {
+//             const response = await axios.get(
+//                 `${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user.id}`,
+//                 {
+//                     headers: { Authorization: `Bearer ${access_token}` }
+//                 }
+//             );
+             
+//             data = {...user,mentorSession: response?.data['data'] || []}
+            
+//         }
+
+//         if (user.role.type === Roles.MENTOR) {
+//             const [availabilityResponse, sessionsResponse] = await Promise.all([
+//                 axios.get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`, {
+//                     headers: { Authorization: `Bearer ${access_token}` }
+//                 }),
+                
+//                 axios.get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`, {
+//                     headers: { Authorization: `Bearer ${access_token}` }
+//                 })
+           
+//             ]);
+
+//             const mentees = user.mentees.map((mentee: UserDataType) => {
+//                 const session = sessionsResponse?.data['data'].filter((s: any) => s.mentee_id === mentee.id);
+    
+    
+      
+//                     return {
+//                         ...mentee,
+//                         session_date: session.session_date || "",
+//                         mentorSession: session  || []
+//                     };
+         
+//             });
+
+          
+
+//              data = {
+//                 ...user,
+//                 availability: availabilityResponse?.data?.availability || false,
+//                 specialties: user.specialties.map((specialty: Record<string,string>) => specialty.name),
+//                 mentees
+//             }
+
+         
+//         }
+ 
+//         return data;
+//     } catch (error) {
+//         // console.log(`there was an error in the process of loading more data so set to false`);
+//         // console.log(error)
+//         throw new Error('Error loading intial data for user')
+//     }
+// }
+
+
 // export const UserProvider = ({ children }: { children: ReactNode }) => {
- 
-//     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(null);
+//     const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(() => {
+//         const savedUser = sessionStorage.getItem('user');
+//         return savedUser ? JSON.parse(savedUser) : null;
+//       });
+//     const hasLoadedUserExtras = useRef(false);
+
+
+//     const [extraUserData,setExtraUserData] = useState< Record<string,any> | null>(null)
+
 //     const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
 //     const [accessToken, setAccessToken] = useState<string>("");
+//     const [isRefreshing, setIsRefreshing] = useState(false);
+//     const [refreshQueue, setRefreshQueue] = useState<Promise<any> | null>(null);
+//     const {fetchData} = useFetch();
+//     const { post, get } = useHttp();
+//     const { updateError } = useErrorHandler();
 //     const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
 //     const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
-//     const [loading,setLoading] = useState(true);
-//     const {logError} = useLogger();
-   
-//     useEffect(() => { 
-//       const attemptRefreshToken = async () => {
-//         try {
-//           const response = await axios.post(Endpoints.REFRESH_TOKEN,{},  {withCredentials: true});
-//            if(!response || !response.data){
-//              throw new Error("No Valid Refresh token response.")
-//            }
-//            return response.data;
+//     const [loading, setLoading] = useState(true);
+//     const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+
+//     const handleLogout = useCallback(() => {
+//         setIsLoggedin(false);
+//         setUser(null);
+//         setAccessToken("");
+//         sessionStorage.removeItem('user');
+//         socket.disconnect();
+//     }, []);
+
+//     const refreshToken = useCallback(async (): Promise<Record<string,any> | null> => {
+//         // If already refreshing, return the existing promise
+//         if (refreshQueue) {
+//             return refreshQueue;
 //         }
-//         catch(err){
+
+//         // If we're already in the process of refreshing, don't start another one
+//         if (isRefreshing) {
 //             return null;
 //         }
-//       }
 
-//       const refreshTokenIfNeeded = async () =>{
-//         if(!user || !accessToken){
-//           try{
-//             const data = await attemptRefreshToken();
-//             if(!data){throw new Error("no data returned")};
-//             setUser(data.user) 
-//             setAccessToken(data.accessToken) 
-//           }
-//           catch(err){
-//             // logging error
-//           }
-//         }
-//       }
-
-//       refreshTokenIfNeeded();
-//     },[]);
- 
-//      const loginUser = async (data: httpDataObject) => {
-//         if(!data){ return false}
-//         let response = await UserObj.login(data);
-//         if(!response){return false}
-
-//         const user_data = {...response.data['data']};
-//         const access_token =  response.data['access_token'];
-//         document.cookie=`userId=${user_data['id']}; secure`
-//         setAccessToken(access_token);
-//         setUser(user_data as UserDataType);
-//         setIsLoggedin(true);
-
-//         return true;
+//         setIsRefreshing(true);
         
-//      }
+//         // Create a new promise for this refresh attempt
+//         const refreshPromise = (async () => {
+//             try {
+//                 const response = await axios.get(Endpoints.REFRESH_TOKEN, {withCredentials: true});
+//                 if (response.status === 200) {
+//                     const newToken = response.data['data']['access_token'];
+//                     setAccessToken(newToken);
+//                     return response.data['data'];
+//                 }
+//             } catch (e) {
+          
+//                 // If we get a 404, the refresh token is invalid
+//                 if (axios.isAxiosError(e) && e.response?.status === 404) {
+//                     handleLogout();
+//                 }
+//             } finally {
+//                 setIsRefreshing(false);
+//                 setRefreshQueue(null);
+//             }
+//             return null;
+//         })();
 
-//      const LogoutUser = async () => {
-//         let response = await UserObj.logout(accessToken);
-//         if(response){
-//             localStorage.removeItem(User.INFO);
-//             setUser(null);
-//             setIsLoggedin(false);
-//             setAccessToken("");
-//             socket.disconnect()
-//             return true;
+//         // Store the promise in the queue
+//         setRefreshQueue(refreshPromise);
+
+//         return refreshPromise;
+//     }, [refreshQueue, isRefreshing, handleLogout]);
+
+//     // Handle initial session verification
+//     useEffect(() => {
+//         const verifyInitialSession = async () => {
+//             try {
+//                 if (user && !accessToken) {
+//                     const tokenData = await refreshToken();
+//                     if (tokenData) {
+//                         setIsLoggedin(true);
+//                     } else {
+//                         handleLogout();
+//                     }
+//                 } else if (user && accessToken) {
+//                     setIsLoggedin(true);
+//                 }
+//             } catch (error) {
+          
+//                 handleLogout();
+//             } finally {
+//                 setInitialLoadComplete(true);
+//             }
+//         };
+
+//         verifyInitialSession();
+//     }, [user, accessToken, refreshToken, handleLogout]);
+
+//     // Update loading state after initial verification
+//     useEffect(() => {
+//         if (initialLoadComplete) {
+//             setLoading(false);
 //         }
-//         return false;
-//      }
-//     /**
-//      * 
-//      * @param login - boolean representing whether to login or logout 
-//      * @param data - data to be sent to the server for login
-//      * @returns 
-//      */
-//     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
+//     }, [initialLoadComplete]);
 
-//         let response;
-//         let successful = false;
-//         if (login && data) {
-//             response = await loginUser(data);
-//             successful = response;
-//         } else {
-//             response = await LogoutUser();
-//             successful = response; 
+//     useEffect(() => {
+//         const loadInitialData = async () => {
+//             const mentorResponse = await getUsersData("mentors", APP_ENDPOINTS.USER.MENTOR.FEATURED);
+//             if(mentorResponse) {
+               
+//                 const data = mentorResponse.map((mentor: MentorDataType) => {
+//                     const formattedPrice = new Intl.NumberFormat('en-US', {
+//                         style: 'currency',
+//                         currency: 'USD'
+//                     }).format(mentor.product.price);
+                
+//                     return {
+//                         ...mentor,
+//                         product: {
+//                             ...mentor.product,
+//                             price: formattedPrice
+//                         },
+//                         specialties: mentor.specialties.map((item: any) => item.name)
+//                     };
+//                 });
+                
+//                 setMentorData(data);
+//             }
+
+//             const artistResponse = await getUsersData("artists", APP_ENDPOINTS.USER.ARTIST.FEATURED);
+//             if(artistResponse) {
+//                 setArtistData(artistResponse);
+//             }
+//         };
+
+//         loadInitialData();
+//     }, []);
+
+//     useEffect(() => {
+//         if (!user) return;
+//         sessionStorage.setItem('user', JSON.stringify(user || {}));
+
+//         // loadUserSpecificData();
+//     }, [isLoggedin, user, accessToken]);
+
+//     useEffect(() => {
+//         if (!extraUserData) return;
+
+//         setUser((prev) => {
+//             if (!prev) return null;
+
+//             return {
+//                 ...prev,
+//                 ...extraUserData
+//             };
+//         })
+//     }, [extraUserData]);
+
+//     async function getUsersData(data_to_load: string, endpoint: string) {
+//         const local_storage = new LocalStorage();
+//         if(local_storage.hasItem(data_to_load)) {
+//             return local_storage.load(data_to_load);
 //         }
 
-//         return successful;  
-//     };
-    
-//     const getUserRole = () => {
-//         return user?.role.type || "";
+//         const response = await fetchData(endpoint);
+//         return response?.data || null;
 //     }
+
+//     const loginUser = async (data: httpDataObject) => {
+//         try {
+//             setLoading(true);
+//             if(!data) return false;
+       
+//             const response = await post(Endpoints.LOGIN, data, { requiresAuth: false });
+//             if(!response) return false;
+
+//             const userData = response.data['data'];
+//             const accessToken = response.data['access_token'];
+            
+//             loadDataForUser(userData, userData.role.type, accessToken).then((data) => {
     
+//                 setAccessToken(accessToken);
+//                 setUser(data as UserDataType);
+//             }).catch((error) => {
+//                 console.log(`The error with loging in was:`)
+//                 console.log(error)
+//                 updateError(`Error loading user data `);
+//                 return false;
+//             });
+
+//             setIsLoggedin(true);
+
+//             return true;
+//         } catch(err) {
+     
+//             setIsLoggedin(false);
+//             setUser(null)
+//             setAccessToken("")
+            
+//             updateError('Could not login in user')
+ 
+//         } finally {
+//             setLoading(false);
+//         }
+//         return false
+//     };
+
+//     const LogoutUser = async () => {
+//         try {
+//             setLoading(true);
+//             // Log the access token for debugging
+//             console.log(`Logging out with access token: ${accessToken ? 'Token exists' : 'No token'}`);
+            
+//             // Make sure we're using the current access token
+//             await post(Endpoints.LOGOUT, {}, { 
+//                 requiresAuth: true,
+//                 headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+//             });
+            
+//             setIsLoggedin(false);
+//             setUser(null);
+//             setAccessToken("");
+//             sessionStorage.removeItem('user');
+//             socket.disconnect();
+//             return true;
+//         } catch(err) {
+    
+//             console.error("Logout error:", err);
+//             return false;
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
+//         return login ? await loginUser(data!) : await LogoutUser();
+//     };
+
+//     const updateUser = useCallback((userData: UserDataType | MentorDataType | ArtistDataType) => {
+//         sessionStorage.setItem('user', JSON.stringify(userData));
+//         setUser(userData);
+//     }, []);
+
+
+//     const registerUser = async (data: httpDataObject) => {
+//         try {
+//             setLoading(true);
+//             if(!data) throw new Error("No data provided");
+            
+//             const url = process.env.REACT_APP_REGISTER_API || "";
+//             const response = await post(url, data, { requiresAuth: false });
+            
+//             if(!response) throw new Error("Issues with registering user");
+            
+//             if (response.data.errors?.length) {
+//                 throw new Error(`Invalid data: ${response.data.errors.join(' ')}`);
+//             }
+            
+//             // If registration is successful, attempt to log in
+//             const loginResponse = await attemptLoginOrLogout(true, data);
+//             if (!loginResponse) {
+//                 throw new Error("The user could not be logged in");
+//             }
+            
+//             return true;
+//         } catch (error) {
+//             if (error instanceof Error) {
+//                 updateError(error.message);
+//             } else {
+//                 updateError("An unexpected error occurred during registration");
+//             }
+//             return false;
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     const getUserRole = () => user?.role?.type || "";
+
 //     return (
-//         <UserContext.Provider value={{ user,mentors,artists, isLoggedin, attemptLoginOrLogout, updateUser,getUserRole,accessToken,loading }}>
+//         <UserContext.Provider value={{ user, mentors, artists, isLoggedin, attemptLoginOrLogout, updateUser, getUserRole, accessToken, loading, registerUser }}>
 //             {children}
 //         </UserContext.Provider>
 //     );
 // };
 
 
+ 

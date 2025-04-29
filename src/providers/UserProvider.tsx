@@ -22,7 +22,7 @@ const loadDataForUser = async (user:UserDataType,user_type:string,access_token:s
     let data = {}
  
     try {
-        if (user_type === Roles.ARTIST) {
+        if (user_type === Roles.MENTEE) {
             const response = await axios.get(
                 `${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user.id}`,
                 {
@@ -35,40 +35,23 @@ const loadDataForUser = async (user:UserDataType,user_type:string,access_token:s
         }
 
         if (user.role.type === Roles.MENTOR) {
-            const [availabilityResponse, sessionsResponse] = await Promise.all([
+            const [availabilityResponse, bookingsResponse] = await Promise.all([
                 axios.get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`, {
                     headers: { Authorization: `Bearer ${access_token}` }
                 }),
-                
                 axios.get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`, {
                     headers: { Authorization: `Bearer ${access_token}` }
                 })
-           
             ]);
-
-            const mentees = user.mentees.map((mentee: UserDataType) => {
-                const session = sessionsResponse?.data['data'].filter((s: any) => s.mentee_id === mentee.id);
-    
-    
-      
-                    return {
-                        ...mentee,
-                        session_date: session.session_date || "",
-                        mentorSession: session  || []
-                    };
-         
-            });
-
-          
-
-             data = {
+        
+            const bookingsWithSessions = bookingsResponse?.data['data'] || [];
+        
+            data = {
                 ...user,
                 availability: availabilityResponse?.data?.availability || false,
-                specialties: user.specialties.map((specialty: Record<string,string>) => specialty.name),
-                mentees
-            }
-
-         
+                specialties: user.specialties?.map((specialty: Record<string,string>) => specialty.name) || [],
+                bookings: bookingsWithSessions
+            };
         }
  
         return data;
@@ -275,7 +258,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
      
             setIsLoggedin(false);
             setUser(null)
-         
+            setAccessToken("")
+            
             updateError('Could not login in user')
  
         } finally {
@@ -348,7 +332,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             } else {
                 updateError("An unexpected error occurred during registration");
             }
-            throw error;
+            return false;
         } finally {
             setLoading(false);
         }

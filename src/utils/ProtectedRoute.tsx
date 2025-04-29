@@ -1,10 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext } from "react";
 import { Roles } from "../types/Roles";
-import { X } from "@mui/icons-material";
-import { useEffect, useContext, useLayoutEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 import LoadingComponent from "../components/common/LoadingComponent";
+import { ArticleContext } from "../contexts/ArticleContext";
 
 const defaultAccess = Array.from(Object.values(Roles));
 
@@ -21,21 +20,25 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
    grantedAccess = [...defaultAccess],
    children
  }) => {
-  const {user, isLoggedin, loading} = useUser();
-
-  if(loading) {
+  const {user, isLoggedin, loading: userLoading} = useUser();
+  
+  // Check if there's an ArticleContext available
+  const articleContext = useContext(ArticleContext);
+  
+  // Show loading component only when userLoading is true
+  if (userLoading) {
     return <LoadingComponent />;
   }
  
-  if(!isLoggedin) {
+  if (!isLoggedin) {
     return <Navigate to={redirectPath} replace />;
   }
 
   if (!user?.role || !grantedAccess.includes(user.role.type)) {
     return <Navigate to="/" replace />;
   }
-  
-  return children ? children : <Outlet/>;
-}
+
+  return children || <Outlet />;
+};
 
 export default ProtectedRoutes;

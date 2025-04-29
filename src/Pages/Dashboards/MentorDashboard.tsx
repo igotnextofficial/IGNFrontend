@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react"
 
-import { HttpMethods, MentorDataType } from "../../types/DataTypes"
+import { BookingSessionDataType, HttpMethods, MentorDataType, SessionDataType, UserDataType,SessionWithMenteeDataType } from "../../types/DataTypes"
 import { useUser } from "../../contexts/UserContext"
 import { listDisplayDataType } from "../../types/DataTypes"
 import TopProfileSectionComponent from "../../helpers/TopProfileSectionComponent"
@@ -20,7 +20,7 @@ import DashboardSectionBorder from "../../components/users/mentor/DashboardSecti
 import LocalStorage from "../../storage/LocalStorage"
 import useFetch from "../../customhooks/useFetch"
 import { APP_ENDPOINTS } from "../../config/app"
-
+ 
 
 
 
@@ -34,6 +34,7 @@ const MentorDashboard = ()=>{
     const {user}  = useUser()
     const {fetchData} = useFetch()
     const [data,setData] = useState<listDisplayDataType>()
+    const [sessionsWithMentees,setSessionsWithMentees] = useState<SessionWithMenteeDataType[]>([])
     useEffect(()=>{
         const loadSpecialties = async ()=>{
             const response = await fetchData(APP_ENDPOINTS.GENERIC.SPECIALTIES)
@@ -56,6 +57,11 @@ const MentorDashboard = ()=>{
             // console.log("specialties already loaded")
             // console.log(local_storage.load("specialties"))
         }  
+
+
+
+
+        
         
     },[])
     useEffect(()=>{
@@ -67,6 +73,21 @@ const MentorDashboard = ()=>{
                 meta:`specialties: ${user.specialties.join(", ")}` 
              })
         }
+
+        const sessions_with_mentees_data: SessionWithMenteeDataType[] = []
+        user?.bookings.forEach((booking:BookingSessionDataType)=>{
+            const mentee_id = booking.mentee_id;
+            const mentee = user?.mentees.find((mentee:UserDataType)=>mentee.id === mentee_id);
+            booking.sessions.forEach((session:SessionDataType)=>{
+               const session_data = {...session,mentee}
+               sessions_with_mentees_data.push(session_data)
+            })
+        })
+
+        setSessionsWithMentees(sessions_with_mentees_data);
+
+        console.log(`sessions with mentees data is ${JSON.stringify(sessions_with_mentees_data,null,2)}`)
+        // setSessionsWithMentees(sessions_with_mentees_data)
 
     },[user])
         //needs to update schedule // maybe through zoom api not on this page.
@@ -88,17 +109,17 @@ const MentorDashboard = ()=>{
                 </Grid>  
             <Grid item xs={12}>
                  <DashboardSectionBorder title="Upcoming Session(s)">
-                    <UpcomingSessions user={user as MentorDataType} />
+                    <UpcomingSessions sessions={sessionsWithMentees} />
                     </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={12}>
                  <DashboardSectionBorder title="Pending Session Requests">
-                    <PendingSessions user={user as MentorDataType} />
+                    <PendingSessions sessions={sessionsWithMentees} />
                     </DashboardSectionBorder>
                 </Grid>
                 <Grid item xs={12}>
                     <DashboardSectionBorder title="Close Out Session(s)">
-                        <CloseOutSessions user={user as MentorDataType} />
+                        <CloseOutSessions sessions={sessionsWithMentees} />
                     </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={8}>

@@ -5,6 +5,16 @@ export interface AlbumDataType{
     duration:number,
 }
 
+export enum SessionStatus {
+    PENDING = 'pending',
+    SCHEDULED = 'scheduled',
+    COMPLETED = 'completed',
+    CANCELLED = 'cancelled',
+    REJECTED = 'rejected',
+    NO_SHOW = 'no_show',
+    RESCHEDULED = 'rescheduled',
+}
+
 export interface RoleDataType{
     id:string,
     type:Roles
@@ -26,11 +36,48 @@ export interface UserDataType {
 export interface MentorDataType extends UserDataType {
     availability:boolean,
     specialties:string[],
-    mentees:MenteeDataType[],
     product: ProductDataType,
-    sessions?:SessionDataType[]
+    bookings:BookingSessionDataType[]
 }
 
+export interface MenteeDataType extends UserDataType {
+    id:string,
+    mentor: MentorDataType | null,
+    bookings:BookingSessionDataType[]
+    tasks?:TaskDataType[]
+}
+
+export interface SessionDataType { // should just be session
+    id:string,
+    booking_id:string,
+    session_number:number,
+    start_time:string,
+    end_time:string,
+    status:SessionStatus,
+    zoom_meeting_id:string,
+    start_url:string,
+    join_url:string,
+ 
+}
+
+export interface BookingDataType {
+    id:string,
+    mentor_id:string,
+    mentee_id:string,
+    status:string,
+    session_count:number,
+    current_session:number,
+    session_limit:number,
+    price?:number,
+}
+
+export interface BookingSessionDataType extends BookingDataType {
+    sessions:SessionDataType[]
+}
+
+export interface SessionWithMenteeDataType extends SessionDataType {
+    mentee:UserDataType
+}
 
 export interface ArtistDataType extends UserDataType {
     genre:string,
@@ -39,16 +86,6 @@ export interface ArtistDataType extends UserDataType {
     albums?:string[]
 }
 
-export interface MenteeDataType extends ArtistDataType {
-    id:string,
-    mentor?: MentorDataType | null,
-    sessions?:SessionDataType[],
-    mentorSession?:MentorSessionDataType[],
-    session_date:string,
-    progress:number,
-    status:string,
-    tasks:TaskDataType[]
-}
 
 export interface CalendarDataType{
     month:string,
@@ -74,16 +111,6 @@ export interface MentorSessionDataType { // should just be session
     status: 'pending'| 'confirmed'| 'cancelled'| 'completed'| 'rejected'| 'rescheduled'
 }
 
-export interface SessionDataType { // should just be session
-    id:string,
-    mentor_id:string,
-    mentee_id:string,
-    session_link?:string,
-    currentSessionNumber: number,
-    maxSessionNumber:number,
-    nextSession:string,
-    previousSession:string,
-}
 
 export interface ArticleDataType {
     id:string

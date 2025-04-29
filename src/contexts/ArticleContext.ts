@@ -5,12 +5,14 @@ interface ArticleContextState {
     article: ArticleDataType,
     allArticles?:ArticleDataType[] | null,
     error: Error | null,
-    id?: string
+    id?: string,
+    loading?: boolean
 }
   
 export const ArticleContext = createContext<ArticleContextState>(
     {
         article:Article.defaultResponse,
         error:null,
+        loading: false
     }
     );
