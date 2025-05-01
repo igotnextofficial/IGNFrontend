@@ -21,6 +21,7 @@ const mockMentors: MentorDataType[] = [
         availability: true,
         specialties: ["Hip Hop Production", "Artist Development", "Business Strategy"],
         mentees: [],
+        bookings: [],
         product: {
             formattedPrice:'',
             id: "prod_1",
@@ -44,6 +45,7 @@ const mockMentors: MentorDataType[] = [
         availability: true,
         specialties: ["Vocal Training", "Artist Branding", "Stage Performance"],
         mentees: [],
+        bookings: [],
         product: {
             formattedPrice:'',
             id: "prod_2",
@@ -67,6 +69,7 @@ const mockMentors: MentorDataType[] = [
         availability: true,
         specialties: ["Songwriting", "Production", "Artist Development"],
         mentees: [],
+        bookings: [],
         product: {
             formattedPrice:'',
             id: "prod_3",
@@ -90,6 +93,7 @@ const mockMentors: MentorDataType[] = [
         availability: true,
         specialties: ["Production", "Songwriting", "Artist Development"],
         mentees: [],
+        bookings: [],
         product: {
             formattedPrice:'',
             id: "prod_4",

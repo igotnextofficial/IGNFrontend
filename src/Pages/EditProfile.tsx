@@ -12,7 +12,8 @@ import FormDataProvider from "../providers/FormDataProvider";
 import {  sendRequest } from "../utils/helpers";
 import { APP_ENDPOINTS } from "../config/app";  
 import { MentorFormStructure } from "../formstructures/MentorFormStructure";
-import { ArtistFormStructure } from "../formstructures/ArtistFormStructure";
+import { MenteeFormStructure } from "../formstructures/MenteeFormStructure";
+import MenteeForm from "../forms/MenteeForm";
 
 
 
@@ -23,9 +24,9 @@ const Profile = () => {
     const [formStructure,setFormStructure] = useState<FormField[]>([])
     const [successfulUpdate,setSuccessfulUpdate] = useState(false)
     const structures:Record<string,FormField[]> = {
-        "artist": ArtistFormStructure,
-        "mentor": MentorFormStructure,
-        "default": ArtistFormStructure
+        "mentee": MenteeFormStructure,
+        "mentor": MentorFormStructure
+        
     }
   
     useEffect(() => {
@@ -90,12 +91,16 @@ const Profile = () => {
     return (
         <>
             <Grid item xs={12}> <Typography variant="h4" sx={{ color: "black" ,paddingBottom:2}}> Edit {user?.fullname}'s Profile</Typography></Grid>
-
+            {user?.role?.type === "mentee" ? <MenteeForm /> :  
+            <>
             <IgnFormGenerate formStructures={ formStructure } />
+            
             <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={() => {return handleSubmit()}}>Update</Button>
-            {successfulUpdate && <Typography variant="h4">Your account has been successfully updated.</Typography>}
-
+            {successfulUpdate && <Typography variant="h4">Your account has been successfully updated.</Typography>  }
         </>
+        }
+        
+            </>
     )
 }
 

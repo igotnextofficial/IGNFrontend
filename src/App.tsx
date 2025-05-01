@@ -39,6 +39,7 @@ import HealthCheck from './pages/healthcheck';
 import { Roles } from './types/Roles';
 import FeatureSubmission from './pages/FeatureSubmission';
 import Mentors from './pages/mentors/Mentors';
+import { QueryClientProvider } from './providers/QueryClientProvider';
 
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
@@ -121,10 +122,12 @@ const MainApplication: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <ErrorComponent />
-      <MainApplication />
-    </div>
+    <QueryClientProvider>
+      <div className="App">
+        <ErrorComponent />
+        <MainApplication />
+      </div>
+    </QueryClientProvider>
   );
 };
 

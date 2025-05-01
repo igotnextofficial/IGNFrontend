@@ -5,7 +5,7 @@ import ContentContainer from "../../utils/ContentContainer";
 import { UserContext } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import MentorDashboard from "./MentorDashboard";
-import ArtistDashboard from "./ArtistDashboard";
+import MenteeDashboard from "./MenteeDashboard";
 import AdminDashboard from "./AdminDashboard";
 
 // const isCorrectRole = (role,user) => {
@@ -14,10 +14,9 @@ import AdminDashboard from "./AdminDashboard";
 // Define the dashboards object with specific components for each role
 const dashboards = {
     mentor: <MentorDashboard/>,
-    artist: <ArtistDashboard/>,
+    mentee: <MenteeDashboard/>,
     writer: <WriterDashboard/>,
     admin: <AdminDashboard/>,
-    mentee: <ArtistDashboard/>
 };
 
 // Define a type for the role keys

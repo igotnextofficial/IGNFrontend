@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ArtistListComponent from "../components/users/artist/ArtistListComponent";
+// import ArtistListComponent from "../components/users/artist/ArtistListComponent";
 import FeaturedMentors from "../components/sections/FeaturedMentors";
 import FeatureArticleComponent from "../components/article/FeatureArticleComponent";
 import AboutUsComponent from "../components/generic/AboutUsComponent";
@@ -28,7 +28,7 @@ const Home = () => {
             <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
            
             <AboutUsComponent/>
-            <ArtistListComponent/>
+            {/* <ArtistListComponent/> */}
             <FeaturedMentors/>
 
         </>

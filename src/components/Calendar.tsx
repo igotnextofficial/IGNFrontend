@@ -1,18 +1,15 @@
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Typography, Box, IconButton, Button, Tooltip, styled, tooltipClasses, TooltipProps } from "@mui/material";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { APP_ENDPOINTS } from "../config/app";
-
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useUser } from "../contexts/UserContext";
-
-import { BookingDataType, MenteeDataType, MentorSessionDataType, SessionDataType } from "../types/DataTypes";
+import { BookingDataType, MenteeDataType, SessionDataType } from "../types/DataTypes";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);

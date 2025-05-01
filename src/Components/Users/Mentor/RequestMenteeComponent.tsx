@@ -1,123 +1,92 @@
-import React, { useState, useEffect } from "react"
+import React  from "react"
 import { Link } from "react-router-dom"
-import {  Grid, Button } from "@mui/material"
-
+import { Grid, Button } from "@mui/material"
 import ListDisplayComponent from "../../../helpers/ListDisplayComponent"
 import { useUser } from "../../../contexts/UserContext"
-
-import { listDisplayDataType, MentorDataType, MenteeDataType, HttpMethods } from "../../../types/DataTypes"
-
-
-import { sendRequest } from "../../../utils/helpers"
+import { listDisplayDataType, MentorDataType, MenteeDataType  } from "../../../types/DataTypes"
 import NoDataAvailable from "../../../utils/NoDataAvailable"
 import { APP_ENDPOINTS, Endpoints } from "../../../config/app"
-import { send } from "process"
-
-
+import useHttp from "../../../customhooks/useHttp";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const handleDecline = (id: string) => { }
 
 const RequestMenteeComponent = ({ mentor }: { mentor: MentorDataType }) => {
-    const { user, updateUser,accessToken } = useUser()
-    const [data, setData] = useState<MenteeDataType[]>([])
+    const { user, updateUser, accessToken } = useUser()
+    const { get, post, put } = useHttp();
+    const queryClient = useQueryClient();
 
-    useEffect( () => {
-        const loadData = async () => {
+    const { data: pendingMentees = [] } = useQuery({
+        queryKey: ['pendingMentees', mentor.id],
+        queryFn: async () => {
             const url = `${Endpoints.MENTOR}/${mentor.id}/mentees/pending`;
             const headers = { Authorization: `Bearer ${accessToken}` }
-            const response = await sendRequest(HttpMethods.GET,url, null, headers);
-            if(response !== null){
+            const response = await get(url, { headers });
+            if (response !== null) {
                 let pending_mentees_ids = response.data.map((mentee: MenteeDataType) => {
                     return {"id":mentee.mentee_id};
                 });
 
-                const pending_mentees = await sendRequest(HttpMethods.POST,`${APP_ENDPOINTS.USER.BATCH}`,{data:pending_mentees_ids},headers);
- 
-                if(pending_mentees !== null){
-                    let pending_mentees_list = pending_mentees.data as MenteeDataType[]
-                
-                    
-                    setData(pending_mentees_list);
+                const pending_mentees = await post(`${APP_ENDPOINTS.USER.BATCH}`, {data:pending_mentees_ids}, {headers});
+                if (pending_mentees !== null) {
+                    return pending_mentees.data as MenteeDataType[];
                 }
-                // setData(mentor.mentees.filter(mentee => mentee.status === "pending"))
             }
-
+            return [];
         }
+    });
 
-        loadData()
-     
-    }, [])
+    const { mutate: approveMentee } = useMutation({
+        mutationFn: async (mentee: MenteeDataType) => {
+            const headers = { Authorization: `Bearer ${accessToken}` }
+            const url = `${Endpoints.MENTOR}/${user?.id}/mentees/${mentee.id}/approve`
+            const statusUpdate = { status: "approved" }
+            const updatedMentee = { ...mentee, ...statusUpdate }
+            const currentUser = user as MentorDataType
+            const currentMentees = currentUser.mentees.filter((item: MenteeDataType) => item.id !== updatedMentee.id);
+            const newMentee = { mentees: [updatedMentee, ...currentMentees] }
+            const updatedUser = { ...user, ...newMentee }
 
-    const handleApproved = async (mentee: MenteeDataType) => {
-        const headers = { Authorization: `Bearer ${accessToken}` }
-
-        let url = `${Endpoints.MENTOR}/${user?.id}/mentees/${mentee.id}/approve`
-        let statusUpdate = { status: "approved" }
-        let updatedMentee = { ...mentee, ...statusUpdate }
-        let currentUser = user as MentorDataType
-        let currentMentees = currentUser.mentees.filter(item => item.id !== updatedMentee.id)
-
-        let newMentee = { mentees: [updatedMentee, ...currentMentees] }
-        let updatedUser = { ...user, ...newMentee }
-        let data_without_approved_user = data.filter(item => item.id !== updatedMentee.id);
-        setData(data_without_approved_user)
-        
-        updateUser(updatedUser as MentorDataType)
-        let response = await sendRequest(HttpMethods.PUT, url, null, headers)
-        if (response === null) {
-            let statusUpdate = { status: "pending" }
-            let updatedMentee = { ...mentee, ...statusUpdate }
+            await put(url, null, { headers });
+            await post(`${APP_ENDPOINTS.USER.BASE}/${mentee?.id}/mentors/${user?.id}`, null, {headers});
+            
+            return updatedUser as MentorDataType;
+        },
+        onSuccess: (updatedUser) => {
+            updateUser(updatedUser);
+            queryClient.invalidateQueries({ queryKey: ['pendingMentees', mentor.id] });
         }
-        else {
-            let connect_mentor_to_mentee = await sendRequest(HttpMethods.POST,`${APP_ENDPOINTS.USER.BASE}/${mentee?.id}/mentors/${user?.id}`,null,headers);
+    });
 
-            if(connect_mentor_to_mentee !== null){
-                // console.log(`Connected mentor to mentee ${JSON.stringify(connect_mentor_to_mentee)}`)
-            }
-            else{
-                // console.error(`Error connecting mentor to mentee`)
-            }
-        }
-
-
-    }
-    return data && data.length > 0 ?<>
-
-         {data.map(mentee => {
+    return pendingMentees && pendingMentees.length > 0 ? <>
+         {pendingMentees.map(mentee => {
             const data: listDisplayDataType = {
                 title: `${mentee.fullname} (${mentee.username})`,
                 image_url: mentee.profile_photo_path || "",
-                subtitle: `${mentee.bio.substring(0, 200)} ${mentee.bio.length > 200 ? "..." : ""}`
+                subtitle: mentee.bio ? `${mentee.bio.substring(0, 200)} ${mentee.bio.length > 200 ? "..." : ""}` : ''
             }
-
 
             return (
                 <React.Fragment key={mentee.id}>
-
-                    <Link to={`mentee/${mentor.id}/notes`}>  <ListDisplayComponent data={data} /></Link>
+                    <Link to={`mentee/${mentor.id}/notes`}>
+                        <ListDisplayComponent data={data} />
+                    </Link>
                     <Grid container spacing={2} justifyContent={"flex-end"}>
-                        <Grid item><Button onClick={() => {
-                            handleApproved(mentee)
-                        }} variant="contained" color="success"> Approve </Button></Grid>
-                        <Grid item><Button onClick={() => {
-                            handleDecline(mentee.id)
-                        }} variant="contained" color="error"> Decline </Button></Grid>
+                        <Grid item>
+                            <Button onClick={() => approveMentee(mentee)} variant="contained" color="success">
+                                Approve
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button onClick={() => handleDecline(mentee.id)} variant="contained" color="error">
+                                Decline
+                            </Button>
+                        </Grid>
                     </Grid>
                 </React.Fragment>
-
             )
-
-        }) }
-
-
-
-
-    </> : <NoDataAvailable/>
-
-
+        })}
+    </> : <NoDataAvailable />
 }
-
-
-
 
 export default RequestMenteeComponent

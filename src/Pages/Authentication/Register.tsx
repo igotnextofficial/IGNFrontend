@@ -16,7 +16,7 @@ import FormDataProvider from '../../providers/FormDataProvider';
 import User from '../../models/users/User';
 import { useFormDataContext } from '../../contexts/FormContext';
 import LoadingComponent from "../../components/common/LoadingComponent";
-
+import { Roles } from '../../types/Roles';
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -46,9 +46,10 @@ const RegisterDisplay = () => {
         event.preventDefault();
         if (isValid) {
             try {
+                data.role = Roles.MENTEE; // default role to mentee
                 await registerUser({ data });
                 // If we get here, registration was successful
-            } catch (error) {
+            } catch (error) { 
                 console.error("Registration error:", error);
                 // Handle the error message
                 if (error instanceof Error) {

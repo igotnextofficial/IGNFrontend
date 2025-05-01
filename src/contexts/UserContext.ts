@@ -10,10 +10,9 @@ export interface userContextType{
     updateUser:(user:UserDataType)=>void
     attemptLoginOrLogout: (login:boolean,data?:httpDataObject,) => Promise<boolean>,
     registerUser: (data:httpDataObject) => Promise<boolean>,
-    accessToken?:string,
+    accessToken: string,
     loading?:boolean
     getUserRole: () => string
-
 }
 export const UserContext = createContext<userContextType>({
     isLoggedin: false,
@@ -28,6 +27,7 @@ export const UserContext = createContext<userContextType>({
     registerUser: async (): Promise<boolean> => {
         return false;
     },
+    accessToken: "",
     getUserRole: () => {
         return ""
     }

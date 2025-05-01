@@ -1,16 +1,13 @@
 import React, { useEffect,useState } from "react";
 import { Box,Button} from "@mui/material";
-import { ArtistDataType, MenteeDataType, MentorSessionDataType } from "../../../types/DataTypes";
+import { MenteeDataType, MentorSessionDataType } from "../../../types/DataTypes";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import { text } from "stream/consumers";
-import { Upcoming } from "@mui/icons-material";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
 
 const CurrentMentorDisplay = ({user}:{user:MenteeDataType}) => {
     const [cannotSchedule,setCannotSchedule] = useState(false)
@@ -24,15 +21,15 @@ const CurrentMentorDisplay = ({user}:{user:MenteeDataType}) => {
     useEffect(() => {
         console.log(user.mentorSession)
         if(user.mentorSession.length > 0){
-            const sessions_within_timeframe = user.mentorSession.filter((session:MenteeDataType) => {
+            const sessions_within_timeframe = user.mentorSession.filter((session:MentorSessionDataType) => {
                   return dayjs(session.start_time).tz('America/New_York').isSame(dayjs().tz('America/New_York')) || dayjs(session.start_time).tz('America/New_York').isAfter(dayjs().tz('America/New_York'));
             });
 
-            const upcoming_sessions = sessions_within_timeframe.filter((session:MenteeDataType) => {
+            const upcoming_sessions = sessions_within_timeframe.filter((session:MentorSessionDataType) => {
                 return session.status.toLowerCase() === 'confirmed'
             })
 
-            const pending_sessions = sessions_within_timeframe.filter((session:MenteeDataType) => {
+            const pending_sessions = sessions_within_timeframe.filter((session:MentorSessionDataType) => {
                 return session.status.toLowerCase() === 'pending'
             })
 

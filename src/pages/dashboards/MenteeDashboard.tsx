@@ -9,13 +9,13 @@ import DashboardSectionBorder from '../../components/users/mentor/DashboardSecti
 import ContentContainer from '../../utils/ContentContainer'
 
 
-import { ArtistDataType, MenteeDataType } from '../../types/DataTypes'
-import MentorsFeedback from '../../components/users/artist/MentorsFeedback'
+import { MenteeDataType } from '../../types/DataTypes'
+import MentorsFeedback from '../../components/users/mentee/MentorsFeedback'
 import IconOnlyTopSection from '../../components/users/IconOnlyTopSection'
 import DisplayTextComponent from '../../components/users/DisplayTextComponent'
 
 
-import CurrentMentorDisplay from '../../components/users/artist/CurrentMentorDisplay'
+import CurrentMentorDisplay from '../../components/users/mentee/CurrentMentorDisplay'
 import ListMentors from '../../components/users/mentor/ListMentors'
 import NoDataAvailable from '../../utils/NoDataAvailable'
 import NotesFeedback from '../notes/NotesFeedback'
@@ -26,7 +26,7 @@ import LocalStorage from '../../storage/LocalStorage'
 
 
 
-const RecentArticles = ({currentUser}: {currentUser:ArtistDataType}) => {
+const RecentArticles = ({currentUser}: {currentUser:MenteeDataType}) => {
     const { allArticles } = useContext(ArticleContext);
 
     return (
@@ -46,7 +46,7 @@ const DefaultMessaging = () => {
 
 
 
-const ArtistDashboard = () => {
+const MenteeDashboard = () => {
     const { user  } = useUser();
     const {fetchData} = useFetch() 
  
@@ -115,7 +115,7 @@ const ArtistDashboard = () => {
                 
                             <Grid item xs={12}>
                                 <DashboardSectionBorder title="Most Recent Articles" >
-                                    <RecentArticles currentUser={user as ArtistDataType} />
+                                    <RecentArticles currentUser={user as MenteeDataType} />
                                 </DashboardSectionBorder>
                             </Grid>
 
@@ -165,4 +165,4 @@ const ArtistDashboard = () => {
     )
 }
 
-export default ArtistDashboard
+export default MenteeDashboard

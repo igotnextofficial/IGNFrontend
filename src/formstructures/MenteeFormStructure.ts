@@ -11,7 +11,7 @@ if(storage) {
     }
 }
 
-export const ArtistFormStructure: FormField[] = [
+export const MenteeFormStructure: FormField[] = [
     {
         label: "fullname",
         visibility: true,

@@ -41,7 +41,11 @@ export const APP_ENDPOINTS = {
         SPECIALTIES: Endpoints.SPECIALTIES,
         GENRE: Endpoints.GENRE,
         VIDEO_LINK: `${Endpoints.VIDEO_LINK}/meeting`,
-        GENERATE_ZOOM_LINK: `${Endpoints.SESSIONS}/generate-zoom-link`
+        GENERATE_ZOOM_LINK: `${Endpoints.SESSIONS}/generate-zoom-link`,
+        CATEGORIES: `${Endpoints.USER}/categories`,
+        TAGS: `${Endpoints.USER}/tags`,
+        CATEGORY_TAGS: `${Endpoints.USER}/categories/tags`,
+        CATEGORY_TAGS_BY_ID: `${Endpoints.USER}/categories/tags/:id`
     },
 
     USER: {

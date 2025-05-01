@@ -14,6 +14,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Music Production', 'Jazz', 'Pop Arrangement'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_1',
       name: 'Legacy Production Masterclass',
@@ -32,6 +33,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Hip-Hop Production', 'Mixing', 'Artist Development'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_2',
       name: 'West Coast Production Mastery',
@@ -50,6 +52,7 @@ export const mockMentors: MentorDataType[] = [
     availability: false,
     specialties: ['Vocal Technique', 'R&B Performance', 'Soul Music'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_3',
       name: 'R&B Vocal Excellence',
@@ -68,6 +71,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['R&B Production', 'Songwriting', 'Vocal Arrangement'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_4',
       name: 'Hit Songwriting Workshop',
@@ -86,6 +90,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Pop Production', 'R&B Production', 'Arrangement'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_5',
       name: 'Production Dream Team',
@@ -104,6 +109,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Vocal Technique', 'Songwriting', 'Pop Performance'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_6',
       name: 'Vocal Supremacy',
@@ -122,6 +128,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['New Jack Swing', 'R&B Production', 'Arrangement'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_7',
       name: 'New Jack Swing Masterclass',
@@ -140,6 +147,7 @@ export const mockMentors: MentorDataType[] = [
     availability: false,
     specialties: ['Funk Guitar', 'Dance Production', 'Arrangement'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_8',
       name: 'Funk & Dance Production',
@@ -158,6 +166,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Artist Development', 'Music Business', 'Production'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_9',
       name: 'Music Industry Mastery',
@@ -176,6 +185,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Performance', 'Entertainment', 'Music Business'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_10',
       name: 'Entertainment 360',
@@ -194,6 +204,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Latin Pop', 'Songwriting', 'Performance'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_11',
       name: 'Latin Pop Excellence',
@@ -212,6 +223,7 @@ export const mockMentors: MentorDataType[] = [
     availability: true,
     specialties: ['Gospel', 'Vocal Technique', 'Songwriting'],
     mentees: [],
+    bookings: [],
     product: {
       id: 'prod_12',
       name: 'Gospel Excellence',

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Box, Grid, Button, Stack } from "@mui/material";
 import { MentorDataType, MenteeDataType, MentorSessionDataType, SessionWithMenteeDataType } from "../../../types/DataTypes";
- 
 import ListContentComponent from "../../../helpers/ListContentComponent";
 import { Switch, FormControlLabel } from '@mui/material';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import NoDataAvailable from "../../../utils/NoDataAvailable";
- 
 import { useUser } from "../../../contexts/UserContext";
 import { useErrorHandler } from "../../../contexts/ErrorContext";
 import { APP_ENDPOINTS } from "../../../config/app";

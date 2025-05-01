@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Grid ,Button, CardActionArea, CardActions, Box } from '@mui/material';
-import { MentorDataType } from '../../../types/DataTypes';
+import { MentorDataType, MenteeDataType } from '../../../types/DataTypes';
 import { useUser } from '../../../contexts/UserContext';
 import { Endpoints } from '../../../config/app';
 import useHttp from '../../../customhooks/useHttp';
@@ -27,7 +27,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
       if(mentor && mentor.mentees){
 
     
-      const mentee = mentor.mentees.find(mentee => mentee.id === user?.id);
+      const mentee = mentor.mentees.find((mentee: MenteeDataType) => mentee.id === user?.id);
       if(mentee){
         if(mentee.status === "approved"){
           setButtonLabel(labels.approved)

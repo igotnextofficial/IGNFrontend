@@ -82,8 +82,12 @@ export const RegisterFormStructure: FormField[] = [
         },
         errorMessage: "Password must be 8-20 characters and contain both letters and numbers",
         ariaLabel: "Password"
-    },
-    {
+    }
+]
+
+
+/**
+ *     {
         label: "role",
         visibility: true,
         display: displayType.DropDown,
@@ -102,4 +106,4 @@ export const RegisterFormStructure: FormField[] = [
         errorMessage: "Please select a role",
         ariaLabel: "Role Selection"
     }
-]
+ */

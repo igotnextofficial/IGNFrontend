@@ -1,347 +1,164 @@
-import  { useState, ReactNode, useRef, useEffect, useCallback } from "react";
+import { useState, ReactNode, useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
-import User from "../models/users/User";
-import useFetch from "../customhooks/useFetch";
 import useHttp from "../customhooks/useHttp";
 import { socket } from "../socket";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../types/DataTypes";
-import LocalStorage from  "../storage/LocalStorage";
-import axios from "axios";
 import { APP_ENDPOINTS } from "../config/app";
 import { Roles } from "../types/Roles";
 import { Endpoints } from "../config/app";
- 
 import { useErrorHandler } from "../contexts/ErrorContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-const UserObj = new User()
-
-
-
-const loadDataForUser = async (user:UserDataType,user_type:string,access_token:string) => {
-    if (!user ) return;
-    let data = {}
- 
-    try {
-        if (user_type === Roles.MENTEE) {
-            const response = await axios.get(
-                `${APP_ENDPOINTS.SESSIONS.BASE}/mentee/${user.id}`,
-                {
-                    headers: { Authorization: `Bearer ${access_token}` }
-                }
-            );
-             
-            data = {...user,mentorSession: response?.data['data'] || []}
-            
-        }
-
-        if (user.role.type === Roles.MENTOR) {
-            const [availabilityResponse, bookingsResponse] = await Promise.all([
-                axios.get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`, {
-                    headers: { Authorization: `Bearer ${access_token}` }
-                }),
-                axios.get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`, {
-                    headers: { Authorization: `Bearer ${access_token}` }
-                })
-            ]);
-        
-            const bookingsWithSessions = bookingsResponse?.data['data'] || [];
-        
-            data = {
-                ...user,
-                availability: availabilityResponse?.data?.availability || false,
-                specialties: user.specialties?.map((specialty: Record<string,string>) => specialty.name) || [],
-                bookings: bookingsWithSessions
-            };
-        }
- 
-        return data;
-    } catch (error) {
-        // console.log(`there was an error in the process of loading more data so set to false`);
-        // console.log(error)
-        throw new Error('Error loading intial data for user')
-    }
-}
-
+// Helper function to get JSON data
+const getJsonData = async (http: any, endpoint: string) => {
+    const response = await http.get(endpoint);
+    return response.data;
+};
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<ArtistDataType | MentorDataType | UserDataType | MenteeDataType | null>(() => {
-        const savedUser = sessionStorage.getItem('user');
-        return savedUser ? JSON.parse(savedUser) : null;
-      });
-    const hasLoadedUserExtras = useRef(false);
-
-
-    const [extraUserData,setExtraUserData] = useState< Record<string,any> | null>(null)
-
-    const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
-    const [accessToken, setAccessToken] = useState<string>("");
-    const [isRefreshing, setIsRefreshing] = useState(false);
-    const [refreshQueue, setRefreshQueue] = useState<Promise<any> | null>(null);
-    const {fetchData} = useFetch();
-    const { post, get } = useHttp();
+    const { get, post } = useHttp();
     const { updateError } = useErrorHandler();
-    const [mentors, setMentorData] = useState<MentorDataType[] | null>([]);
-    const [artists, setArtistData] = useState<ArtistDataType[] | null>([]);
-    const [loading, setLoading] = useState(true);
-    const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+    const queryClient = useQueryClient();
+    const [user, setUser] = useState<UserDataType | null>(null);
+    const [accessToken, setAccessToken] = useState<string>("");
+    const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
 
-    const handleLogout = useCallback(() => {
-        setIsLoggedin(false);
-        setUser(null);
-        setAccessToken("");
-        sessionStorage.removeItem('user');
-        socket.disconnect();
-    }, []);
+    // Queries
+    const { data: mentors = [] } = useQuery({
+        queryKey: ['mentors'],
+        queryFn: () => getJsonData(get, APP_ENDPOINTS.USER.MENTOR.FEATURED)
+    });
 
-    const refreshToken = useCallback(async (): Promise<Record<string,any> | null> => {
-        // If already refreshing, return the existing promise
-        if (refreshQueue) {
-            return refreshQueue;
-        }
+    const { data: artists = [] } = useQuery({
+        queryKey: ['artists'],
+        queryFn: () => getJsonData(get, APP_ENDPOINTS.USER.ARTIST.FEATURED)
+    });
 
-        // If we're already in the process of refreshing, don't start another one
-        if (isRefreshing) {
-            return null;
-        }
-
-        setIsRefreshing(true);
-        
-        // Create a new promise for this refresh attempt
-        const refreshPromise = (async () => {
-            try {
-                const response = await axios.get(Endpoints.REFRESH_TOKEN, {withCredentials: true});
-                if (response.status === 200) {
-                    const newToken = response.data['data']['access_token'];
-                    setAccessToken(newToken);
-                    return response.data['data'];
-                }
-            } catch (e) {
-          
-                // If we get a 404, the refresh token is invalid
-                if (axios.isAxiosError(e) && e.response?.status === 404) {
-                    handleLogout();
-                }
-            } finally {
-                setIsRefreshing(false);
-                setRefreshQueue(null);
-            }
-            return null;
-        })();
-
-        // Store the promise in the queue
-        setRefreshQueue(refreshPromise);
-
-        return refreshPromise;
-    }, [refreshQueue, isRefreshing, handleLogout]);
-
-    // Handle initial session verification
+    // Session restoration
     useEffect(() => {
-        const verifyInitialSession = async () => {
+        const restoreSession = async () => {
             try {
-                if (user && !accessToken) {
-                    const tokenData = await refreshToken();
-                    if (tokenData) {
-                        setIsLoggedin(true);
-                    } else {
-                        handleLogout();
-                    }
-                } else if (user && accessToken) {
+                const response = await get(Endpoints.REFRESH_TOKEN);
+                if (response.status === 200) {
+                    const { access_token, user } = response.data.data;
+                    setAccessToken(access_token);
+                    setUser(user);
                     setIsLoggedin(true);
                 }
             } catch (error) {
-          
-                handleLogout();
-            } finally {
-                setInitialLoadComplete(true);
+                // Silent fail - user will need to log in
+                // console.error('Session restoration failed:', error);
             }
         };
 
-        verifyInitialSession();
-    }, [user, accessToken, refreshToken, handleLogout]);
+        restoreSession();
+    }, [get]);
 
-    // Update loading state after initial verification
-    useEffect(() => {
-        if (initialLoadComplete) {
-            setLoading(false);
-        }
-    }, [initialLoadComplete]);
-
-    useEffect(() => {
-        const loadInitialData = async () => {
-            const mentorResponse = await getUsersData("mentors", APP_ENDPOINTS.USER.MENTOR.FEATURED);
-            if(mentorResponse) {
-               
-                const data = mentorResponse.map((mentor: MentorDataType) => {
-                    const formattedPrice = new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD'
-                    }).format(mentor.product.price);
-                
-                    return {
-                        ...mentor,
-                        product: {
-                            ...mentor.product,
-                            price: formattedPrice
-                        },
-                        specialties: mentor.specialties.map((item: any) => item.name)
-                    };
-                });
-                
-                setMentorData(data);
-            }
-
-            const artistResponse = await getUsersData("artists", APP_ENDPOINTS.USER.ARTIST.FEATURED);
-            if(artistResponse) {
-                setArtistData(artistResponse);
-            }
-        };
-
-        loadInitialData();
-    }, []);
-
-    useEffect(() => {
-        if (!user) return;
-        sessionStorage.setItem('user', JSON.stringify(user || {}));
-
-        // loadUserSpecificData();
-    }, [isLoggedin, user, accessToken]);
-
-    useEffect(() => {
-        if (!extraUserData) return;
-
-        setUser((prev) => {
-            if (!prev) return null;
-
-            return {
-                ...prev,
-                ...extraUserData
-            };
-        })
-    }, [extraUserData]);
-
-    async function getUsersData(data_to_load: string, endpoint: string) {
-        const local_storage = new LocalStorage();
-        if(local_storage.hasItem(data_to_load)) {
-            return local_storage.load(data_to_load);
-        }
-
-        const response = await fetchData(endpoint);
-        return response?.data || null;
-    }
-
-    const loginUser = async (data: httpDataObject) => {
-        try {
-            setLoading(true);
-            if(!data) return false;
-       
-            const response = await post(Endpoints.LOGIN, data, { requiresAuth: false });
-            if(!response) return false;
-
-            const userData = response.data['data'];
-            const accessToken = response.data['access_token'];
-            
-            loadDataForUser(userData, userData.role.type, accessToken).then((data) => {
-    
-                setAccessToken(accessToken);
-                setUser(data as UserDataType);
-            }).catch((error) => {
-                console.log(`The error with loging in was:`)
-                console.log(error)
-                updateError(`Error loading user data `);
-                return false;
-            });
-
+    // Mutations
+    const loginMutation = useMutation({
+        mutationFn: async (data: httpDataObject) => {
+            const response = await post(APP_ENDPOINTS.USER.LOGIN, data);
+            return response.data;
+        },
+        onSuccess: (data) => {
+            setUser(data.user);
+            setAccessToken(data.accessToken);
             setIsLoggedin(true);
-
-            return true;
-        } catch(err) {
-     
-            setIsLoggedin(false);
-            setUser(null)
-            setAccessToken("")
-            
-            updateError('Could not login in user')
- 
-        } finally {
-            setLoading(false);
+            queryClient.invalidateQueries({ queryKey: ['user'] });
+        },
+        onError: (error) => {
+            if (error instanceof Error) {
+                updateError(error.message);
+            } else {
+                updateError('An unknown error occurred');
+            }
         }
-        return false
-    };
+    });
 
-    const LogoutUser = async () => {
-        try {
-            setLoading(true);
-            // Log the access token for debugging
-            console.log(`Logging out with access token: ${accessToken ? 'Token exists' : 'No token'}`);
-            
-            // Make sure we're using the current access token
-            await post(Endpoints.LOGOUT, {}, { 
-                requiresAuth: true,
-                headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
-            });
-            
-            setIsLoggedin(false);
+    const logoutMutation = useMutation({
+        mutationFn: async () => {
+            await post(APP_ENDPOINTS.USER.LOGOUT);
+        },
+        onSuccess: () => {
             setUser(null);
             setAccessToken("");
-            sessionStorage.removeItem('user');
+            setIsLoggedin(false);
+            queryClient.invalidateQueries({ queryKey: ['user'] });
             socket.disconnect();
-            return true;
-        } catch(err) {
-    
-            console.error("Logout error:", err);
-            return false;
-        } finally {
-            setLoading(false);
+        },
+        onError: (error) => {
+            if (error instanceof Error) {
+                updateError(error.message);
+            } else {
+                updateError('An unknown error occurred');
+            }
         }
-    };
+    });
 
-    const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject): Promise<boolean> => {
-        return login ? await loginUser(data!) : await LogoutUser();
-    };
-
-    const updateUser = useCallback((userData: UserDataType | MentorDataType | ArtistDataType) => {
-        sessionStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
-    }, []);
-
-
-    const registerUser = async (data: httpDataObject) => {
-        try {
-            setLoading(true);
-            if(!data) throw new Error("No data provided");
-            
+    const registerMutation = useMutation({
+        mutationFn: async (data: httpDataObject) => {
             const url = process.env.REACT_APP_REGISTER_API || "";
             const response = await post(url, data, { requiresAuth: false });
-            
-            if(!response) throw new Error("Issues with registering user");
-            
-            if (response.data.errors?.length) {
-                throw new Error(`Invalid data: ${response.data.errors.join(' ')}`);
+            return response.data;
+        },
+        onSuccess: async (data) => {
+            if (data.errors?.length) {
+                throw new Error(`Invalid data: ${data.errors.join(' ')}`);
             }
-            
-            // If registration is successful, attempt to log in
-            const loginResponse = await attemptLoginOrLogout(true, data);
-            if (!loginResponse) {
-                throw new Error("The user could not be logged in");
-            }
-            
-            return true;
-        } catch (error) {
+            await loginMutation.mutateAsync(data);
+        },
+        onError: (error) => {
             if (error instanceof Error) {
                 updateError(error.message);
             } else {
                 updateError("An unexpected error occurred during registration");
             }
+        }
+    });
+
+    const attemptLoginOrLogout = async (login: boolean, data?: httpDataObject) => {
+        try {
+            if (login && data) {
+                await loginMutation.mutateAsync(data);
+                return true;
+            } else {
+                await logoutMutation.mutateAsync();
+                return true;
+            }
+        } catch (error) {
             return false;
-        } finally {
-            setLoading(false);
         }
     };
+
+    const registerUser = async (data: httpDataObject) => {
+        try {
+            await registerMutation.mutateAsync(data);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    };
+
+    const updateUser = useCallback((userData: UserDataType | MentorDataType | ArtistDataType) => {
+        setUser(userData);
+        queryClient.invalidateQueries({ queryKey: ['user'] });
+    }, [queryClient]);
 
     const getUserRole = () => user?.role?.type || "";
 
     return (
-        <UserContext.Provider value={{ user, mentors, artists, isLoggedin, attemptLoginOrLogout, updateUser, getUserRole, accessToken, loading, registerUser }}>
+        <UserContext.Provider value={{ 
+            user, 
+            mentors, 
+            artists, 
+            isLoggedin, 
+            attemptLoginOrLogout, 
+            updateUser, 
+            getUserRole, 
+            accessToken,
+            loading: loginMutation.isPending || logoutMutation.isPending || registerMutation.isPending,
+            registerUser
+        }}>
             {children}
         </UserContext.Provider>
     );
