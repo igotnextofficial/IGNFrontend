@@ -13,9 +13,7 @@ import { APP_ENDPOINTS } from "../../../config/app";
 const SessionCard = ({ session,callback }: { session: SessionWithMenteeDataType,callback:(action: 'approve' | 'deny', session: SessionWithMenteeDataType) => void }) => {
     const mentee = session.mentee;
     if (!mentee) return null;
-    useEffect(()=>{
-        console.log(`the session is that came in is ${JSON.stringify(session,null,2)}`)
-    },[session])
+ 
     return (
       <Box>
         <ListContentComponent session={session} />

@@ -6,9 +6,9 @@ import './styles/scss/defaults.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import RootComponent from './components/generic/RootComponent';
-const container =  document.getElementById('root');
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+const container =  document.getElementById('root');
 
 const stripePromise = loadStripe(process.env.  REACT_APP_STRIPE_API_PUBLISHABLE_KEY);
 

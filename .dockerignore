@@ -20,7 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .babelrc
-.env.development
+
 .env.local
 .env.production
 .eslintcache
