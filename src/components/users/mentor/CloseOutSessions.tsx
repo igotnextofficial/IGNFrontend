@@ -12,6 +12,7 @@ import { useErrorHandler } from "../../../contexts/ErrorContext";
 import { APP_ENDPOINTS } from "../../../config/app";
 import useHttp from "../../../customhooks/useHttp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import IGNButton from "../../common/IGNButton";
 
 const SessionCard = ({ session, callback }: { 
   session: SessionWithMenteeDataType,
@@ -19,7 +20,7 @@ const SessionCard = ({ session, callback }: {
 }) => {
   const { accessToken } = useUser();
   const { updateError } = useErrorHandler();
-  const { post } = useHttp();
+  const { post } = useHttp(accessToken);
   const queryClient = useQueryClient();
 
   const { mutate: closeOutSession, isPending } = useMutation({
@@ -42,19 +43,18 @@ const SessionCard = ({ session, callback }: {
       callback(false, session.id);
     }
   });
-
+  console.log('isPending:', isPending); 
   return (
     <Box>
       <ListContentComponent session={session} />
       <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-        <Button 
+        <IGNButton 
           onClick={() => closeOutSession()}
-          variant="contained"   
-          color="primary"
           disabled={isPending}
+          loading={isPending}
         >
           Close Out Session
-        </Button>
+        </IGNButton>
         {isPending && <CircularProgress size={20} />}
       </Stack>
     </Box>
@@ -71,16 +71,15 @@ const CloseOutSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] 
 
   React.useEffect(() => {
     const pastConfirmedSessions: SessionWithMenteeDataType[] = [];
-    const now = dayjs().add(1,'hour');
+    const now = dayjs();
 
     sessions.forEach((session) => {
-      session.start_time = dayjs(session.start_time).format('dddd MMM D [@] hh:mm A');
-      
-      if (session.status === SessionStatus.SCHEDULED) {
-        const sessionDate = dayjs(session.start_time);
-        if (sessionDate.isBefore(now)) {
+      const session_start_time = dayjs(session.start_time);
+      const session_end_time = dayjs(session.end_time);
+      if (session.status === SessionStatus.SCHEDULED && session_end_time.isBefore(now)) {
+     
           pastConfirmedSessions.push(session);
-        }
+        
       }
     });
 

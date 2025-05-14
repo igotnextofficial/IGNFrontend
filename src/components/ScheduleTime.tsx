@@ -32,7 +32,7 @@ import { useUser } from '../contexts/UserContext';
 import { APP_ENDPOINTS } from '../config/app';
 import CircularImage from '../utils/CircularImage';
 import { Link as RouterLink } from 'react-router-dom';
- 
+import useHttp from '../customhooks/useHttp';
 
 interface AvailableTimeDisplayProps {
     chosenDate: string;
@@ -97,7 +97,7 @@ const AvailableTimesDisplay: React.FC<AvailableTimeDisplayProps> = ({
 }
 
 
-const ScheduleTime = () => {
+const ScheduleTime = ({productPayment}:{productPayment:string}) => {
     const { user, accessToken } = useUser();
     const [mentor, setMentor] = useState<MenteeDataType | null>(null);
     const [schedule, setSchedule] = useState<string | null>(null);
@@ -111,7 +111,7 @@ const ScheduleTime = () => {
     const maxDate = tomorrow.add(14,'day');
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+    const { put } = useHttp(accessToken)
     useEffect(() => {
         setMentor(user?.mentor);
     }, [user]);
@@ -191,6 +191,14 @@ const ScheduleTime = () => {
             
             if (response) {
                 setScheduledSuccessfully(true);
+                const url = APP_ENDPOINTS.PAYMENT.UPDATE_PRODUCT_PAYMENT_STATUS.replace(':id',productPayment)
+                const productPaymentResponse = await put(url,{status:"COMPLETED",payable_id:productPayment})
+                if(productPaymentResponse.status === 200){
+                    console.log("product payment updated successfully")
+                }
+                else{
+                    console.log("product payment update failed")
+                }
             } else {
                 setError("Failed to schedule appointment. Please try again.");
             }

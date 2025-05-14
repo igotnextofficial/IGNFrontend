@@ -39,7 +39,7 @@ const pages: Page[] = [
     children: [
       { slug: "/articles/whos-next", name: "Rising Stars", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=100&h=100&fit=crop" },
       { slug: "/articles/featured-artists", name: "Spotlight", image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=100&h=100&fit=crop" },
-      { slug: "/articles/entertainment-news", name: "Culture", image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=100&h=100&fit=crop" },
+      { slug: "/articles/entertainment-news", name: "Beyond the Stage", image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=100&h=100&fit=crop" },
       { slug: "/articles/artist-of-the-month", name: "Artist of the Month", image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=100&h=100&fit=crop" },
     ]
   },

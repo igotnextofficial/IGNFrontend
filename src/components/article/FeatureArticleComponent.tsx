@@ -185,7 +185,7 @@ const FeatureArticleComponent = () => {
     <Box sx={{ p: 0 }}>
       <Grid container spacing={0}>
         {gridArticles.map((article) => (
-          <Grid item xs={12} sm={3} key={article.id}>
+          <Grid item xs={12} sm={6} md={3} key={article.id}>
             <GridArticle article={article} />
           </Grid>
         ))}

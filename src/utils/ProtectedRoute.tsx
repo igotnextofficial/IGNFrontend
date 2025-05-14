@@ -1,9 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { Roles } from "../types/Roles";
 import { useUser } from "../contexts/UserContext";
 import LoadingComponent from "../components/common/LoadingComponent";
 import { ArticleContext } from "../contexts/ArticleContext";
+ 
 
 const defaultAccess = Array.from(Object.values(Roles));
 
@@ -21,6 +22,7 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
    children
  }) => {
   const {user, isLoggedin, loading: userLoading} = useUser();
+  // const hasAccess = user?.role?.type && grantedAccess.includes(user.role.type as Roles);
   
   // Check if there's an ArticleContext available
   const articleContext = useContext(ArticleContext);
@@ -33,10 +35,15 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
   if (!isLoggedin) {
     return <Navigate to={redirectPath} replace />;
   }
+ 
+  // console.log(`User Role: ${user?.role.type}
+  //   Who can access: ${grantedAccess}
+  //   Can access: ${hasAccess}
+  //   `)
 
-  if (!user?.role || !grantedAccess.includes(user.role.type)) {
-    return <Navigate to="/" replace />;
-  }
+  // if ( !hasAccess) {
+  //   return <Navigate to="/" replace />;
+  // }
 
   return children || <Outlet />;
 };

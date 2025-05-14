@@ -4,75 +4,67 @@ import { validationObject,FieldErrorMaintainerType } from "../types/DataTypes";
 
 interface FormDataProviderProps {
     children:ReactNode
-    formKeys?:FieldErrorMaintainerType // will make this mandatory 
-    validations?:validationObject // will make this mandatory 
+    formKeys?:FieldErrorMaintainerType
+    validations?:validationObject
 }
-
 
 const FormDataProvider:React.FC<FormDataProviderProps> = ({children,validations,formKeys}) => {
     const [data, setData] = useState<Record<string, any>>({});
     const [, setFile] = useState<Record<string, File> | null>(null);
-    const [hasError,setHasError] = useState<FieldErrorMaintainerType>(formKeys ?? {}  )
+    const [hasError,setHasError] = useState<FieldErrorMaintainerType>(formKeys ?? {})
     const [isValid,setIsValid] = useState(false);
  
+    // Update isValid whenever hasError changes
     useEffect(() => {
-        let valids = []
-        for(const fieldKey in formKeys){
-            // console.log(`checking for key ${fieldKey}`)
-            let valid = hasError[fieldKey].valid ?? false
-            valids.push(valid )
-        }
-        let checkValid = !(valids.includes(false));
-        setIsValid(checkValid)
-    },[formKeys, hasError])
+        const allValid = Object.values(hasError).every(error => error.valid);
+        setIsValid(allValid);
+    }, [hasError]);
     
-    useEffect(() => {
-        // console.log(JSON.stringify(hasError))
-    },[hasError])   
     const updateData = useCallback((key:string,value:string)=>{
-        try{
-            // console.log(`updating ${key} with ${value}`)
-            let current_key = key.toLowerCase()
-            if(validations){
-                
-                let results = validations[current_key].method(value)
-                let error_message = ""
-                
-                if(results === false) {
-                    error_message = validations[current_key].message
+        try {
+            const current_key = key.toLowerCase();
+            let newError = { valid: true, message: "" };
+
+            if(validations && validations[current_key]) {
+                const results = validations[current_key].method(value);
+                if(!results) {
+                    newError = {
+                        valid: false,
+                        message: validations[current_key].message
+                    };
                 }
-                
-                const updateHasError = {
-                    ...hasError,
-                    [current_key]:{valid:results,message:error_message}
-                }
-              
-                setHasError(updateHasError)
             }
 
+            setHasError(prev => ({
+                ...prev,
+                [current_key]: newError
+            }));
             
-            setData((currentData) => ({...currentData,[current_key]:value}))
-       
+            setData(prev => ({
+                ...prev,
+                [current_key]: value
+            }));
+        } catch(error) {
+            throw new Error(`All form fields should have a validation function | missing ${key}`);
         }
-        catch(error){
-                throw new Error(`All form fields should have a validation function | missing ${key}`)
-             
-        }
-    },[hasError, validations])
-    
+    }, [validations]);
 
     const updateFileData = useCallback((key: string, file: File) => {
-        setData((currentData) => ({...currentData,[key.toLowerCase()]: file}))
-        setFile({[key.toLowerCase()]: file}); // Append file or update existing file entry
+        setData(prev => ({...prev, [key.toLowerCase()]: file}));
+        setFile(prev => ({...prev, [key.toLowerCase()]: file}));
     }, []);
 
-
-
     return (
-        <FormDataContext.Provider value={{updateFormData:updateData,data, updateFileData,hasError,isValid }}>
+        <FormDataContext.Provider value={{
+            updateFormData: updateData,
+            data,
+            updateFileData,
+            hasError,
+            isValid
+        }}>
             {children}
         </FormDataContext.Provider>
-    )
+    );
 }
 
-export default FormDataProvider
+export default FormDataProvider;

@@ -21,7 +21,7 @@ export default class LocalStorage implements storageInterface {
 
         }
         catch(e){
-            // console.log(`error in saving data ${e}`);
+         console.log(`error in saving data ${e}`);
         }
 
     }
@@ -34,12 +34,13 @@ export default class LocalStorage implements storageInterface {
     */
     load(key: string,secure:boolean = false): any {
         let data = localStorage.getItem(this.domain) ?? "";
+        let stored_data =  this.convertToObject(data);
         if(!secure){
-            return data;
+            return stored_data[key] ?? null;
         }
         let decrypted_data = this.decryptAndConvertToObject(data)
         // console.log(`decrypted data is ${decrypted_data} and the key is key ${key}` );
-        return decrypted_data[key];
+        return decrypted_data[key] ?? null;
     }
 
     remove(key:string): void {

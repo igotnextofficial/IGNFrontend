@@ -7,7 +7,8 @@ import { SessionWithMenteeDataType } from '../types/DataTypes';
 
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
+import { formatDate } from '../utils/SessionsDates';
+ 
 
 
 export default function CardContentComponent({session} : { session:SessionWithMenteeDataType}) {
@@ -27,7 +28,7 @@ export default function CardContentComponent({session} : { session:SessionWithMe
           <Grid container sx={{padding:"8px 10px"}} spacing={4} justifyContent={'center'} alignItems={"center"}>
             <Grid item xs={2}> <ScheduleIcon  sx={{color:"white",fontSize:30}}/></Grid>
             
-            <Grid item xs={10}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${ dayjs(session.start_time).format('dddd MMM D [@] hh:mm A')} `}</Typography></Grid>
+            <Grid item xs={10}><Typography variant='subtitle2' sx={{color:"white", fontSize:"1.3em"}}>{`${ formatDate(session.start_time) } `}</Typography></Grid>
          </Grid>
           </Box>
           <img src={session.mentee?.profile_photo_path}  alt=""  style={styles.image}/>

@@ -101,11 +101,13 @@ const MainApplication: React.FC = () => {
 
               <Route path='/compose-article' element={<ComposeArticle />} />
               <Route path='/edit-article/:article_id' element={<EditArticle />} />
-            </Route>
 
+           
+            </Route>
+            <Route path='/register-mentor' element={<RegisterMentor />} />
             {/* Routes that require admin role */}
-            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} grantedAccess={[Roles.ADMIN]} />}>
-              <Route path='/register-mentor' element={<RegisterMentor />} />
+            <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} />}>
+              
               <Route path='/admin-dashboard' element={<Dashboard />} />
             </Route>
 

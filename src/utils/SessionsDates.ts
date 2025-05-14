@@ -1,14 +1,25 @@
 import {MenteeDataType} from '../types/DataTypes'
 
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const formatDate = (date:Date) => {
-    return dayjs(date).format('dddd MMM D [@] hh:mm A');
-}
+
+
+export const formatDate = (date: Date | string) => {
+    const userTimezone = dayjs.tz.guess();
+  
+    // Fallback to UTC if guessing fails
+    const safeTimezone = userTimezone || 'UTC';
+  
+    return dayjs(date)
+      .tz(safeTimezone)
+      .format('dddd MMM D [@] hh:mm A z');
+  };
 export const getUpcomingSessionWithinMax = (mentee:MenteeDataType,max:number):MenteeDataType | null => { // export this function
     const today = dayjs()
     const maximumDate = dayjs().add(max,'day')

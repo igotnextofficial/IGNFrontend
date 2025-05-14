@@ -13,7 +13,7 @@ const handleDecline = (id: string) => { }
 
 const RequestMenteeComponent = ({ mentor }: { mentor: MentorDataType }) => {
     const { user, updateUser, accessToken } = useUser()
-    const { get, post, put } = useHttp();
+    const { get, post, put } = useHttp(accessToken);
     const queryClient = useQueryClient();
 
     const { data: pendingMentees = [] } = useQuery({
@@ -23,13 +23,14 @@ const RequestMenteeComponent = ({ mentor }: { mentor: MentorDataType }) => {
             const headers = { Authorization: `Bearer ${accessToken}` }
             const response = await get(url, { headers });
             if (response !== null) {
-                let pending_mentees_ids = response.data.map((mentee: MenteeDataType) => {
+                let pending_mentees_ids = response.data['data'].map((mentee: MenteeDataType) => {
                     return {"id":mentee.mentee_id};
                 });
 
                 const pending_mentees = await post(`${APP_ENDPOINTS.USER.BATCH}`, {data:pending_mentees_ids}, {headers});
                 if (pending_mentees !== null) {
-                    return pending_mentees.data as MenteeDataType[];
+                    console.log(`pending mentees are ${JSON.stringify(pending_mentees,null,2)}`);
+                    return pending_mentees.data.data as MenteeDataType[];
                 }
             }
             return [];
@@ -53,6 +54,7 @@ const RequestMenteeComponent = ({ mentor }: { mentor: MentorDataType }) => {
             return updatedUser as MentorDataType;
         },
         onSuccess: (updatedUser) => {
+            console.log(`updated user is ${JSON.stringify(updatedUser,null,2)}`);
             updateUser(updatedUser);
             queryClient.invalidateQueries({ queryKey: ['pendingMentees', mentor.id] });
         }

@@ -7,7 +7,7 @@ import {List,ListItem,ListItemText,ListItemAvatar,Avatar } from "@mui/material"
 
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Link } from 'react-router-dom';
- 
+import { formatDate } from '../utils/SessionsDates';
 
 
 export default function  ListContentComponent({session} : {session: SessionWithMenteeDataType}) {
@@ -22,7 +22,7 @@ export default function  ListContentComponent({session} : {session: SessionWithM
             <ScheduleIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={`${session.mentee.fullname}`} secondary={ `${session.start_time}`} />
+        <ListItemText primary={`${session.mentee.fullname}`} secondary={ `${formatDate(session.start_time)}`} />
       </ListItem>
        
         </List> 

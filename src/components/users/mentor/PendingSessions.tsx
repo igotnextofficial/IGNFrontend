@@ -13,7 +13,9 @@ import { APP_ENDPOINTS } from "../../../config/app";
 const SessionCard = ({ session,callback }: { session: SessionWithMenteeDataType,callback:(action: 'approve' | 'deny', session: SessionWithMenteeDataType) => void }) => {
     const mentee = session.mentee;
     if (!mentee) return null;
-  
+    useEffect(()=>{
+        console.log(`the session is that came in is ${JSON.stringify(session,null,2)}`)
+    },[session])
     return (
       <Box>
         <ListContentComponent session={session} />
@@ -23,7 +25,7 @@ const SessionCard = ({ session,callback }: { session: SessionWithMenteeDataType,
             color="success"
             onClick={() => callback( 'approve', session)}
           >
-            Approve
+            Approve 
           </Button>
           <Button 
             variant="contained" 
@@ -56,9 +58,14 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
         if(!sessions.length){
             return;
         }
+        console.log('Raw sessions data:', sessions);
         setPendingSessions(sessions.filter((session:SessionWithMenteeDataType)=>session.status === 'pending'))
     },[sessions])
 
+    useEffect(()=>{
+        console.log('Pending sessions:', pendingSessions);
+        console.log('First session start_time:', pendingSessions[0]?.start_time);
+    },[pendingSessions])
  
 
     const handleSessionAction = async (  action: 'approve' | 'deny', session:SessionWithMenteeDataType) => {
@@ -164,7 +171,7 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
                 <Grid container spacing={2}>
                     {pendingSessions.map((session:SessionWithMenteeDataType) => (
                         <Grid item key={session.id} xs={12} sm={6} md={4}>
-              
+             
                             <SessionCard session={session}  callback={handleSessionAction} />                         
                         </Grid>
                     ))}

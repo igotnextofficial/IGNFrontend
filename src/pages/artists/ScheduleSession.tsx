@@ -9,7 +9,8 @@ import dayjs from 'dayjs';
 import { useErrorHandler } from "../../contexts/ErrorContext"
 import { APP_ENDPOINTS } from "../../config/app"
 import PaymentForm from "../../components/PaymentForm" // Moved payment form to separate component
-
+import useHttp from "../../customhooks/useHttp"
+import formatPrice from "../../utils/formatPrice"
 const ScheduledSuccess = () => {
     return (
         <>
@@ -77,7 +78,7 @@ const SessionPaymentForm = ({
             <Typography sx={{ fontWeight: 500 }}>
               Price:
               <span style={{ fontWeight: 400 }}>
-                {product?.price}
+                { formatPrice(product?.price)}
               </span>
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
@@ -100,7 +101,7 @@ const SessionPaymentForm = ({
   };
   
 
-const Scheduler = ({ currentMentor }: { currentMentor: MentorDataType | null }) => {
+const Scheduler = ({ currentMentor,productPayment }: { currentMentor: MentorDataType | null,productPayment:string }) => {
     return (
         <>
             <Typography sx={{ paddingTop: 2, paddingBottom: 2 }} variant="h4">
@@ -113,20 +114,43 @@ const Scheduler = ({ currentMentor }: { currentMentor: MentorDataType | null }) 
                 />
                 <img 
                     style={{ width: "100%", border: "2px solid #ecdb22" }} 
-                    src={currentMentor?.image} 
+                    src={currentMentor?.profile_photo_path} 
                     alt={currentMentor?.fullname} 
                 />
-                <ScheduleTime />
+                <ScheduleTime productPayment={productPayment} />
             </Box>
         </>
     )
 }
 
 const ScheduleSession = () => {
-    const { user } = useUser()
+    const { user,accessToken } = useUser()
+    const { get } =  useHttp(accessToken)
     const [currentMentor, setCurrentMentor] = useState<MentorDataType | null>(null)
     const [scheduledSuccessfully, setScheduledSuccessfully] = useState<boolean>(false)
     const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false)
+    const [productPayment, setProductPayment] = useState<string>("")
+
+    useEffect(() => {
+      const getProductPayment = async () => {
+        try {
+        
+            if (!user) return;
+            const url = APP_ENDPOINTS.PAYMENT.RETRIEVE_PRODUCT_PAYMENT.replace(':userId',user?.id  )
+            const response = await get(url)
+            const product_payment_id = response.data[0].id ?? ""
+            if(product_payment_id.length > 0){
+                setProductPayment( product_payment_id)
+                setPaymentCompleted(true);
+            }
+        } catch (error) {
+            console.log(`error in the get product payment is ${error}`)
+        }
+        
+      }
+      getProductPayment()
+    }, [])
+
 
     useEffect(() => {
         if (!user) return;
@@ -163,7 +187,7 @@ const ScheduleSession = () => {
             {scheduledSuccessfully ? (
                 <ScheduledSuccess />
             ) : paymentCompleted ? (
-                <Scheduler currentMentor={currentMentor} />
+                <Scheduler currentMentor={currentMentor} productPayment={productPayment} />
             ) : (
                 <SessionPaymentForm 
                     currentMentor={currentMentor} 

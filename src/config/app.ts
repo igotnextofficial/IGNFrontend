@@ -14,10 +14,15 @@ export const Endpoints = {
     SPECIALTIES: process.env.REACT_APP_SPECIALTIES_API || "",
     GENRE: process.env.REACT_APP_GENRE_API || "",
     PAYMENT: process.env.REACT_APP_PAYMENT_API || "",
+    PAYMENT_BASE: process.env.REACT_APP_BASE_PAYMENT_API|| "",
     HOME: process.env.REACT_APP_HOME_URL || "",
    VIDEO_LINK: process.env.REACT_APP_GENERATE_MEETING_LINK_API || "",
    GOALS: process.env.REACT_APP_GOALS_API || "",
    SCHEDULE: process.env.REACT_APP_SCHEDULE_API || "",
+   CATEGORIES: process.env.REACT_APP_CATEGORIES_API || "",
+   TAGS: process.env.REACT_APP_TAGS_API || "",
+   FEATURE_SUBMISSIONS: process.env.REACT_APP_FEATURE_SUBMISSIONS || "",
+   
 }
 
 
@@ -41,11 +46,13 @@ export const APP_ENDPOINTS = {
         SPECIALTIES: Endpoints.SPECIALTIES,
         GENRE: Endpoints.GENRE,
         VIDEO_LINK: `${Endpoints.VIDEO_LINK}/meeting`,
-        GENERATE_ZOOM_LINK: `${Endpoints.SESSIONS}/generate-zoom-link`,
-        CATEGORIES: `${Endpoints.USER}/categories`,
-        TAGS: `${Endpoints.USER}/tags`,
-        CATEGORY_TAGS: `${Endpoints.USER}/categories/tags`,
-        CATEGORY_TAGS_BY_ID: `${Endpoints.USER}/categories/tags/:id`
+        GENERATE_ZOOM_LINK: `${Endpoints.SESSIONS}/generate-zoom-link/:session_id`,
+        CATEGORIES: `${Endpoints.CATEGORIES}`,
+        TAGS: `${Endpoints.TAGS}`,
+        CATEGORY_TAGS: `${Endpoints.CATEGORIES}/tags`,
+        CATEGORY_TAGS_BY_ID: `${Endpoints.TAGS}/category/:id`,
+        FEATURE_SUBMISSIONS: Endpoints.FEATURE_SUBMISSIONS
+
     },
 
     USER: {
@@ -57,8 +64,8 @@ export const APP_ENDPOINTS = {
         ADMIN: `${Endpoints.USER}/admin`,
         ALL: `${Endpoints.USER}/all`,
         BATCH: `${Endpoints.USER}/batch`,
-        LOGIN: `${Endpoints.USER}/login`,
-        LOGOUT: `${Endpoints.USER}/logout`,
+        LOGIN:  Endpoints.LOGIN,
+        LOGOUT:  Endpoints.LOGOUT,
         ARTIST: {
             BASE:`${Endpoints.USER}/role/artist`,
             FEATURED: `${Endpoints.USER}/role/artist/featured`,
@@ -113,12 +120,18 @@ export const APP_ENDPOINTS = {
         USER: `${Endpoints.PRODUCTS}/user`,
         DRAFTS: `${Endpoints.PRODUCTS}/drafts`,
         FEATURED: `${Endpoints.PRODUCTS}/category/featured`,
-        CATEGORY: `${Endpoints.PRODUCTS}/category`
+        CATEGORY: `${Endpoints.PRODUCTS}/category`,
+        STRIPE_ONBOARDING: `${Endpoints.PRODUCTS}/onboarding/:user_id`,
+        STRIPE_ONBOARDING_SUCCESS: `${Endpoints.PRODUCTS}/onboarding/success/:user_id`,
+        GENERATE_STRIPE_LINK: `${Endpoints.PRODUCTS}/stripe-account-link`,
+        WITH_STRIPE_ACCOUNT: `${Endpoints.PRODUCTS}/user/:user_id`
     },
     PAYMENT: {
         BASE:Endpoints.PAYMENT,
         PAY:`${Endpoints.PAYMENT}`,
-        CREATE_INTENT:`${Endpoints.PAYMENT}/create-payment-intent`
+        CREATE_INTENT:`${Endpoints.PAYMENT}/create-payment-intent`,
+        UPDATE_PRODUCT_PAYMENT_STATUS:`${Endpoints.PAYMENT_BASE}/product-payments/sessions/:id`,
+        RETRIEVE_PRODUCT_PAYMENT:`${Endpoints.PAYMENT_BASE}/product-payments/sessions/in-progress/:userId`        
     },
     SCHEDULE: {
         BASE: Endpoints.SCHEDULE,

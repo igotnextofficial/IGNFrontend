@@ -9,7 +9,9 @@ import timezone from 'dayjs/plugin/timezone';
 import { APP_ENDPOINTS } from "../config/app";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useUser } from "../contexts/UserContext";
-import { BookingDataType, MenteeDataType, SessionDataType } from "../types/DataTypes";
+import { BookingDataType, BookingSessionDataType, MenteeDataType, SessionDataType, UserDataType } from "../types/DataTypes";
+import { get } from "http";
+import useHttp from "../customhooks/useHttp";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -619,7 +621,8 @@ const DaysOfWeek = ({ currentDate }: { currentDate: dayjs.Dayjs }) => {
 };
 
 const Calendar = () => {
-  const { user } = useUser();
+  const { user,accessToken, updateUser} = useUser();
+  const {get} = useHttp(accessToken);
   const [currentDate, setCurrentDate] = useState(dayjs().startOf('week'));
   const [scheduledSessions, setScheduledSessions] = useState<ScheduledSession[]>([]);
   const [blockedTimes, setBlockedTimes] = useState<BlockedTime[]>([]);
@@ -627,7 +630,38 @@ const Calendar = () => {
   const [submissionData,setSubmissionData] = 
   useState<BlockedTimeSubmission | null>(null);
  
+  useEffect(() => {
+    const enrichMentor = async () => {
+        if(!user?.id) return;
+        const [availability, sessions, specialties] = await Promise.allSettled([
+            get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`),
+            get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`),
+            get(APP_ENDPOINTS.GENERIC.SPECIALTIES)
+          ]);
+    
+          const availabilityData = availability.status === 'fulfilled'
+            ? availability.value.data?.data?.available ?? false
+            : false;
+    
+          const sessionData = sessions.status === 'fulfilled'
+            ? sessions.value.data?.data ?? []
+            : [];
  
+         
+    
+          return {
+            ...user,
+            availability: availabilityData,
+            bookings: sessionData
+          };
+    }
+    enrichMentor().then((data) => {
+
+         updateUser(data as UserDataType)
+    }).catch((error) => {
+
+    })
+},[])
 
   useEffect(() => {
     if(!submissionData) return;
@@ -660,108 +694,39 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    // Simulate some scheduled sessions with the provided images
-    const mockSessions: ScheduledSession[] = [
-      {
-        startTime: dayjs().startOf('week').add(6, 'day').hour(10).format(),
-        endTime: dayjs().startOf('week').add(6, 'day').hour(11).format(),
-        menteeId: '1',
-        fullname: 'Michael B. Jordan',
-        username: 'michaelbjordan',
-        role: {
-          type: 'Actor/Producer'
-        },
-        bio: 'Award-winning actor known for roles in Black Panther, Creed, and Without Remorse. Also venturing into producing with projects that promote diversity and inclusion in Hollywood...',
-        profile_photo_path: 'https://www.mensjournal.com/.image/t_share/MTk5MzM0MzQyNDI4NzMxMzQy/michael-b.jpg',
-        previousSession: null, // First session
-        currentSessionNumber: 1,
-        maxSessionNumber: 5
-      },
-      {
-        startTime: dayjs().startOf('week').add(5, 'day').hour(14).format(),
-        endTime: dayjs().startOf('week').add(5, 'day').hour(15).format(),
-        menteeId: '2',
-        fullname: 'Emma Watson',
-        username: 'emmawatson',
-        role: {
-          type: 'Actress/Activist'
-        },
-        bio: 'British actress and activist. UN Women Goodwill Ambassador. Known for her role as Hermione Granger in Harry Potter series and advocacy for gender equality...',
-        profile_photo_path: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSojrcPyhp6yuWenklu_PPD4Bz2Le-UNHxxv4JJlmTVHPfKeWL5eUDjP5neMZ9LMvvTHoO91-XJ09zUPj5aqw4wxg',
-        previousSession: '2023-10-15',
-        currentSessionNumber: 3,
-        maxSessionNumber: 5
-      },
-      {
-        startTime: dayjs().startOf('week').add(4, 'day').hour(16).format(),
-        endTime: dayjs().startOf('week').add(4, 'day').hour(17).format(),
-        menteeId: '3',
-        fullname: 'Michael B. Jordan',
-        username: 'michaelbjordan',
-        role: {
-          type: 'Actor/Producer'
-        },
-        bio: 'Award-winning actor known for roles in Black Panther, Creed, and Without Remorse. Also venturing into producing with projects that promote diversity and inclusion in Hollywood...',
-        profile_photo_path: 'https://www.mensjournal.com/.image/t_share/MTk5MzM0MzQyNDI4NzMxMzQy/michael-b.jpg',
-        previousSession: '2023-10-20',
-        currentSessionNumber: 5,
-        maxSessionNumber: 5 // Final session
-      },
-      {
-        startTime: dayjs().startOf('week').add(4, 'day').hour(13).format(),
-        endTime: dayjs().startOf('week').add(4, 'day').hour(14).format(),
-        menteeId: '4',
-        fullname: 'Tom Holland',
-        username: 'tomholland',
-        role: {
-          type: 'Actor'
-        },
-        bio: 'Known for playing Spider-Man in the Marvel Cinematic Universe. Rising star in Hollywood with a background in theater and dance...',
-        profile_photo_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Tom_Holland_by_Gage_Skidmore.jpg/1200px-Tom_Holland_by_Gage_Skidmore.jpg',
-        previousSession: null, // First session
-        currentSessionNumber: 1,
-        maxSessionNumber: 3
-      },
-      {
-        startTime: dayjs().startOf('week').add(5, 'day').hour(11).format(),
-        endTime: dayjs().startOf('week').add(5, 'day').hour(12).format(),
-        menteeId: '5',
-        fullname: 'Zendaya',
-        username: 'zendaya',
-        role: {
-          type: 'Actress/Producer'
-        },
-        bio: 'Emmy Award-winning actress known for Euphoria and Spider-Man. Fashion icon and advocate for diversity in entertainment...',
-        profile_photo_path: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Zendaya_-_2019_by_Glenn_Francis.jpg/1200px-Zendaya_-_2019_by_Glenn_Francis.jpg',
-        previousSession: '2023-10-18',
-        currentSessionNumber: 3,
-        maxSessionNumber: 3 // Final session
-      }
-    ];
-    let mentor_confirmed_sessions:ScheduledSession[] =  [];
+    if (!user?.bookings) return;
 
-    user?.bookings.sessions.forEach((session:SessionDataType) => {
-      if(session.status !=='scheduled') return;
-      const booking = user?.bookings.find((booking:BookingDataType) => booking.id === session.booking_id);
-      const mentee = user?.mentees.find((mentee:MenteeDataType) => mentee.id ===  booking?.mentee_id);
-      const mentor_scheduled_sessions ={
-        fullname: mentee.fullname,
-        username: mentee.username,
-        profile_photo_path: mentee.profile_photo_path,
-        bio: mentee.bio,
-        role: mentee.role,
-        startTime: dayjs(session.start_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
-        endTime: dayjs(session.end_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
-        menteeId: mentee.id,
-        previousSession: dayjs(session.start_time).isBefore(dayjs()) ? dayjs(session.start_time).format('YYYY-MM-DD') : null,
-        currentSessionNumber: session.session_number,
-        maxSessionNumber: booking.session_limit
-      }
-      mentor_confirmed_sessions.push(mentor_scheduled_sessions as ScheduledSession);
-    })
- 
+    const mentor_confirmed_sessions: ScheduledSession[] = [];
+
+    user.bookings.forEach((booking:BookingSessionDataType) => {
+      if (!booking.sessions) return;
+
+      booking.sessions.forEach((session: SessionDataType) => {
+        if (session.status !== 'scheduled') return;
+
+        const mentee = user.mentees?.find((mentee: MenteeDataType) => mentee.id === booking.mentee_id);
+        if (!mentee) return;
+
+        const mentor_scheduled_session: ScheduledSession = {
+          fullname: mentee.fullname,
+          username: mentee.username,
+          profile_photo_path: mentee.profile_photo_path,
+          bio: mentee.bio,
+          role: mentee.role,
+          startTime: dayjs(session.start_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
+          endTime: dayjs(session.end_time).local().format('YYYY-MM-DDTHH:mm:ssZ'),
+          menteeId: mentee.id,
+          previousSession: dayjs(session.start_time).isBefore(dayjs()) ? dayjs(session.start_time).format('YYYY-MM-DD') : null,
+          currentSessionNumber: session.session_number,
+          maxSessionNumber: booking.session_limit
+        };
+
+        mentor_confirmed_sessions.push(mentor_scheduled_session);
+      });
+    });
+
     setScheduledSessions(mentor_confirmed_sessions);
-  }, [currentDate]);
+  }, [currentDate, user?.bookings]);
 
   const handlePrevWeek = () => {
     const newDate = currentDate.subtract(7, 'day');

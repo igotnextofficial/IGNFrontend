@@ -53,7 +53,9 @@ const LoginDisplay = () => {
         if (isValid) {
             try {
                 const response = await attemptLoginOrLogout(true, { data });
-                if (!response) {
+                if (response) {
+                    setRefreshPage(true);
+                } else {
                     updateError?.("Issue with logging in user");
                 }
             } catch (error) {

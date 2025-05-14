@@ -7,6 +7,7 @@ import { useUser } from '../../../contexts/UserContext';
 import axios from 'axios';
 import NoDataAvailable from '../../../utils/NoDataAvailable';
 import { APP_ENDPOINTS } from '../../../config/app';
+import useHttp from '../../../customhooks/useHttp';
 import { useMentors } from '../../../customhooks/useMentors';
 const loadData = async () => {
     try{
@@ -18,18 +19,28 @@ const loadData = async () => {
     }        
 }
 const ListMentors = () => {
-    const { mentors } = useMentors();
+    // const { mentors } = useMentors();
+    const {get} = useHttp();    
+    const [mentors,setMentors] = useState<MentorDataType[]>([]);
     const [response,setResponse] = useState<httpDataObject | null>(null);
 
   
     useEffect(() => {
-    
+        const loadMentors = async () => {
+            const response = await get(APP_ENDPOINTS.USER.MENTORS);
+            if (response !== null && response.data !== null){
+             
+               return response.data['data']
+            }
+
+            return []
+        }
             console.log("Loading mentors")
             console.log(mentors)
-        let data = loadData().then(response => {
-            if  (!response || response === null){return []}
-      
-            setResponse(response.data)
+        let data = loadMentors().then(data => {
+            console.log("response in fetch ",data)
+            setMentors( data )
+       
         })
    
     },[])

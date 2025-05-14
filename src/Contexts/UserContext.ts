@@ -11,9 +11,11 @@ export interface userContextType{
     attemptLoginOrLogout: (login:boolean,data?:httpDataObject,) => Promise<boolean>,
     registerUser: (data:httpDataObject) => Promise<boolean>,
     accessToken: string,
-    loading?:boolean
+    loading?:boolean,
+    updateManualLoading: (isLoading:boolean) => void,
     getUserRole: () => string
 }
+
 export const UserContext = createContext<userContextType>({
     isLoggedin: false,
     user:  null,
@@ -30,7 +32,8 @@ export const UserContext = createContext<userContextType>({
     accessToken: "",
     getUserRole: () => {
         return ""
-    }
+    },
+    updateManualLoading: () => {}
 });
 
 export const useUser = () => {

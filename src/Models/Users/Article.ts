@@ -35,8 +35,8 @@ class Article{
     static readonly ACCESS_TOKEN: string = "accessToken";
 
     static readonly RANGE_LIMITS = {
-        TITLE:{MIN: 5,MAX: 50},
-        CONTENT:{MIN:10, MAX:2000}
+        TITLE:{MIN: 5,MAX: 200},
+        CONTENT:{MIN:10, MAX:4000}
     }
     constructor(){
         this.endpoint = `https://${process.env.REACT_APP_ARTICLE_API_URI}/articles`;

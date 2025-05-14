@@ -9,7 +9,10 @@ import { useTheme } from '@mui/material/styles';
 import { ArticleDataType } from "../../types/DataTypes";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 import ArticleCard from './ArticleCard';
-
+import useHttp from "../../customhooks/useHttp";
+import { APP_ENDPOINTS } from "../../config/app";
+import CircularImage from "../../utils/CircularImage";
+import LoadingComponent from "../../components/common/LoadingComponent";
 const ArticlePageComponent = () => {
     const { article_id } = useParams();
     const navigate = useNavigate();
@@ -61,8 +64,19 @@ const ArticlePageComponent = () => {
 
     const ReadArticle = () => {
         const { article } = useContext(ArticleContext);
+        
         const [currentArticle, setCurrentArticle] = useState<ArticleDataType | null>(null);
         const [article_date, setDate] = useState("");
+        const [isLoading, setIsLoading] = useState( true);
+        const {get} = useHttp("");
+        
+  
+
+        useEffect(() => {
+            if (currentArticle?.author.id) {
+                setIsLoading(false);
+            }
+        }, [currentArticle?.author.id]);
 
         useEffect(() => {
             if (article) {
@@ -79,26 +93,45 @@ const ArticlePageComponent = () => {
             }
         }, [article]);
 
-        return currentArticle !== null ? (
+      
+
+        return isLoading ? <LoadingComponent /> : currentArticle !== null ? (
+ 
             <Box>
-                <Grid container>
-                    <Grid item md={4} alignContent={'center'}>
-                        <Typography variant="h3" sx={styles.title}>{currentArticle.title}</Typography>
-                        <span style={styles.seperator} />
-                        <Typography variant="subtitle1" sx={styles.authorDateContainer}>
-                            Written By: {currentArticle.author.fullname} | {article_date}
-                        </Typography>
-                    </Grid>
-                    <Grid item md={8}>
-                        <img src={currentArticle.image_url} alt={currentArticle.title} style={styles.image} />
-                    </Grid>
-                </Grid>
+            <Grid container spacing={4} alignItems="center">
+  {/* Left Section */}
+  <Grid item xs={12} md={4}>
+    <Box display="flex" flexDirection="column" alignItems="center" textAlign="center">
+      <Typography variant="h3" sx={styles.title}>
+        {currentArticle.title}
+      </Typography>
+      <span style={styles.seperator} />
+      <CircularImage image={currentArticle.author.profile_photo_path || ""} size={80} />
+      <Typography variant="subtitle1" sx={styles.authorDateContainer}>
+        Written By: {currentArticle.author.fullname} | {article_date}
+      </Typography>
+    </Box>
+  </Grid>
+
+  {/* Right Section */}
+  <Grid item xs={12} md={8}>
+    <Box display="flex" justifyContent="center">
+      <img
+        src={currentArticle.image_url}
+        alt={currentArticle.title}
+        style={styles.image}
+      />
+    </Box>
+  </Grid>
+</Grid>
                 <Box 
                     className="articleContent" 
                     sx={{ ...styles.content, padding: theme.spacing(3) }} 
                     dangerouslySetInnerHTML={{ __html: currentArticle.content }} 
                 />
+                
             </Box>
+         
         ) : null;
     };
 
@@ -196,6 +229,7 @@ const styles = {
         fontFamily: "Lato, sans-serif",
         fontStyle: 'italic',
     }
+    
 };
 
 export default ArticlePageComponent;

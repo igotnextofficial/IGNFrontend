@@ -22,7 +22,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           transform: 'translateY(-4px)'
         }
       }}
-      onClick={() => navigate(`/article/${article.id}`)}
+      onClick={() => navigate(`/articles/${article.category}/${article.id}`)}
     >
       <CardMedia
         component="img"
@@ -58,14 +58,14 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           {article.title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-          <Typography variant="body2" color="text.secondary">
-            By {article.author.fullname}
-          </Typography>
+         <Typography variant="body2" color="text.secondary">
+            By: {article.author.fullname}
+          </Typography> 
           <Typography variant="body2" color="text.secondary" sx={{ mx: 1 }}>
             •
-          </Typography>
+          </Typography> 
           <Typography variant="body2" color="text.secondary">
-            {new Date(article.published).toLocaleDateString()}
+            {article.created_at ? "Published: "+ new Date(article.created_at).toLocaleDateString() : ''}
           </Typography>
         </Box>
       </CardContent>

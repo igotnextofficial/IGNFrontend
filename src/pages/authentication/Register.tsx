@@ -6,17 +6,16 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { keyframes } from '@mui/system';
 
 import Copyright from '../../components/Copyright';
-import IGNButton from '../../components/Button';
+ 
 import { useUser } from '../../contexts/UserContext';
-import { useErrorHandler } from '../../contexts/ErrorContext';
+ 
 import { Navigate } from 'react-router-dom';
-import IgnFormGenerate from '../../components/IgnFormGenerate';
-import { RegisterFormStructure } from '../../formstructures/RegisterFormStructure';
-import FormDataProvider from '../../providers/FormDataProvider';
+ 
 import User from '../../models/users/User';
-import { useFormDataContext } from '../../contexts/FormContext';
+ 
 import LoadingComponent from "../../components/common/LoadingComponent";
-import { Roles } from '../../types/Roles';
+ 
+import RegisterForm from '../../forms/RegisterForm';
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -31,9 +30,9 @@ const fadeIn = keyframes`
 const user = new User();
 
 const RegisterDisplay = () => {
-    const { user, isLoggedin, registerUser, loading } = useUser();
-    const { data, isValid } = useFormDataContext();
-    const { updateError } = useErrorHandler();
+    const { user, isLoggedin, loading } = useUser();
+ 
+ 
     const [refreshPage, setRefreshPage] = React.useState<boolean>(false);
 
     useEffect(() => {
@@ -41,25 +40,7 @@ const RegisterDisplay = () => {
             setRefreshPage(true);
         }
     }, [isLoggedin, user]);
-
-    const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        if (isValid) {
-            try {
-                data.role = Roles.MENTEE; // default role to mentee
-                await registerUser({ data });
-                // If we get here, registration was successful
-            } catch (error) { 
-                console.error("Registration error:", error);
-                // Handle the error message
-                if (error instanceof Error) {
-                    updateError?.(error.message);
-                } else {
-                    updateError?.("An error occurred during registration");
-                }
-            }
-        }
-    }
+ 
 
     const theme = createTheme({
         palette: {
@@ -192,14 +173,34 @@ const RegisterDisplay = () => {
 
                     {/* Right side - Register Form */}
                     <Slide direction="left" in timeout={800}>
-                        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                            <Container maxWidth="sm">
+                        <Grid 
+                            item 
+                            xs={12} 
+                            sm={8} 
+                            md={5} 
+                            component={Paper} 
+                            elevation={6} 
+                            square
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}
+                        >
+                            <Container 
+                                maxWidth="sm" 
+                                sx={{
+                                    flex: 1,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
                                 <Box
                                     sx={{
                                         my: 8,
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
+                                        flex: 1,
                                     }}
                                 >
                                     <Fade in timeout={1000}>
@@ -235,55 +236,24 @@ const RegisterDisplay = () => {
                                         sx={{ 
                                             width: '100%',
                                             animation: `${fadeIn} 0.8s ease-out 0.6s both`,
+                                            flex: 1,
+                                            display: 'flex',
+                                            flexDirection: 'column',
                                         }}
                                     >
-                                        <IgnFormGenerate formStructures={RegisterFormStructure} />
+                                        <RegisterForm />
                                         
-                                        <IGNButton 
-                                            buttonLabel='Register'
-                                            disabled={loading}
-                                            onClick={handleSubmit}
-                                            sx={{ 
-                                                mt: 3, 
-                                                mb: 2, 
-                                                py: 1.5,
-                                                width: '100%',
-                                                textTransform: 'none',
-                                                fontSize: '1rem',
-                                                fontWeight: 600,
-                                                position: 'relative',
-                                                overflow: 'hidden',
-                                                backgroundColor: '#1d1917',
-                                                color: '#FBFAF9',
-                                                '&:hover': {
-                                                    backgroundColor: '#2d2927',
-                                                },
-                                                '&::after': {
-                                                    content: '""',
-                                                    position: 'absolute',
-                                                    top: 0,
-                                                    left: 0,
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent)',
-                                                    transform: 'translateX(-100%)',
-                                                    transition: 'transform 0.6s ease',
-                                                },
-                                                '&:hover::after': {
-                                                    transform: 'translateX(100%)',
-                                                },
-                                            }}
-                                        />
-                                        
-                                        <Grid container justifyContent="flex-end">
-                                            <Grid item>
-                                                <Link href="/login" variant="body2">
-                                                    Already have an account? Sign in
-                                                </Link>
+                                        <Box sx={{ mt: 2, mb: 'auto' }}>
+                                            <Grid container justifyContent="center">
+                                                <Grid item>
+                                                    <Link href="/login" variant="body2">
+                                                        Already have an account? Sign in
+                                                    </Link>
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
+                                        </Box>
                                         
-                                        <Copyright sx={{ mt: 5 }} />
+                                        <Copyright sx={{ mt: 'auto', mb: 4 }} />
                                     </Box>
                                 </Box>
                             </Container>
@@ -297,9 +267,9 @@ const RegisterDisplay = () => {
 
 export const Register = () => {
     return (
-        <FormDataProvider validations={user.validateRegistrationForm()} formKeys={user.validationIntialStates()}>
+        
             <RegisterDisplay />
-        </FormDataProvider>
+   
     )
 }
 

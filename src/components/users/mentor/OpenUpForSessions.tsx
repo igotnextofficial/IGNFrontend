@@ -1,17 +1,18 @@
 import { Switch,FormGroup,FormControlLabel } from "@mui/material"
 import FormDataProvider from "../../../providers/FormDataProvider"
-import {useLayoutEffect, useState } from "react"
+import {useLayoutEffect, useState, useEffect } from "react"
 import { useUser } from "../../../contexts/UserContext"
 import { sendRequest } from "../../../utils/helpers"
-import { HttpMethods } from "../../../types/DataTypes"
+import { HttpMethods, MentorDataType } from "../../../types/DataTypes"
 import { APP_ENDPOINTS } from "../../../config/app"
-
-const OpenCloseSession = () => {
+import StripeOnBoarding from "./StripeOnBoarding"
+const OpenCloseSession = ({user}:{user:MentorDataType}) => {
   
-    const { user,accessToken } = useUser()
+    const { accessToken } = useUser()
+    const [isVerified,setIsVerified] = useState(false)
     const [isChecked, setIsChecked] = useState(false)
     useLayoutEffect(() => {
-
+  
         if(user && 'availability' in user){
             setIsChecked(user.availability)
         }
@@ -44,10 +45,18 @@ const OpenCloseSession = () => {
     )  
 }
 
-const OpenUpForSessions = () => {
+const OpenUpForSessions = ({user}:{user:MentorDataType}) => {
+    const [isVerified,setIsVerified] = useState(false)
+    useEffect(() => {
+        if(user && 'product' in user && user.product !== null){
+            setIsVerified(user.product.stripe_account.is_verified)
+        }
+    },[user.product])
+
     return(
     <FormDataProvider>
-        <OpenCloseSession/>
+        {isVerified && <OpenCloseSession user={user}/>}
+        {user.product !== null && !isVerified && <StripeOnBoarding stripe_account_id={user.product.stripe_account_id}  />}
     </FormDataProvider>
     )
 }

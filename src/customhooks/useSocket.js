@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+/* import { useEffect } from 'react';
 import { socket } from '../socket'
 
 export const useSocket = ({isAuthenticated}) => {
     useEffect(() => {
-
+        const sockrt = null;
         try{
             if(isAuthenticated){
                 socket.connect()
@@ -23,3 +23,4 @@ export const useSocket = ({isAuthenticated}) => {
     return socket;
 }
 
+**/

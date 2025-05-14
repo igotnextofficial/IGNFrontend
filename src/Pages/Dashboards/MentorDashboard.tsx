@@ -4,7 +4,7 @@ import { BookingSessionDataType, HttpMethods, MentorDataType, SessionDataType, U
 import { useUser } from "../../contexts/UserContext"
 import { listDisplayDataType } from "../../types/DataTypes"
 import TopProfileSectionComponent from "../../helpers/TopProfileSectionComponent"
-import {Grid, Box } from "@mui/material"
+import {Grid, Box, CircularProgress } from "@mui/material"
 
 import ListMentees from "../../components/users/mentor/ListMentees"
 
@@ -20,6 +20,7 @@ import DashboardSectionBorder from "../../components/users/mentor/DashboardSecti
 import LocalStorage from "../../storage/LocalStorage"
 import useFetch from "../../customhooks/useFetch"
 import { APP_ENDPOINTS } from "../../config/app"
+import useHttp from "../../customhooks/useHttp"
  
 
 
@@ -31,40 +32,64 @@ import { APP_ENDPOINTS } from "../../config/app"
 
 
 const MentorDashboard = ()=>{
-    const {user}  = useUser()
-    const {fetchData} = useFetch()
+    const {user,accessToken, updateUser,updateManualLoading}  = useUser()
+  
+    const {get} = useHttp(accessToken);
     const [data,setData] = useState<listDisplayDataType>()
+    const [isLoading,setIsLoading] = useState(false);
     const [sessionsWithMentees,setSessionsWithMentees] = useState<SessionWithMenteeDataType[]>([])
-    useEffect(()=>{
-        const loadSpecialties = async ()=>{
-            const response = await fetchData(APP_ENDPOINTS.GENERIC.SPECIALTIES)
-          
-            if(response !== null){
-                const specialties = response.data.map((item:any)=>item.name)
-                local_storage.save("specialties",specialties)
-            }else{
-                throw new Error("issue loading specialties")
-            }
-        }
-        const local_storage = new LocalStorage();
-        if(!local_storage.hasItem("specialties")){
-              loadSpecialties().then(()=>{
-              }).catch((e)=>{
-              
-              })
-        }
-        else{
-            // console.log("specialties already loaded")
-            // console.log(local_storage.load("specialties"))
-        }  
-
-
-
-
+    useEffect(() => {
+        const enrichMentor = async () => {
+            if(!user?.id) return;
+            setIsLoading(true);
+            const [availability, sessions, specialties,stripe_account] = await Promise.allSettled([
+                get(`${APP_ENDPOINTS.SESSIONS.BASE}/${user.id}/availability`),
+                get(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${user.id}`),
+                get(APP_ENDPOINTS.GENERIC.SPECIALTIES),
+                get(APP_ENDPOINTS.PRODUCTS.WITH_STRIPE_ACCOUNT.replace(":user_id",user.id))
+              ]);
         
+              const availabilityData = availability.status === 'fulfilled'
+                ? availability.value.data?.data?.available ?? false
+                : false;
         
+              const sessionData = sessions.status === 'fulfilled'
+                ? sessions.value.data?.data ?? []
+                : [];
+
+                const stripe_account_data = stripe_account.status === 'fulfilled'
+                ? stripe_account.value.data ?? null
+                : null;
+              // really should happen on the edit profile form for a mentor
+              if (specialties.status === 'fulfilled') {
+                const local_storage = new LocalStorage();
+                const specialties_data = specialties.value.data.data.map((item: any) => item.name);
+                local_storage.save("specialties", specialties_data);
+              }
+             
+        
+              return {
+                ...user,
+                availability: availabilityData,
+                bookings: sessionData,
+                product: stripe_account_data
+              };
+        }
+        enrichMentor().then((data) => {
+    
+             updateUser(data as UserDataType)
+             setIsLoading(false);
+        }).catch((error) => {
+            setIsLoading(false);
+        })
+
+       return () => {
+            setIsLoading(false);
+        }
     },[])
     useEffect(()=>{
+        if(!user?.bookings) return;
+        console.log(`user is in mentor dashboard ${JSON.stringify(user,null,2)}`)
         if(user !== null){
             setData({
                 title:`${user?.fullname}'s Mentor Dashboard`,
@@ -73,27 +98,31 @@ const MentorDashboard = ()=>{
                 meta:`specialties: ${user.specialties.join(", ")}` 
              })
         }
-
+        
         const sessions_with_mentees_data: SessionWithMenteeDataType[] = []
         user?.bookings.forEach((booking:BookingSessionDataType)=>{
             const mentee_id = booking.mentee_id;
             const mentee = user?.mentees.find((mentee:UserDataType)=>mentee.id === mentee_id);
             booking.sessions.forEach((session:SessionDataType)=>{
                const session_data = {...session,mentee}
+               console.log(`looking at the start time ${session_data.start_time}`)
                sessions_with_mentees_data.push(session_data)
             })
         })
 
         setSessionsWithMentees(sessions_with_mentees_data);
 
-        console.log(`sessions with mentees data is ${JSON.stringify(sessions_with_mentees_data,null,2)}`)
+        updateManualLoading(false);
         // setSessionsWithMentees(sessions_with_mentees_data)
 
-    },[user])
+    },[user?.bookings])
         //needs to update schedule // maybe through zoom api not on this page.
         //end current mentorship session
         //view mentees and leave notes
 
+    useEffect(()=>{
+        console.log(`the sessions with before mentees are ${JSON.stringify(sessionsWithMentees,null,2)}`)
+    },[sessionsWithMentees])
         return  user && ( 
             <>
             <Grid container spacing={8} justifyContent={"center"}>
@@ -102,24 +131,39 @@ const MentorDashboard = ()=>{
                <Box sx={{border:"1px solid rgba(0,0,0,0.1)", padding:"8px 20px" , borderRadius:"5px",backgroundColor:"white",maxWidth:"640px"}}>
              
                        <TopProfileSectionComponent user={data}  />
-                       <OpenUpForSessions/>
+                       <OpenUpForSessions user={user as MentorDataType}/>
 
                </Box>
                }
                 </Grid>  
             <Grid item xs={12}>
                  <DashboardSectionBorder title="Upcoming Session(s)">
-                    <UpcomingSessions sessions={sessionsWithMentees} />
+                 {
+                            isLoading ?
+                            <Box sx ={{ margin:'20px'}}><CircularProgress size={30}/> </Box> :
+                            <UpcomingSessions sessions={sessionsWithMentees} />
+                        }
+                    
+             
                     </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={12}>
                  <DashboardSectionBorder title="Pending Session Requests">
-                    <PendingSessions sessions={sessionsWithMentees} />
+                 {
+                            isLoading ?
+                            <Box sx ={{ margin:'20px'}}><CircularProgress size={30}/> </Box> :
+                            <PendingSessions sessions={sessionsWithMentees} />
+                        }
+                    
                     </DashboardSectionBorder>
                 </Grid>
                 <Grid item xs={12}>
                     <DashboardSectionBorder title="Close Out Session(s)">
-                        <CloseOutSessions sessions={sessionsWithMentees} />
+                        {
+                            isLoading ?
+                            <Box sx ={{ margin:'20px'}}><CircularProgress size={30}/> </Box> :
+                            <CloseOutSessions sessions={sessionsWithMentees} />
+                        }
                     </DashboardSectionBorder>
                 </Grid>
             <Grid item xs={8}>

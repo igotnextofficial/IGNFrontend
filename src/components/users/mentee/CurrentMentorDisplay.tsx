@@ -1,10 +1,11 @@
 import React, { useEffect,useState } from "react";
-import { Box,Button} from "@mui/material";
+import { Box,Typography } from "@mui/material";
 import { MenteeDataType, MentorSessionDataType } from "../../../types/DataTypes";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import IGNButton from "../../common/IGNButton";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -81,7 +82,7 @@ const CurrentMentorDisplay = ({user}:{user:MenteeDataType}) => {
           <Box sx={{backgroundColor:"#000000"}}>
             <Box sx={{backgroundImage:`url(${user?.mentor?.profile_photo_path})`, width:"100%", height:"100dvh", maxHeight:"300px" ,backgroundSize:"cover",opacity:0.7}}></Box>
           </Box>
-         {!cannotSchedule && <Button disabled={cannotSchedule} sx={{margin:"10px 0 ", color:"white"}} variant='contained'> {cannotSchedule ? "Schedule Next Session" : <Link to="/schedule">Schedule Next Session</Link> }</Button>}
+         {!cannotSchedule && <IGNButton disabled={cannotSchedule}>{cannotSchedule ? "Schedule Next Session" : <Link to="/schedule"> <Typography sx={{color:"#FBFAF9"}}> Schedule Next Session</Typography></Link>}</IGNButton>}
          {isSessionActive() && <Box sx={styles.button_ign}><Link  to={mentorSession?.join_url|| ""} >  Join Session Now </Link></Box>} 
         {hasUpcomingSession && <Box sx={{color:"#FBFAF9",backgroundColor:"#1d1917",textAlign:"center",borderRadius:"5px" , padding:"5px 0" , margin:"10px 0"}}>Next Session: {sessionDate} </Box>}
         {pendingSession && <Box sx={{color:"#FBFAF9",backgroundColor:"#1d1917",textAlign:"center",borderRadius:"5px" , padding:"5px 0" , margin:"10px 0"}}>Waiting on Approval for Session On: {sessionDate} </Box>}

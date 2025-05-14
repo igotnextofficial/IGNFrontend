@@ -31,7 +31,7 @@ const AccountSettings = () => {
       { title: 'Logout', slug: '/logout' }
     ];
     
-    if(role === Roles.MENTEE) {
+    if(role === Roles.MENTEE && user?.mentee === null) {
       user_settings = addMenuItem(user_settings, { title: 'Find a mentor', slug: '/mentors/find-a-mentor' });
     }
     

@@ -1,7 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { HttpMethods, HttpHeaders, httpDataObject } from "../types/DataTypes";
-import { useUser } from "../contexts/UserContext";
 import { useErrorHandler } from "../contexts/ErrorContext";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext';
+import { APP_ENDPOINTS } from '../config/app';
 
 interface HttpOptions {
     method?: HttpMethods;
@@ -61,12 +64,19 @@ interface HttpResponse<T = any> {
  *   hasMedia: true
  * });
  */
-export default function useHttp() {
+export default function useHttp(initialToken?: string) {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<number | null>(null);
-    const { accessToken } = useUser();
     const { updateError } = useErrorHandler();
+
+    const { accessToken: contextToken } = useUser();
+    const tokenRef = useRef(initialToken || contextToken);
+
+    // Sync latest token into the ref
+    useEffect(() => {
+        tokenRef.current = initialToken || contextToken;
+    }, [initialToken, contextToken]);
 
     const request = useCallback(async <T = any>(
         url: string,
@@ -77,6 +87,7 @@ export default function useHttp() {
         setStatus(null);
 
         try {
+            const token = tokenRef.current;
             const {
                 method = HttpMethods.GET,
                 data,
@@ -85,15 +96,17 @@ export default function useHttp() {
                 requiresAuth = true
             } = options;
 
+             
+
             // Prepare request options
-            const requestOptions: RequestInit = {
+            const requestOptions: AxiosRequestConfig = {
                 method,
                 headers: {
                     ...headers,
-                    ...(requiresAuth && accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+                    ...(requiresAuth && token ? { Authorization: `Bearer ${token}` } : {}),
                     ...(hasMedia ? {} : { 'Content-Type': 'application/json' })
                 },
-                credentials: 'include'
+                withCredentials: true
             };
 
             // Add body for non-GET requests
@@ -103,26 +116,21 @@ export default function useHttp() {
                 
                 // Only wrap data if it's not already wrapped and not a FormData object
                 const requestData = hasMedia || isAlreadyWrapped ? data : { data };
-                requestOptions.body = hasMedia ? requestData : JSON.stringify(requestData);
+                requestOptions.data = hasMedia ? requestData : JSON.stringify(requestData);
             }
 
             // Make the request
-            const response = await fetch(url, requestOptions);
+            const response: AxiosResponse<T> = await axios({
+                url,
+                ...requestOptions
+            });
+            
             setStatus(response.status);
             
-            // Handle non-OK responses
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-            }
-
-            // Parse response
-            const responseData = await response.json();
-            
             return {
-                data: responseData,
+                data: response.data,
                 status: response.status,
-                headers: Object.fromEntries(response.headers.entries()) as HttpHeaders
+                headers: response.headers as HttpHeaders
             };
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
@@ -132,7 +140,7 @@ export default function useHttp() {
         } finally {
             setLoading(false);
         }
-    }, [accessToken, updateError]);
+    }, [updateError]);
 
     // Helper method for GET requests
     const get = useCallback(<T = any>(

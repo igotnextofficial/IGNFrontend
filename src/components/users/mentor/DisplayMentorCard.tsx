@@ -9,6 +9,7 @@ import { useUser } from '../../../contexts/UserContext';
 import { Endpoints } from '../../../config/app';
 import useHttp from '../../../customhooks/useHttp';
 import { useErrorHandler } from '../../../contexts/ErrorContext';
+import formatPrice from '../../../utils/formatPrice';
  
 
 const labels = {
@@ -20,7 +21,7 @@ const labels = {
 const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType,withoutInfo?:boolean}) => {
   const {user,accessToken}= useUser()
   const [buttonLabel, setButtonLabel] = useState(labels.default)
-  const { post } = useHttp();
+  const { post } = useHttp(accessToken);
   const { updateError } = useErrorHandler();
 
   useEffect(() => {
@@ -78,7 +79,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
     <Card sx={{ marginBottom:"3rem" }}>
       <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px",maxWidth:150, borderRadius:"5px",textAlign:'center'}}>
       <Typography sx={{ fontSize: 14, color: "#FBFAF9" }} variant="button" color="text.secondary">
-  {mentor.product.price} per session
+  {formatPrice(mentor.product.price)} per session
 </Typography>
 
       </Box>

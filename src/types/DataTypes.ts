@@ -148,8 +148,9 @@ export interface TaskDataType {
 
 
 export interface httpDataObject {
-    data:Record<string,any>,
-    errors?:string[],
+    data: Record<string, any>,
+    errors?: string[],
+    autoLogin?: boolean
 }
 
 export interface HttpHeaders {
@@ -402,6 +403,14 @@ export interface ProductDataType {
     id: string,
     name: string,
     price: number,
-    formattedPrice: string;
-    description?: string
+    formattedPrice: string,
+    description?: string,
+    stripe_account_id: string,
+    stripe_account: StripeAccountDataType,
+}
+
+export interface StripeAccountDataType {
+    id: string,
+    account_id: string,
+    is_verified: boolean,
 }

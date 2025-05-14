@@ -206,7 +206,7 @@ class User{
     
     validatingRoles(value:string){
         // let choiceList = [Roles.ARTIST,Roles.SUBSCRIBER,Roles.DEFAULT]
-        let choiceList = [Roles.ARTIST ]
+        let choiceList = [Roles.MENTOR ,Roles.MENTEE]
         return validateChoices(choiceList,value)
     }
     roleValidation(){
@@ -219,8 +219,7 @@ class User{
             'fullname': this.fullnameValidation(),
             'email':  this.emailValidation(),
             'username': this.usernameValidation(),
-            'password': this.passwordValidation(),
-            'price': this.priceValidation()
+            'password': this.passwordValidation()
         }
         return validate
     }
@@ -232,6 +231,7 @@ class User{
 
         return validate
     }
+    
 
 
     validateMentorRegistrationForm():validationObject{

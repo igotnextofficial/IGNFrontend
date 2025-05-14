@@ -165,7 +165,8 @@ const SuccessfullyClosedSessionDisplay = ({ mentee }: { mentee: MenteeDataType }
 const CloseSessionPage = () => {
     const {user} = useUser();
     const {mentee_id, session_id} = useParams();
-    const {post, put} = useHttp();
+    const {accessToken} = useUser();
+    const {post, put} = useHttp(accessToken);
     const {data} = useFormDataContext();
     const {updateError} = useContext(ErrorContext);
     const [sessionHappened, setSessionHappened] = useState(true);

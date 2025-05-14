@@ -1,5 +1,5 @@
-import React from "react";
-import { Typography, Box, Grid, Button, Stack, CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
+import { Typography, Box, Grid, Button, Stack, CircularProgress, Link } from "@mui/material";
 import { SessionWithMenteeDataType, SessionStatus } from "../../../types/DataTypes";
 import ListContentComponent from "../../../helpers/ListContentComponent";
 import { Switch, FormControlLabel } from '@mui/material';
@@ -13,14 +13,70 @@ import { APP_ENDPOINTS } from "../../../config/app";
 import useHttp from "../../../customhooks/useHttp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CardContentComponent from "../../../helpers/CardContentComponent";
-
+import { Roles } from "../../../types/Roles";
 dayjs.extend(isBetween);
+
+ 
+const ShowButton = ({ session }: { session: SessionWithMenteeDataType  }) => {
+  const { user, accessToken } = useUser();
+  const [session_ready, setSessionReady] = React.useState<boolean>(false);
+  const {get} = useHttp(accessToken);
+
+  const [url, setUrl] = React.useState<string>("");
+  
+  useEffect(() => {
+    const now = dayjs();
+    const session_start_time = dayjs(session.start_time);
+    const tenMinutesBeforeStartTime = session_start_time.subtract(10,'minutes');
+    const end_time = dayjs(session.end_time);
+    const fifteenMinutesBeforeEndtime = end_time.subtract(15,'minutes');
+    setSessionReady(now.isBetween(tenMinutesBeforeStartTime,fifteenMinutesBeforeEndtime));
+  }, [session.start_time, session.end_time]);
+
+  useEffect(() => {
+    if(session_ready && session.id) {
+      const generateZoomLink = async () => {
+        const url = `${APP_ENDPOINTS.GENERIC.VIDEO_LINK.replace(':session_id', session.id)}`;
+        const response = await get(url)        
+        if(response.status === 200) {
+          setUrl(response.data.start_url);
+        }
+      }
+      generateZoomLink();
+  
+    }
+  }, [session_ready, session.id]);
+ 
+  if (!session_ready || !url) return null;
+
+  return (
+    <Link 
+      href={url} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      sx={{ textDecoration: 'none' }}
+    >
+      <Button 
+        variant="contained" 
+        color="primary"
+        sx={{ 
+          backgroundColor: '#1d1917',
+          '&:hover': {
+            backgroundColor: '#2d2927',
+          }
+        }}
+      >
+        Join Session
+      </Button>
+    </Link>
+  );
+};
 
 const UpcomingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }) => {
   const [gridView, setGridView] = React.useState(true);
   const { accessToken } = useUser();
   const [upcomingSessions, setUpcomingSessions] = React.useState<SessionWithMenteeDataType[]>([]);
-  const { put } = useHttp();
+  const { put } = useHttp(accessToken);
   const queryClient = useQueryClient();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,16 +85,18 @@ const UpcomingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] 
 
   React.useEffect(() => {
     const upcomingConfirmedSessions: SessionWithMenteeDataType[] = [];
-    const now = dayjs().add(1,'hour');
+    const now = dayjs();
+  
 
     sessions.forEach((session) => {
-      session.start_time = dayjs(session.start_time).format('dddd MMM D [@] hh:mm A');
+      // session.start_time = dayjs(session.start_time).format('dddd MMM D [@] hh:mm A');
+      const tenMinutesFromStartTime = dayjs(session.start_time).subtract(10,'minutes');
+      const fifteenMinutesBeforeEndtime = dayjs(session.end_time).subtract(15,'minutes');
+      const validTime =  now.isBetween(tenMinutesFromStartTime,fifteenMinutesBeforeEndtime);
       
-      if (session.status === SessionStatus.SCHEDULED) {
-        const sessionDate = dayjs(session.start_time);
-        if (sessionDate.isAfter(now)) {
-          upcomingConfirmedSessions.push(session);
-        }
+      if (session.status === SessionStatus.SCHEDULED &&  validTime ) {
+        upcomingConfirmedSessions.push(session);
+        
       }
     });
 
@@ -88,10 +146,18 @@ const UpcomingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] 
             return mentee ? (
               <Grid item key={session.id} xs={12} sm={6} md={4}>
                 {gridView ? (
-                  <CardContentComponent session={session} />
+                  <Box>
+                    <CardContentComponent session={session} />
+                    <Box mt={1}>
+                      <ShowButton session={session} />
+                    </Box>
+                  </Box>
                 ) : (
                   <Box>
                     <ListContentComponent session={session} />
+                    <Box mt={1}>
+                      <ShowButton session={session} />
+                    </Box>
                     <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                       <Button 
                         onClick={() => cancelSession(session.id)}
@@ -105,6 +171,7 @@ const UpcomingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] 
                     </Stack>
                   </Box>
                 )}
+                
               </Grid>
             ) : null;
           })}

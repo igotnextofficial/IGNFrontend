@@ -12,6 +12,8 @@ import {tasksData}  from "../../data";
 import Chart from "../../components/Charts";
 import ToDo from "../../components/ToDo";
 import ListArticlesComponent from "../../components/article/ListAritclesComponent ";
+import DisplayTextEditor from "../../components/article/DisplayTextEditor";
+import EditorProvider from "../../providers/EditorProvider";
 
 
 const WriterDashboard = () => {
@@ -24,7 +26,9 @@ const WriterDashboard = () => {
             <Grid className="add-shadow" item xs={6} md={6}>
                     <DashboardSectionComponent  width={800} title="Compose Article" >
                         <></>
-                     {/* <DisplayTextEditor/> */}
+                        <EditorProvider>
+                      <DisplayTextEditor/> 
+                      </EditorProvider>
                     </DashboardSectionComponent>
                 </Grid>
 

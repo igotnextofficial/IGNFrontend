@@ -11,15 +11,16 @@ export const RegisterFormStructure: FormField[] = [
             id: "fullname",
             required: true,
             fullWidth: true,
-            variant: "outlined"
+            variant: "outlined",
+            placeholder: "Enter your fullname"
         },
         validation: {
             required: true,
             minLength: 2,
             maxLength: 50
         },
-        errorMessage: "Full name is required and must be between 2-50 characters",
-        ariaLabel: "Full Name"
+        errorMessage: "Fullname is required and must be between 2-50 characters",
+        ariaLabel: "Fullname"
     },
     {
         label: "username",
@@ -30,7 +31,8 @@ export const RegisterFormStructure: FormField[] = [
             id: "username",
             required: true,
             fullWidth: true,
-            variant: "outlined"
+            variant: "outlined",
+            placeholder: "Enter your username"
         },
         validation: {
             required: true,

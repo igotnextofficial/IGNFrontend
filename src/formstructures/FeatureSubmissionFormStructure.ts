@@ -42,89 +42,10 @@ export const FeatureSubmissionFormStructure: FormField[] = [
         ariaLabel: "Email"
     },
     {
-        label: "Artist Name",
-        visibility: true,
-        display: displayType.InputValue,
-        order: 3,
-        props: {
-            id: "artist_name",
-            required: true,
-            fullWidth: true,
-            variant: "outlined",
-            placeholder: "Enter your artist name or stage name"
-        },
-        validation: {
-            required: true,
-            minLength: 2,
-            maxLength: 50
-        },
-        errorMessage: "Artist name is required and must be between 2-50 characters",
-        ariaLabel: "Artist Name"
-    },
-    {
-        label: "Artist Type",
-        visibility: true,
-        display: displayType.DropDown,
-        order: 4,
-        props: {
-            id: "artist_type",
-            required: true,
-            fullWidth: true,
-            variant: "outlined"
-        },
-        options: [
-            "Musician",
-            "Actor",
-            "Dancer",
-            "Visual Artist",
-            "Writer",
-            "Other"
-        ],
-        validation: {
-            required: true
-        },
-        errorMessage: "Please select your artist type",
-        ariaLabel: "Artist Type"
-    },
-    {
-        label: "Genre",
-        visibility: true,
-        display: displayType.DropDown,
-        order: 5,
-        props: {
-            id: "genre",
-            required: true,
-            fullWidth: true,
-            variant: "outlined"
-        },
-        options: [
-            "Hip Hop",
-            "R&B",
-            "Pop",
-            "Rock",
-            "Electronic",
-            "Jazz",
-            "Classical",
-            "Theater",
-            "Film",
-            "Television",
-            "Contemporary",
-            "Ballet",
-            "Visual Arts",
-            "Literature",
-            "Other"
-        ],
-        validation: {
-            required: true
-        },
-        errorMessage: "Please select your genre",
-        ariaLabel: "Genre"
-    },
-    {
         label: "Bio",
         visibility: true,
         display: displayType.TextValue,
-        order: 6,
+        order: 3,
         props: {
             id: "bio",
             required: true,
@@ -144,7 +65,7 @@ export const FeatureSubmissionFormStructure: FormField[] = [
         label: "Social Media Links",
         visibility: true,
         display: displayType.TextValue,
-        order: 7,
+        order: 4,
         props: {
             id: "social_media",
             required: false,
@@ -159,7 +80,7 @@ export const FeatureSubmissionFormStructure: FormField[] = [
         label: "Portfolio Links",
         visibility: true,
         display: displayType.TextValue,
-        order: 8,
+        order: 5,
         props: {
             id: "portfolio_links",
             required: true,
