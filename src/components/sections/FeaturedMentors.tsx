@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import MentorListComponent from '../users/mentor/MentorListComponent';
 import { useMentors } from '../../customhooks/useMentors';
 
 const FeaturedMentors = () => {
   const { mentors, loading, error } = useMentors();
-
-  if (loading || error) return null; // We don't show this section if there's an error or while loading
+  useEffect(() => {
+    if (mentors) {
+      console.log('Mentors:', mentors);
+    }
+  }, [mentors]);
+  if (loading || error) return null; // We don't show this section if there's  
 
   return (
     <Box sx={{ 

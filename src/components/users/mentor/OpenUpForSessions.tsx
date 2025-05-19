@@ -49,14 +49,14 @@ const OpenUpForSessions = ({user}:{user:MentorDataType}) => {
     const [isVerified,setIsVerified] = useState(false)
     useEffect(() => {
         if(user && 'product' in user && user.product !== null){
-            setIsVerified(user.product.stripe_account.is_verified)
+            setIsVerified(user.product?.stripe_account?.is_verified)
         }
     },[user.product])
 
     return(
     <FormDataProvider>
         {isVerified && <OpenCloseSession user={user}/>}
-        {user.product !== null && !isVerified && <StripeOnBoarding stripe_account_id={user.product.stripe_account_id}  />}
+        {user.product !== null && !isVerified && <StripeOnBoarding stripe_account_id={user.product?.stripe_account_id}  />}
     </FormDataProvider>
     )
 }

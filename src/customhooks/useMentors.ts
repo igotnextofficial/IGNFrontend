@@ -24,9 +24,10 @@ export const useMentors = () => {
     useEffect(() => {
         const fetchMentors = async () => {
             try {
-                const response = await get(APP_ENDPOINTS.USER.MENTOR.BASE);
-                if (response && response.data && response.data.length > 0) {
-                    const mentorsWithProducts = response.data.map((mentor: MentorDataType) => {
+                const response = await get(APP_ENDPOINTS.USER.MENTOR.FEATURED);
+                const data = response.data['data'];
+                if (response &&  data &&  data.length > 0) {
+                    const mentorsWithProducts =  data.map((mentor: MentorDataType) => {
                         if(mentor.product === null) return {
                             ...mentor,
                             product: { ...default_product}
@@ -67,7 +68,14 @@ export const useMentors = () => {
         };
 
         fetchMentors();
-    }, [ ]);
+    }, [ get ]);
+
+    useEffect(() => {
+        if (mentors) {
+            console.log('Mentors: from hook', mentors);
+        }  
+    }
+    , [mentors]); 
 
     return { mentors, loading, error };
 }; 

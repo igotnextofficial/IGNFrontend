@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 // import ArtistListComponent from "../components/users/artist/ArtistListComponent";
 import FeaturedMentors from "../components/sections/FeaturedMentors";
 import FeatureArticleComponent from "../components/article/FeatureArticleComponent";
+import MenteeListComponent from "../components/users/mentee/MenteeListComponent";
 import AboutUsComponent from "../components/generic/AboutUsComponent";
 import ArticleProvider from '../providers/ArticleProvider';
 import { FetchMode } from '../types/ArticleFetchMode';
@@ -28,7 +29,7 @@ const Home = () => {
             <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
            
             <AboutUsComponent/>
-            {/* <ArtistListComponent/> */}
+            <MenteeListComponent/>
             <FeaturedMentors/>
 
         </>

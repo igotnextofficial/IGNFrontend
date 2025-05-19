@@ -2,25 +2,25 @@ import { Box,Avatar } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import IgnPillComponent from "../../../helpers/IgnPillComponent";
 import TextContentComponent from "../../../helpers/TextContentComponent";
-import { ArtistDataType } from "../../../types/DataTypes";
+import { ArtistDataType, MenteeDataType } from "../../../types/DataTypes";
 import { useEffect } from "react";
 import { text } from "stream/consumers";
 import { Opacity } from "@mui/icons-material";
 import { Typography } from "@mui/material";
-const DisplayArtistComponent = ({artist }: {artist:ArtistDataType}) => {
+const DisplayArtistComponent = ({mentee }: {mentee:MenteeDataType }) => {
 
     return (
         <>
-            <Link to={`profile/artist/${artist.id}`} style={styles.linkWrapper}>
+            <Link to={`profile/mentee/${mentee.id}`} style={styles.linkWrapper}>
                 <Box sx={styles.mainContainer} >
                     <Box sx={styles.container}>
-                        <Avatar className="display-image-list-ign" src={artist.profile_photo_path} alt={artist.fullname} sx={{width:250, height:250}} />
+                        <Avatar className="display-image-list-ign" src={mentee.profile_photo_path} alt={mentee.fullname} sx={{width:250, height:250}} />
                         <Box sx={styles.pillHolder}>
-                            < Typography sx={{backgroundColor:"#ebd805",padding:"5px 8px", borderRadius:"3px",textWrap:"nowrap"}} variant="subtitle1" >{artist.genre} </Typography>
+                            {/* < Typography sx={{backgroundColor:"#ebd805",padding:"5px 8px", borderRadius:"3px",textWrap:"nowrap"}} variant="subtitle1" >{'musician'} </Typography> */}
                         </Box>
                     </Box>
                     <Box>
-                        <TextContentComponent content={artist.fullname} />
+                        <TextContentComponent content={mentee.fullname} />
                     </Box>
             
                 </Box>

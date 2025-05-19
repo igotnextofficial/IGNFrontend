@@ -60,7 +60,6 @@ export const APP_ENDPOINTS = {
       
         SINGLE: `${Endpoints.USER}`,
         MENTORS: `${Endpoints.USER}/role/mentor`,
-        MENTEE: `${Endpoints.USER}/mentee`,
         ADMIN: `${Endpoints.USER}/admin`,
         ALL: `${Endpoints.USER}/all`,
         BATCH: `${Endpoints.USER}/batch`,
@@ -69,6 +68,10 @@ export const APP_ENDPOINTS = {
         ARTIST: {
             BASE:`${Endpoints.USER}/role/artist`,
             FEATURED: `${Endpoints.USER}/role/artist/featured`,
+        },
+        MENTEE: {
+            BASE:`${Endpoints.USER}/role/mentee`,
+            FEATURED: `${Endpoints.USER}/role/mentee/featured`,
         },
         MENTOR: { 
             BASE:`${Endpoints.USER}/role/mentor`,
