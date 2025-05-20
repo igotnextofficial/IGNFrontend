@@ -26,12 +26,14 @@ import DetectChange from './components/generic/DetectPageChangeComponent';
 
 import ArticleCategoryList from './pages/articles/ArticleCategoryList';
 import ArticlePageComponent from './components/article/ArticlePageComponent';
+import MentorOnboardingCompletion from './components/users/mentor/MentorOnboardingCompletion';
 import FindMentorPage from './pages/mentors/FindMentorPage';
 import BookMentorPage from './pages/mentors/BookMentorPage';
 import EditProfile from './pages/EditProfile';
 import MessageReaderReply from './pages/notes/MessageReaderReply';
 
 import ScheduleSession from './pages/artists/ScheduleSession';
+ 
 import { useErrorHandler } from './contexts/ErrorContext';
 import UserProfile from './pages/UserProfile';
 import CloseSession from './pages/mentors/CloseSession';
@@ -40,6 +42,7 @@ import { Roles } from './types/Roles';
 import FeatureSubmission from './pages/FeatureSubmission';
 import Mentors from './pages/mentors/Mentors';
 import { QueryClientProvider } from './providers/QueryClientProvider';
+ 
 
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
@@ -101,6 +104,7 @@ const MainApplication: React.FC = () => {
 
               <Route path='/compose-article' element={<ComposeArticle />} />
               <Route path='/edit-article/:article_id' element={<EditArticle />} />
+              <Route path='/mentor/complete-onboarding' element={<MentorOnboardingCompletion />} />
 
            
             </Route>

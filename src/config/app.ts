@@ -76,6 +76,7 @@ export const APP_ENDPOINTS = {
         MENTOR: { 
             BASE:`${Endpoints.USER}/role/mentor`,
             FEATURED: `${Endpoints.USER}/role/mentor/featured`,
+            ONBOARDING_COMPLETION:`${Endpoints.PAYMENT}/onboarding/success/:user_id`
           }
     },
    
