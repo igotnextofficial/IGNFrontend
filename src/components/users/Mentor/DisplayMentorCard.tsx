@@ -19,14 +19,18 @@ const labels = {
 
 }
 const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType,withoutInfo?:boolean}) => {
-  const {user,accessToken}= useUser()
+
+  const {user,accessToken}= useUser();
+  const [hasMentor, setHasMentor] = useState(false);
   const [buttonLabel, setButtonLabel] = useState(labels.default)
   const { post } = useHttp(accessToken);
   const { updateError } = useErrorHandler();
+ 
 
   useEffect(() => {
+    console.log("Mentor Data",mentor)
       if(mentor && mentor.mentees){
-
+        setHasMentor(true)
     
       const mentee = mentor.mentees.find((mentee: MenteeDataType) => mentee.id === user?.id);
       if(mentee){
@@ -74,12 +78,12 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
 
 
 
-
-  return (
+  
+  return hasMentor ? (
     <Card sx={{ marginBottom:"3rem" }}>
       <Box sx={{backgroundColor:"#1d1917",padding:"8px 10px",maxWidth:150, borderRadius:"5px",textAlign:'center'}}>
       <Typography sx={{ fontSize: 14, color: "#FBFAF9" }} variant="button" color="text.secondary">
-  {formatPrice(mentor.product.price)} per session
+  { mentor.product ? `${formatPrice(mentor?.product.price)} per session` : ''} 
 </Typography>
 
       </Box>
@@ -106,7 +110,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
               <Grid item xs={12} xl={4}> 
               <Box key={index} sx={{backgroundColor:"#1d1917", minWidth:180,padding:"8px 10px", borderRadius:"5px",textAlign:'center'}}>
               <Typography sx={{color:"#FBFAF9"}} variant="body2" color="text.secondary">
-                #{specialty}
+                #{specialty.name}
               </Typography>
               </Box>
               </Grid>
@@ -138,7 +142,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
    
       </CardActions>
     </Card>
-  );
+  ) : null;
 }
 
 

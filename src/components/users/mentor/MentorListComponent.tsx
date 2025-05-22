@@ -66,17 +66,17 @@ const MentorListComponent = ({ mentors }: MentorListComponentProps) => {
                 </Typography>
               </Box>
 
-              <Box sx={{ mb: 2 }}>
+              {/* <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle2" color="primary" gutterBottom>
                   {mentor.availability ? 'Available Now' : 'Not Available'}
                 </Typography>
-              </Box>
+              </Box> */}
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                 {mentor.specialties.slice(0, 3).map((specialty) => (
                   <Chip 
-                    key={specialty} 
-                    label={specialty} 
+                    key={specialty.id} 
+                    label={specialty.name} 
                     size="small"
                     sx={{
                       bgcolor: 'black',

@@ -86,7 +86,7 @@ const DisplaySearchField = ({ byCategory = false }) => {
         let mentorListSet: Set<MentorDataType> = new Set();
         mentors?.filter((mentor) => {
             let hasSpecialty = mentor.specialties.some((specialty) => { 
-                return value.map(v  => v.toLowerCase()).includes(specialty.toLocaleLowerCase());
+                return value.map(v  => v.toLowerCase()).includes(specialty.name.toLocaleLowerCase());
                })
           
 

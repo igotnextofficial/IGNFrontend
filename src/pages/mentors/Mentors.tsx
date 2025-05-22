@@ -25,7 +25,7 @@ const Mentors = () => {
     return (
       mentor.fullname.toLowerCase().includes(searchTerm) ||
       mentor.username?.toLowerCase().includes(searchTerm) ||
-      mentor.specialties.some(specialty => specialty.toLowerCase().includes(searchTerm)) ||
+      mentor.specialties.some(specialty => specialty.name.toLowerCase().includes(searchTerm)) ||
       mentor.bio?.toLowerCase().includes(searchTerm)
     );
   }) || [];

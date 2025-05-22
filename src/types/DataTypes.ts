@@ -35,7 +35,7 @@ export interface UserDataType {
 }
 export interface MentorDataType extends UserDataType {
     availability:boolean,
-    specialties:string[],
+    specialties:Record<string,any>[],
     product: ProductDataType,
     bookings:BookingSessionDataType[]
 }

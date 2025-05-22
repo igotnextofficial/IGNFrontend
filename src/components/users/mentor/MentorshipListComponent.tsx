@@ -29,7 +29,7 @@ const MentorshipListComponent = () => {
     return (
       mentor.fullname.toLowerCase().includes(searchTerm) ||
       mentor.username?.toLowerCase().includes(searchTerm) ||
-      mentor.specialties.some(specialty => specialty.toLowerCase().includes(searchTerm)) ||
+      mentor.specialties.some(specialty => specialty.name.toLowerCase().includes(searchTerm)) ||
       mentor.bio?.toLowerCase().includes(searchTerm)
     );
   });
@@ -130,8 +130,8 @@ const MentorshipListComponent = () => {
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {mentor.specialties.map((specialty) => (
                       <Chip 
-                        key={specialty} 
-                        label={specialty} 
+                        key={specialty.id} 
+                        label={specialty.name} 
                         size="small"
                         sx={{
                           bgcolor: 'black',

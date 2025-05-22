@@ -58,7 +58,7 @@ const ListMentors = () => {
             <Grid container spacing={10} sx={styles.Container}>
                 {mentors?.map((mentor, index) => (
                     <Grid  sm={12} md={6} lg={4} item sx={{ padding: "1rem" }} key={mentor.id || index}> 
-                        <DisplayMentorCard mentor={mentor} />
+                        <DisplayMentorCard mentor={mentor || null} />
                     </Grid>
                 ))}
             </Grid>

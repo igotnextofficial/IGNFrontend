@@ -28,9 +28,9 @@ const Home = () => {
 
             <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
            
+            <FeaturedMentors/>
             <AboutUsComponent/>
             <MenteeListComponent/>
-            <FeaturedMentors/>
 
         </>
     );

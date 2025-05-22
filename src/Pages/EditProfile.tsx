@@ -14,6 +14,7 @@ import { APP_ENDPOINTS } from "../config/app";
 import { MentorFormStructure } from "../formstructures/MentorFormStructure";
 import { MenteeFormStructure } from "../formstructures/MenteeFormStructure";
 import MenteeForm from "../forms/MenteeForm";
+import MentorForm from "../forms/MentorForm";
 
 
 
@@ -93,10 +94,7 @@ const Profile = () => {
             <Grid item xs={12}> <Typography variant="h4" sx={{ color: "black" ,paddingBottom:2}}> Edit {user?.fullname}'s Profile</Typography></Grid>
             {user?.role?.type === "mentee" ? <MenteeForm /> :  
             <>
-            <IgnFormGenerate formStructures={ formStructure } />
-            
-            <Button sx={{marginTop:3,marginBottom:3}} variant="contained" onClick={() => {return handleSubmit()}}>Update</Button>
-            {successfulUpdate && <Typography variant="h4">Your account has been successfully updated.</Typography>  }
+            <MentorForm />
         </>
         }
         

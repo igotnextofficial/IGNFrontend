@@ -26,7 +26,7 @@ const DisplayMentorList = ({mentor}:{mentor:MentorDataType}) => {
                             component="p"
                             variant="body2"
                         >
-                            Specialties: [{mentor.specialties.join(",")}] {/* {mentor.fullname} */}
+                            Specialties: [{mentor.specialties.map(special => special.name).join(",")}] {/* {mentor.fullname} */}
                         </Typography>
                     }
                 />
