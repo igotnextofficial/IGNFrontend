@@ -7,11 +7,15 @@ import AboutUsComponent from "../components/generic/AboutUsComponent";
 import ArticleProvider from '../providers/ArticleProvider';
 import { FetchMode } from '../types/ArticleFetchMode';
 import { useErrorHandler } from '../contexts/ErrorContext';
+import MentorshipHeroSection from '../components/generic/MentorshipHeroSection';
 import LocalStorage from '../storage/LocalStorage';
 import Loader from '../components/Loader';
+ 
+ import { useUser } from '../contexts/UserContext';
 
 const Home = () => {
     const {updateError} = useErrorHandler();
+    const {user} = useUser();
 
     useEffect(() => {
 
@@ -25,12 +29,12 @@ const Home = () => {
     },[])
     return(
         <>
-
+            {!user && <MentorshipHeroSection/>}
+            <FeaturedMentors/>
             <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
            
-            <FeaturedMentors/>
-            <AboutUsComponent/>
             <MenteeListComponent/>
+            <AboutUsComponent/>
 
         </>
     );
