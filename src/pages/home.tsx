@@ -10,6 +10,7 @@ import { useErrorHandler } from '../contexts/ErrorContext';
 import MentorshipHeroSection from '../components/generic/MentorshipHeroSection';
 import LocalStorage from '../storage/LocalStorage';
 import Loader from '../components/Loader';
+import AboutIntroSection from '../components/generic/AboutIntroSection';
  
  import { useUser } from '../contexts/UserContext';
 
@@ -34,7 +35,7 @@ const Home = () => {
             <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
            
             <MenteeListComponent/>
-            <AboutUsComponent/>
+            <AboutIntroSection/>
 
         </>
     );
