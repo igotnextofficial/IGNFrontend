@@ -13,6 +13,12 @@ import Loader from '../components/Loader';
 import AboutIntroSection from '../components/generic/AboutIntroSection';
  
  import { useUser } from '../contexts/UserContext';
+import User from '../models/users/User';
+import UserBannerCard from '../components/common/UserBannerCard';
+import { Mentor } from '../models/users/Mentor';
+import MentorListSlideShow from '../components/common/MentorListSlideshow';
+import FeaturedMentorsV2 from '../components/sections/FeaturedMentorsV2';
+import MenteeListComponentV2 from '../components/users/mentee/MenteeListComponentV2';
 
 const Home = () => {
     const {updateError} = useErrorHandler();
@@ -31,10 +37,11 @@ const Home = () => {
     return(
         <>
             {!user && <MentorshipHeroSection/>}
-            <FeaturedMentors/>
+           <FeaturedMentorsV2/>
+            {/* <FeaturedMentors/> */}
             <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
-           
-            <MenteeListComponent/>
+            <MenteeListComponentV2/>
+            {/* <MenteeListComponent/> */}
             <AboutIntroSection/>
 
         </>

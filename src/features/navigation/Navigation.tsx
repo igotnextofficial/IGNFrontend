@@ -193,7 +193,7 @@ const Navigation = () => {
   );
  
   return (
-    <AppBar position="static" color="default" elevation={3} sx={{ zIndex: 9999 }}>
+    <AppBar position="static" color="default" sx={{ zIndex: 9999 }} elevation={0}>
       <Container maxWidth="xl">
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', minHeight: '80px !important', px: { xs: 2, sm: 4, md: 6 } }}>
           <Box sx={{ backgroundColor: '#cf1d1d', display: 'flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto' }}>
@@ -343,7 +343,8 @@ const DropdownMenu = ({ children, label }: { children: ChildPage[], label: strin
             boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
             minWidth: '360px',
             overflow: 'hidden',
-            background: '#ffffff',
+            // background: '#ffffff',
+            backgroundColor: '#cf1d1d',
             border: '1px solid #e0e0e0',
             backdropFilter: 'blur(10px)',
             zIndex: 9999,

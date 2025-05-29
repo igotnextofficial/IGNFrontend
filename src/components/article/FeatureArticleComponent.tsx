@@ -182,8 +182,8 @@ const FeatureArticleComponent = () => {
   }
 
   return featuredArticle ? (
-    <Box sx={{ p: 0 }}>
-      <Typography variant="h2" sx={{ fontWeight: "bold", mb: 2 ,p:2 }}>Trending Articles</Typography>
+    <Box sx={{ p: 0,  bgcolor: '#f5f5f5', }}>
+      {/* <Typography variant="h2" sx={{ fontWeight: "bold", mb: 2 ,p:2 ,color:'#000000'}}>Trending Articles</Typography> */}
       <Grid container spacing={0}>
         {gridArticles.map((article) => (
           <Grid item xs={12} sm={6} md={3} key={article.id}>
