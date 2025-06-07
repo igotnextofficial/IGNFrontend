@@ -128,6 +128,7 @@ const RegisterForm: React.FC = () => {
                 });
             
                 if (response) {
+                    
                     navigate('/dashboard/mentee');
                 }
             } catch (error) {

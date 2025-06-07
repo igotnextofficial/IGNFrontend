@@ -13,7 +13,7 @@ const AboutIntroSection = () => {
           variant="h4"
           component="h2"
           gutterBottom
-          sx={{ fontWeight: 'bold', color: '#1d1917' }}
+          sx={{ fontWeight: 'bold', color: '#1d1917',fontSize:{sm:'2.5em', md:'5em'} }}
         >
           Bridging the Gap in Entertainment
         </Typography>

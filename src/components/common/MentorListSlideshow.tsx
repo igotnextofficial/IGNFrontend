@@ -63,11 +63,11 @@ const MentorListSlideShow = () => {
     scrollBehavior: "smooth",
     gap: 10, // tighter gap between cards
     px: 4, // optional: adjust horizontal padding
-    "&::-webkit-scrollbar": {
+    "&::webkitScrollbar": {
       display: "none", // hide scrollbar for Chrome, Safari
     },
-    "-ms-overflow-style": "none",  // hide scrollbar for IE and Edge
-    "scrollbar-width": "none",     // hide scrollbar for Firefox
+    "-msOverflowStyle": "none",  // hide scrollbar for IE and Edge
+    "scrollbarWidth": "none",     // hide scrollbar for Firefox
   }}
 >
   {mentors.map((mentor) => (

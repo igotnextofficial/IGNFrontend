@@ -33,6 +33,9 @@ import { APP_ENDPOINTS } from '../config/app';
 import CircularImage from '../utils/CircularImage';
 import { Link as RouterLink } from 'react-router-dom';
 import useHttp from '../customhooks/useHttp';
+import { useSocket } from '../customhooks/useSocket';
+
+
 
 interface AvailableTimeDisplayProps {
     chosenDate: string;
@@ -112,6 +115,7 @@ const ScheduleTime = ({productPayment}:{productPayment:string}) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { put } = useHttp(accessToken)
+    const { socket } = useSocket({ user }); 
     useEffect(() => {
         setMentor(user?.mentor);
     }, [user]);
@@ -191,6 +195,7 @@ const ScheduleTime = ({productPayment}:{productPayment:string}) => {
             
             if (response) {
                 setScheduledSuccessfully(true);
+                socket.emit('session:request',data)
                 const url = APP_ENDPOINTS.PAYMENT.UPDATE_PRODUCT_PAYMENT_STATUS.replace(':id',productPayment)
                 const productPaymentResponse = await put(url,{status:"COMPLETED",payable_id:productPayment})
                 if(productPaymentResponse.status === 200){

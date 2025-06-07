@@ -42,15 +42,31 @@ import { Roles } from './types/Roles';
 import FeatureSubmission from './pages/FeatureSubmission';
 import Mentors from './pages/mentors/Mentors';
 import { QueryClientProvider } from './providers/QueryClientProvider';
+import { useSocket } from './customhooks/useSocket';
  
 
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
+  const {isReady,socket} = useSocket({user});
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
     setCurrentUser(user);
   }, [user]);
+
+  useEffect(() => {
+    if (isReady && socket) {
+      console.log('Socket is ready:', socket);
+      // You can add any socket event listeners here if needed
+      // Example: socket.on('event_name', (data) => { console.log(data); });
+    } else {
+      console.log('Socket is not ready yet');
+    }
+   
+  }, [isReady]);
+
+
+ 
 
   /* 
   ================== Socket Connection ================== 

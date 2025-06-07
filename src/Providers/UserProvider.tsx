@@ -1,7 +1,7 @@
 import { useState, ReactNode, useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
 import useHttp from "../customhooks/useHttp";
-// import { socket } from "../socket";
+import { useSocket } from "../customhooks/useSocket";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../types/DataTypes";
 import { APP_ENDPOINTS } from "../config/app";
 import { Roles } from "../types/Roles";
@@ -9,8 +9,9 @@ import { Endpoints } from "../config/app";
 import { useErrorHandler } from "../contexts/ErrorContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { get } from "http";
-import { sendRequest } from "../utils/helpers";
+ 
 import LocalStorage from "../storage/LocalStorage";
+import { join } from "path";
 
 const storage = new LocalStorage();
 // Helper function to get JSON data
@@ -26,6 +27,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const { updateError } = useErrorHandler();
     const queryClient = useQueryClient();
     const [manualLoading, setIsLoading] = useState<boolean>(false);
+    const {socket,sendMessage } = useSocket({ user });
+  
 
     // Initialize useHttp with the current accessToken
     const { get, post } = useHttp(accessToken);
@@ -106,6 +109,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             storage.save("user", data.data);
             setAccessToken(data.access_token);
             setIsLoggedin(true);
+           
             queryClient.invalidateQueries({ queryKey: ['user'] });
         },
         onError: (error) => {
@@ -212,6 +216,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             // Only auto-login if autoLogin is true (default) or not specified
             if (variables.autoLogin !== false) {
                 setUser(data.user);
+                sendMessage('user:created',{email:data.user.email,fullname:data.user.fullname})
                 setAccessToken(data.access_token);
                 setIsLoggedin(true);
             }
