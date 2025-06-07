@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useMentors } from "../../customhooks/useMentors";
 import UserBannerCard from "../common/UserBannerCard";
-import { Box, CircularProgress, IconButton } from "@mui/material";
+import { Box, IconButton, Skeleton } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const MentorListSlideShow = () => {
@@ -26,8 +26,18 @@ const MentorListSlideShow = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <CircularProgress color="inherit" />
+      <Box sx={{ display: "flex", gap: 2, overflowX: "auto", pb: 2 }}>
+        {[...Array(4)].map((_, index) => (
+          <Box
+            key={index}
+            sx={{
+              flex: "0 0 auto",
+              width: { xs: 260, sm: 280, md: 300 },
+            }}
+          >
+            <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
+          </Box>
+        ))}
       </Box>
     );
   }
@@ -55,39 +65,38 @@ const MentorListSlideShow = () => {
       </IconButton>
 
       {/* Scrollable Card Container */}
- <Box
-  ref={scrollRef}
-  sx={{
-    display: "flex",
-    overflowX: "auto",
-    scrollBehavior: "smooth",
-    gap: 10, // tighter gap between cards
-    px: 4, // optional: adjust horizontal padding
-    "&::webkitScrollbar": {
-      display: "none", // hide scrollbar for Chrome, Safari
-    },
-    "-msOverflowStyle": "none",  // hide scrollbar for IE and Edge
-    "scrollbarWidth": "none",     // hide scrollbar for Firefox
-  }}
->
-  {mentors.map((mentor) => (
-    <Box
-      key={mentor.id}
-      sx={{
-        flex: "0 0 auto",
-        width: { xs: 260, sm: 280, md: 300 }, // adjust for tighter width
-      }}
-    >
-      <UserBannerCard
-        title={mentor.fullname}
-        subtitle={mentor.role?.type || ""}
-        image={mentor.profile_photo_path || ""}
-        specialties={mentor.specialties as { id: string; name: string }[]}
-      />
-    </Box>
-  ))}
-</Box>
-
+      <Box
+        ref={scrollRef}
+        sx={{
+          display: "flex",
+          overflowX: "auto",
+          scrollBehavior: "smooth",
+          gap: 10,
+          px: 4,
+          "&::webkitScrollbar": {
+            display: "none",
+          },
+          "-msOverflowStyle": "none",
+          "scrollbarWidth": "none",
+        }}
+      >
+        {mentors.map((mentor) => (
+          <Box
+            key={mentor.id}
+            sx={{
+              flex: "0 0 auto",
+              width: { xs: 260, sm: 280, md: 300 },
+            }}
+          >
+            <UserBannerCard
+              title={mentor.fullname}
+              subtitle={mentor.role?.type || ""}
+              image={mentor.profile_photo_path || ""}
+              specialties={mentor.specialties as { id: string; name: string }[]}
+            />
+          </Box>
+        ))}
+      </Box>
 
       {/* Right Scroll Button */}
       <IconButton
