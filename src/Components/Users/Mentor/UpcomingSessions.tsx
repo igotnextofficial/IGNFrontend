@@ -92,8 +92,8 @@ const UpcomingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] 
       // session.start_time = dayjs(session.start_time).format('dddd MMM D [@] hh:mm A');
       const tenMinutesFromStartTime = dayjs(session.start_time).subtract(10,'minutes');
       const fifteenMinutesBeforeEndtime = dayjs(session.end_time).subtract(15,'minutes');
-      const validTime =  now.isBetween(tenMinutesFromStartTime,fifteenMinutesBeforeEndtime);
-      
+      const validTime =  now.isBefore(tenMinutesFromStartTime)  ||  now.isBetween(tenMinutesFromStartTime, fifteenMinutesBeforeEndtime);
+ 
       if (session.status === SessionStatus.SCHEDULED &&  validTime ) {
         upcomingConfirmedSessions.push(session);
         

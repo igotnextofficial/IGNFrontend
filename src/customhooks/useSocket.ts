@@ -6,7 +6,6 @@ import { UserDataType } from '../types/DataTypes';
 import { SOCKET_EVENTS } from '../config/events';
 export const useSocket =  ({ user }: { user: UserDataType | null }) => {
   const [isReady, setIsReady] = useState(socket.connected);
-  useUser
   const eventQueue = useRef([] as { event: string; data: any }[]);
   const MaxEventQueueSize = 50;
 
