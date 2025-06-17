@@ -110,8 +110,9 @@ const DisplayTextEditor = ()=> {
                 const creation_url = APP_ENDPOINTS.ARTICLES.CREATE;
                 response = await post(creation_url, data);
             }
-
-            if(!response || response.status !== 200){
+            const success_responses = [200,201];
+            if(!response || !(success_responses.includes(response.status))){
+                console.log(`faliling because response is ${response} and status is ${response?.status}`);
                 throw new Error("Failed to save article draft");
           
 
