@@ -6,7 +6,7 @@ import InformationComponent from "../../helpers/InformationComponent";
 import DisplayTextEditor from "../../components/article/DisplayTextEditor";
 import { FetchMode } from "../../types/ArticleFetchMode"; // types and enums
 
-
+import EditorProvider from "../../providers/EditorProvider";
 
 const EditArticle = () => {
     const{article_id} = useParams();
@@ -27,7 +27,9 @@ const EditArticle = () => {
    
     return (
         <ArticleProvider mode={FetchMode.DRAFTS} id={article_id}>
-           <EditArticleComponent/>
+            <EditorProvider>
+                <EditArticleComponent/>
+            </EditorProvider>
         </ArticleProvider>
     )
     

@@ -7,7 +7,7 @@ const FeaturedMentors = () => {
   const { mentors, loading, error } = useMentors();
   useEffect(() => {
     if (mentors) {
-      console.log('Mentors:', mentors);
+     
     }
   }, [mentors]);
   if (loading || error) return null; // We don't show this section if there's  

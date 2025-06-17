@@ -75,10 +75,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 storage.remove("user");
                 setIsLoggedin(false);
                 // Silent fail - user will need to log in
-                // console.error('Session restoration failed:', error);
+       
             }
         };
-        console.log(`should restore session here ${storage.hasItem("user")}`)
+      
         restoreSession();
     }, [get]);
 
@@ -91,9 +91,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         };
 
         restoreUser().then((response) => {
-            console.log(` after enriching the user is ${JSON.stringify(response,null,2)}`);
+         
         }).catch((error) => {
-            console.log(`error in the use effect is ${error}`);
+           
         });
     }, [user?.id, accessToken]);
 

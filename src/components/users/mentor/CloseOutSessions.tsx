@@ -20,12 +20,12 @@ const SessionCard = ({ session, callback }: {
 }) => {
   const { accessToken } = useUser();
   const { updateError } = useErrorHandler();
-  const { post } = useHttp(accessToken);
+  const { post,put } = useHttp(accessToken);
   const queryClient = useQueryClient();
 
   const { mutate: closeOutSession, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await post(`${APP_ENDPOINTS.SESSIONS.BASE}/${session.id}/complete`, {
+      const response = await put(`${APP_ENDPOINTS.SESSIONS.BASE}/${session.id}/complete`, {
         session_id: session.id,
       }, {
         headers: {
@@ -43,7 +43,7 @@ const SessionCard = ({ session, callback }: {
       callback(false, session.id);
     }
   });
-  console.log('isPending:', isPending); 
+ 
   return (
     <Box>
       <ListContentComponent session={session} />

@@ -3,12 +3,15 @@ import { useParams,Navigate } from "react-router-dom";
 import { ArticleDataType } from "../../types/DataTypes";
 import ContentContainer from "../../utils/ContentContainer";
 import DisplayArticleDrafts from "./DisplayAritcleDrafts";
-import { Grid } from "@mui/material";
+import { Grid, Snackbar,Alert } from "@mui/material";
 import Editor from "./Editor";
 import Article from "../../models/users/Article";
 
 import { ArticleContext } from "../../contexts/ArticleContext";
 import { ErrorContext } from "../../contexts/ErrorContext";
+import useHttp from "../../customhooks/useHttp";
+import { APP_ENDPOINTS } from "../../config/app";
+
 
 const updateDraft = async(drafts:ArticleDataType[],updatedArticle:ArticleDataType) =>{
     let copiedDraft = [...drafts];
@@ -27,8 +30,9 @@ const DisplayTextEditor = ()=> {
     //shared between both composing and editing of articles
     const currentArticleContext = useContext(ArticleContext); 
      const {updateError} = useContext(ErrorContext)
+     const {post,put} = useHttp();
   
-     const [editMode,setEditMode] = useState(false)     //
+
      const [updatedArticle, setUpdatedArticle] = useState<ArticleDataType>(Article.defaultResponse );
      const [willNeedRefresh,setWillNeedRefresh] = useState(false); 
      const [successfulUpdate,setSuccessfulUpdate] = useState(true)
@@ -36,94 +40,93 @@ const DisplayTextEditor = ()=> {
      const {article_id} = useParams();
      const [articleId,setArticleId] = useState();
      const [ignore,setIgnore] = useState(true);
-     const [drafts,setDrafts] = useState<ArticleDataType[]>([])
+     const [drafts,setDrafts] = useState<ArticleDataType[]>
+     (currentArticleContext.article.drafts || []);
 
      const [intialLoad,setIntialLoad] = useState(true);
 
+    const [snackbar, setSnackbar] = useState({
+      open: false,
+      message: '',
+      severity: 'success' as 'success' | 'error'
+    });
   
-
-     useLayoutEffect(()=>{
-        if(article_id){
+    const showSnackbar = (message: string, severity: 'success' | 'error') => {
+      setSnackbar({ open: true, message, severity });
+    };
+     const [editMode,setEditMode] = useState(false)     //
+     useEffect(()=>{
+        if(article_id && article_id !== ""){
 
             let recentChanges = updatedArticle.content !== "" ? updatedArticle : currentArticleContext.article;
-            setEditMode(true)
-            setUpdatedArticle(recentChanges);
+             setUpdatedArticle(recentChanges);
             
-            if(drafts.length === 0){
-                if(currentArticleContext){
-                    setDrafts(currentArticleContext.article.drafts || [])
-                }
-            
-            }
+         
         }
 
 
        
-     }, [article_id, updatedArticle, currentArticleContext, drafts.length])
+     }, [article_id])
 
-     useEffect(()=>{
-        setIntialLoad(false)
-     },[])
-
+ 
 
 
 
      useEffect(()=>{
-        if(!intialLoad){
-            if(!successfulUpdate){
+        // if saving an article fails 
+ 
+            if(!successfulUpdate){ // if false
                 let copiedDraft = [...drafts];
                 copiedDraft.shift();
                 setDrafts(copiedDraft);
-                setSuccessfulUpdate(true)
             }
-        }
 
-     },[drafts, intialLoad, successfulUpdate])
 
-      useEffect(()=>{
-        const article = new Article();
-
-        const makeUpdate = async ()=>{
-        
-            setDrafts(await updateDraft(drafts,updatedArticle));
-            const response = editMode
-            ? await article.createOrUpdate(updatedArticle,article_id)
-            : await article.createOrUpdate(updatedArticle)
-            
-            if(response)
-            {
-             
-                setArticleId(response.data.id);
-
-                if (!editMode) {
-                    setWillNeedRefresh(true);
-                  }
-                  setSuccessfulUpdate(true)
-            }
-            else{
-                updateError("We ran into an error attempting to save your article, please try again.")
-                setSuccessfulUpdate(false)
-            } 
-              
-        }
-
-        
-        
-        if (!ignore) {
-             makeUpdate();
+        return () => {
+            // reset the state of the article context
+            setSuccessfulUpdate(true)
         }
         
-        return ()=>{
-  
-            setIgnore(true)
-        }
-        
-      },[article_id, editMode, ignore, drafts, updateError, updatedArticle])
+     },[drafts, successfulUpdate])
+
+ 
     
       
-      const handleSaveDraft = (data:ArticleDataType)=>{
-        setIgnore(false)
+      const handleSaveDraft = async (data:ArticleDataType)=>{
         setUpdatedArticle(data)
+        try{
+            console.log("Saving draft",data)
+            let response = null;
+            
+            const recent_drafts = await updateDraft(drafts,data);
+            
+            if( article_id && article_id !== ""){
+                const update_url = APP_ENDPOINTS.ARTICLES.UPDATE.replace(":id",article_id || "");
+                response = await put(update_url, data);
+              
+
+            }else{
+          
+                const creation_url = APP_ENDPOINTS.ARTICLES.CREATE;
+                response = await post(creation_url, data);
+            }
+
+            if(!response || response.status !== 200){
+                throw new Error("Failed to save article draft");
+          
+
+            }
+
+            setDrafts(recent_drafts);
+            setArticleId(response.data.id);
+            setSuccessfulUpdate(true)
+            setWillNeedRefresh(true);
+        
+        }
+        catch(e){
+              showSnackbar("We ran into an error attempting to save your article, please try again.",'error');
+             setSuccessfulUpdate(false)
+        }
 
 
     }
@@ -159,6 +162,21 @@ const DisplayTextEditor = ()=> {
                 </Grid>
             <ShowDrafts/>
             </Grid>
+
+            <Snackbar
+                    open={snackbar.open}
+                    autoHideDuration={4000}
+                    onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                  >
+                    <Alert
+                      onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+                      severity={snackbar.severity}
+                      sx={{ width: '100%' }}
+                    >
+                      {snackbar.message}
+                    </Alert>
+                  </Snackbar>
         </ContentContainer>
         </>
     )

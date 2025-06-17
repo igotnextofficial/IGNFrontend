@@ -10,7 +10,7 @@ const MentorListSlideShow = () => {
 
   useEffect(() => {
     if (mentors) {
-      console.log("Mentors:", mentors);
+    
     }
   }, [mentors]);
 

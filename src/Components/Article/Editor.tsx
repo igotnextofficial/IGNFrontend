@@ -18,6 +18,8 @@ import WordCount from "../../utils/WordCount";
 import Article from "../../models/users/Article";
 
 import { useEditorFormContext } from "../../contexts/EditorFormContext";
+ import { useUser } from "../../contexts/UserContext";
+import { Roles } from "../../types/Roles";
 
 
 import {
@@ -41,7 +43,7 @@ const RANGE_LIMITS: EditorRangeLimitsDataType = {
 const withinRange = (medium: EditorRangeSelectorDataType = "title",data:ArticleDataType,content:string) => {
   if (!(Object.keys(RANGE_LIMITS).includes(medium))) return false;
   const mediumLength =
-    medium === Article.TITLE ? data.title.length : content.length;
+    medium === Article.TITLE ? data?.title?.length : content?.length;
 
   return (
     mediumLength >= RANGE_LIMITS[medium].min &&
@@ -58,6 +60,7 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
   // const [status, setStatus] = useState("draft");
   const [errors, ] = useState({ message: "" });
   const [canPublish, setCanPublish] = useState(false);
+  const { user } = useUser()
   // const [category, setCategory] = useState<ArticleCategories | string>(
   //   ArticleCategories.FEATURED_ARTIST
   // );
@@ -68,7 +71,7 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
    *  @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered on data change.
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // 
     updateData(name, value);
   };
 
@@ -90,7 +93,10 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
   };
 
   const saveDraft = () => {
-      handleDraft(data)
+
+ 
+ 
+    handleDraft(data)
 
       //TODO: remove this functions. not needed
     //update the draft contenßt
@@ -103,6 +109,15 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
     // handleReview(status);
   };
 
+  useEffect(() => {
+    const author = {
+      fullname: user?.fullname || "anonymous",
+      id: user?.id || "",
+      role: user?.role || {id:'',type: Roles.WRITER},
+    }
+    updateData("author", author);
+    
+  },[user?.id])
   useEffect(() => {
     
   
@@ -130,9 +145,9 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
                 variant="outlined"
                 fullWidth
                 onChange={handleChange}
-                value={data.title}
+                value={data.title || ""}
               />
-              <WordCount word={data.title} maxCount={RANGE_LIMITS.title.max} />
+              <WordCount word={(data.title && data.title.length) ? data.title : ""} maxCount={RANGE_LIMITS.title.max} />
             </Box>
             <Box component="div" sx={{ margin: "30px 0" }}>
               <ReactQuill
@@ -144,7 +159,7 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
             </Box>
             <Box component={"div"} sx={{ mt: "3em" }}>
               <WordCount
-                word={contentWithoutTags}
+                word={contentWithoutTags || ""}
                 maxCount={RANGE_LIMITS.content.max}
               />
             </Box>

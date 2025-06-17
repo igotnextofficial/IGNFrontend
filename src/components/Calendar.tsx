@@ -677,9 +677,9 @@ const Calendar = () => {
         if (!response.ok) {
           throw new Error('Failed to submit data');
         }
-        console.log('Data submitted successfully');
+        
       } catch (error) {
-        console.error(error);
+       
       }
     }
 
@@ -791,7 +791,7 @@ const Calendar = () => {
 
     setSubmissionData(submissionData);
     // Here you would typically make an API call to submit the data
-    console.log('Submitting blocked times:', submissionData);
+   
 
 
     // Clear the blocked times after submission

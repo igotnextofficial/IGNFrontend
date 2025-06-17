@@ -110,7 +110,7 @@ const ScheduleTime = ({productPayment}:{productPayment:string}) => {
     const [allTime, setAllTime] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const tomorrow = dayjs().add(1,'day');
+    const tomorrow = dayjs() //.add(1,'day');
     const maxDate = tomorrow.add(14,'day');
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -199,17 +199,17 @@ const ScheduleTime = ({productPayment}:{productPayment:string}) => {
                 const url = APP_ENDPOINTS.PAYMENT.UPDATE_PRODUCT_PAYMENT_STATUS.replace(':id',productPayment)
                 const productPaymentResponse = await put(url,{status:"COMPLETED",payable_id:productPayment})
                 if(productPaymentResponse.status === 200){
-                    console.log("product payment updated successfully")
+               
                 }
                 else{
-                    console.log("product payment update failed")
+                    
                 }
             } else {
                 setError("Failed to schedule appointment. Please try again.");
             }
         } catch (err) {
             setError("An error occurred while scheduling. Please try again later.");
-            console.error("Scheduling error:", err);
+            
         } finally {
             setIsLoading(false);
         }

@@ -34,17 +34,27 @@ const ShowButton = ({ session }: { session: SessionWithMenteeDataType  }) => {
   }, [session.start_time, session.end_time]);
 
   useEffect(() => {
-    if(session_ready && session.id) {
+    
       const generateZoomLink = async () => {
-        const url = `${APP_ENDPOINTS.GENERIC.VIDEO_LINK.replace(':session_id', session.id)}`;
-        const response = await get(url)        
-        if(response.status === 200) {
-          setUrl(response.data.start_url);
+        try{
+          const url = `${APP_ENDPOINTS.GENERIC.GENERATE_ZOOM_LINK.replace(':session_id', session.id)}`;
+          const response = await get(url)        
+          if(response.status === 200) {
+            setUrl(response.data.start_url);
+          }
         }
+        catch (error) {
+          console.error('Error generating Zoom link:', error);
+
+        }
+      
       }
-      generateZoomLink();
+      if(session_ready){
+
+        generateZoomLink();
+      }
   
-    }
+    
   }, [session_ready, session.id]);
  
   if (!session_ready || !url) return null;

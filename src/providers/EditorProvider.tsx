@@ -8,16 +8,16 @@ interface EditorProviderProps {
 
 
 const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
-    const [data,setData] = useState<ArticleDataType>(Article.defaultResponse)
+    const [data,setData] = useState<ArticleDataType>({} as ArticleDataType);
 
     
-    useEffect(() => {
 
+    useEffect(() => {
+        console.log("EditorProvider data",data)
     },[data])
 
-
-
-    const updateData = (key: string, value : File | string) => {
+ 
+    const updateData = (key: string, value : File | string | Record<string,any>) => {
         if (value instanceof File){
             updateFileData(key,value)
         }
@@ -32,7 +32,7 @@ const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
         }))
       }
 
-      const updateTextData = (key: string, value:string) => {
+      const updateTextData = (key: string, value:string | Record<string,any>) => {
         setData( prev => ({
             ...prev,
             [key]:value

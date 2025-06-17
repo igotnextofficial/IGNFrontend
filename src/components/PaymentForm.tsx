@@ -113,7 +113,7 @@ const PaymentForm = ({ amount, productId, mentorId, onSuccess }: any) => {
       
     } catch (err: any) {
       showSnackbar("An unexpected error occurred. Please try again.", "error");
-      console.error("Payment error:", err);
+     
     } finally {
       setLoading(false);
     }

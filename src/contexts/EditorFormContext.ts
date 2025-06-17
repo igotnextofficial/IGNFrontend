@@ -5,7 +5,7 @@ import { ArticleDataType } from "../types/DataTypes";
 
 interface EditorFormContextState {
 
-    updateData:(key:string,value:string | File) => void
+    updateData:(key:string,value:string | File | Record<string,any>) => void
     data:ArticleDataType
 }
 

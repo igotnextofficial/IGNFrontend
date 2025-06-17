@@ -86,12 +86,12 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
              
             const mentor_action = action === 'approve' ? 'scheduled' : 'rejected'
             const session_id = session.id;
-            await handleUpdateSessionStatus(session.id,mentor_action);
+            await handleUpdateSessionStatus(session,mentor_action);
             if(action === 'approve'){ 
-                let zoomResponse = await handleUpdateSessionLink(options);
-                if(!zoomResponse.ok){
-                    throw new Error('error: cannot update a session link')
-                }
+                // let zoomResponse = await handleUpdateSessionLink(options);
+                // if(!zoomResponse.ok){
+                //     throw new Error('error: cannot update a session link')
+                // }
             }
 
             setPendingSessions(prev => 
@@ -103,11 +103,12 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
   
             setSuccess(false);
             updateError(`Failed to ${action} session because ${error}`);
+            
         }
     };
 
-    const handleUpdateSessionStatus = async(session_id: string, action: 'scheduled' | 'rejected') => {
-        const response = await fetch(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${session_id}/${action}`, {
+    const handleUpdateSessionStatus = async(session: SessionWithMenteeDataType, action: 'scheduled' | 'rejected') => {
+        const response = await fetch(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${session.id}/${action}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,13 +116,24 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
             },
             body: JSON.stringify({
                 status:action,
-                mentor_id:user?.id
+                mentor_id:user?.id,
+                options:{
+                    id:session.id,
+                    agenda:`Session between ${session.mentee?.fullname} and Mentor ${user?.fullname}`,
+                    topic:'Mentorship Chat',
+                    invitees: [
+                        {email:session.mentee?.email},
+                        {email:user?.email}
+                    ],
+                    start_time:session?.start_time 
+                }
             })
 
         });
 
 
         if (!response.ok) {
+         
             throw new Error(`Failed to ${action} session`);
         }
 

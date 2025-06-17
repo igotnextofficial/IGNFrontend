@@ -82,6 +82,8 @@ export const APP_ENDPOINTS = {
    
     ARTICLES: {
         BASE: Endpoints.ARTICLES,
+        CREATE: Endpoints.ARTICLES,
+        UPDATE: `${Endpoints.ARTICLES}/:id`,
         ALL: `${Endpoints.ARTICLES}/all`,
         SINGLE: `${Endpoints.ARTICLES}`,
         USER: `${Endpoints.ARTICLES}/user`,

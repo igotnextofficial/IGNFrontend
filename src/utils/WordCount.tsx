@@ -13,7 +13,7 @@ const WordCount: React.FC<{word: string; maxCount:number}> = ({word,maxCount}) =
             return 'safe-zone'
         }
     }
-    return (
+    return word &&  (
         <>
             <Typography className={checkStringLengthStatus()} variant="body1" component="p">{`${word.length}/${maxCount}`}</Typography>
         </>

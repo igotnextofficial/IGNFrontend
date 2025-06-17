@@ -28,7 +28,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
  
 
   useEffect(() => {
-    console.log("Mentor Data",mentor)
+   
       if(mentor && mentor.mentees){
         setHasMentor(true)
     
@@ -66,7 +66,7 @@ const DisplayMentorCard = ({mentor,withoutInfo = false} : {mentor:MentorDataType
     }
     catch(error){
         if(error instanceof Error){
-          console.error(error.message)
+       
           updateError(error.message);
         } else {
           updateError("An unexpected error occurred");
