@@ -23,6 +23,11 @@ import LoadingComponent from '../components/common/LoadingComponent';
 import { Box, Skeleton, Fade } from '@mui/material';
 import { useMentors } from '../customhooks/useMentors';
 import { useMentees } from '../customhooks/useMentees';
+import MentorshipHeroSectionV2 from '../components/generic/MentorshipHeroSectionV2';
+import FreshReadsSection from '../components/generic/FreshReadsSection';
+
+ 
+
 
 const Home = () => {
     const {updateError} = useErrorHandler();
@@ -112,10 +117,14 @@ const Home = () => {
     return (
         <Fade in={showContent} timeout={800}>
             <Box>
+                {/* <MentorshipHeroSectionV2/> */}
                 {!user && <MentorshipHeroSection/>}
                 <FeaturedMentorsV2/>
                 {/* <FeaturedMentors/> */}
-                <ArticleProvider mode={FetchMode.FEATURED}>  <FeatureArticleComponent/> </ArticleProvider>
+                <ArticleProvider mode={FetchMode.FEATURED}>  
+                    
+                    <FreshReadsSection/>
+                    <FeatureArticleComponent/> </ArticleProvider>
                 <MenteeListComponentV2/>
                 {/* <MenteeListComponent/> */}
                 <AboutIntroSection/>
@@ -127,3 +136,5 @@ const Home = () => {
 
 
 export default Home;
+
+
