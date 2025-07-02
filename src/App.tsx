@@ -16,6 +16,15 @@ import Register from './pages/authentication/Register';
 import RegisterMentor from './pages/authentication/RegisterMentor';
 import ScheduleAvailability from './pages/mentors/ScheduleAvailability';
 import About from './pages/About';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import CommunityGuidelines from './pages/CommunityGuidelines';
+import BecomeAMentor from './pages/BecomeAMentor';
+import NewsPress from './pages/NewsPress';
+import AdvertiseWithUs from './pages/AdvertiseWithUs';
+import FAQs from './pages/FAQs';
+import MentorDirectory from './pages/MentorDirectory';
+import MenteeDirectory from './pages/MenteeDirectory';
 
 import { useUser } from './contexts/UserContext';
 
@@ -93,6 +102,15 @@ const MainApplication: React.FC = () => {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
+            <Route path='/terms-of-service' element={<TermsOfService />} />
+            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+            <Route path='/community-guidelines' element={<CommunityGuidelines />} />
+            <Route path='/become-a-mentor' element={<BecomeAMentor />} />
+            <Route path='/news-press' element={<NewsPress />} />
+            <Route path='/advertise' element={<AdvertiseWithUs />} />
+            <Route path='/faqs' element={<FAQs />} />
+            <Route path='/directory/mentor' element={<MentorDirectory />} />
+            <Route path='/directory/mentee' element={<MenteeDirectory />} />
             <Route path='/profile/:role/:user_id' element={<UserProfile />} />
             <Route path='/health-check' element={<HealthCheck />} />
             <Route path='/login' element={<Login />} />

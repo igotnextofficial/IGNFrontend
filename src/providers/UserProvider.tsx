@@ -216,7 +216,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             // Only auto-login if autoLogin is true (default) or not specified
             if (variables.autoLogin !== false) {
                 setUser(data.user);
-                sendMessage('user:created',{email:data.user.email,fullname:data.user.fullname})
+                /*sendMessage('user:created',{email:data.user.email,fullname:data.user.fullname})*/
                 setAccessToken(data.access_token);
                 setIsLoggedin(true);
             }

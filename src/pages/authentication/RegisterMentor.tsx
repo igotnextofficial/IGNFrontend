@@ -1,15 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, Box, CssBaseline, Grid, Paper, Typography, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Copyright from '../../components/Copyright';
 import RegisterMentorForm from '../../forms/RegisterMentorForm';
+import { useUser } from '../../contexts/UserContext';
+import { Roles } from '../../types/Roles';
 
 const RegisterMentor = () => {
     const theme = createTheme();
+    const { user } = useUser()
+    const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || user?.role.type !== Roles.ADMIN) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  if (!user || user.role.type !== Roles.ADMIN) return null; // prevent flicker
     
-    return (
+    return  (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }} spacing={2}>
                 <CssBaseline />

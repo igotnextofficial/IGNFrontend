@@ -3,6 +3,15 @@ import Login from '../pages/authentication/Login'
 import Register from '../pages/authentication/Register';
 import FormTest from '../pages/FormTest';
 import Dashboard from '../pages/dashboards/Dashboard';
+import TermsOfService from '../pages/TermsOfService';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import CommunityGuidelines from '../pages/CommunityGuidelines';
+import BecomeAMentor from '../pages/BecomeAMentor';
+import NewsPress from '../pages/NewsPress';
+import AdvertiseWithUs from '../pages/AdvertiseWithUs';
+import FAQs from '../pages/FAQs';
+import MentorDirectory from '../pages/MentorDirectory';
+import MenteeDirectory from '../pages/MenteeDirectory';
 import { Logout } from '@mui/icons-material';
 
 
@@ -48,6 +57,60 @@ export const pages = [
     slug:'/dashboard',
     component:Dashboard,
     useProtected: true
+  
+},
+{   
+    slug:'/terms-of-service',
+    component:TermsOfService,
+    useProtected: false
+  
+},
+{   
+    slug:'/privacy-policy',
+    component:PrivacyPolicy,
+    useProtected: false
+  
+},
+{   
+    slug:'/community-guidelines',
+    component:CommunityGuidelines,
+    useProtected: false
+  
+},
+{   
+    slug:'/become-a-mentor',
+    component:BecomeAMentor,
+    useProtected: false
+  
+},
+{   
+    slug:'/news-press',
+    component:NewsPress,
+    useProtected: false
+  
+},
+{   
+    slug:'/advertise',
+    component:AdvertiseWithUs,
+    useProtected: false
+  
+},
+{   
+    slug:'/faqs',
+    component:FAQs,
+    useProtected: false
+  
+},
+{   
+    slug:'/directory/mentor',
+    component:MentorDirectory,
+    useProtected: false
+  
+},
+{   
+    slug:'/directory/mentee',
+    component:MenteeDirectory,
+    useProtected: false
   
 },
    

@@ -10,13 +10,16 @@ import {
     InputAdornment,
     IconButton,
     Paper,
+    FormControlLabel,
+    Checkbox,
+    Link,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useUser } from '../contexts/UserContext';
 import { useErrorHandler } from '../contexts/ErrorContext';
 import { Roles } from '../types/Roles';
 import IGNButton from '../components/common/IGNButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 interface FormData {
     fullname: string;
@@ -24,6 +27,7 @@ interface FormData {
     email: string;
     password: string;
     confirmPassword: string;
+    agreeToTerms: boolean;
 }
 
 interface FormErrors {
@@ -32,6 +36,7 @@ interface FormErrors {
     email?: string;
     password?: string;
     confirmPassword?: string;
+    agreeToTerms?: string;
 }
 
 const RegisterForm: React.FC = () => {
@@ -46,6 +51,7 @@ const RegisterForm: React.FC = () => {
         email: '',
         password: '',
         confirmPassword: '',
+        agreeToTerms: false,
     });
     const [errors, setErrors] = useState<FormErrors>({});
     const navigate = useNavigate();
@@ -102,15 +108,21 @@ const RegisterForm: React.FC = () => {
             isValid = false;
         }
 
+        // Terms agreement validation
+        if (!formData.agreeToTerms) {
+            newErrors.agreeToTerms = 'You must agree to the Terms of Service, Privacy Policy, and Community Guidelines to continue';
+            isValid = false;
+        }
+
         setErrors(newErrors);
         return isValid;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
@@ -289,16 +301,70 @@ const RegisterForm: React.FC = () => {
                 </Grid>
             </Grid>
 
+            <Box sx={{ mt: 2 }}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name="agreeToTerms"
+                            checked={formData.agreeToTerms}
+                            onChange={handleChange}
+                            color="primary"
+                        />
+                    }
+                    label={
+                        <Typography variant="body2">
+                            I agree to the{' '}
+                            <Link 
+                                component={RouterLink} 
+                                to="/terms-of-service" 
+                                target="_blank"
+                                color="primary"
+                                sx={{ textDecoration: 'underline' }}
+                            >
+                                Terms of Service
+                            </Link>
+                            {', '}
+                            <Link 
+                                component={RouterLink} 
+                                to="/privacy-policy" 
+                                target="_blank"
+                                color="primary"
+                                sx={{ textDecoration: 'underline' }}
+                            >
+                                Privacy Policy
+                            </Link>
+                            {' and '}
+                            <Link 
+                                component={RouterLink} 
+                                to="/community-guidelines" 
+                                target="_blank"
+                                color="primary"
+                                sx={{ textDecoration: 'underline' }}
+                            >
+                                Community Guidelines
+                            </Link>
+                        </Typography>
+                    }
+                    sx={{ 
+                        alignItems: 'flex-start',
+                        '& .MuiFormControlLabel-label': {
+                            mt: 0.5
+                        }
+                    }}
+                />
+                {errors.agreeToTerms && (
+                    <Typography variant="caption" color="error" sx={{ ml: 4, display: 'block' }}>
+                        {errors.agreeToTerms}
+                    </Typography>
+                )}
+            </Box>
+
             <IGNButton
                 type="submit"
                 loading={loading}
             >
                 Register
             </IGNButton>
-
-            <Typography variant="body2" color="text.secondary" align="center">
-                By registering, you agree to our Terms of Service and Privacy Policy
-            </Typography>
         </Paper>
     );
 };

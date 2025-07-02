@@ -25,6 +25,8 @@ import { useMentors } from '../customhooks/useMentors';
 import { useMentees } from '../customhooks/useMentees';
 import MentorshipHeroSectionV2 from '../components/generic/MentorshipHeroSectionV2';
 import FreshReadsSection from '../components/generic/FreshReadsSection';
+import HeroSection from '../components/generic/HeroSection';
+import HowItWorksSection from '../components/generic/HowItWorksSection';
 
  
 
@@ -118,7 +120,9 @@ const Home = () => {
         <Fade in={showContent} timeout={800}>
             <Box>
                 {/* <MentorshipHeroSectionV2/> */}
-                {!user && <MentorshipHeroSection/>}
+                <HeroSection/>
+                <HowItWorksSection/>
+                {/* {!user && <MentorshipHeroSection/>} */}
                 <FeaturedMentorsV2/>
                 {/* <FeaturedMentors/> */}
                 <ArticleProvider mode={FetchMode.FEATURED}>  
