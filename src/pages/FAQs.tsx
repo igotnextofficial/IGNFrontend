@@ -16,7 +16,7 @@ import { Link as RouterLink } from 'react-router-dom';
 const FAQs: React.FC = () => {
     const [expanded, setExpanded] = useState<string | false>(false);
 
-    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
 
@@ -31,7 +31,7 @@ const FAQs: React.FC = () => {
         },
         {
             question: "How do I become a mentor?",
-            answer: "To become a mentor, you need to have professional experience in music, film, fashion, or other creative industries. Contact us at  team@igotnextmagazine.com with your name, industry, bio/resume, links to your work, and why you want to mentor."
+            answer: "To become a mentor, you need to have professional experience in music, film, fashion, or other creative industries. Contact us at team@igotnextmagazine.com with your name, industry, bio/resume, links to your work, and why you want to mentor."
         },
         {
             question: "How much do mentorship sessions cost?",
@@ -47,7 +47,7 @@ const FAQs: React.FC = () => {
         },
         {
             question: "How do I contact support?",
-            answer: "For general support, email us at  support@igotnextmagazine.com. For advertising inquiries, contact advertise@igotnextmagazine.com. We typically respond within 24 hours."
+            answer: "For general support, email us at support@igotnextmagazine.com. For advertising inquiries, contact advertise@igotnextmagazine.com. We typically respond within 24 hours."
         },
         {
             question: "Is my information secure?",
@@ -64,23 +64,20 @@ const FAQs: React.FC = () => {
     ];
 
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-            <Breadcrumbs 
-                separator={<NavigateNext fontSize="small" />}
-                sx={{ mb: 3 }}
-            >
+        <Container maxWidth="lg" sx={{ py: 6 }}>
+            <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 3 }}>
                 <Link component={RouterLink} to="/" color="inherit" underline="hover">
                     Home
                 </Link>
-                <Typography color="text.primary">FAQs</Typography>
+                <Typography color="#1d1917">FAQs</Typography>
             </Breadcrumbs>
 
-            <Paper elevation={2} sx={{ p: 4, mb: 4 }}>
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700, color: 'text.primary' }}>
-                        ❓ Frequently Asked Questions
+            <Paper elevation={0} sx={{ backgroundColor: '#FBFAF9', p: 6, borderRadius: 3 }}>
+                <Box sx={{ textAlign: 'center', mb: 6 }}>
+                    <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700, color: '#1d1917' }}>
+                        Frequently Asked Questions
                     </Typography>
-                    <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 800, mx: 'auto' }}>
+                    <Typography variant="h6" color="#8f8f8f" sx={{ maxWidth: 800, mx: 'auto' }}>
                         Find answers to common questions about I Got Next Magazine and our mentorship platform.
                     </Typography>
                 </Box>
@@ -93,22 +90,18 @@ const FAQs: React.FC = () => {
                             onChange={handleChange(`panel${index}`)}
                             sx={{ 
                                 mb: 2,
-                                '&:before': {
-                                    display: 'none',
-                                },
+                                '&:before': { display: 'none' },
                                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                '&:hover': {
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                                }
+                                '&:hover': { boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }
                             }}
                         >
                             <AccordionSummary
                                 expandIcon={<ExpandMore />}
                                 sx={{
-                                    backgroundColor: expanded === `panel${index}` ? 'primary.main' : 'transparent',
-                                    color: expanded === `panel${index}` ? 'white' : 'inherit',
+                                    backgroundColor: expanded === `panel${index}` ? '#f2c85b' : 'transparent',
+                                    color: expanded === `panel${index}` ? '#1d1917' : 'inherit',
                                     '&:hover': {
-                                        backgroundColor: expanded === `panel${index}` ? 'primary.dark' : 'rgba(0,0,0,0.04)',
+                                        backgroundColor: expanded === `panel${index}` ? '#eeb82c' : 'rgba(0,0,0,0.04)'
                                     }
                                 }}
                             >
@@ -117,7 +110,7 @@ const FAQs: React.FC = () => {
                                 </Typography>
                             </AccordionSummary>
                             <AccordionDetails sx={{ backgroundColor: '#fafafa' }}>
-                                <Typography variant="body1" color="text.secondary">
+                                <Typography variant="body1" color="#8f8f8f">
                                     {faq.answer}
                                 </Typography>
                             </AccordionDetails>
@@ -126,23 +119,21 @@ const FAQs: React.FC = () => {
                 </Box>
 
                 <Box sx={{ textAlign: 'center', mt: 6, p: 4, backgroundColor: '#f8f9fa', borderRadius: 2 }}>
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: 'text.primary', mb: 3 }}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: '#1d1917', mb: 3 }}>
                         Still Have Questions?
                     </Typography>
-                    <Typography variant="body1" paragraph>
+                    <Typography variant="body1" paragraph color="#1d1917">
                         Can't find what you're looking for? Contact our support team and we'll be happy to help.
                     </Typography>
                     <Typography variant="h6" sx={{ mb: 2 }}>
-                        📧{' '}
                         <Link 
                             href="mailto:support@igotnextmagazine.com" 
-                            color="primary"
-                            sx={{ textDecoration: 'underline', fontWeight: 600 }}
+                            sx={{ textDecoration: 'underline', fontWeight: 600, color: '#f2c85b' }}
                         >
                             support@igotnextmagazine.com
                         </Link>
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="#8f8f8f">
                         We typically respond within 24 hours.
                     </Typography>
                 </Box>
@@ -151,4 +142,4 @@ const FAQs: React.FC = () => {
     );
 };
 
-export default FAQs; 
+export default FAQs;

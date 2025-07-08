@@ -59,7 +59,7 @@ const FeaturedArticle = ({ article } : {article:ArticleDataType}) => {
     : article.image_url;
 
   return article ? (
-    <Card sx={{ position: "relative", mt: 0, mb: 15 }}>
+    <Card sx={{ position: "relative", mt: 0, mb: 0 }}>
       {/* Featured Badge */}
       <Box
         sx={{

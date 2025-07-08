@@ -1,127 +1,115 @@
 import React from 'react';
-import { 
-  Search as SearchIcon, 
-  CalendarToday as CalendarIcon, 
-  TrendingUp as TrendingIcon 
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  Paper,
+  Stack
+} from '@mui/material';
+import {
+  Search as SearchIcon,
+  CalendarToday as CalendarIcon,
+  TrendingUp as TrendingIcon
 } from '@mui/icons-material';
 
 const HowItWorksSection: React.FC = () => {
   const steps = [
     {
-      icon: <SearchIcon sx={{ fontSize: '3rem', color: '#000000' }} />,
+      icon: <SearchIcon sx={{ fontSize: 32, color: '#000' }} />,
       title: 'Browse',
-      description: 'Explore mentors by mastery, skillset, or popularity to find the perfect match for your goals.'
+      description:
+        'Explore mentors by mastery, skillset, or popularity to find the perfect match for your goals.'
     },
     {
-      icon: <CalendarIcon sx={{ fontSize: '3rem', color: '#000000' }} />,
+      icon: <CalendarIcon sx={{ fontSize: 32, color: '#000' }} />,
       title: 'Book',
-      description: 'Schedule one-on-one sessions with your chosen mentor at times that work for both of you.'
+      description:
+        'Schedule one-on-one sessions with your chosen mentor at times that work for both of you.'
     },
     {
-      icon: <TrendingIcon sx={{ fontSize: '3rem', color: '#000000' }} />,
+      icon: <TrendingIcon sx={{ fontSize: 32, color: '#000' }} />,
       title: 'Grow',
-      description: 'Learn from industry experts, gain valuable insights, and accelerate your career growth.'
+      description:
+        'Learn from industry experts, gain valuable insights, and accelerate your career growth.'
     }
   ];
 
-  const containerStyle = {
-    padding: 'clamp(3rem, 8vw, 6rem) clamp(1rem, 6vw, 4rem)',
-    backgroundColor: '#f8f9fa'
-  };
-
-  const sectionStyle = {
-    maxWidth: '1200px',
-    margin: '0 auto'
-  };
-
-  const titleStyle = {
-    textAlign: 'center' as const,
-    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-    fontWeight: 'bold',
-    color: '#040404',
-    marginBottom: 'clamp(1rem, 3vw, 2rem)'
-  };
-
-  const subtitleStyle = {
-    textAlign: 'center' as const,
-    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-    color: '#666666',
-    marginBottom: 'clamp(3rem, 8vw, 5rem)',
-    maxWidth: '600px',
-    margin: '0 auto clamp(3rem, 8vw, 5rem) auto'
-  };
-
-  const stepsContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: 'clamp(2rem, 5vw, 4rem)',
-    alignItems: 'start'
-  };
-
-  const stepCardStyle = {
-    textAlign: 'left' as const,
-    padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-    backgroundColor: 'transparent',
-    transition: 'transform 0.3s ease',
-    cursor: 'pointer',
-    display: 'flex',
-    gap: 'clamp(1rem, 3vw, 1.5rem)'
-  };
-
-  const stepTitleStyle = {
-    fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
-    fontWeight: 'bold',
-    color: '#040404',
-    marginBottom: '0.5rem'
-  };
-
-  const stepDescriptionStyle = {
-    fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-    color: '#666666',
-    lineHeight: '1.6'
-  };
-
   return (
-    <section style={containerStyle}>
-      <div style={sectionStyle}>
-        <h2 style={titleStyle}>
+    <Box sx={{ backgroundColor: '#f8f9fa', py: { xs: 2, md: 2 } }}>
+      <Container maxWidth="lg">
+        <Typography
+          variant="h4"
+          component="h2"
+          align="center"
+          fontWeight="bold"
+          sx={{ mb: 2, fontSize: { xs: '2rem', md: '3rem' }, color: '#040404' }}
+        >
           How It Works
-        </h2>
-        <p style={subtitleStyle}>
+        </Typography>
+
+        <Typography
+          variant="subtitle1"
+          align="center"
+          sx={{
+            maxWidth: '600px',
+            mx: 'auto',
+            mb: { xs: 6, md: 8 },
+            fontSize: { xs: '1rem', md: '1.25rem' },
+            color: '#666666'
+          }}
+        >
           Get started with mentorship in three simple steps
-        </p>
-        
-        <div style={stepsContainerStyle}>
+        </Typography>
+
+        <Grid container spacing={6}>
           {steps.map((step, index) => (
-            <div 
+            <Grid
+              item
+              xs={12}
+              md={4}
               key={index}
-              style={stepCardStyle}
-              onMouseEnter={(e) => {
-                const target = e.currentTarget;
-                target.style.transform = 'translateY(-8px)';
-              }}
-              onMouseLeave={(e) => {
-                const target = e.currentTarget;
-                target.style.transform = 'translateY(0)';
+              sx={{
+                transition: 'transform 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-8px)'
+                }
               }}
             >
-              <div style={{ flexShrink: 0, alignSelf: 'flex-start' }}>
-                {step.icon}
-              </div>
-              <div>
-                <h3 style={stepTitleStyle}>
-                  {step.title}
-                </h3>
-                <p style={stepDescriptionStyle}>
+              <Paper
+                elevation={0}
+                sx={{
+                  backgroundColor: 'transparent',
+                  p: 3
+                }}
+              >
+                <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                  {step.icon}
+                  <Typography
+                    variant="h6"
+                    fontWeight="bold"
+                    sx={{ color: '#040404' }}
+                  >
+                    {step.title}
+                  </Typography>
+                </Stack>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontSize: { xs: '0.95rem', md: '1rem' },
+                    color: '#666666',
+                    lineHeight: 1.6
+                  }}
+                >
                   {step.description}
-                </p>
-              </div>
-            </div>
+                </Typography>
+              </Paper>
+            </Grid>
           ))}
-        </div>
-      </div>
-    </section>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 
-export default HowItWorksSection; 
+export default HowItWorksSection;

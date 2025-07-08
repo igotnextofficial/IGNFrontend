@@ -1,4 +1,6 @@
 import React from "react";
+import { Typography,useTheme,
+  useMediaQuery } from "@mui/material";
 
 const styles = {
   section: {
@@ -10,7 +12,7 @@ const styles = {
     color: "#ffffff"
   },
   container: {
-    maxWidth: "72rem",
+    width: "100%",
     margin: "0 1.5rem"
  
   },
@@ -26,15 +28,27 @@ const styles = {
 };
 
 const FreshReadsSection = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <div style={styles.section}>
       <div style={styles.container}>
-        <h2 style={styles.heading}>
-          Fresh Reads to Fuel Your Journey
-        </h2>
-        <p style={styles.paragraph}>
-          Insights, tips, and real stories from mentors and rising stars in music and entertainment.
-        </p>
+        <Typography
+          variant="h4"
+          align="center"
+          fontWeight="bold"
+          sx={{ color: '#fff', mb: 1 }}
+        >
+           Fresh Reads to Fuel Your Journey
+        </Typography>
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{ color: '#ccc', mb: 4, maxWidth: isMobile ? '100%' : '600px', mx: 'auto' }}
+        >
+            Insights, tips, and real stories from mentors and rising stars in music and entertainment.
+        </Typography>
+  
       </div>
     </div>
   );

@@ -28,6 +28,11 @@ import FreshReadsSection from '../components/generic/FreshReadsSection';
 import HeroSection from '../components/generic/HeroSection';
 import HowItWorksSection from '../components/generic/HowItWorksSection';
 
+import { Grid } from '@mui/material';
+import WhyIgnExists from '../components/generic/WhyIgnExists';
+import WhereDoYouWantToGrow from '../components/generic/WhereDoYouWantToGrow';
+import BecomeAMentorSection from '../components/generic/BecomeAMentorSection';
+
  
 
 
@@ -121,17 +126,28 @@ const Home = () => {
             <Box>
                 {/* <MentorshipHeroSectionV2/> */}
                 <HeroSection/>
-                <HowItWorksSection/>
-                {/* {!user && <MentorshipHeroSection/>} */}
-                <FeaturedMentorsV2/>
-                {/* <FeaturedMentors/> */}
+                <Grid container spacing={2} sx={{ p: 2, mb: 0 }}>
+                    <Grid item xs={12} md={6}>
+                        <HowItWorksSection/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                     <WhyIgnExists/>
+                    </Grid>
+                </Grid>
+               < WhereDoYouWantToGrow/>
                 <ArticleProvider mode={FetchMode.FEATURED}>  
-                    
                     <FreshReadsSection/>
-                    <FeatureArticleComponent/> </ArticleProvider>
-                <MenteeListComponentV2/>
+                    <FeatureArticleComponent/> 
+                </ArticleProvider>      
+                {/* {!user && <MentorshipHeroSection/>} */}
+              
+                {/* <FeaturedMentorsV2/> */}
+                {/* <FeaturedMentors/> */}
+         
+                {/* <MenteeListComponentV2/> */}
                 {/* <MenteeListComponent/> */}
                 <AboutIntroSection/>
+                  <BecomeAMentorSection/>
             </Box>
         </Fade>
     );
