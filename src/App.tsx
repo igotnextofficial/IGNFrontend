@@ -93,12 +93,13 @@ const MainApplication: React.FC = () => {
     <div style={{ 
       minHeight: '100vh', 
       display: 'flex', 
-      flexDirection: 'column' 
+      flexDirection: 'column',
+      position: 'relative'
     }}>
       <Router future={{ v7_startTransition: true }}>
         <DetectChange />
         <Navigation />
-        <main style={{ flex: 1 }}>
+        <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />

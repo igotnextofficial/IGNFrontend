@@ -100,7 +100,7 @@ const RegisterDisplay = () => {
             {loading && <LoadingComponent />}
 
             <ThemeProvider theme={theme}>
-                <Grid container component="main" sx={{ height: '100vh' }}>
+                <Grid container component="main" sx={{ minHeight: '100vh', display: 'flex' }}>
                     <CssBaseline />
                     {/* Left side - Background Image */}
                     <Grid
@@ -114,6 +114,7 @@ const RegisterDisplay = () => {
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             position: 'relative',
+                            display: { xs: 'none', sm: 'block' },
                             '&::before': {
                                 content: '""',
                                 position: 'absolute',
@@ -184,6 +185,7 @@ const RegisterDisplay = () => {
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
+                                minHeight: { xs: '100vh', sm: 'auto' }
                             }}
                         >
                             <Container 
@@ -192,15 +194,16 @@ const RegisterDisplay = () => {
                                     flex: 1,
                                     display: 'flex',
                                     flexDirection: 'column',
+                                    py: { xs: 2, sm: 4 }
                                 }}
                             >
                                 <Box
                                     sx={{
-                                        my: 8,
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         flex: 1,
+                                        minHeight: { xs: '100vh', sm: 'auto' }
                                     }}
                                 >
                                     <Fade in timeout={1000}>

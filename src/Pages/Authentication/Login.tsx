@@ -122,7 +122,7 @@ const LoginDisplay = () => {
 
             {loading && <LoadingComponent />}
 
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ minHeight: '100vh', display: 'flex' }}>
                 <CssBaseline />
                 {/* Left side - Background Image */}
                 <Grid
@@ -136,6 +136,7 @@ const LoginDisplay = () => {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         position: 'relative',
+                        display: { xs: 'none', sm: 'block' },
                         '&::before': {
                             content: '""',
                             position: 'absolute',
@@ -195,14 +196,36 @@ const LoginDisplay = () => {
 
                 {/* Right side - Login Form */}
                 <Slide direction="left" in timeout={800}>
-                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                        <Container maxWidth="sm">
+                    <Grid 
+                        item 
+                        xs={12} 
+                        sm={8} 
+                        md={5} 
+                        component={Paper} 
+                        elevation={6} 
+                        square
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minHeight: { xs: '100vh', sm: 'auto' }
+                        }}
+                    >
+                        <Container 
+                            maxWidth="sm" 
+                            sx={{
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                py: { xs: 2, sm: 4 }
+                            }}
+                        >
                             <Box
                                 sx={{
-                                    my: 8,
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
+                                    flex: 1,
+                                    minHeight: { xs: '100vh', sm: 'auto' }
                                 }}
                             >
                                 <Fade in timeout={1000}>

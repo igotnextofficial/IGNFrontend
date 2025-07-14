@@ -11,7 +11,16 @@ const FooterComponent: React.FC = () => {
     const currentYear = currentDate.getFullYear();
     
     return (
-        <Box id="footer-container" sx={styles.container}>
+        <Box 
+            id="footer-container" 
+            component="footer"
+            sx={{
+                ...styles.container,
+                position: 'relative',
+                zIndex: 1,
+                marginTop: 'auto'
+            }}
+        >
             <Grid container justifyContent="center" alignItems="center">
                 <Grid item xs={4}>
                     <Ignlogo />
@@ -135,7 +144,9 @@ const styles = {
     container: {
         backgroundColor: "#fd2f30",
         backgroundImage: "linear-gradient(to bottom,#fd2f30,#cf1d1d)",
-        padding: "2rem 10rem"
+        padding: { xs: "2rem 1rem", sm: "2rem 4rem", md: "2rem 10rem" },
+        width: '100%',
+        flexShrink: 0
     },
     links: {
         color: "#820000",

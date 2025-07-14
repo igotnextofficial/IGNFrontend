@@ -24,7 +24,7 @@ const RegisterMentor = () => {
     
     return  (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }} spacing={2}>
+            <Grid container component="main" sx={{ minHeight: '100vh', display: 'flex' }} spacing={2}>
                 <CssBaseline />
                 <Grid
                     item
@@ -37,17 +37,39 @@ const RegisterMentor = () => {
                         backgroundColor: (t) => t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
+                        display: { xs: 'none', sm: 'block' },
                     }}>
                 </Grid>
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    <Box sx={{ my: 8, mx: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Grid 
+                    item 
+                    xs={12} 
+                    sm={8} 
+                    md={5} 
+                    component={Paper} 
+                    elevation={6} 
+                    square
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minHeight: { xs: '100vh', sm: 'auto' }
+                    }}
+                >
+                    <Box 
+                        sx={{ 
+                            flex: 1,
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            alignItems: 'center',
+                            py: { xs: 2, sm: 4 }
+                        }}
+                    >
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5" mb={2}>
                             Register Mentor
                         </Typography>
-                        <Box component="div" sx={{ mt: 1, width: '100%' }}>
+                        <Box component="div" sx={{ mt: 1, width: '100%', flex: 1 }}>
                             <RegisterMentorForm />
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
