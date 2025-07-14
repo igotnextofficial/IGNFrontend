@@ -12,24 +12,26 @@ const ErrorComponent = () =>{
     }, [error])
   
     return (
-        
-       error.length > 0 &&  <>
-        
-                <Grid container spacing={2} sx={styles.errorHolder} justifyContent={'center'} >
-                    <Grid item  sx={{textAlign:"right"}}>
-                       <ErrorIcon fontSize="medium" htmlColor="white"/>
-                    </Grid>
-                    <Grid item>
-              
-                            <Typography sx={{color:"#fff",fontSize:'20px'}}>{error}</Typography>
-                    </Grid>
-                </Grid>
-           
-        </>
+        null
+ 
     ) 
 }
 
 
+
+    //   error.length > 0 &&  <>
+        
+    //             <Grid container spacing={2} sx={styles.errorHolder} justifyContent={'center'} >
+    //                 <Grid item  sx={{textAlign:"right"}}>
+    //                    <ErrorIcon fontSize="medium" htmlColor="white"/>
+    //                 </Grid>
+    //                 <Grid item>
+              
+    //                         <Typography sx={{color:"#fff",fontSize:'20px'}}>{error}</Typography>
+    //                 </Grid>
+    //             </Grid>
+           
+    //     </>
 const styles = {
     'errorHolder': {
         position:"relative",

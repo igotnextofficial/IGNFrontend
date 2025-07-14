@@ -8,7 +8,7 @@ RUN yarn install
 
 # Add .env for CRA to inline
 COPY tsconfig.json  ./
-COPY .env.production ./.env
+COPY .env.development ./.env
 
 COPY public ./public
 COPY src ./src
