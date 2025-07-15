@@ -65,6 +65,7 @@ export const APP_ENDPOINTS = {
         BATCH: `${Endpoints.USER}/batch`,
         LOGIN:  Endpoints.LOGIN,
         LOGOUT:  Endpoints.LOGOUT,
+        CHANGE_PASSWORD: `${Endpoints.USER}/password/update`,
         ARTIST: {
             BASE:`${Endpoints.USER}/role/artist`,
             FEATURED: `${Endpoints.USER}/role/artist/featured`,
