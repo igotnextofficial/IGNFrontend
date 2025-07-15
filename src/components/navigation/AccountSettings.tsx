@@ -26,7 +26,8 @@ const AccountSettings = () => {
 
   useEffect(() => {
     let user_settings: Record<string,string>[] = [
-      { title: 'Account', slug: '/edit-profile' }, 
+      { title: 'Edit Profile', slug: '/edit-profile' }, 
+      { title: 'Change Password', slug: '/change-password' },
       { title: 'Dashboards', slug: `dashboard/${role}` }, 
       { title: 'Logout', slug: '/logout' }
     ];

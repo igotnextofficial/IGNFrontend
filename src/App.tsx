@@ -14,6 +14,7 @@ import Login from './pages/authentication/Login';
 import Logout from './pages/authentication/Logout';
 import Register from './pages/authentication/Register';
 import RegisterMentor from './pages/authentication/RegisterMentor';
+import ChangePassword from './pages/authentication/ChangePassword';
 import ScheduleAvailability from './pages/mentors/ScheduleAvailability';
 import About from './pages/About';
 import TermsOfService from './pages/TermsOfService';
@@ -128,6 +129,7 @@ const MainApplication: React.FC = () => {
             {/* Routes that require authentication */}
             <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} />}>
               <Route path='/edit-profile' element={<EditProfile />} />
+              <Route path='/change-password' element={<ChangePassword />} />
               <Route path='/dashboard/:role' element={<Dashboard />} />
               <Route path='/notes/:note_id' element={<MessageReaderReply />} />
 
