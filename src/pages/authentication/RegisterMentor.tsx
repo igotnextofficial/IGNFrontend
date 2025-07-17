@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Avatar, Box, CssBaseline, Grid, Paper, Typography, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -8,19 +8,50 @@ import Copyright from '../../components/Copyright';
 import RegisterMentorForm from '../../forms/RegisterMentorForm';
 import { useUser } from '../../contexts/UserContext';
 import { Roles } from '../../types/Roles';
+import { useValueWithTimezone } from '@mui/x-date-pickers/internals/hooks/useValueWithTimezone';
+import { APP_ENDPOINTS } from '../../config/app';
+import useHttp from '../../customhooks/useHttp';
+
 
 const RegisterMentor = () => {
     const theme = createTheme();
     const { user } = useUser()
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('invite_token');
+    const { post } = useHttp();
+
     const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user || user?.role.type !== Roles.ADMIN) {
-      navigate('/');
-    }
-  }, [user, navigate]);
+    const validateToken = async () => {
+        if (!token) return;
+        try {
+            const response = await post(APP_ENDPOINTS.USER.MENTOR.VALIDATE_INVITE, { token });
+            if (response.status === 200) {
+                // Token is valid, proceed with registration
+                return true;
+            } else {
+              return false;
+            }
+        } catch (error) {
+            console.error("Error validating token:", error);
+            return false
+            // Handle error, e.g., show a notification or redirect
+        }
+    };
 
-  if (!user || user.role.type !== Roles.ADMIN) return null; // prevent flicker
+    validateToken().then(isValid => {
+        if (!isValid) {
+            console.log("token is not valid")
+            // navigate('/'); // Redirect to login if token is invalid
+        };
+     }
+    );
+  }, []);
+
+
+ 
+  if (!token) return null; // prevent flicker
     
     return  (
         <ThemeProvider theme={theme}>
