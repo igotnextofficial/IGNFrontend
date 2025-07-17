@@ -28,6 +28,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const queryClient = useQueryClient();
     const [manualLoading, setIsLoading] = useState<boolean>(false);
     const {socket,sendMessage } = useSocket({ user });
+    const [loadingUser,setLoadingUser] = useState<boolean>(true);
   
 
     // Initialize useHttp with the current accessToken
@@ -47,14 +48,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
       
         const user_in_storage = storage.load("user");
-  
-      
         if( user_in_storage && !user){
-         
             setUser(user_in_storage);
             setIsLoggedin(true);
+            setLoadingUser(false)
         }
+
+        setLoadingUser(false);
     }, [user?.id]);
+ 
     // Session restoration
     useEffect(() => {
         if(!user && !storage.hasItem("user")){
@@ -268,7 +270,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             artists, 
             isLoggedin, 
             attemptLoginOrLogout, 
-            updateUser, 
+            updateUser,
+            loadingUser, 
             getUserRole, 
             accessToken,
             loading: loginMutation.isPending || logoutMutation.isPending || registerMutation.isPending,

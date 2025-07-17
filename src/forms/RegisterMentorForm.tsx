@@ -20,7 +20,6 @@ import IGNButton from '../components/common/IGNButton';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import useHttp from '../customhooks/useHttp';
 import { APP_ENDPOINTS } from '../config/app';
-import { HttpMethods } from '../types/DataTypes';
 
 interface FormData {
     fullname: string;
@@ -43,7 +42,7 @@ interface FormErrors {
 }
 
 const RegisterMentorForm: React.FC = () => {
-    const { registerUser, loading } = useUser();
+    const { loading } = useUser();
     const { updateError } = useErrorHandler();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -59,44 +58,26 @@ const RegisterMentorForm: React.FC = () => {
         agreeToTerms: false,
     });
     const [errors, setErrors] = useState<FormErrors>({});
-    const [success, setSuccess] = useState(false);
-    const [response, setResponse] = useState<any>({});
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [showRedirectOverlay, setShowRedirectOverlay] = useState(false);
     const navigate = useNavigate();
     const { post } = useHttp();
 
+    // Redirect after success with overlay
     useEffect(() => {
-        if (success) {
-            const createProduct = async (response: Record<string, any>) => {
-                const priceInCents = Math.round(Number(formData.price) * 100);
-                const data: Record<string, any> = {
-                    id: response.data.id,
-                    name: `mentorship:${response.data.id}`,
-                    email: response.data.email,
-                    description: `IGN Mentor: ${response.data.username}`,
-                    default_price_data: {
-                        currency: 'usd',
-                        unit_amount: priceInCents,
-                        recurring: { interval: 'month' }
-                    },
-                    "unit_amount": priceInCents,
-                };
-                const successful_response = await post(
-                    APP_ENDPOINTS.PRODUCTS.BASE,
-                    { data } 
-                );
-                return successful_response;
-            };
+        let successTimeout: NodeJS.Timeout | null = null;
 
-            createProduct(response)
-                .then((data) => {
-                    console.log(`Product created: ${JSON.stringify(data, null, 2)}`);
-                })
-                .catch((error) => {
-                    console.log(`Error creating product: ${JSON.stringify(error, null, 2)}`);
-                    updateError?.('Error creating product. Please try again.');
-                });
+        if (formSuccess) {
+            setShowRedirectOverlay(true);
+            successTimeout = setTimeout(() => {
+                navigate('/login'); // Redirect after 3 seconds
+            }, 3000);
         }
-    }, [success, response, formData.price, post, updateError]);
+
+        return () => {
+            if (successTimeout) clearTimeout(successTimeout);
+        };
+    }, [formSuccess, navigate]);
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
@@ -137,7 +118,8 @@ const RegisterMentorForm: React.FC = () => {
             newErrors.password = 'Password must be at least 8 characters';
             isValid = false;
         } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.password)) {
-            newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character';
+            newErrors.password =
+                'Password must contain at least one uppercase, one lowercase, one number, and one special character';
             isValid = false;
         }
 
@@ -150,18 +132,22 @@ const RegisterMentorForm: React.FC = () => {
             isValid = false;
         }
 
-        // Price validation
+        // Price validation with minimum check
         if (!formData.price) {
             newErrors.price = 'Price is required';
             isValid = false;
-        } else if (isNaN(Number(formData.price)) || Number(formData.price) <= 0) {
-            newErrors.price = 'Please enter a valid price';
+        } else if (isNaN(Number(formData.price))) {
+            newErrors.price = 'Please enter a valid number';
+            isValid = false;
+        } else if (Number(formData.price) < 200) {
+            newErrors.price = 'Minimum price is $200';
             isValid = false;
         }
 
-        // Terms agreement validation
+        // Terms agreement
         if (!formData.agreeToTerms) {
-            newErrors.agreeToTerms = 'You must agree to the Terms of Service, Privacy Policy, and Community Guidelines to continue';
+            newErrors.agreeToTerms =
+                'You must agree to the Terms of Service, Privacy Policy, and Community Guidelines to continue';
             isValid = false;
         }
 
@@ -173,7 +159,7 @@ const RegisterMentorForm: React.FC = () => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : value,
         }));
     };
 
@@ -184,48 +170,39 @@ const RegisterMentorForm: React.FC = () => {
                 setFormError(null);
                 setFormSuccess(null);
                 const { confirmPassword, ...registrationData } = formData;
-                const response = await post(process.env.REACT_APP_REGISTER_API || "", {
+
+                const response = await post(process.env.REACT_APP_REGISTER_API || '', {
                     data: {
                         ...registrationData,
                         role: Roles.MENTOR,
-                        price: Math.round(Number(registrationData.price) * 100)
+                        price: Math.round(Number(registrationData.price) * 100),
                     },
-                    autoLogin: false
+                    autoLogin: false,
                 });
-            
+
                 if (response.data?.user) {
-                    // Get the user data from the registration response
-                    const userData = response.data.user;
-                    // Create product after successful registration
                     const priceInCents = Math.round(Number(formData.price) * 100);
                     const productData = {
-                        id: userData.id,
-                        name: `mentorship:${userData.id}`,
-                        email: userData.email,
+                        id: response.data.user.id,
+                        name: `mentorship:${response.data.user.id}`,
+                        email: response.data.user.email,
                         price: priceInCents,
-                        description: `IGN Mentor: ${userData.username}`,
+                        description: `IGN Mentor: ${response.data.user.username}`,
                         default_price_data: {
                             currency: 'usd',
                             unit_amount: priceInCents,
-                            recurring: { interval: 'month' }
+                            recurring: { interval: 'month' },
                         },
-                        "unit_amount": priceInCents,
                     };
 
-                    try {
-                        const productResponse = await post(
-                            APP_ENDPOINTS.PRODUCTS.BASE,
-                            { data: productData }
-                        );
-                        console.log(`Product created: ${JSON.stringify(productResponse, null, 2)}`);
-                        setFormSuccess('Registration successful!');
-                    } catch (error) {
-                        console.log(`Error creating product: ${JSON.stringify(error, null, 2)}`);
-                        updateError?.('Error creating product. Please try again.');
-                    }
+                    await post(APP_ENDPOINTS.PRODUCTS.BASE, { data: productData });
+
+                    setFormSuccess('Registration successful! Being redirected to login...');
+                    setIsDisabled(true);
                 }
             } catch (error) {
-                const errorMessage = error instanceof Error ? error.message : 'An error occurred during registration';
+                const errorMessage =
+                    error instanceof Error ? error.message : 'An error occurred during registration';
                 setFormError(errorMessage);
                 updateError?.(errorMessage);
             }
@@ -233,250 +210,230 @@ const RegisterMentorForm: React.FC = () => {
     };
 
     return (
-        <Paper
-            component="form"
-            onSubmit={handleSubmit}
-            elevation={0}
-            sx={{
-                p: 3,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-                backgroundColor: 'transparent',
-            }}
-        >
-            {formError && (
-                <Alert severity="error" sx={{ mb: 2 }}>
-                    {formError}
-                </Alert>
-            )}
-            {formSuccess && (
-                <Alert severity="success" sx={{ mb: 2 }}>
-                    {formSuccess}
-                </Alert>
-            )}
-
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <TextField
-                        name="fullname"
-                        value={formData.fullname}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                        label="Fullname"
-                        error={!!errors.fullname}
-                        helperText={errors.fullname}
-                        autoFocus
-                        variant="outlined"
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                        label="Username"
-                        error={!!errors.username}
-                        helperText={errors.username}
-                        variant="outlined"
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                        label="Email Address"
-                        type="email"
-                        error={!!errors.email}
-                        helperText={errors.email}
-                        variant="outlined"
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                        label="Password"
-                        type={showPassword ? 'text' : 'password'}
-                        error={!!errors.password}
-                        helperText={errors.password}
-                        variant="outlined"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                        label="Confirm Password"
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        error={!!errors.confirmPassword}
-                        helperText={errors.confirmPassword}
-                        variant="outlined"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        edge="end"
-                                    >
-                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        required
-                        fullWidth
-                        label="Session Price"
-                        type="number"
-                        error={!!errors.price}
-                        helperText={errors.price}
-                        variant="outlined"
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                        }}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '&:hover fieldset': {
-                                    borderColor: 'primary.main',
-                                },
-                            },
-                        }}
-                    />
-                </Grid>
-            </Grid>
-
-            <Box sx={{ mt: 2 }}>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            name="agreeToTerms"
-                            checked={formData.agreeToTerms}
-                            onChange={handleChange}
-                            color="primary"
-                        />
-                    }
-                    label={
-                        <Typography variant="body2">
-                            I agree to the{' '}
-                            <Link 
-                                component={RouterLink} 
-                                to="/terms-of-service" 
-                                target="_blank"
-                                color="primary"
-                                sx={{ textDecoration: 'underline' }}
-                            >
-                                Terms of Service
-                            </Link>
-                            {', '}
-                            <Link 
-                                component={RouterLink} 
-                                to="/privacy-policy" 
-                                target="_blank"
-                                color="primary"
-                                sx={{ textDecoration: 'underline' }}
-                            >
-                                Privacy Policy
-                            </Link>
-                            {' and '}
-                            <Link 
-                                component={RouterLink} 
-                                to="/community-guidelines" 
-                                target="_blank"
-                                color="primary"
-                                sx={{ textDecoration: 'underline' }}
-                            >
-                                Community Guidelines
-                            </Link>
-                        </Typography>
-                    }
-                    sx={{ 
-                        alignItems: 'flex-start',
-                        '& .MuiFormControlLabel-label': {
-                            mt: 0.5
-                        }
-                    }}
-                />
-                {errors.agreeToTerms && (
-                    <Typography variant="caption" color="error" sx={{ ml: 4, display: 'block' }}>
-                        {errors.agreeToTerms}
-                    </Typography>
-                )}
-            </Box>
-
-            <IGNButton
-                type="submit"
-                loading={loading}
+        <>
+            <Paper
+                component="form"
+                onSubmit={handleSubmit}
+                elevation={0}
+                sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2, backgroundColor: 'transparent' }}
             >
-                Register as Mentor
-            </IGNButton>
-        </Paper>
+                {formError && <Alert severity="error">{formError}</Alert>}
+                {formSuccess && <Alert severity="success">{formSuccess}</Alert>}
+
+                <Grid container spacing={2}>
+                    {/* Full Name */}
+                    <Grid item xs={12}>
+                        <TextField
+                            name="fullname"
+                            value={formData.fullname}
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                            disabled={isDisabled}
+                            label="Full Name"
+                            placeholder="e.g., John Doe"
+                            error={!!errors.fullname}
+                            helperText={errors.fullname || "Letters, spaces, apostrophes, and hyphens only"}
+                        />
+                    </Grid>
+
+                    {/* Username */}
+                    <Grid item xs={12}>
+                        <TextField
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                            disabled={isDisabled}
+                            label="Username"
+                            placeholder="e.g., john_doe"
+                            error={!!errors.username}
+                            helperText={errors.username || "Only letters, numbers, and underscores"}
+                        />
+                    </Grid>
+
+                    {/* Email */}
+                    <Grid item xs={12}>
+                        <TextField
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                            disabled={isDisabled}
+                            label="Email Address"
+                            placeholder="e.g., john@example.com"
+                            type="email"
+                            error={!!errors.email}
+                            helperText={errors.email || "Enter a valid email address"}
+                        />
+                    </Grid>
+
+                    {/* Password */}
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                            disabled={isDisabled}
+                            label="Password"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter a strong password"
+                            error={!!errors.password}
+                            helperText={errors.password || "Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special character"}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            edge="end"
+                                            disabled={isDisabled}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
+
+                    {/* Confirm Password */}
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                            disabled={isDisabled}
+                            label="Confirm Password"
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            placeholder="Re-enter password"
+                            error={!!errors.confirmPassword}
+                            helperText={errors.confirmPassword}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            edge="end"
+                                            disabled={isDisabled}
+                                        >
+                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
+
+                    {/* Price per Session */}
+                    <Grid item xs={12}>
+                        <TextField
+                            name="price"
+                            value={formData.price}
+                            onChange={handleChange}
+                            required
+                            fullWidth
+                            disabled={isDisabled}
+                            label="Price per session"
+                            placeholder="e.g., 200"
+                            type="number"
+                            error={!!errors.price}
+                            helperText={errors.price || "Minimum $200 (e.g., 200 for $200.00)"}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                endAdornment: (
+                                    <InputAdornment position="end" sx={{ color: 'text.disabled' }}>.00</InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
+                </Grid>
+
+                {/* Terms Agreement */}
+                <Box sx={{ mt: 2 }}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="agreeToTerms"
+                                checked={formData.agreeToTerms}
+                                onChange={handleChange}
+                                color="primary"
+                                disabled={isDisabled}
+                            />
+                        }
+                        label={
+                            <Typography variant="body2">
+                                I agree to the{' '}
+                                <Link component={RouterLink} to="/terms-of-service" target="_blank" color="primary">
+                                    Terms of Service
+                                </Link>
+                                {', '}
+                                <Link component={RouterLink} to="/privacy-policy" target="_blank" color="primary">
+                                    Privacy Policy
+                                </Link>
+                                {' and '}
+                                <Link component={RouterLink} to="/community-guidelines" target="_blank" color="primary">
+                                    Community Guidelines
+                                </Link>
+                            </Typography>
+                        }
+                    />
+                    {errors.agreeToTerms && (
+                        <Typography variant="caption" color="error" sx={{ ml: 4, display: 'block' }}>
+                            {errors.agreeToTerms}
+                        </Typography>
+                    )}
+                </Box>
+
+                <IGNButton type="submit" loading={loading} disabled={isDisabled || loading}>
+                    Register as Mentor
+                </IGNButton>
+            </Paper>
+
+            {/* Overlay Spinner */}
+            {showRedirectOverlay && (
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        bgcolor: 'rgba(0,0,0,0.6)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 9999,
+                        color: '#fff',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            border: '6px solid rgba(255,255,255,0.3)',
+                            borderTop: '6px solid #fff',
+                            borderRadius: '50%',
+                            width: 50,
+                            height: 50,
+                            animation: 'spin 1s linear infinite',
+                            '@keyframes spin': {
+                                '0%': { transform: 'rotate(0deg)' },
+                                '100%': { transform: 'rotate(360deg)' },
+                            },
+                        }}
+                    />
+                    <Typography variant="h6" sx={{ mt: 2 }}>
+                        Redirecting to login...
+                    </Typography>
+                </Box>
+            )}
+        </>
     );
 };
 
-export default RegisterMentorForm; 
+export default RegisterMentorForm;

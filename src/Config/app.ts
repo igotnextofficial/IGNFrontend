@@ -22,6 +22,8 @@ export const Endpoints = {
    CATEGORIES: process.env.REACT_APP_CATEGORIES_API || "",
    TAGS: process.env.REACT_APP_TAGS_API || "",
    FEATURE_SUBMISSIONS: process.env.REACT_APP_FEATURE_SUBMISSIONS || "",
+   REACT_APP_MENTOR_INVITE: process.env.REACT_APP_MENTOR_INVITE || "",
+   REACT_APP_MENTOR_INVITE_VALIDATE: process.env.REACT_APP_MENTOR_INVITE_VALIDATE || ""
    
 }
 
@@ -77,7 +79,9 @@ export const APP_ENDPOINTS = {
         MENTOR: { 
             BASE:`${Endpoints.USER}/role/mentor`,
             FEATURED: `${Endpoints.USER}/role/mentor/featured`,
-            ONBOARDING_COMPLETION:`${Endpoints.PAYMENT}/onboarding/success/:user_id`
+            ONBOARDING_COMPLETION:`${Endpoints.PAYMENT}/onboarding/success/:user_id`,
+            INVITE:Endpoints.REACT_APP_MENTOR_INVITE ,
+            VALIDATE_INVITE: Endpoints.REACT_APP_MENTOR_INVITE_VALIDATE,
           }
     },
    

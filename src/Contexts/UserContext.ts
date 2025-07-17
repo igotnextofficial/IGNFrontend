@@ -7,6 +7,7 @@ export interface userContextType{
     mentors: MentorDataType[] | null  ,
     artists: ArtistDataType[] | null ,
     isLoggedin:boolean,
+    loadingUser:boolean,
     updateUser:(user:UserDataType)=>void
     attemptLoginOrLogout: (login:boolean,data?:httpDataObject,) => Promise<boolean>,
     registerUser: (data:httpDataObject) => Promise<boolean>,
@@ -22,6 +23,7 @@ export const UserContext = createContext<userContextType>({
     mentors: null,
     artists: null,
     loading:true,
+    loadingUser: true,
     updateUser: () => {},
     attemptLoginOrLogout: async (): Promise<boolean> => {
         return false;
