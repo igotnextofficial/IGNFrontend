@@ -29,7 +29,7 @@ const RequestMentorInvite = () => {
         // This could be an API call to your backend
         try{
             const response = await post(APP_ENDPOINTS.USER.MENTOR.INVITE, { email: potentialMentorEmail });
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setSuccess(true);
             } else {
                 setHasError(true);

@@ -68,6 +68,7 @@ export const APP_ENDPOINTS = {
         LOGIN:  Endpoints.LOGIN,
         LOGOUT:  Endpoints.LOGOUT,
         CHANGE_PASSWORD: `${Endpoints.USER}/password/update`,
+        CREATE_MENTOR: `${Endpoints.USER}/mentor`,
         ARTIST: {
             BASE:`${Endpoints.USER}/role/artist`,
             FEATURED: `${Endpoints.USER}/role/artist/featured`,

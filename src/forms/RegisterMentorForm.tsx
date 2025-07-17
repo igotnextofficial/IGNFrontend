@@ -17,9 +17,10 @@ import { useUser } from '../contexts/UserContext';
 import { useErrorHandler } from '../contexts/ErrorContext';
 import { Roles } from '../types/Roles';
 import IGNButton from '../components/common/IGNButton';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink ,useSearchParams} from 'react-router-dom';
 import useHttp from '../customhooks/useHttp';
 import { APP_ENDPOINTS } from '../config/app';
+
 
 interface FormData {
     fullname: string;
@@ -41,7 +42,7 @@ interface FormErrors {
     agreeToTerms?: string;
 }
 
-const RegisterMentorForm: React.FC = () => {
+const RegisterMentorForm: React.FC<{ token: string }> = ({ token }) => {
     const { loading } = useUser();
     const { updateError } = useErrorHandler();
     const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +63,9 @@ const RegisterMentorForm: React.FC = () => {
     const [showRedirectOverlay, setShowRedirectOverlay] = useState(false);
     const navigate = useNavigate();
     const { post } = useHttp();
-
+    useEffect(() => {
+        console.log(`endpoint ${APP_ENDPOINTS.USER.CREATE_MENTOR}`);
+    }, []);
     // Redirect after success with overlay
     useEffect(() => {
         let successTimeout: NodeJS.Timeout | null = null;
@@ -171,35 +174,24 @@ const RegisterMentorForm: React.FC = () => {
                 setFormSuccess(null);
                 const { confirmPassword, ...registrationData } = formData;
 
-                const response = await post(process.env.REACT_APP_REGISTER_API || '', {
+                const response = await post( APP_ENDPOINTS.USER.CREATE_MENTOR, {
                     data: {
                         ...registrationData,
                         role: Roles.MENTOR,
                         price: Math.round(Number(registrationData.price) * 100),
+                        token,
+             
                     },
                     autoLogin: false,
                 });
 
-                if (response.data?.user) {
-                    const priceInCents = Math.round(Number(formData.price) * 100);
-                    const productData = {
-                        id: response.data.user.id,
-                        name: `mentorship:${response.data.user.id}`,
-                        email: response.data.user.email,
-                        price: priceInCents,
-                        description: `IGN Mentor: ${response.data.user.username}`,
-                        default_price_data: {
-                            currency: 'usd',
-                            unit_amount: priceInCents,
-                            recurring: { interval: 'month' },
-                        },
-                    };
-
-                    await post(APP_ENDPOINTS.PRODUCTS.BASE, { data: productData });
-
-                    setFormSuccess('Registration successful! Being redirected to login...');
-                    setIsDisabled(true);
+                if (response.status !== 201) {
+                    throw new Error('Registration failed. Please try again.');
                 }
+
+                setFormSuccess('Registration successful! Being redirected to login...');
+                setIsDisabled(true);
+                
             } catch (error) {
                 const errorMessage =
                     error instanceof Error ? error.message : 'An error occurred during registration';
