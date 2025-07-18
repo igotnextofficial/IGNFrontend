@@ -127,6 +127,7 @@ const MainApplication: React.FC = () => {
             <Route path='/mentors' element={<Mentors />} />
 
             {/* Routes that require authentication */}
+            <Route path='/mentor/complete-onboarding' element={<MentorOnboardingCompletion />} />
             <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} />}>
               <Route path='/edit-profile' element={<EditProfile />} />
               <Route path='/change-password' element={<ChangePassword />} />
@@ -141,7 +142,7 @@ const MainApplication: React.FC = () => {
 
               <Route path='/compose-article' element={<ComposeArticle />} />
               <Route path='/edit-article/:article_id' element={<EditArticle />} />
-              <Route path='/mentor/complete-onboarding' element={<MentorOnboardingCompletion />} />
+            
 
            
             </Route>
