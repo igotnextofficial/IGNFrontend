@@ -47,6 +47,7 @@ const OpenCloseSession = ({user}:{user:MentorDataType}) => {
 
 const OpenUpForSessions = ({user}:{user:MentorDataType}) => {
     const [isVerified,setIsVerified] = useState(false)
+  
     useEffect(() => {
         if(user && 'product' in user && user.product !== null){
             setIsVerified(user.product?.stripe_account?.is_verified)
