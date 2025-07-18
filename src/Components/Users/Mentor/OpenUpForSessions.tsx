@@ -47,7 +47,7 @@ const OpenCloseSession = ({user}:{user:MentorDataType}) => {
 
 const OpenUpForSessions = ({user}:{user:MentorDataType}) => {
     const [isVerified,setIsVerified] = useState(false)
-    console.log(`the user product is ${JSON.stringify(user.product,null,2)}`)
+  
     useEffect(() => {
         if(user && 'product' in user && user.product !== null){
             setIsVerified(user.product?.stripe_account?.is_verified)
