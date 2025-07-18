@@ -152,18 +152,13 @@ const MentorOnboardingSuccess = () => (
 
 export default function MentorOnboardingCompletion() {
   const { user, accessToken } = useUser();
-  const { user, accessToken } = useUser();
   const { post } = useHttp();
-  const [status, setStatus] = useState<'loading' | 'success' | 'failed'>('loading');
   const [status, setStatus] = useState<'loading' | 'success' | 'failed'>('loading');
 
   useEffect(() => {
     if (!user || !accessToken) return;
 
-    if (!user || !accessToken) return;
-
     const completeOnboarding = async () => {
-      const url = APP_ENDPOINTS.USER.MENTOR.ONBOARDING_COMPLETION.replace(':user_id', user.id);
       const url = APP_ENDPOINTS.USER.MENTOR.ONBOARDING_COMPLETION.replace(':user_id', user.id);
       try {
         const response = await post(url, {}, {
@@ -179,14 +174,12 @@ export default function MentorOnboardingCompletion() {
       } catch (error) {
         console.error('Error completing onboarding:', error);
         setStatus('failed');
-        setStatus('failed');
       }
     };
 
     completeOnboarding();
   }, [user?.id, accessToken, post]);
 
-  if (status === 'loading') {
   if (status === 'loading') {
     return (
       <Container maxWidth="sm">
