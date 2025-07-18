@@ -33,6 +33,10 @@ export interface UserDataType {
     profile_photo_path?:string,
     bio?:string
 }
+export interface SpecialtiesDataType {
+    id:string,
+    name:string,
+}
 export interface MentorDataType extends UserDataType {
     availability:boolean,
     specialties:Record<string,any>[],

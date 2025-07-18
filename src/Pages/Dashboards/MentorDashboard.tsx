@@ -21,6 +21,7 @@ import LocalStorage from "../../storage/LocalStorage"
 import useFetch from "../../customhooks/useFetch"
 import { APP_ENDPOINTS } from "../../config/app"
 import useHttp from "../../customhooks/useHttp"
+import { SpecialtiesDataType } from "../../types/DataTypes"
  
 
 
@@ -89,13 +90,14 @@ const MentorDashboard = ()=>{
     },[])
     useEffect(()=>{
         if(!user?.bookings) return;
-        console.log(`user is in mentor dashboard ${JSON.stringify(user,null,2)}`)
+  
         if(user !== null){
+           const specialties = user.specialties || [];
             setData({
                 title:`${user?.fullname}'s Mentor Dashboard`,
                 image_url:user?.profile_photo_path ?? "",
                 subtitle: "", 
-                meta:`specialties: ${user.specialties.join(", ")}` 
+                meta:`specialties: ${specialties.map?.((specialty:SpecialtiesDataType)=>specialty.name).join(", ")}`,
              })
         }
         
@@ -105,7 +107,7 @@ const MentorDashboard = ()=>{
             const mentee = user?.mentees.find((mentee:UserDataType)=>mentee.id === mentee_id);
             booking.sessions.forEach((session:SessionDataType)=>{
                const session_data = {...session,mentee}
-               console.log(`looking at the start time ${session_data.start_time}`)
+   
                sessions_with_mentees_data.push(session_data)
             })
         })
@@ -121,7 +123,7 @@ const MentorDashboard = ()=>{
         //view mentees and leave notes
 
     useEffect(()=>{
-        console.log(`the sessions with before mentees are ${JSON.stringify(sessionsWithMentees,null,2)}`)
+  
     },[sessionsWithMentees])
         return  user && ( 
             <>
