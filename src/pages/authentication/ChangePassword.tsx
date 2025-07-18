@@ -309,9 +309,27 @@ const ChangePassword: React.FC = () => {
 
         <Divider sx={{ my: 3 }} />
         
-        <Typography variant="body2" sx={{ color: '#666', textAlign: 'center' }}>
-          Password must be at least 8 characters long
-        </Typography>
+        <Box
+  sx={{
+    backgroundColor: '#f9f9f9',  // Light gray background
+    border: '1px solid #ddd',    // Subtle border
+    borderRadius: 2,
+    p: 2,
+    mt: 3,
+    textAlign: 'left',
+  }}
+>
+  <Typography variant="subtitle2" sx={{ fontWeight: 600, color: '#333', mb: 1 }}>
+    Password Requirements:
+  </Typography>
+  <Typography variant="body2" sx={{ color: '#555' }}>
+    • At least 8 characters<br />
+    • Include one uppercase letter<br />
+    • Include one lowercase letter<br />
+    • Include one number<br />
+    • Include one special character (@$!%*?&)
+  </Typography>
+</Box>
       </Paper>
     </Container>
   );
