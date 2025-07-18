@@ -17,8 +17,7 @@ const FailedMentorOnboarding = () => (
         Mentor Onboarding Failed
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Something went wrong while completing your onboarding. Please try again
-        or contact support if the issue continues.
+        We could not confirm your onboarding. Please try again or contact support if the issue persists.
       </Typography>
       <Button
         variant="contained"
@@ -32,67 +31,65 @@ const FailedMentorOnboarding = () => (
   </Container>
 );
 
-const MentorOnboardingSuccess = () => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.location.href = '/dashboard';
-    }, 15000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <Container maxWidth="sm">
-      <Box textAlign="center" mt={8}>
-        <Typography variant="h4" gutterBottom color="primary">
-          Mentor Onboarding Successful
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Thank you for completing the onboarding process!
-        </Typography>
-        <Typography variant="caption" mt={1} display="block">
-          Redirecting to your dashboard in 5 seconds...
-        </Typography>
-        <Button
-          variant="contained"
-          color="success"
-          href="/dashboard"
-          sx={{ mt: 2 }}
-        >
-          Go Now
-        </Button>
-      </Box>
-    </Container>
-  );
-};
+const MentorOnboardingSuccess = ({ onRedirect }: { onRedirect: () => void }) => (
+  <Container maxWidth="sm">
+    <Box textAlign="center" mt={8}>
+      <Typography variant="h4" gutterBottom color="primary">
+        Mentor Onboarding Successful
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        Thank you for completing the onboarding process!
+      </Typography>
+      <Typography variant="caption" mt={1} display="block">
+        You’ll be redirected shortly.
+      </Typography>
+      <Button
+        variant="contained"
+        color="success"
+        onClick={onRedirect}
+        sx={{ mt: 2 }}
+      >
+        Go to Dashboard Now
+      </Button>
+    </Box>
+  </Container>
+);
 
 export default function MentorOnboardingCompletion() {
-  const { user,accessToken } = useUser();
+  const { user, accessToken } = useUser();
   const { post } = useHttp();
-  const [success, setSuccess] = useState<boolean | null>(null); // null = loading
+  const [status, setStatus] = useState<'loading' | 'success' | 'failed'>('loading');
 
   useEffect(() => {
+    if (!user || !accessToken) return;
+
     const completeOnboarding = async () => {
-      if (!user) return false;
-      const url = APP_ENDPOINTS.USER.MENTOR.ONBOARDING_COMPLETION.replace(
-        ':user_id',
-        user.id
-      );
+      const url = APP_ENDPOINTS.USER.MENTOR.ONBOARDING_COMPLETION.replace(':user_id', user.id);
       try {
-        const response = await post(url, {}, { 
-            requiresAuth: true,
-            headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
-          });
-        return response?.status === 200;
+        const response = await post(url, {}, {
+          requiresAuth: true,
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        if (response?.status === 200) {
+          setStatus('success');
+      
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 5000); // consistent with UI message
+        } else {
+          setStatus('failed');
+        }
       } catch (error) {
         console.error('Error completing onboarding:', error);
-        return false;
+        setStatus('failed');
       }
     };
 
-    completeOnboarding().then(setSuccess);
-  }, [user?.id, post]);
+    completeOnboarding();
+  }, [user?.id, accessToken]);
 
-  if (success === null) {
+  if (status === 'loading') {
     return (
       <Container maxWidth="sm">
         <Box textAlign="center" mt={10}>
@@ -105,5 +102,7 @@ export default function MentorOnboardingCompletion() {
     );
   }
 
-  return success ? <MentorOnboardingSuccess /> : <FailedMentorOnboarding />;
+  if (status === 'failed') return <FailedMentorOnboarding />;
+
+  return <MentorOnboardingSuccess onRedirect={() => (window.location.href = '/dashboard')} />;
 }
