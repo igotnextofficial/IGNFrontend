@@ -193,8 +193,8 @@ const RegisterMentorForm: React.FC<{ token: string }> = ({ token }) => {
                 setIsDisabled(true);
                 
             } catch (error) {
-                const errorMessage =
-                    error instanceof Error ? error.message : 'An error occurred during registration';
+                const errorMessage = 'Registration failed. Please try again with the same email address the link was sent to. Need help? Email us at support@igotnextmagazine.com.';
+
                 setFormError(errorMessage);
                 updateError?.(errorMessage);
             }

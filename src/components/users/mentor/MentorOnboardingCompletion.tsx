@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useUser } from '../../../contexts/UserContext';
 import useHttp from '../../../customhooks/useHttp';
 import { APP_ENDPOINTS } from '../../../config/app';
+import { UserDataType } from '../../../types/DataTypes';
 import {
   Container,
   Typography,
@@ -80,8 +81,11 @@ const FailedMentorOnboarding = () => (
     </Box>
   </Container>
 );
+interface MentorOnboardingSuccessProps {
+  user: UserDataType;
+}
 
-const MentorOnboardingSuccess = () => (
+const MentorOnboardingSuccess = ({ user }: MentorOnboardingSuccessProps) => (
   <Container maxWidth="sm">
     <Box 
       sx={{ 
@@ -140,7 +144,7 @@ const MentorOnboardingSuccess = () => (
         </Typography>
         
         <IGNButton 
-          onClick={() => window.location.href = '/dashboard'}
+          onClick={() => window.location.href = `/dashboard/${user?.role?.type.toLowerCase()}`}
           fullWidth={false}
         >
           Return to Dashboard
@@ -245,5 +249,5 @@ export default function MentorOnboardingCompletion() {
 
   if (status === 'failed') return <FailedMentorOnboarding />;
 
-  return <MentorOnboardingSuccess />;
+   return <MentorOnboardingSuccess user={user!} />;
 }

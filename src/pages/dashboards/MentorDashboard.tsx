@@ -168,14 +168,14 @@ const MentorDashboard = ()=>{
                         }
                     </DashboardSectionBorder>
                 </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
                     <DashboardSectionBorder title="Mentee(s)">
                          <ListMentees mentor={user as MentorDataType} />
                     </DashboardSectionBorder>
                 </Grid>
 
                          
-                <Grid item xs={4} >
+                <Grid item xs={12} md={4} >
                     <Grid container spacing={3}>
                         <Grid item>
                         <DashboardSectionBorder title="Mentorship Request(s)">

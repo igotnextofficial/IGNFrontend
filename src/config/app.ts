@@ -80,7 +80,7 @@ export const APP_ENDPOINTS = {
         MENTOR: { 
             BASE:`${Endpoints.USER}/role/mentor`,
             FEATURED: `${Endpoints.USER}/role/mentor/featured`,
-            ONBOARDING_COMPLETION:`${Endpoints.PAYMENT}/onboarding/success/:user_id`,
+            ONBOARDING_COMPLETION:`${Endpoints.PRODUCTS}/onboarding/success/:user_id`,
             INVITE:Endpoints.REACT_APP_MENTOR_INVITE ,
             VALIDATE_INVITE: Endpoints.REACT_APP_MENTOR_INVITE_VALIDATE,
           }

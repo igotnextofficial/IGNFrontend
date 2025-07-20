@@ -13,7 +13,7 @@ const styles = {
   },
   container: {
     width: "100%",
-    margin: "0 1.5rem"
+    margin: "0 auto"
  
   },
   heading: {

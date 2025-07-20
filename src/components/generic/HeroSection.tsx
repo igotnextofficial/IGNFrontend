@@ -1,6 +1,9 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '@mui/material';
 
 export default function HeroSection() {
+  const isSmallScreen = useMediaQuery('(max-width:580px)');
   const containerStyle = {
     marginTop: 'clamp(1rem, 4vw, 2rem)',
     display: 'flex',
@@ -50,7 +53,7 @@ export default function HeroSection() {
   };
 
   const paragraphStyle = {
-    maxWidth: '540px',
+    maxWidth: isSmallScreen ? '320px' : '540px',
     fontSize: 'clamp(1em, 3vw, 1.5em)',
     color: '#040404'
   };
