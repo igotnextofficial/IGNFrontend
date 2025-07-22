@@ -51,8 +51,10 @@ import HealthCheck from './pages/healthcheck';
 import { Roles } from './types/Roles';
 import FeatureSubmission from './pages/FeatureSubmission';
 import Mentors from './pages/mentors/Mentors';
+import EmailVerification from './components/generic/EmailVerification';
 import { QueryClientProvider } from './providers/QueryClientProvider';
 import { useSocket } from './customhooks/useSocket';
+
  
 
 const MainApplication: React.FC = () => {
@@ -152,7 +154,7 @@ const MainApplication: React.FC = () => {
               
               <Route path='/admin-dashboard' element={<Dashboard />} />
             </Route>
-
+            <Route path='/api/email/verify/:id/:hash' element={<EmailVerification />} />
   
 
             <Route path='/want-to-be-featured' element={<FeatureSubmission />} />

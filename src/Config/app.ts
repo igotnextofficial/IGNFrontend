@@ -83,6 +83,9 @@ export const APP_ENDPOINTS = {
             ONBOARDING_COMPLETION:`${Endpoints.PRODUCTS}/onboarding/success/:user_id`,
             INVITE:Endpoints.REACT_APP_MENTOR_INVITE ,
             VALIDATE_INVITE: Endpoints.REACT_APP_MENTOR_INVITE_VALIDATE,
+          },
+          EMAIL_VERIFICATION:{
+            RESEND: `${Endpoints.USER.replace('users','')}email/verification-notification`,
           }
     },
    
