@@ -94,6 +94,9 @@ const DisplayTextEditor = ()=> {
       
       const handleSaveDraft = async (data:ArticleDataType)=>{
         setUpdatedArticle(data)
+        console.log(`this the article data`)
+        console.log(data)
+        return 
         try{
             console.log("Saving draft",data)
             let response = null;

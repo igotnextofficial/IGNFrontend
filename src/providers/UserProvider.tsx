@@ -207,7 +207,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       
     const registerMutation = useMutation({
         mutationFn: async (data: httpDataObject) => {
-            const url = process.env.REACT_APP_REGISTER_API || "";
+            // const url = process.env.REACT_APP_REGISTER_API || "";
+            const url = 'https://api.igotnext.local/api/v1/users'
             const response = await post(url, data, { requiresAuth: false });
             return response.data;
         },
