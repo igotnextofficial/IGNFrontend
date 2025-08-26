@@ -10,7 +10,7 @@ import { APP_ENDPOINTS } from "../config/app";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useUser } from "../contexts/UserContext";
 import { BookingDataType, BookingSessionDataType, MenteeDataType, SessionDataType, UserDataType } from "../types/DataTypes";
-import { get } from "http";
+
 import useHttp from "../customhooks/useHttp";
 
 dayjs.extend(isSameOrAfter);
@@ -81,6 +81,19 @@ const generateTimeSlots = () => {
   return times;
 }
 
+const formatSchedule = (schedule:Record<string,any>) => {
+  const start = schedule.date_time.start_time;
+  const end = schedule.date_time.end_time;
+
+  const startTime = dayjs(`${schedule.date} ${start}`,'YYYY-MM-DD HH:mm:ss').format('h:mm A');
+  const endTime = dayjs(`${schedule.date} ${end}`,'YYYY-MM-DD HH:mm:ss').format('h:mm A');
+  return {
+    date: schedule.date,
+    startTime,
+    endTime
+  }
+}
+
 const WorkHoursList = ({ 
   selectedDate,
   scheduledSessions,
@@ -101,39 +114,50 @@ const WorkHoursList = ({
   const [times] = useState<string[]>(generateTimeSlots());
   const [selectedStartTime, setSelectedStartTime] = useState<{time: string, dayIndex: number} | null>(null);
   const [selectedTimeBlocks, setSelectedTimeBlocks] = useState<{
+    date: string,          // YYYY-MM-DD
     startTime: string,
-    endTime: string,
-    dayIndices: number[]
+    endTime: string
   }[]>([]);
   const [mouseDownTimer, setMouseDownTimer] = useState<NodeJS.Timeout | null>(null);
   const [currentEndTime, setCurrentEndTime] = useState<string | null>(null);
   const [userIntialSchedule,setUserIntialSchedule] = useState<{
+    date: string,
     startTime: string,
-    endTime: string,
-    dayIndices: number[]
+    endTime: string
   }[]>([]);
-  const { user } = useUser();
-
+  const { user,accessToken } = useUser();
+  const {get} = useHttp(accessToken);
 
   useEffect(() => {
-   const intialSchedule = user?.schedule.map((schedule: Record<string, any>) => {
+    (async () => {
+      try{
+        const res = await get(`${APP_ENDPOINTS.USER.SINGLE}/${user?.id}`);
+        let schedule = res.data.data?.schedule ?? [];
+        const formatted_schedule = schedule.map((s:Record<string,any>) => formatSchedule(s));
+         
+        setUserIntialSchedule(formatted_schedule)
+      }
+      catch(e){
+        console.error("Error fetching user schedule:", e);
+      }
+    })();
+  }, [user?.id]);
 
+  useEffect(() => {
+    const intialSchedule = user?.schedule.map((schedule: Record<string, any>) => {
       const start = schedule.date_time.start_time;
       const end = schedule.date_time.end_time;
 
-      const startTime = dayjs(`${schedule.date} ${start}`,'YYYY-MM-DD HH:MM:SS').format('h:mm A');
-      const endTime = dayjs(`${schedule.date} ${end}`,'YYYY-MM-DD HH:MM:SS').format('h:mm A');
-      const dayIndex = dayjs(schedule.date).day();
+      const startTime = dayjs(`${schedule.date} ${start}`,'YYYY-MM-DD HH:mm:ss').format('h:mm A');
+      const endTime = dayjs(`${schedule.date} ${end}`,'YYYY-MM-DD HH:mm:ss').format('h:mm A');
 
       return {
+        date: schedule.date,
         startTime,
-        endTime,
-        dayIndices: [dayIndex]
+        endTime
       }
     });
 
-
-    
     setUserIntialSchedule(intialSchedule);
   },[user?.schedule])
 
@@ -141,24 +165,26 @@ const WorkHoursList = ({
     setSelectedTimeBlocks(userIntialSchedule);
   },[userIntialSchedule])
 
-
-
   useEffect(() => {
     // Convert blockedTimes to selectedTimeBlocks format when date changes
     const newSelectedBlocks = blockedTimes.map(block => ({
+      date: block.date,
       startTime: block.startTime,
-      endTime: block.endTime,
-      dayIndices: [dayjs(block.date).day()]
+      endTime: block.endTime
     }));
-    setSelectedTimeBlocks(newSelectedBlocks);
+    setSelectedTimeBlocks((prev) => {
+      // Merge with existing blocks for other dates
+      const otherDateBlocks = prev.filter(b => b.date !== newSelectedBlocks[0]?.date);
+      return [...otherDateBlocks, ...newSelectedBlocks];
+    });
   }, [blockedTimes]);
 
-  const isTimeBlocked = (time: string, dayIndex: number) => {
+  const isTimeBlocked = (time: string, dayIndex: number, cellDate: string) => {
     return scheduledSessions.some(s => {
-      const sessionDay = dayjs(s.startTime).day();
+      const sessionDate = dayjs(s.startTime).format('YYYY-MM-DD');
       const sessionStartTime = dayjs(s.startTime).format('h:mm A');
       const sessionEndTime = dayjs(s.endTime).format('h:mm A');
-      return dayIndex === sessionDay && 
+      return sessionDate === cellDate && 
              times.indexOf(time) >= times.indexOf(sessionStartTime) &&
              times.indexOf(time) < times.indexOf(sessionEndTime);
     });
@@ -170,14 +196,15 @@ const WorkHoursList = ({
   };
 
   const handleMouseDown = (time: string, dayIndex: number) => {
-    if (isTimeBlocked(time, dayIndex) || isPastDate(dayIndex)) return;
+    const cellDate = selectedDate.startOf('week').add(dayIndex, 'day').format('YYYY-MM-DD');
+    if (isTimeBlocked(time, dayIndex, cellDate) || isPastDate(dayIndex)) return;
     
     // Check if time is already blocked
     const existingBlock = selectedTimeBlocks.find(block => {
       const timeIndex = times.indexOf(time);
       const blockStartIndex = times.indexOf(block.startTime);
       const blockEndIndex = times.indexOf(block.endTime);
-      return block.dayIndices.includes(dayIndex) && 
+      return block.date === cellDate && 
              timeIndex >= blockStartIndex && 
              timeIndex < blockEndIndex;
     });
@@ -193,9 +220,9 @@ const WorkHoursList = ({
       // Create two new blocks if needed
       if (times.indexOf(existingBlock.startTime) < timeIndex) {
         const firstBlock = {
+          date: cellDate,
           startTime: existingBlock.startTime,
-          endTime: time,
-          dayIndices: [dayIndex]
+          endTime: time
         };
         otherBlocks.push(firstBlock);
         onTimeBlockSelect(firstBlock.startTime, firstBlock.endTime, [dayIndex]);
@@ -203,9 +230,9 @@ const WorkHoursList = ({
       
       if (times.indexOf(existingBlock.endTime) > nextTimeIndex) {
         const secondBlock = {
+          date: cellDate,
           startTime: times[nextTimeIndex],
-          endTime: existingBlock.endTime,
-          dayIndices: [dayIndex]
+          endTime: existingBlock.endTime
         };
         otherBlocks.push(secondBlock);
         onTimeBlockSelect(secondBlock.startTime, secondBlock.endTime, [dayIndex]);
@@ -227,6 +254,8 @@ const WorkHoursList = ({
   const handleMouseMove = (time: string, dayIndex: number) => {
     if (!isDragging || !selectedStartTime || selectedStartTime.dayIndex !== dayIndex || isPastDate(dayIndex)) return;
     
+    const cellDate = selectedDate.startOf('week').add(dayIndex, 'day').format('YYYY-MM-DD');
+
     const startTimeIndex = times.indexOf(selectedStartTime.time);
     const currentTimeIndex = times.indexOf(time);
 
@@ -237,7 +266,7 @@ const WorkHoursList = ({
     let maxAllowedIndex = currentTimeIndex;
     let foundBlocked = false;
     for (let i = startTimeIndex; i <= currentTimeIndex; i++) {
-      if (isTimeBlocked(times[i], dayIndex)) {
+      if (isTimeBlocked(times[i], dayIndex, cellDate)) {
         maxAllowedIndex = i - 1;
         foundBlocked = true;
         break;
@@ -263,19 +292,19 @@ const WorkHoursList = ({
 
     // Update temporary selection
     const newBlock = {
+      date: cellDate,
       startTime: selectedStartTime.time,
-      endTime: times[maxAllowedIndex + 1],
-      dayIndices: [dayIndex]
+      endTime: times[maxAllowedIndex + 1]
     };
 
-    // Keep existing blocks for the same day that don't overlap
+    // Keep existing blocks for the same date that don't overlap
     const existingBlocksForDay = selectedTimeBlocks.filter(b => 
-      b.dayIndices.includes(dayIndex) &&
+      b.date === cellDate &&
       (times.indexOf(b.endTime) <= times.indexOf(newBlock.startTime) ||
        times.indexOf(b.startTime) >= times.indexOf(newBlock.endTime))
     );
 
-    const otherDayBlocks = selectedTimeBlocks.filter(b => !b.dayIndices.includes(dayIndex));
+    const otherDayBlocks = selectedTimeBlocks.filter(b => b.date !== cellDate);
     
     setSelectedTimeBlocks([...otherDayBlocks, ...existingBlocksForDay, newBlock]);
   };
@@ -290,28 +319,34 @@ const WorkHoursList = ({
     if (endTimeIndex >= startTimeIndex) {
       const finalEndTime = times[endTimeIndex + 1] || times[endTimeIndex];
       const dayIndex = selectedStartTime.dayIndex;
+      const cellDate = selectedDate.startOf('week').add(dayIndex, 'day').format('YYYY-MM-DD');
 
-      // Get existing non-overlapping blocks for the same day
+      // Get existing non-overlapping blocks for the same date
       const existingBlocksForDay = selectedTimeBlocks.filter(b => 
-        b.dayIndices.includes(dayIndex) &&
+        b.date === cellDate &&
         (times.indexOf(b.endTime) <= times.indexOf(selectedStartTime.time) ||
          times.indexOf(b.startTime) >= times.indexOf(finalEndTime))
       );
 
       // Add the new block
       const newBlock = {
+        date: cellDate,
         startTime: selectedStartTime.time,
-        endTime: finalEndTime,
-        dayIndices: [dayIndex]
+        endTime: finalEndTime
       };
 
-      // Commit all blocks for this day
+      // Commit all blocks for this date
       [...existingBlocksForDay, newBlock].forEach(block => {
         onTimeBlockSelect(
           block.startTime,
           block.endTime,
           [dayIndex]
         );
+      });
+
+      setSelectedTimeBlocks(prev => {
+        const others = prev.filter(b => b.date !== cellDate);
+        return [...others, ...existingBlocksForDay, newBlock];
       });
     }
 
@@ -320,9 +355,9 @@ const WorkHoursList = ({
     setCurrentEndTime(null);
   };
 
-  const isTimeBlockSelected = (time: string, dayIndex: number) => {
+  const isTimeBlockSelected = (time: string, _dayIndex: number, cellDate: string) => {
     return selectedTimeBlocks.some(block => 
-      block.dayIndices.includes(dayIndex) &&
+      block.date === cellDate &&
       times.indexOf(time) >= times.indexOf(block.startTime) &&
       times.indexOf(time) < times.indexOf(block.endTime)
     );
@@ -344,10 +379,8 @@ const WorkHoursList = ({
     }
     if (session.currentSessionNumber === session.maxSessionNumber) {
         return '#ffb6c1'
-     
     }
     return '#ffdab9';
-   
   };
 
   const getSessionStatusText = (session: ScheduledSession) => {
@@ -387,22 +420,24 @@ const WorkHoursList = ({
                 <Grid container>
                   {[...Array(7)].map((_, dayIndex) => {
                     const currentDate = selectedDate.startOf('week').add(dayIndex, 'day');
+                    const cellDate = currentDate.format('YYYY-MM-DD');
+
                     const session = scheduledSessions.find(s => 
                       dayjs(s.startTime).isSame(currentDate, 'day') && 
                       dayjs(s.startTime).format('h:mm A') === time
                     );
 
-                    const isHighlighted = isTimeBlockSelected(time, dayIndex) || isCurrentlySelecting(time, dayIndex);
+                    const isHighlighted = isTimeBlockSelected(time, dayIndex, cellDate) || isCurrentlySelecting(time, dayIndex);
                     const isPast = isPastDate(dayIndex);
 
                     const showBlockedTimeLabel = selectedTimeBlocks.some(block => 
-                      block.dayIndices.includes(dayIndex) && 
+                      block.date === cellDate && 
                       time === block.startTime
                     );
                     
-                    // Get all blocks that start at this time for this day
+                    // Get all blocks that start at this time for this date
                     const blocksStartingAtTime = selectedTimeBlocks.filter(block => 
-                      block.dayIndices.includes(dayIndex) && 
+                      block.date === cellDate && 
                       time === block.startTime
                     );
                     
@@ -647,8 +682,6 @@ const Calendar = () => {
             ? sessions.value.data?.data ?? []
             : [];
  
-         
-    
           return {
             ...user,
             availability: availabilityData,
@@ -790,12 +823,9 @@ const Calendar = () => {
     };
 
     setSubmissionData(submissionData);
-    // Here you would typically make an API call to submit the data
-   
-
-
-    // Clear the blocked times after submission
     setBlockedTimes([]);
+    // Clear after successful server re-hydration (handled elsewhere if needed)
+    /** setBlockedTimes([]); */
   };
 
   const canGoPrev = isDateWithinRange(currentDate.subtract(7, 'day'));
@@ -844,6 +874,5 @@ const Calendar = () => {
     </>
   );
 };
-
 
 export default Calendar;
