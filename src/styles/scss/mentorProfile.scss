@@ -1,0 +1,526 @@
+/* =====================================
+   mentorProfile.scss (copy into src/styles/scss/mentorProfile.scss)
+   Adds all styles used above to match the original look & feel
+======================================*/
+/* Brand palette */
+$primary-orange-color: #ff6347;
+$primary-black-color: #1d1917;
+$primary-yellow-color: #f2c85b;
+$primary-white-color: #fbfaf9;
+$primary-red-color: #fd2f30;
+$primary-grey-color: #8f8f8f;
+$darker-yellow-color: #eeb82c;
+$darker-yellow-color-opaque: rgba(238, 184, 44, 0.8);
+
+:root {
+  --ign-black: #1d1917;
+  --ign-yellow: #f2c85b;
+  --ign-yellow-strong: #eeb82c;
+  --ign-white: #fbfaf9;
+  --ign-orange: #ff6347;
+  --ign-red: #fd2f30;
+  --ign-grey: #8f8f8f;
+}
+
+/* Page base */
+.bio{
+  text-transform:capitalize;
+  line-height:1.6;
+  color:#4a4643;
+}
+.mentor-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: capitalize;
+}
+.user-profile-page {
+  min-height: 100vh;
+  background: var(--ign-white);
+  color: var(--ign-black);
+}
+.profile-cover {
+  background: radial-gradient(
+      80% 60% at 10% 0%,
+      rgba(238, 184, 44, 0.25),
+      transparent 60%
+    ),
+    linear-gradient(to bottom, rgba(29, 25, 23, 0.92), rgba(29, 25, 23, 0.86));
+  padding: 2rem 1rem;
+  color: var(--ign-white);
+}
+.profile-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+.profile-avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, $primary-yellow-color, $darker-yellow-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  border: 3px solid $primary-white-color;
+  overflow: hidden;
+  cursor: pointer;
+
+  // gradient overlay that we can fade out smoothly
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, $primary-yellow-color, $darker-yellow-color);
+    opacity: 0.4; // visible tint by default
+    transition: opacity 420ms cubic-bezier(.22,.61,.36,1); // smooth ease-out
+    pointer-events: none;
+  }
+
+  .profile-avatar-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+
+    /* Start slightly dim + tiny scale down, then ease in */
+    opacity: 0.4;
+    transform: scale(.985);
+    transition:
+      opacity 420ms cubic-bezier(.22,.61,.36,1),
+      transform 420ms cubic-bezier(.22,.61,.36,1),
+      filter 420ms cubic-bezier(.22,.61,.36,1);
+    /* Gentle blend to keep the yellow vibe without harsh overlay */
+    mix-blend-mode: normal;
+    filter: saturate(1) contrast(1);
+  }
+
+  /* When image is loaded, fade/scale in smoothly */
+  &.is-loaded .profile-avatar-img {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+
+  /* Hover: remove most of the tint and show the crisp image */
+  &:hover::before {
+    opacity: 0.08;
+  }
+  &:hover .profile-avatar-img {
+    opacity: 1;
+    filter: saturate(1.05) contrast(1.02);
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .profile-avatar::before,
+  .profile-avatar .profile-avatar-img {
+    transition: none;
+  }
+}
+
+.profile-info {
+  display: grid;
+  gap: 0.5rem;
+}
+.profile-head-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.tag-pill {
+  background: #fff6e0;
+  border: 1px solid var(--ign-yellow-strong);
+  color: var(--ign-black);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem; /* Slightly smaller and more modern */
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1.25rem; /* Tighter vertical padding */
+  border-radius: 8px; /* Slightly smaller radius for a modern look */
+  transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--ign-black);
+  color: var(--ign-white);
+  border: 1px solid var(--ign-black);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.btn-primary:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--ign-white);
+  color: var(--ign-black);
+  border: 1px solid var(--ign-black);
+}
+.btn-secondary:hover {
+  background: var(--ign-yellow);
+  color: var(--ign-black);
+}
+
+/* Layout */
+.profile-content {
+  max-width: 1100px;
+  margin: 1.25rem auto 2.5rem;
+  padding: 0 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .profile-content {
+    grid-template-columns: 1fr 330px;
+    gap: 1.5rem;
+  }
+}
+.space-stack > * + * {
+  margin-top: 1rem;
+}
+
+/* Cards */
+.card {
+  background: $primary-white-color;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card.with-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(238, 184, 44, 0.08),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+.with-ico::before {
+  content: "✨";
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: $primary-white-color;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 0.75rem;
+}
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #f6f6f6;
+}
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.74rem;
+  color: #666;
+}
+
+/* About pills */
+.about-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(29, 25, 23, 0.2);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  background: #fff;
+}
+.pill-ico {
+  opacity: 0.8;
+}
+
+/* Tabs */
+.tabs {
+  margin-top: 1rem;
+}
+.tabs-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.tabs-trigger {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tabs-trigger.is-active {
+  background: var(--ign-black);
+  color: var(--ign-white);
+  border-color: var(--ign-black);
+}
+
+/* Availability */
+.availability-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .availability-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+.availability-day {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 0.75rem;
+  background: #fff;
+}
+.availability-day-name {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.availability-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.time-slot {
+  border: 1px solid rgba(29, 25, 23, 0.2);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  background: #fff;
+}
+.time-slot:hover {
+  border-color: var(--ign-yellow-strong);
+  color: var(--ign-black);
+  background: rgba(238, 184, 44, 0.12);
+}
+
+/* Pricing */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+@media (min-width: 640px) {
+  .pricing-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.pricing-card {
+  padding: 1rem;
+}
+.pricing-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.pricing-price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.pricing-desc {
+  color: #555;
+  margin-bottom: 0.75rem;
+}
+
+/* Reviews */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+@media (min-width: 768px) {
+  .reviews-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.testimonial .stars {
+  color: #f1b400;
+  margin-bottom: 0.25rem;
+}
+.testimonial .quote {
+  line-height: 1.6;
+  margin: 0.25rem 0 0.5rem;
+}
+.testimonial .byline {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Portfolio */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.portfolio-item {
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+.portfolio-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+.portfolio-item:hover img {
+  transform: scale(1.04);
+}
+.overlay-cta {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: rgba(255, 255, 255, 0);
+}
+.portfolio-item:hover .overlay-cta {
+  opacity: 1;
+}
+.overlay-cta {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(3px);
+  background: rgba(251, 250, 249, 0.8);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  justify-self: center;
+  align-self: center;
+}
+
+/* FAQ */
+.faq-item {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.6rem 0;
+}
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.faq-content {
+  color: #4a4643;
+  margin-top: 0.4rem;
+}
+
+/* Sidebar */
+.right-sidebar {
+  position: relative;
+}
+.booking-card {
+  position: sticky;
+  top: 1rem;
+}
+.booking-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.option {
+  border: 1px solid rgba(29, 25, 23, 0.2);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  background: #fff;
+  text-align: left;
+}
+.option:hover {
+  border-color: var(--ign-black);
+}
+.opt-top {
+  font-size: 0.9rem;
+}
+.opt-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.kv-pair {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.muted {
+  color: #666;
+  font-size:0.8rem
+}
+
+/* Footer */
+.page-footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
