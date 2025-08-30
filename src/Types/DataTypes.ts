@@ -421,7 +421,7 @@ export interface ProductDataType {
     name: string,
     price: number,
     formattedPrice: string,
-    formatted_price:string,
+    formatted_price?:string,
     description?: string,
     stripe_account_id: string,
     stripe_account: StripeAccountDataType,

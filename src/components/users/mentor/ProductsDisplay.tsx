@@ -30,7 +30,7 @@ export default function ProductDisplay({user,displayButton}:{user:UserDataType,d
                  return (
                     <div className="card pricing-card" key={product.name}>
                     <div className="pricing-title">Core Session</div>  
-                    <div className="pricing-price">{product.formatted_price}</div>
+                    <div className="pricing-price">{product?.formatted_price}</div>
                     <p className="pricing-desc">60‑min 1:1 coaching + action plan.</p>
                    { displayButton && <Link to={`/mentors/book-a-mentor/${user.id}`}>
                     <button className="btn-primary w-full">Select</button>

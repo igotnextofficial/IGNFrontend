@@ -8,19 +8,21 @@ import useHttp from "../customhooks/useHttp";
 import { APP_ENDPOINTS } from "../config/app";
 import { useParams } from "react-router-dom";
 import { MenteeDataType, MentorDataType, ScheduleDataType } from "../types/DataTypes";
- 
+ import { Roles } from "../types/Roles";
 // helpers (top of file or a utils file)
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
  
 
+import  MentorProfile from './profiles/MentorProfile';
+import MenteeProfile from "./profiles/MenteeProfile";
 import { Link } from "react-router-dom";
+
+
 dayjs.extend(utc);
 dayjs.extend(tz);
 
-import  MentorProfile from './profiles/MentorProfile';
-import MenteeProfile from "./profiles/MenteeProfile";
 
  
  

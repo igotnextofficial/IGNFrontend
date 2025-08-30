@@ -10,8 +10,7 @@ import { SessionStatus } from "../../types/DataTypes";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
-dayjs.extend(utc);
-dayjs.extend(tz);
+
 
 import {
   Box,
@@ -38,6 +37,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import ShareIcon from "@mui/icons-material/Share";
 
+dayjs.extend(utc);
+dayjs.extend(tz);
 type Props = { user: MenteeDataType };
 
 const TZ = dayjs.tz.guess() || "America/New_York";

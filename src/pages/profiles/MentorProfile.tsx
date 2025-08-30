@@ -24,7 +24,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
 import { time } from "console";
-import { Typography, Chip, Snackbar, Alert } from "@mui/material";
+import { Typography, Chip, Snackbar, Alert, Grid,Box } from "@mui/material";
 import { useUser } from "../../contexts/UserContext";
 
 import { Link } from "react-router-dom";
@@ -49,6 +49,7 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
   const [responseTime, setResponseTime] = useState<string>("24h");
   const [bio, setBio] = useState<string>("");
   const [stats, setStats] = useState<{ label: string; value: string; icon: SvgIconComponent }[]>([]);
+  const [notLoggedInMessage,setNotLoggedInMessage] = useState("");
 
   // share snackbar state
   const [snack, setSnack] = useState<{ open: boolean; message: string; severity: "success" | "error" | "info" }>({
@@ -107,40 +108,119 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
       {/* Cover / Header */}
       <section className="profile-cover">
         <div className="profile-header">
-          <div className="profile-avatar">
-            {user?.profile_photo_path && (
-              <img src={user.profile_photo_path} alt="" className="profile-avatar-img" />
-            )}
-          </div>
+        <Grid
+  container
+  alignItems="center"
+  columnSpacing={{ xs: 2, md: 1 }}     // tighter on desktop
+  rowSpacing={{ xs: 2, md: 1 }}        // less vertical space on desktop
+>
+  {/* LEFT: avatar + name/tagline */}
+  <Grid item xs={12} md={6}>
+    <Grid
+      container
+      wrap="nowrap"
+      alignItems="center"
+      justifyContent={{ xs: "center", md: "flex-start" }}   // center on mobile
+      columnSpacing={{ xs: 2, md: 1 }}                       // name closer to avatar on desktop
+    >
+      <Grid item xs="auto">
+        <div className="profile-avatar" style={{ flexShrink: 0 }}>
+          {user?.profile_photo_path && (
+            <img
+              src={user.profile_photo_path}
+              alt=""
+              className="profile-avatar-img"
+            />
+          )}
+        </div>
+      </Grid>
 
-          <div className="profile-info">
-            <div className="profile-head-row">
-              <div>
-                <h1 className="mentor-name">{user.fullname}</h1>
-                <p className="mentor-title"> {tagline}</p>
-              </div>
-              <div className="profile-buttons">
-                <button
-                  onClick={() => {
-                    console.log("Book session with", user.fullname);
-                  }}
-                  className="btn-primary"
-                >
-                  Book Session
-                </button>
-                <button onClick={handleShare} className="btn-secondary" aria-label="Share mentor profile">
-                  Share
-                </button>
-              </div>
-            </div>
-            <div className="tags">
-              {specialties.map((spec) => (
-                <span key={spec} className="tag-pill">
-                  {spec}
-                </span>
-              ))}
-            </div>
-          </div>
+      <Grid item xs zeroMinWidth>
+        <Box
+          component="div"
+          sx={{ textAlign: { xs: "center", md: "left" } }}  // centered on mobile, left on desktop
+        >
+          <h1
+            className="mentor-name"
+            style={{ margin: 0, lineHeight: 1.15, overflow: "hidden", textOverflow: "ellipsis" }}
+          >
+            {user.fullname}
+          </h1>
+
+          <Box
+            component="p"
+            className="mentor-title"
+            sx={{
+              m: 0,
+              mt: { xs: 0.5, md: 0.25 },   // a touch of space; tighter on desktop
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {tagline}
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
+  </Grid>
+
+  {/* RIGHT: buttons (center on mobile, right on desktop) */}
+  <Grid item xs={12} md={6}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: { xs: "center", md: "flex-end" },
+        gap: 1,
+        flexWrap: "wrap",
+        mt: { xs: 0.5, md: 0 },        // tiny lift on mobile, tight on desktop
+      }}
+    >
+      <div className="profile-buttons" style={{ display: "contents" }}>
+        <button
+          onClick={() => {
+            !isLoggedin
+              ? setNotLoggedInMessage(
+                  `Please login or create a mentee account, to book with ${user.fullname}`
+                )
+              : "";
+          }}
+          className="btn-primary"
+        >
+          Book Session
+          <Typography variant="subtitle1" color={"error"}>
+            {notLoggedInMessage}
+          </Typography>
+        </button>
+
+        <button
+          onClick={handleShare}
+          className="btn-secondary"
+          aria-label="Share mentor profile"
+        >
+          Share
+        </button>
+      </div>
+    </Box>
+  </Grid>
+
+  {/* SPECIALTIES: full width; centered on mobile, left on desktop; tighter on desktop */}
+  <Grid item xs={12}>
+    <Box
+      component="div"
+      className="tags"
+      sx={{
+        justifyContent: { xs: "center", md: "flex-start" },
+        mt: { xs: 1, md: 0.5 },
+      }}
+    >
+      {specialties.map((spec) => (
+        <span key={spec} className="tag-pill">
+          {spec}
+        </span>
+      ))}
+    </Box>
+  </Grid>
+</Grid>
         </div>
       </section>
 
@@ -182,19 +262,25 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
           <section className="tabs">
             <div className="tabs-list">
               <button
-                className={`tabs-trigger ${tab === "availability" ? "is-active" : ""}`}
+                className={`tabs-trigger ${
+                  tab === "availability" ? "is-active" : ""
+                }`}
                 onClick={() => setTab("availability")}
               >
                 Availability
               </button>
               <button
-                className={`tabs-trigger ${tab === "pricing" ? "is-active" : ""}`}
+                className={`tabs-trigger ${
+                  tab === "pricing" ? "is-active" : ""
+                }`}
                 onClick={() => setTab("pricing")}
               >
                 Pricing
               </button>
               <button
-                className={`tabs-trigger ${tab === "reviews" ? "is-active" : ""}`}
+                className={`tabs-trigger ${
+                  tab === "reviews" ? "is-active" : ""
+                }`}
                 onClick={() => setTab("reviews")}
               >
                 Reviews
@@ -203,7 +289,9 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
 
             {tab === "availability" && <MentorAvailability user={user} />}
 
-            {tab === "pricing" && <ProductDisplay user={user} displayButton={isLoggedin} />}
+            {tab === "pricing" && (
+              <ProductDisplay user={user} displayButton={isLoggedin} />
+            )}
 
             {tab === "reviews" && <p className={"muted"}>coming soon...</p>}
           </section>
@@ -214,16 +302,23 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
             <details className="faq-item" open>
               <summary>What happens in a first session?</summary>
               <div className="faq-content">
-                We evaluate goals, current technique, and pick 1–2 high-impact exercises. You’ll leave with a mini plan.
+                We evaluate goals, current technique, and pick 1–2 high-impact
+                exercises. You’ll leave with a mini plan.
               </div>
             </details>
             <details className="faq-item">
               <summary>Do you work with beginners?</summary>
-              <div className="faq-content">Absolutely. I tailor exercises to your level and build confidence step by step.</div>
+              <div className="faq-content">
+                Absolutely. I tailor exercises to your level and build
+                confidence step by step.
+              </div>
             </details>
             <details className="faq-item">
               <summary>Cancellation policy</summary>
-              <div className="faq-content">Free reschedule up to 24h before start. Otherwise the session is charged.</div>
+              <div className="faq-content">
+                Free reschedule up to 24h before start. Otherwise the session is
+                charged.
+              </div>
             </details>
           </section>
         </div>
@@ -235,7 +330,9 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
             <ProductDisplay user={user} displayButton={false} />
             {isLoggedin && (
               <Link to={`/mentors/book-a-mentor/${user.id}`}>
-                <button className="btn-primary w-full">Continue to schedule</button>
+                <button className="btn-primary w-full">
+                  Continue to schedule
+                </button>
               </Link>
             )}
             <div className="kv-pair">
@@ -264,7 +361,12 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
         onClose={closeSnack}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={closeSnack} severity={snack.severity} variant="filled" sx={{ width: "100%" }}>
+        <Alert
+          onClose={closeSnack}
+          severity={snack.severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
           {snack.message}
         </Alert>
       </Snackbar>
