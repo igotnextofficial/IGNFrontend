@@ -178,11 +178,11 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
       <div className="profile-buttons" style={{ display: "contents" }}>
         <button
           onClick={() => {
-            !isLoggedin
-              ? setNotLoggedInMessage(
-                  `Please login or create a mentee account, to book with ${user.fullname}`
-                )
-              : "";
+            if (!isLoggedin) {
+              setNotLoggedInMessage(
+                `Please login or create a mentee account, to book with ${user.fullname}`
+              );
+            }
           }}
           className="btn-primary"
         >
