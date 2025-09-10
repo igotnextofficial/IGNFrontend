@@ -139,7 +139,9 @@ export const APP_ENDPOINTS = {
         STRIPE_ONBOARDING: `${Endpoints.PRODUCTS}/onboarding/:user_id`,
         STRIPE_ONBOARDING_SUCCESS: `${Endpoints.PRODUCTS}/onboarding/success/:user_id`,
         GENERATE_STRIPE_LINK: `${Endpoints.PRODUCTS}/stripe-account-link`,
-        WITH_STRIPE_ACCOUNT: `${Endpoints.PRODUCTS}/user/:user_id`
+        WITH_STRIPE_ACCOUNT: `${Endpoints.PRODUCTS}/user/:user_id`,
+        PRICES_BY_PROUDCT: `${Endpoints.PRODUCTS}/prices/:product_id`,
+        PRICES_CREATE: `${Endpoints.PRODUCTS}/prices/:product_id`
     },
     PAYMENT: {
         BASE:Endpoints.PAYMENT,
@@ -147,6 +149,10 @@ export const APP_ENDPOINTS = {
         CREATE_INTENT:`${Endpoints.PAYMENT}/create-payment-intent`,
         UPDATE_PRODUCT_PAYMENT_STATUS:`${Endpoints.PAYMENT_BASE}/product-payments/sessions/:id`,
         RETRIEVE_PRODUCT_PAYMENT:`${Endpoints.PAYMENT_BASE}/product-payments/sessions/in-progress/:userId`        
+    },
+    PRICE:{
+        BASE:Endpoints.PAYMENT_BASE,
+        CREATE: `${Endpoints.PAYMENT_BASE}/prices`,
     },
     SCHEDULE: {
         BASE: Endpoints.SCHEDULE,

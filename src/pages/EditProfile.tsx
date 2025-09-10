@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { useUser } from "../contexts/UserContext"
 import { HttpMethods, UserDataType, FormField } from "../types/DataTypes";
-import { Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import ContentContainer from "../utils/ContentContainer";
  
 import IgnFormGenerate from "../components/IgnFormGenerate";
@@ -15,6 +15,10 @@ import { MentorFormStructure } from "../formstructures/MentorFormStructure";
 import { MenteeFormStructure } from "../formstructures/MenteeFormStructure";
 import MenteeForm from "../forms/MenteeForm";
 import MentorForm from "../forms/MentorForm";
+import PricesForm from "../forms/PricesForm";
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 
 
@@ -22,6 +26,7 @@ import MentorForm from "../forms/MentorForm";
 const Profile = () => {
     const { user, updateUser,accessToken} = useUser();
     const { data } = useFormDataContext()
+    const [updatePricing,setUpdatePricing ]= useState(false) 
     const [formStructure,setFormStructure] = useState<FormField[]>([])
     const [successfulUpdate,setSuccessfulUpdate] = useState(false)
     const structures:Record<string,FormField[]> = {
@@ -95,6 +100,19 @@ const Profile = () => {
             {user?.role?.type === "mentee" ? <MenteeForm /> :  
             <>
             <MentorForm />
+            <Box sx ={{backgroundColor:"#f2c85b", padding:"8px 10px",textAlign:'center',borderRadius:'5px'}}>
+               <FormGroup>
+                   <FormControlLabel control={<Switch checked={updatePricing} onChange={() => {
+                    setUpdatePricing(!updatePricing)
+                   }}/>} label="Would you like to update pricing fees?" />
+              </FormGroup>
+              </Box>
+              {updatePricing &&
+              <>
+                <Typography variant="h5" sx={{ color: "black" ,paddingBottom:2}}> Update your pricing fees.</Typography>
+                <PricesForm/>
+             </>
+            }
         </>
         }
         
