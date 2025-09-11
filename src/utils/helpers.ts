@@ -129,4 +129,9 @@ const buildBasicOptions = (min: number, max: number, step: number) => {
   if (out[out.length - 1] !== max) out.push(max); // ensure max included
   return out;
 };
+
+export const centsToDollars = (unitAmount:number)  => {
+    if (isNaN(unitAmount)) return "$0.00";
+  return `$${(unitAmount / 100).toFixed(2)}`;
+}
 export const BASIC_OPTIONS = buildBasicOptions(BASIC_LIMITS.min, BASIC_LIMITS.max, BASIC_LIMITS.step);

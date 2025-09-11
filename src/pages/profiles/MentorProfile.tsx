@@ -327,7 +327,7 @@ const MentorProfile = ({ user }: { user: MentorDataType }) => {
         <aside className="right-sidebar">
           <div className="booking-card card">
             <h3>Book with {user.fullname}</h3>
-            <ProductDisplay user={user} displayButton={false} />
+            {/* <ProductDisplay user={user} displayButton={false} /> */}
             {isLoggedin && (
               <Link to={`/mentors/book-a-mentor/${user.id}`}>
                 <button className="btn-primary w-full">
