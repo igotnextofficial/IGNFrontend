@@ -42,6 +42,19 @@ export interface MentorDataType extends UserDataType {
     specialties:Record<string,any>[],
     product: ProductDataType,
     bookings:BookingSessionDataType[]
+    schedule?:ScheduleDataType[] | []
+ 
+}
+
+export interface ScheduleDataType {
+    id:string
+    user_id:string
+    date:string, // YYYY-MM-DD
+    date_time:{start_time:string,end_time:string} // {start_time:"HH:mm:ss",end_time:"HH:mm:ss"}
+    status:string, // "unavailable" | "booked" | string
+    created_at:string,
+    updated_at:string
+
 }
 
 export interface MenteeDataType extends UserDataType {
@@ -408,8 +421,10 @@ export interface ProductDataType {
     name: string,
     price: number,
     formattedPrice: string,
+    formatted_price?:string,
     description?: string,
     stripe_account_id: string,
+    stripe_product_id?:string,
     stripe_account: StripeAccountDataType,
 }
 

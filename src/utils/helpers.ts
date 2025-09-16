@@ -104,3 +104,34 @@ async function submit(submissionData: axiosDataObject, updatedData: FormData | h
 
     return "just now";
 };
+
+// price options funcs
+
+export const toNumber = (v: string) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : NaN;
+};
+export const roundDollars = (n: number) => Math.round(n); // keep whole dollars
+export const toCents = (d: number) => Math.round(d * 100);
+
+
+// Bundle policy
+export const DISCOUNT_PRO = 0.10;       // 10% off vs 3× Basic
+export const DISCOUNT_PLATINUM = 0.15;  // 15% off vs 6× Basic
+
+export const SESSIONS = { basic: 1, pro: 3, platinum: 6 } as const;
+// Guardrails for BASIC only (tuned for upcoming entertainers)
+export const BASIC_LIMITS = { min: 100, max: 300, step: 10, label: 'Recommended: $100–$300' };
+
+const buildBasicOptions = (min: number, max: number, step: number) => {
+  const out: number[] = [];
+  for (let v = min; v <= max; v += step) out.push(v);
+  if (out[out.length - 1] !== max) out.push(max); // ensure max included
+  return out;
+};
+
+export const centsToDollars = (unitAmount:number)  => {
+    if (isNaN(unitAmount)) return "$0.00";
+  return `$${(unitAmount / 100).toFixed(2)}`;
+}
+export const BASIC_OPTIONS = buildBasicOptions(BASIC_LIMITS.min, BASIC_LIMITS.max, BASIC_LIMITS.step);

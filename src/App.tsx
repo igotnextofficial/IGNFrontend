@@ -54,6 +54,7 @@ import Mentors from './pages/mentors/Mentors';
 import EmailVerification from './components/generic/EmailVerification';
 import { QueryClientProvider } from './providers/QueryClientProvider';
 import { useSocket } from './customhooks/useSocket';
+import PricesForm from './forms/PricesForm';
 
  
 
@@ -127,7 +128,7 @@ const MainApplication: React.FC = () => {
 
             <Route path='/profile/:role' element={<Dashboard />} />
             <Route path='/mentors' element={<Mentors />} />
-
+            {/* <Route path='/mentor/prices-change/' element={<PricesForm/>} /> */}
             {/* Routes that require authentication */}
             <Route path='/mentor/complete-onboarding' element={<MentorOnboardingCompletion />} />
             <Route element={<ProtectedRoutes redirectPath='/' isAuthenticated={isLoggedin} />}>
@@ -144,7 +145,7 @@ const MainApplication: React.FC = () => {
 
               <Route path='/compose-article' element={<ComposeArticle />} />
               <Route path='/edit-article/:article_id' element={<EditArticle />} />
-            
+           
 
            
             </Route>

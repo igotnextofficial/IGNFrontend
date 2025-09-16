@@ -92,6 +92,7 @@ const SessionPaymentForm = ({
           <PaymentForm
             amount={product?.price || 0}
             productId={product?.id || ''}
+      
             mentorId={currentMentor?.id || ''}
             onSuccess={onPaymentSuccess}
           />
