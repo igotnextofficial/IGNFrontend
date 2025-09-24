@@ -8,7 +8,26 @@ import { FetchMode } from "../../types/ArticleFetchMode";
 import ArticleCategoryDisplay from "./ArticleCategoryDisplay";
 import NoDataAvailable from "../../utils/NoDataAvailable";
 import LoadingComponent from "../../components/common/LoadingComponent";
-import { Box, Skeleton, Fade } from '@mui/material';
+import { Box, Skeleton, Fade ,Container, Typography} from '@mui/material';
+
+ 
+
+const NoArticles: React.FC = () => {
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ py: 8, textAlign: 'center' }}>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 1 }}>
+          Fresh articles are on the way
+        </Typography>
+        <Typography color="text.secondary">
+          We’re working on new articles right now. Check back soon.
+        </Typography>
+      </Box>
+    </Container>
+  );
+};
+
+ 
 
 const ArticleCategoryPrepareList = ({ category }: { category: string }) => {
     const { allArticles } = useContext(ArticleContext);
@@ -89,10 +108,10 @@ const ArticleCategoryPrepareList = ({ category }: { category: string }) => {
     return (
         <Fade in={showContent} timeout={800}>
             <Box>
-                {articles ? (
+                {articles  && articles.length > 0? (
                     <ArticleCategoryDisplay title={category.replaceAll("-", " ")} data={articles} />
                 ) : (
-                    <NoDataAvailable />
+                    <NoArticles />
                 )}
             </Box>
         </Fade>
