@@ -110,7 +110,7 @@ export const AnnouncementsProvider = ({children}:{children:React.ReactNode}) => 
     const addAnnouncement = (announcement:AnnouncementType) =>{
         const current_announcements = localStorage.hasItem(ANNOUNCEMENTS) ? localStorage.load(ANNOUNCEMENTS) : [];
 
-        current_announcements.announcements 
+        const combine_data = [...current_announcements.announcements,announcement ] 
     }
 
     
@@ -125,7 +125,7 @@ export const AnnouncementsProvider = ({children}:{children:React.ReactNode}) => 
             console.log(current_announcements)
         if(!current_announcements){return }
         if(current_announcements.seen.includes(data.id)){return}
-       const old_announcements = current_announcements.announcements.filter((ann:AnnouncementType) => { ann.id !== data.id});
+        const old_announcements = current_announcements.announcements.filter((ann:AnnouncementType) => { return ann.id !== data.id});
  
        const updated_announcements = [...old_announcements,data];
        const all_seen = Array.from(new Set([...current_announcements.seen,...seen]));

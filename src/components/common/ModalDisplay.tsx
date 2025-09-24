@@ -136,11 +136,12 @@ const ModalDisplay = ({ announcement }: { announcement: AnnouncementType[] }) =>
       onClose={handleDismiss}
       maxWidth="sm"
       fullWidth
-      BackdropProps={{ sx: { backgroundColor: 'rgba(0,0,0,0.6)' } }}
-      PaperProps={{ sx: { borderRadius: 2, p: 1, overflow: 'visible' } }}
+      className='dialog-main-container'
+      PaperProps={{ sx: { borderRadius: 2, p: 1, overflow: 'visible' ,marginTop:'20%'} }}
+      sx={{overflow:'scroll'}}
     >
       {/* prevent extra Typography wrapper (and ellipsis) */}
-      <DialogTitle sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', pr:1 }}>
+      <DialogTitle className='dialog-white-container' sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', pr:1 }}>
         <Box sx={{ display:'flex', alignItems:'center', gap:1, minWidth: 0 }}>
           {showNav && (
             <IconButton onClick={prev} aria-label="Previous"><NavigateBeforeIcon /></IconButton>
