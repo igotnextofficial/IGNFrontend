@@ -433,3 +433,44 @@ export interface StripeAccountDataType {
     account_id: string,
     is_verified: boolean,
 }
+
+
+export interface AdvertisementVariantType{
+    slot: 'banner' | 'modal' | 'inline' | string;
+    priority: number;
+    dismissScope?: 'global' | 'variant';
+    title: string;
+    body: string;
+    imageUrl?: string;
+    cta?: { label: string; url: string };
+    theme?: 'dark' | 'light' | string;
+    width?: number;
+    height?: number;
+}
+export interface AnnouncementType{
+    id: string;
+    title: string;
+    body: string;
+    imageUrl?: string;
+    variants: AdvertisementVariantType[];
+    audience: {
+        roles: ('user' | 'broadcast' | 'mentor' | 'mentee' | 'writers' | 'admin')[];
+        tags: string[];
+    };
+    status: 'draft' | 'scheduled' | 'active' | 'expired';
+    publishAt: Date;
+    expireAt?: Date;
+    invalidateKey?: string;
+    dismissible: boolean;
+    created_by: string;
+}
+
+export interface AnnouncementStorageType {
+    announcements:AnnouncementType[],
+    seen:string[]
+}
+
+
+
+
+ 

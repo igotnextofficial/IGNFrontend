@@ -55,13 +55,20 @@ import EmailVerification from './components/generic/EmailVerification';
 import { QueryClientProvider } from './providers/QueryClientProvider';
 import { useSocket } from './customhooks/useSocket';
 import PricesForm from './forms/PricesForm';
+import AnnouncementDisplay from './components/common/AnnouncementDisplay';
+import { AnnouncementsProvider } from './providers/AnnouncementsProvider';
+import usePageTracking from './customhooks/usePageTracking';
 
  
-
+const RouteTracker: React.FC = () => {
+  usePageTracking('G-Y06XYB12JL'); // <-- your GA4 Measurement ID
+  return null;
+};
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
   const {isReady,socket} = useSocket({user});
   const [currentUser, setCurrentUser] = useState<any>(null);
+ 
 
   useEffect(() => {
     setCurrentUser(user);
@@ -101,6 +108,8 @@ const MainApplication: React.FC = () => {
       position: 'relative'
     }}>
       <Router future={{ v7_startTransition: true }}>
+        <RouteTracker />
+            <AnnouncementDisplay />
         <DetectChange />
         <Navigation />
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -170,10 +179,12 @@ const MainApplication: React.FC = () => {
 const App: React.FC = () => {
   return (
     <QueryClientProvider>
+      <AnnouncementsProvider>
       <div className="App">
         <ErrorComponent />
         <MainApplication />
       </div>
+    </AnnouncementsProvider>
     </QueryClientProvider>
   );
 };

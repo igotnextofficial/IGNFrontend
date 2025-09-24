@@ -38,6 +38,8 @@ const AccountSettings = () => {
     
     if(role === Roles.MENTOR) {
       user_settings = addMenuItem(user_settings, { title: 'Schedule Availability', slug: '/schedule-availability' });
+       user_settings.push({ title: 'View Profile', slug: `profile/${role}/${user?.id}` })
+
     }
     setSettings(user_settings);
   }, [role]);
