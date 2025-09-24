@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid, Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/material';
 import { MentorDataType } from '../../../types/DataTypes';
+import { Button }  from '@mui/material';
+import { useNavigate } from 'react-router';
 
 interface MentorListComponentProps {
   mentors: MentorDataType[];
@@ -17,7 +19,26 @@ const formatPrice = (price: number) => {
   }).format(dollars);
 };
 
+export function ClampedText({ children, lines = 3 }: { children: React.ReactNode; lines?: number }) {
+  return (
+    <Typography
+      sx={{
+        display: '-webkit-box',
+        overflow: 'hidden',
+        WebkitLineClamp: lines,
+        WebkitBoxOrient: 'vertical',
+      }}
+    >
+      {children}
+    </Typography>
+  );
+}
 const MentorListComponent = ({ mentors }: MentorListComponentProps) => {
+    const navigate = useNavigate();
+  const handleViewProfile  = (mentor:MentorDataType) => {
+    let url = `/profile/${mentor.role.type}/${mentor.id}`;
+    navigate(url);
+  }
   return (
     <Grid container spacing={4}>
       {mentors.map((mentor: MentorDataType) => (
@@ -90,8 +111,27 @@ const MentorListComponent = ({ mentors }: MentorListComponentProps) => {
               </Box>
 
               <Typography variant="body2" sx={{ mt: 2 }}>
-                {mentor.bio}
+                {mentor.bio && mentor.bio.length >= 200 ? <ClampedText>{mentor.bio}</ClampedText>  : mentor.bio}
               </Typography>
+              <Box>
+              <Button
+                  variant="contained"
+                  onClick={() => {
+                    handleViewProfile(mentor)
+                  }}
+                  sx={{
+                    backgroundColor: '#000',
+                    color: '#fff',
+                    marginTop:'20px',
+                    transition: 'background-color .2s ease',
+                    '&:hover': {
+                      backgroundColor: '#505050ff'
+                    }
+                  }}
+                >
+                  View Profile
+            </Button>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
