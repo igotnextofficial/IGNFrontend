@@ -4,7 +4,7 @@ import useHttp from "../customhooks/useHttp";
 import LocalStorage from "../storage/LocalStorage";
 
 const test_data:AnnouncementType = {
-    id: "1",
+    id: "5c8d41a2-7b53-4f9c-8a9f-3a2f6d0b5e71",
     title: "Welcome to the Announcement System",
     body: "This is a test announcement to demonstrate the functionality of the AnnouncementsProvider.",
     imageUrl: "/images/ads/amina_pankey.JPEG",
