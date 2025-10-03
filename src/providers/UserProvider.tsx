@@ -1,7 +1,7 @@
 import { useState, ReactNode, useEffect, useCallback } from "react";
 import { UserContext } from "../contexts/UserContext";
 import useHttp from "../customhooks/useHttp";
-import { useSocket } from "../customhooks/useSocket";
+// import { useSocket } from "../customhooks/useSocket";
 import { ArtistDataType, MenteeDataType, MentorDataType, UserDataType, httpDataObject } from "../types/DataTypes";
 import { APP_ENDPOINTS } from "../config/app";
 import { Roles } from "../types/Roles";
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const { updateError } = useErrorHandler();
     const queryClient = useQueryClient();
     const [manualLoading, setIsLoading] = useState<boolean>(false);
-    const {socket,sendMessage } = useSocket({ user });
+    // const {socket,sendMessage } = useSocket({ user });
     const [loadingUser,setLoadingUser] = useState<boolean>(true);
   
 

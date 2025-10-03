@@ -58,7 +58,7 @@ import PricesForm from './forms/PricesForm';
 import AnnouncementDisplay from './components/common/AnnouncementDisplay';
 import { AnnouncementsProvider } from './providers/AnnouncementsProvider';
 import usePageTracking from './customhooks/usePageTracking';
-
+import VideoCall from './pages/sessions/VideoCall'
  
 const RouteTracker: React.FC = () => {
   usePageTracking('G-Y06XYB12JL'); // <-- your GA4 Measurement ID
@@ -66,7 +66,7 @@ const RouteTracker: React.FC = () => {
 };
 const MainApplication: React.FC = () => {
   const { isLoggedin, user } = useUser();
-  const {isReady,socket} = useSocket({user});
+  // const {isReady,socket} = useSocket({user});
   const [currentUser, setCurrentUser] = useState<any>(null);
  
 
@@ -74,6 +74,7 @@ const MainApplication: React.FC = () => {
     setCurrentUser(user);
   }, [user]);
 
+  /*
   useEffect(() => {
     if (isReady && socket) {
       console.log('Socket is ready:', socket);
@@ -83,8 +84,8 @@ const MainApplication: React.FC = () => {
       console.log('Socket is not ready yet');
     }
    
-  }, [isReady]);
-
+ }, [isReady]);
+*/
 
  
 
@@ -115,6 +116,7 @@ const MainApplication: React.FC = () => {
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/session/call/:sessionId' element={<VideoCall />}/>
             <Route path='/about' element={<About />} />
             <Route path='/terms-of-service' element={<TermsOfService />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy />} />

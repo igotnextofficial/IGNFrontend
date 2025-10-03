@@ -23,7 +23,8 @@ export const Endpoints = {
    TAGS: process.env.REACT_APP_TAGS_API || "",
    FEATURE_SUBMISSIONS: process.env.REACT_APP_FEATURE_SUBMISSIONS || "",
    REACT_APP_MENTOR_INVITE: process.env.REACT_APP_MENTOR_INVITE || "",
-   REACT_APP_MENTOR_INVITE_VALIDATE: process.env.REACT_APP_MENTOR_INVITE_VALIDATE || ""
+   REACT_APP_MENTOR_INVITE_VALIDATE: process.env.REACT_APP_MENTOR_INVITE_VALIDATE || "",
+   VIDEO_CALL: process.env.REACT_APP_VIDEO_CALL_API || ""
    
 }
 
@@ -56,7 +57,10 @@ export const APP_ENDPOINTS = {
         FEATURE_SUBMISSIONS: Endpoints.FEATURE_SUBMISSIONS
 
     },
-
+    VIDEOCALL:{
+        ICE_SERVERS:`${Endpoints.VIDEO_CALL}/ice-servers/:user_id`,
+        USER_HAS_ACCESS_TO_SESSION:`${Endpoints.VIDEO_CALL}/user-has-access-to-session/:user_id`
+    },
     USER: {
         BASE: Endpoints.USER,
       

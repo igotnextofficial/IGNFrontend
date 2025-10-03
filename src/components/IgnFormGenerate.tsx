@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback, useMemo } from "react"
 import { FormField, displayType } from "../types/DataTypes"
 import { SelectChangeEvent, RadioGroup, InputLabel, Radio, Grid, TextField, FormControlLabel, MenuItem, Select, FormLabel, FormControl, FormGroup, Checkbox, Box, Typography, CircularProgress, FormHelperText } from "@mui/material"
 import { useFormDataContext } from "../contexts/FormContext"
@@ -12,7 +12,7 @@ const Generate = ({ formStructures }: { formStructures: FormField[] }) => {
     const sortedFields = [...formStructures].sort((a, b) => a.order - b.order)
     const output = sortedFields.map((formStructure, index) => {
         if (formStructure.visibility) {
-            return <DisplayFormField key={index} structure={formStructure} />
+            return <DisplayFormField key={`${formStructure.label}-${index}`} structure={formStructure} />
         }
         return null
     })
@@ -41,181 +41,194 @@ const FieldOutput = ({ structure }: FieldOutputProps) => {
         }
     }, [structure.defaultValue]);
 
-    const handleChange = async (field: string, value: any) => {
-        try {
+    // Optimized handleChange to prevent focus loss
+    const handleChange = useCallback(async (field: string, value: any) => {
+        setDataValue(value);
+        
+        // Only show loading for file uploads or complex operations
+        if (typeof value === 'object' || value instanceof File) {
             setIsFieldLoading(true);
-            setDataValue(value);
-            await updateFormData(field, value);
-        } finally {
-            setIsFieldLoading(false);
+            try {
+                await updateFormData(field, value);
+            } finally {
+                setIsFieldLoading(false);
+            }
+        } else {
+            // For text input, update immediately without loading state
+            updateFormData(field, value);
         }
-    };
+    }, [updateFormData]);
 
-    if (structure.display === displayType.Image) {
-        return (
-            <Box sx={{ position: 'relative' }}>
-                <TextField
-                    key={structure.label}
-                    fullWidth
-                    type="file"
-                    label={structure.label}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const target = e.target as HTMLInputElement;
-                        const file = target.files?.[0];
-                        if (file) {
-                            handleChange(structure.label, file);
-                        }
-                    }}
-                    {...structure.props}
-                    helperText={structure.helperText}
-                    error={!!hasError[current_key]?.message}
-                />
-                {isFieldLoading && (
-                    <CircularProgress
-                        size={20}
-                        sx={{
-                            position: 'absolute',
-                            right: 10,
-                            top: 10
+    // Memoize the component to prevent unnecessary re-renders
+    const memoizedComponent = useMemo(() => {
+        if (structure.display === displayType.Image) {
+            return (
+                <Box sx={{ position: 'relative' }}>
+                    <TextField
+                        key={structure.label}
+                        fullWidth
+                        type="file"
+                        label={structure.label}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            const target = e.target as HTMLInputElement;
+                            const file = target.files?.[0];
+                            if (file) {
+                                handleChange(structure.label, file);
+                            }
                         }}
+                        {...structure.props}
+                        helperText={structure.helperText}
+                        error={!!hasError[current_key]?.message}
                     />
-                )}
-            </Box>
-        );
-    }
+                    {isFieldLoading && (
+                        <CircularProgress
+                            size={20}
+                            sx={{
+                                position: 'absolute',
+                                right: 10,
+                                top: 10
+                            }}
+                        />
+                    )}
+                </Box>
+            );
+        }
 
-    if (structure.display === displayType.InputValue) {
-        return (
-            <Box sx={{ position: 'relative' }}>
-                <TextField
-                    key={structure.label}
-                    fullWidth
-                    label={structure.label}
-                    value={dataValue}
-                    onChange={(e) => handleChange(structure.label, e.target.value)}
-                    {...structure.props}
-                    error={current_key in hasError ? !hasError[current_key].valid : dataValue.trim() === ""}
-                    helperText={current_key in hasError ? hasError[current_key].message : structure.helperText}
-                    disabled={isFieldLoading}
-                />
-                {isFieldLoading && (
-                    <CircularProgress
-                        size={20}
-                        sx={{
-                            position: 'absolute',
-                            right: 10,
-                            top: 10
-                        }}
+        if (structure.display === displayType.InputValue) {
+            return (
+                <Box sx={{ position: 'relative' }}>
+                    <TextField
+                        key={structure.label}
+                        fullWidth
+                        label={structure.label}
+                        value={dataValue}
+                        onChange={(e) => handleChange(structure.label, e.target.value)}
+                        {...structure.props}
+                        error={current_key in hasError ? !hasError[current_key].valid : dataValue.trim() === ""}
+                        helperText={current_key in hasError ? hasError[current_key].message : structure.helperText}
+                        disabled={isFieldLoading}
                     />
-                )}
-            </Box>
-        );
-    }
+                    {isFieldLoading && (
+                        <CircularProgress
+                            size={20}
+                            sx={{
+                                position: 'absolute',
+                                right: 10,
+                                top: 10
+                            }}
+                        />
+                    )}
+                </Box>
+            );
+        }
 
-    if (structure.display === displayType.TextValue) {
-        return (
-            <Box sx={{ position: 'relative' }}>
-                <TextField
-                    key={structure.label}
-                    fullWidth
-                    multiline
-                    rows={4}
-                    label={structure.label}
-                    value={dataValue}
-                    onChange={(e) => handleChange(structure.label, e.target.value)}
-                    {...structure.props}
-                    error={current_key in hasError ? !hasError[current_key].valid : dataValue.trim() === ""}
-                    helperText={current_key in hasError ? hasError[current_key].message : structure.helperText}
-                    disabled={isFieldLoading}
-                />
-                {isFieldLoading && (
-                    <CircularProgress
-                        size={20}
-                        sx={{
-                            position: 'absolute',
-                            right: 10,
-                            top: 10
-                        }}
+        if (structure.display === displayType.TextValue) {
+            return (
+                <Box sx={{ position: 'relative' }}>
+                    <TextField
+                        key={structure.label}
+                        fullWidth
+                        multiline
+                        rows={4}
+                        label={structure.label}
+                        value={dataValue}
+                        onChange={(e) => handleChange(structure.label, e.target.value)}
+                        {...structure.props}
+                        error={current_key in hasError ? !hasError[current_key].valid : dataValue.trim() === ""}
+                        helperText={current_key in hasError ? hasError[current_key].message : structure.helperText}
+                        disabled={isFieldLoading}
                     />
-                )}
-            </Box>
-        );
-    }
+                    {isFieldLoading && (
+                        <CircularProgress
+                            size={20}
+                            sx={{
+                                position: 'absolute',
+                                right: 10,
+                                top: 10
+                            }}
+                        />
+                    )}
+                </Box>
+            );
+        }
 
-    if (structure.display === displayType.MultiChoiceList) {
-        return (
-            <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
-                <InputLabel>{structure.label}</InputLabel>
-                <Select
-                    multiple
-                    value={dataValue ? dataValue.split(",") : []}
-                    onChange={(e) => handleChange(structure.label, (e.target.value as string[]).join(","))}
-                    label={structure.label}
-                    {...structure.props}
-                >
-                    {structure.options?.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-                {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
-                {hasError[current_key]?.message && (
-                    <FormHelperText error>{hasError[current_key].message}</FormHelperText>
-                )}
-            </FormControl>
-        );
-    }
+        if (structure.display === displayType.MultiChoiceList) {
+            return (
+                <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
+                    <InputLabel>{structure.label}</InputLabel>
+                    <Select
+                        multiple
+                        value={dataValue ? dataValue.split(",") : []}
+                        onChange={(e) => handleChange(structure.label, (e.target.value as string[]).join(","))}
+                        label={structure.label}
+                        {...structure.props}
+                    >
+                        {structure.options?.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
+                    {hasError[current_key]?.message && (
+                        <FormHelperText error>{hasError[current_key].message}</FormHelperText>
+                    )}
+                </FormControl>
+            );
+        }
 
-    if (structure.display === displayType.DropDown) {
-        return (
-            <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
-                <InputLabel>{structure.label}</InputLabel>
-                <Select
-                    value={dataValue}
-                    onChange={(e) => handleChange(structure.label, e.target.value)}
-                    label={structure.label}
-                    {...structure.props}
-                >
-                    {structure.options?.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-                {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
-                {hasError[current_key]?.message && (
-                    <FormHelperText error>{hasError[current_key].message}</FormHelperText>
-                )}
-            </FormControl>
-        );
-    }
+        if (structure.display === displayType.DropDown) {
+            return (
+                <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
+                    <InputLabel>{structure.label}</InputLabel>
+                    <Select
+                        value={dataValue}
+                        onChange={(e) => handleChange(structure.label, e.target.value)}
+                        label={structure.label}
+                        {...structure.props}
+                    >
+                        {structure.options?.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
+                    {hasError[current_key]?.message && (
+                        <FormHelperText error>{hasError[current_key].message}</FormHelperText>
+                    )}
+                </FormControl>
+            );
+        }
 
-    if (structure.display === displayType.ChoiceList) {
-        return (
-            <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
-                <InputLabel>{structure.label}</InputLabel>
-                <Select
-                    value={dataValue}
-                    onChange={(e) => handleChange(structure.label, e.target.value)}
-                    label={structure.label}
-                    {...structure.props}
-                >
-                    {structure.options?.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-                {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
-                {hasError[current_key]?.message && (
-                    <FormHelperText error>{hasError[current_key].message}</FormHelperText>
-                )}
-            </FormControl>
-        );
-    }
+        if (structure.display === displayType.ChoiceList) {
+            return (
+                <FormControl key={structure.label} fullWidth error={!!hasError[current_key]?.message}>
+                    <InputLabel>{structure.label}</InputLabel>
+                    <Select
+                        value={dataValue}
+                        onChange={(e) => handleChange(structure.label, e.target.value)}
+                        label={structure.label}
+                        {...structure.props}
+                    >
+                        {structure.options?.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    {structure.helperText && <FormHelperText>{structure.helperText}</FormHelperText>}
+                    {hasError[current_key]?.message && (
+                        <FormHelperText error>{hasError[current_key].message}</FormHelperText>
+                    )}
+                </FormControl>
+            );
+        }
 
-    return null;
+        return null;
+    }, [structure, dataValue, hasError, current_key, isFieldLoading, handleChange]);
+
+    return memoizedComponent;
 };
 
 const DisplayFormField = ({ structure }: { structure: FormField }) => {
@@ -260,7 +273,7 @@ const IgnFormGenerate = ({ formStructures }: { formStructures: FormField[] }) =>
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {formStructures.map((field) => field.visibility && <FieldOutput key={field.label} structure={field} />)}
+            {formStructures.map((field, index) => field.visibility && <FieldOutput key={`${field.label}-${index}`} structure={field} />)}
         </Box>
     );
 }
