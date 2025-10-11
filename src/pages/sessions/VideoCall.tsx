@@ -21,6 +21,7 @@ const VideoCall = () => {
     const {user,loadingUser,accessToken} = useUser();
     const {put,get,post} = useHttp();
     const [rtcConfig,setRtcConfig] = useState<RTCConfiguration | null>(null);
+    
      
    
     const jwt = accessToken;
@@ -50,27 +51,47 @@ const VideoCall = () => {
       const today = dayjs()
       const fifteen_minutes_before = dayjs(data.start_time).subtract(15,'minutes');
       const session_end = dayjs(data.end_time);
+
       const is_between_session = today.isBetween(fifteen_minutes_before,session_end);
       const booking = data.bookings;
       const valid_user = [ booking.mentor_id,booking.mentee_id].includes(user_id);
-      const session_couunt_within_range = booking.current_session <= booking.session_limit;
+      const session_count_within_range = booking.current_session <= booking.session_limit;
       const isConfirmed = booking.status === 'confirmed'
-      const valid = Boolean(correct_session && is_between_session && valid_user && isConfirmed && session_couunt_within_range)
+      const valid = Boolean(correct_session && is_between_session && valid_user && isConfirmed && session_count_within_range)
       const response = valid ? {status,data} : {status:400,data:'something went wrong'}
+      const checks = {
+        correct_session,
+        is_between_session,
+        valid_user,
+        isConfirmed,
+        session_count_within_range
+      }
+
+      console.log(
+        JSON.stringify(`checks: ${JSON.stringify(checks,null,2)}`)
+      )
       return response;
     }
 
-    const {data,isLoading,isError} = useQuery({
+    const {data,isLoading,isError,error} = useQuery({
       queryKey:['userHasAccessToSession',sessionId,user?.id],
       enabled: Boolean(user_id && sessionId && jwt),
       retry:false,
       queryFn:userHasAccessToSession,
+   
 
     })
 
+    useEffect( () => {
+      if(!isError) return 
+         console.error('[access-check] query error', error);
+    },[isError,error])
     const hasAccess = !isError && data?.status === 200;
     
     useEffect(() => {
+       if (isError) {
+          console.error('[access-check] query error', error);
+       }
         if(!user || !accessToken || !hasAccess || isError) {return}
 
         let cancelled = false;
