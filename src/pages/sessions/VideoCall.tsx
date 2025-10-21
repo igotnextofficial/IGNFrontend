@@ -45,15 +45,18 @@ const VideoCall = () => {
     const userHasAccessToSession = async () => {
       const url = `${APP_ENDPOINTS.SESSIONS.BASE}/${sessionId}`;
       // const url = 'https://xavier.igotnext.local/api/sessions/00ce7293-0231-48a0-98bb-923b8a3a154f'
-      const {data,status }=  await get(url);
+      const {data: _data,status }=  await get(url);
         if(status !== 200){throw new Error('error when getting data')}
+      const {data} = _data;
       const correct_session = data.id === sessionId;
       const today = dayjs()
       const fifteen_minutes_before = dayjs(data.start_time).subtract(15,'minutes');
       const session_end = dayjs(data.end_time);
 
       const is_between_session = today.isBetween(fifteen_minutes_before,session_end);
+
       const booking = data.bookings;
+
       const valid_user = [ booking.mentor_id,booking.mentee_id].includes(user_id);
       const session_count_within_range = booking.current_session <= booking.session_limit;
       const isConfirmed = booking.status === 'confirmed'
