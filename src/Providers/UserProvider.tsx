@@ -58,31 +58,40 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }, [user?.id]);
  
     // Session restoration
+    const [hasAttemptedRefresh, setHasAttemptedRefresh] = useState<boolean>(false);
+
     useEffect(() => {
-        if(!user && !storage.hasItem("user")){
-            return;
-        }
+        if (hasAttemptedRefresh) return;
+
         const restoreSession = async () => {
             try {
-                const response = await get(Endpoints.REFRESH_TOKEN);
+                setHasAttemptedRefresh(true);
+                const response = await post(Endpoints.REFRESH_TOKEN, null, { requiresAuth: false });
                 if (response.status === 200) {
-                    const { access_token, user } = response.data.data;
-                    setAccessToken(access_token);
-                    setUser(user);
+                    const refreshedUser = response.data?.data;
+                    const refreshedToken = response.data?.access_token ?? "";
+
+                    if (refreshedUser) {
+                        setUser(refreshedUser);
+                        storage.save("user", refreshedUser);
+                    }
+
+                    setAccessToken(refreshedToken);
                     setIsLoggedin(true);
-                    storage.remove("user");
-                    storage.save("user", user);
                 }
             } catch (error) {
                 storage.remove("user");
+                setUser(null);
+                setAccessToken("");
                 setIsLoggedin(false);
-                // Silent fail - user will need to log in
-       
+            } finally {
+        
+                setLoadingUser(false);
             }
         };
-      
+
         restoreSession();
-    }, [get]);
+    }, [post, hasAttemptedRefresh]);
 
     useEffect(() => {
         if(!user?.id || !accessToken.trim()) return;
@@ -103,7 +112,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const loginMutation = useMutation({
         mutationFn: async (data: httpDataObject) => {
             setIsLoading(true);
-            const response = await post(APP_ENDPOINTS.USER.LOGIN, data);
+            const response = await post(APP_ENDPOINTS.USER.LOGIN, data, { requiresAuth: false });
             return response.data;
         },
         onSuccess: async (data) => {
