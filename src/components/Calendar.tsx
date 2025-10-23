@@ -12,6 +12,8 @@ import { useUser } from "../contexts/UserContext";
 import { BookingDataType, BookingSessionDataType, MenteeDataType, SessionDataType, UserDataType } from "../types/DataTypes";
 
 import useHttp from "../customhooks/useHttp";
+import { safeFetch, SafeFetchError } from "../utils/safeFetch";
+import { useErrorHandler } from "../contexts/ErrorContext";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -657,6 +659,7 @@ const DaysOfWeek = ({ currentDate }: { currentDate: dayjs.Dayjs }) => {
 
 const Calendar = () => {
   const { user,accessToken, updateUser} = useUser();
+  const { updateError } = useErrorHandler();
   const {get} = useHttp(accessToken);
   const [currentDate, setCurrentDate] = useState(dayjs().startOf('week'));
   const [scheduledSessions, setScheduledSessions] = useState<ScheduledSession[]>([]);
@@ -700,19 +703,20 @@ const Calendar = () => {
     if(!submissionData) return;
     const submitData = async () => {
       try {
-        const response = await fetch( APP_ENDPOINTS.SCHEDULE.CREATE, {
+        await safeFetch( APP_ENDPOINTS.SCHEDULE.CREATE, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({data:submissionData})
+          body: JSON.stringify({data:submissionData}),
+          requestName: "Calendar.submitSchedule"
         });
-        if (!response.ok) {
-          throw new Error('Failed to submit data');
-        }
         
       } catch (error) {
-       
+        const message = error instanceof SafeFetchError
+          ? error.message
+          : 'Unable to update your availability right now. Please try again.';
+        updateError(message);
       }
     }
 

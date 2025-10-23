@@ -1,5 +1,6 @@
 // apps/web/src/rtcore/SocketManager.ts
 import { io, type Socket as RawSocket } from "socket.io-client";
+import { captureSentryException } from "../utils/sentryHelpers";
 
 /** Structural event map (each key -> (...args) => void). */
 export type EventMap = { [event: string]: (...args: any[]) => void };
@@ -107,6 +108,26 @@ export class SocketManager<
 
     raw.on("disconnect", () => {
       this.connected = false;
+    });
+
+    raw.on("connect_error", (err: unknown) => {
+      captureSentryException({
+        error: err,
+        url: `socket:${ns}`,
+        extras: {
+          phase: "connect_error"
+        }
+      });
+    });
+
+    raw.on("error", (err: unknown) => {
+      captureSentryException({
+        error: err,
+        url: `socket:${ns}`,
+        extras: {
+          phase: "socket_error"
+        }
+      });
     });
 
     return this;

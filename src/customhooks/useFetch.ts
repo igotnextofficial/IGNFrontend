@@ -1,18 +1,9 @@
-import { send } from "process";
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { sendRequest } from "../utils/helpers";
+import { useState, useCallback } from "react";
 import { HttpMethods } from "../types/DataTypes";
-
-interface FetchOptions {
-    method?: string;
-}
-
-interface CustomError extends Error {
-    response?: Record<string, any>;
-}
+import { safeFetch, SafeFetchError } from "../utils/safeFetch";
 
 // @Deprecated use usHttp.ts instead
-const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
+const useFetch = () => {
     const [data, setData] = useState(null);
     const [sendData, setSendData] = useState<Record<string,any> | null>(null);
     const [mediaData, setMediaData] = useState<FormData | null>(null);
@@ -35,14 +26,12 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
     const fetchData = useCallback(async ( url:string,method:HttpMethods = HttpMethods.GET,headers:Record<string,any> = {},data:string|Record<string,any> = {} ,has_media=false ) => {
 
         setLoading(true); // Set loading state before fetching
-        const application_headers = new Headers()
-        // add all headers to the request
-        for(const key in headers){
-            application_headers.append(key,headers[key])
-        }
-        
         try {
-            const payload:Record<string,any> = {method:method,headers:application_headers,credentials:'include'};
+            const payload: Record<string, any> = {
+                method: method,
+                headers,
+                credentials: 'include'
+            };
 
             if(method !== HttpMethods.GET){
                 let passed_data = null;
@@ -56,20 +45,19 @@ const useFetch = (  options: FetchOptions = { method: 'GET' }) => {
             }
             
 
-            const response = await fetch(url, payload );
+            const response = await safeFetch(url, {
+                ...payload,
+                requestName: "useFetch.fetchData"
+            });
 
             const responseData = await response.json();
             setData(responseData);
             setResponseStatus(response.status);
             return responseData;
         } catch (error) {   
-            // console.log('error fetching data')
-            // console.log(error)
-            const customError = error as CustomError;
-            if (customError && customError.response) {
-                if (customError.response.data.errors) {
-                    setError(customError.response.data.errors);
-                }
+            if (error instanceof SafeFetchError) {
+                setError(error.message);
+                setResponseStatus(error.status ?? null);
             } else {
                 setError("An unexpected error occurred");
             }
