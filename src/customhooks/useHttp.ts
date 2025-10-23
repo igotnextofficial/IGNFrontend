@@ -1,10 +1,14 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { HttpMethods, HttpHeaders, httpDataObject } from "../types/DataTypes";
 import { useErrorHandler } from "../contexts/ErrorContext";
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useUser } from '../contexts/UserContext';
 import { APP_ENDPOINTS } from '../config/app';
+import {
+    captureSentryException,
+    extractErrorMessage,
+    isValidationErrorResponse
+} from "../utils/sentryHelpers";
 
 interface HttpOptions {
     method?: HttpMethods;
@@ -86,18 +90,16 @@ export default function useHttp(initialToken?: string) {
         setError(null);
         setStatus(null);
 
+        const token = tokenRef.current;
+        const {
+            method = HttpMethods.GET,
+            data,
+            headers = {},
+            hasMedia = false,
+            requiresAuth = true
+        } = options;
+
         try {
-            const token = tokenRef.current;
-            const {
-                method = HttpMethods.GET,
-                data,
-                headers = {},
-                hasMedia = false,
-                requiresAuth = true
-            } = options;
-
-             
-
             // Prepare request options
             const requestOptions: AxiosRequestConfig = {
                 method,
@@ -132,10 +134,54 @@ export default function useHttp(initialToken?: string) {
                 status: response.status,
                 headers: response.headers as HttpHeaders
             };
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-            setError(errorMessage);
-            updateError(errorMessage);
+        } catch (err: unknown) {
+            let userMessage = err instanceof Error && err.message
+                ? err.message
+                : 'An unknown error occurred';
+            let statusCode: number | undefined;
+            let responsePayload: unknown;
+            let shouldCapture = true;
+            const isAxiosError = axios.isAxiosError(err);
+
+            if (isAxiosError) {
+                const axiosError = err as AxiosError;
+                statusCode = axiosError.response?.status;
+                responsePayload = axiosError.response?.data;
+
+                setStatus(statusCode ?? null);
+
+                const extractedMessage = extractErrorMessage(responsePayload);
+                if (extractedMessage) {
+                    userMessage = extractedMessage;
+                    axiosError.message = extractedMessage;
+                }
+
+                if (isValidationErrorResponse(statusCode, responsePayload)) {
+                    shouldCapture = false;
+                    if (!extractedMessage) {
+                        userMessage = "Please review the highlighted fields and try again.";
+                        axiosError.message = userMessage;
+                    }
+                }
+            }
+
+            setError(userMessage);
+            updateError(userMessage);
+
+            if (shouldCapture) {
+                const requestUrl = isAxiosError ? (err as AxiosError).config?.url ?? url : url;
+                captureSentryException({
+                    error: err,
+                    url: requestUrl,
+                    method,
+                    statusCode,
+                    responsePayload,
+                    extras: {
+                        requiresAuth
+                    }
+                });
+            }
+
             throw err;
         } finally {
             setLoading(false);

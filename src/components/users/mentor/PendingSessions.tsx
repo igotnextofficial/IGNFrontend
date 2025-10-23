@@ -9,6 +9,7 @@ import NoDataAvailable from "../../../utils/NoDataAvailable";
 import { useUser } from "../../../contexts/UserContext";
 import { useErrorHandler } from "../../../contexts/ErrorContext";
 import { APP_ENDPOINTS } from "../../../config/app";
+import { safeFetch } from "../../../utils/safeFetch";
 
 const SessionCard = ({ session,callback }: { session: SessionWithMenteeDataType,callback:(action: 'approve' | 'deny', session: SessionWithMenteeDataType) => void }) => {
     const mentee = session.mentee;
@@ -100,15 +101,14 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
 
             setSuccess(true);
         } catch (error) {
-  
             setSuccess(false);
-            updateError(`Failed to ${action} session because ${error}`);
-            
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            updateError(`Failed to ${action} session: ${message}`);
         }
     };
 
     const handleUpdateSessionStatus = async(session: SessionWithMenteeDataType, action: 'scheduled' | 'rejected') => {
-        const response = await fetch(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${session.id}/${action}`, {
+        const response = await safeFetch(`${APP_ENDPOINTS.SESSIONS.MENTOR}/${session.id}/${action}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -127,20 +127,15 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
                     ],
                     start_time:session?.start_time 
                 }
-            })
+            }),
+            requestName: `PendingSessions.updateStatus.${action}`
 
         });
-
-
-        if (!response.ok) {
-         
-            throw new Error(`Failed to ${action} session`);
-        }
 
         return response;
     }
     const handleUpdateSessionLink = async (options:Record<string,any>) => {
-        const response = await fetch(`${APP_ENDPOINTS.GENERIC.VIDEO_LINK}`, {
+        const response = await safeFetch(`${APP_ENDPOINTS.GENERIC.VIDEO_LINK}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -148,15 +143,11 @@ const PendingSessions = ({ sessions }: { sessions: SessionWithMenteeDataType[] }
             },
             body: JSON.stringify({
                 data:{...options}
-            })
+            }),
+            requestName: "PendingSessions.updateSessionLink"
         });
 
-        if(!response.ok){
-            throw new Error('error: cannot update a session link')
-        }
-        else{
-            return response;
-        }
+        return response;
 
     }
 

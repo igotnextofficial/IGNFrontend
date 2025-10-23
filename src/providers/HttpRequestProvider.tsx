@@ -1,10 +1,8 @@
 import React, { ReactNode,useEffect, useState } from "react";
 import { HttpMethods,HttpHeaders, httpDataObject } from "../types/DataTypes";
 import { HttpRequestContext } from "../contexts/HttpRequestContext";
-import axios,{AxiosError} from "axios";
 import { validEndpoints } from "../config/app";
-
-import { response } from "express";
+import { safeFetch, SafeFetchError } from "../utils/safeFetch";
 
 
 interface HttpRequestProviderProps {
@@ -57,27 +55,25 @@ interface HttpRequestProviderProps {
 const submit = async (request: any) => {
     setLoading(true); // Set loading to true at the beginning
     try {
-      const response = await fetch(request.url, {
-        method: request.method,
-        headers: request.headers,
-        body: JSON.stringify(request.data),
-      });
-  
-      if (!response.ok) {
-        // Handle HTTP errors
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const responseData = await response.json();
-      setData(responseData);
-      return responseData;
-    } 
+        const response = await safeFetch(request.url, {
+            method: request.method,
+            headers: request.headers ?? undefined,
+            body: request.data ? JSON.stringify(request.data) : undefined,
+            requestName: "HttpRequestProvider.submit"
+        });
+
+        const responseData = await response.json();
+        setData(responseData);
+        return responseData;
+    }
     catch (error) {
-      if (error instanceof Error) {
-        // console.log("Fetch error:", error);
-        setError(error.message);
-        setResponseStatus(error instanceof Response ? error.status : 500);
-      }
+        if (error instanceof SafeFetchError) {
+            setError(error.message);
+            setResponseStatus(error.status ?? null);
+        } else if (error instanceof Error) {
+            setError(error.message);
+            setResponseStatus(500);
+        }
     } 
     finally {
       setLoading(false); // Set loading to false after the try-catch block

@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { safeFetch } from "../utils/safeFetch";
 
 const useLogger = () => {
     const logError = useCallback((error: Error | string, context?: string) => {
@@ -19,10 +20,11 @@ const useLogger = () => {
 
         // 🔥 Send to external logging service in production
         if (process.env.NODE_ENV === "production") {
-            fetch("/api/log-error", {
+            safeFetch("/api/log-error", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(logData),
+                capture: false
             }).catch((err) => console.error("❌ Failed to log error:", err));
         }
     }, []);

@@ -19,6 +19,7 @@ import {
 import { useUser } from '../contexts/UserContext';
 import { APP_ENDPOINTS } from '../config/app';
 import useHttp from '../customhooks/useHttp';
+import { safeFetch, SafeFetchError } from '../utils/safeFetch';
 
 const Alert = React.forwardRef(function Alert(props: any, ref: React.Ref<any>) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -166,7 +167,7 @@ export default function PaymentForm({ amount: amountProp, productId, mentorId, o
     }
 
     try {
-      const paymentIntentResponse = await fetch(`${APP_ENDPOINTS.PAYMENT.CREATE_INTENT}`, {
+      const paymentIntentResponse = await safeFetch(`${APP_ENDPOINTS.PAYMENT.CREATE_INTENT}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,10 +184,9 @@ export default function PaymentForm({ amount: amountProp, productId, mentorId, o
             menteeId: user?.id,
             priceId: selectedPriceId
           }
-        })
+        }),
+        requestName: 'PaymentForm.createPaymentIntent'
       });
-
-      if (!paymentIntentResponse.ok) throw new Error('Issue with creating the payment intent');
 
       const { client_secret } = await paymentIntentResponse.json();
       const result = await stripe.confirmCardPayment(client_secret, {
@@ -204,7 +204,8 @@ export default function PaymentForm({ amount: amountProp, productId, mentorId, o
       onSuccess?.();
       showSnackbar('Payment successful! Your session has been booked.', 'success');
     } catch (err: any) {
-      showSnackbar('An unexpected error occurred. Please try again.', 'error');
+      const message = err instanceof SafeFetchError ? err.message : 'An unexpected error occurred. Please try again.';
+      showSnackbar(message, 'error');
     } finally {
       setLoading(false);
     }

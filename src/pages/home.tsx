@@ -33,8 +33,6 @@ import WhyIgnExists from '../components/generic/WhyIgnExists';
 import WhereDoYouWantToGrow from '../components/generic/WhereDoYouWantToGrow';
 import BecomeAMentorSection from '../components/generic/BecomeAMentorSection';
 
- 
-
 
 const Home = () => {
     const {updateError} = useErrorHandler();
@@ -156,5 +154,4 @@ const Home = () => {
 
 
 export default Home;
-
 

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
+import { safeFetch } from '../../utils/safeFetch';
 
 function PageManagement() {
   const [editorState, setEditorState] = useState('');
+  const [submitError, setSubmitError] = useState(null);
 
   React.useEffect(() => {
     const editor = new Quill('#editor', {
@@ -36,22 +38,20 @@ function PageManagement() {
     };
   }, []);
 
-  const handleSubmit = () => {
-    // Send the editor content to the server using the fetch API
-    fetch('/api/articles', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: editorState }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to submit article');
-        }
-        ('Article submitted successfully');
-      })
-      .catch((error) => {
-        // console.error(error);
+  const handleSubmit = async () => {
+    try {
+      setSubmitError(null);
+      await safeFetch('/api/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: editorState }),
+        requestName: 'PageManagement.submitArticle'
       });
+      // Article submitted successfully
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to submit article. Please try again.';
+      setSubmitError(message);
+    }
   };
 
   return (
@@ -60,6 +60,11 @@ function PageManagement() {
         <p>Hello, world!</p>
       </div>
       <button onClick={handleSubmit}>Submit</button>
+      {submitError && (
+        <p role="alert" style={{ color: 'red', marginTop: '0.75rem' }}>
+          {submitError}
+        </p>
+      )}
     </>
   );
 }

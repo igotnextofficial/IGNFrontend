@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
+import { safeFetch, SafeFetchError } from "../utils/safeFetch";
 
 interface APIStatus {
   title: string;
@@ -36,7 +37,7 @@ const HealthCheck = () => {
         const requests = apiEntries.map(async ([key, url]) => {
           try {
             console.log(`Network Call: ${url}`);
-            const res = await fetch(url);
+            const res = await safeFetch(url, { requestName: `HealthCheck.${key}`, capture: false });
 
             setStatuses((prev) =>
               prev.map((item) =>
@@ -47,7 +48,13 @@ const HealthCheck = () => {
             return { title: key, endpoint: url, status: res.status.toString() };
           } catch (error) {
             console.log(`Error fetching ${url}:`, error);
-            return { title: key, endpoint: url, status: "400" };
+            const status = error instanceof SafeFetchError && error.status ? error.status.toString() : "400";
+            setStatuses((prev) =>
+              prev.map((item) =>
+                item.endpoint === url ? { ...item, status } : item
+              )
+            );
+            return { title: key, endpoint: url, status };
           }
         });
 

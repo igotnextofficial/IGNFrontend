@@ -2301,6 +2301,61 @@
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.10.4.tgz"
   integrity sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==
 
+"@sentry-internal/browser-utils@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/browser-utils/-/browser-utils-10.21.0.tgz#d3b16ea3a735386cfc49de8cb54660546e25a29f"
+  integrity sha512-QRHpCBheLd/88Z2m3ABMriV0MweW+pcGKuVsH61/UdziKcQLdoQpOSvGg0/0CuqFm2UjL7237ZzLdZrWaCOlfQ==
+  dependencies:
+    "@sentry/core" "10.21.0"
+
+"@sentry-internal/feedback@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-10.21.0.tgz#f6c9c06733234276dffa453bb78450579346380b"
+  integrity sha512-6SnRR2FiW6TMwCE0PqbueHkkpeVnjOjz00R+/mX25Dp1U5BU5TzbXHzn9Y4wKnaD3Rzz4+nnzVkpHAOL3SppGw==
+  dependencies:
+    "@sentry/core" "10.21.0"
+
+"@sentry-internal/replay-canvas@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay-canvas/-/replay-canvas-10.21.0.tgz#f707bb8121ddf8d7abcf927bb041a829c13f0d58"
+  integrity sha512-TOLo5mAjJSOuJId8Po44d1hwJ5bIZDtRSoupWpYWqLw1tuUh1tc4vqID11ZXsw9pBzjVIK653BPDX/z/9+Um+Q==
+  dependencies:
+    "@sentry-internal/replay" "10.21.0"
+    "@sentry/core" "10.21.0"
+
+"@sentry-internal/replay@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay/-/replay-10.21.0.tgz#e9a44834828847d885bb9ce14db6c71e19d96eb3"
+  integrity sha512-5tfiKZJzZf9+Xk8SyvoC4ZEVLNmjBZZEaKhVyNo53CLWUWfWOqDc3DB9fj85i/yHFQ0ImdRnaPBc0CIeN00CcA==
+  dependencies:
+    "@sentry-internal/browser-utils" "10.21.0"
+    "@sentry/core" "10.21.0"
+
+"@sentry/browser@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-10.21.0.tgz#76a2a6b89b348f2783ca22775ad8aef546c978be"
+  integrity sha512-z/63bUFBQkTfJ5ElhWTYvomz+gZ1GsoH16v4/RGoPY5qZgYxcVO3fkp0opnu3gcbXS0ZW7TLRiHpqhvipDdP6g==
+  dependencies:
+    "@sentry-internal/browser-utils" "10.21.0"
+    "@sentry-internal/feedback" "10.21.0"
+    "@sentry-internal/replay" "10.21.0"
+    "@sentry-internal/replay-canvas" "10.21.0"
+    "@sentry/core" "10.21.0"
+
+"@sentry/core@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.21.0.tgz#78e70cb32b726bad2378cf1b306f19822c2011d6"
+  integrity sha512-/+gpOOb2Wr1UbW59WKqNAVVIqFz9FjtUJuPtVh4UanxGCfavMPaKpFzSlaEKJSKDkiCQgANP4O2y8Y5Bh3tvEA==
+
+"@sentry/react@^10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@sentry/react/-/react-10.21.0.tgz#b52b91e9e8b6cd5369a3c0ff8edf40a209b519e3"
+  integrity sha512-BSCGKkepg9QPJRS8AUjtSAFd4lYJLmz3+P+oehViEHQDtRqqmXbVIBLhqwPc05KvRGIl4/kIDjyfDuHCFCJigQ==
+  dependencies:
+    "@sentry/browser" "10.21.0"
+    "@sentry/core" "10.21.0"
+    hoist-non-react-statics "^3.3.2"
+
 "@sinclair/typebox@^0.24.1":
   version "0.24.51"
   resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.24.51.tgz"
@@ -6429,7 +6484,7 @@ he@1.2.0, he@^1.2.0:
   resolved "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-hoist-non-react-statics@^3.3.1:
+hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
