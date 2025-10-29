@@ -1,25 +1,24 @@
-import { ErrorContext } from "../contexts/ErrorContext"
-import { ReactNode,useEffect,useState } from "react"
-const ErrorProvider = ({children} : {children:ReactNode}) => {
+import { useCallback, useMemo, useState, ReactNode } from "react";
+import { ErrorContext } from "../contexts/ErrorContext";
 
-    const [errorMessage,setErrorMessage] = useState("");
+const ErrorProvider = ({ children }: { children: ReactNode }) => {
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const updateError = (error = "") => {
-        console.log("error message updated to ",error)
-        setErrorMessage(error)
-    }
+    const updateError = useCallback((error = "") => {
+        console.log("error message updated to ", error);
+        setErrorMessage(error);
+    }, []);
 
+    const contextValue = useMemo(() => ({
+        error: errorMessage,
+        updateError
+    }), [errorMessage, updateError]);
 
+    return (
+        <ErrorContext.Provider value={contextValue}>
+            {children}
+        </ErrorContext.Provider>
+    );
+};
 
-
-
-    return(
-    <ErrorContext.Provider value={{error:errorMessage,updateError:updateError}}>
-       {children}
-    </ErrorContext.Provider>
-    )
-}
-
-
-
-export default ErrorProvider
+export default ErrorProvider;

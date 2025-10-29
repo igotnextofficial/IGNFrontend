@@ -8,10 +8,8 @@ import { Box, Button, Typography } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { Visibility } from '@mui/icons-material';
 import {v4 as uuidv4} from 'uuid'
 import { useUser } from '../../contexts/UserContext';
-import { Router } from 'express';
 import { MentorSessionDataType } from '../../types/DataTypes';
 import useHttp from '../../customhooks/useHttp';
 import { APP_ENDPOINTS } from '../../config/app';
@@ -19,6 +17,7 @@ import { ErrorContext } from '../../contexts/ErrorContext';
 import { useNavigate } from 'react-router-dom';
 import CircularImage from '../../utils/CircularImage';
 import { Stack } from '@mui/material';
+import { GoalResource } from '../../types/GoalTypes';
 /* a mentor will cose out a session by the following
 
 // did the session happen 
@@ -31,10 +30,6 @@ was the session longer then MIN_AMOUNT_OF TIME
 
 
 */
-type closeOutData = {
-    goals:string[],
-    feedback:string
-}
 const GOALS = "goal"
 const TASK = "task"
 const DESCRIPTION = "description"
@@ -166,7 +161,7 @@ const CloseSessionPage = () => {
     const {user} = useUser();
     const {mentee_id, session_id} = useParams();
     const {accessToken} = useUser();
-    const {post, put} = useHttp(accessToken);
+    const {post, put, get} = useHttp(accessToken);
     const {data} = useFormDataContext();
     const {updateError} = useContext(ErrorContext);
     const [sessionHappened, setSessionHappened] = useState(true);
@@ -177,8 +172,11 @@ const CloseSessionPage = () => {
     const [taskCount, setTaskCount] = useState(0);
     const [mentee, setMentee] = useState<MenteeDataType | null>(null);
     const [session, setSession] = useState<MentorSessionDataType | null>(null);
+    const [menteeGoal, setMenteeGoal] = useState<GoalResource | null>(null);
+    const [isSecondaryGoal, setIsSecondaryGoal] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [goalError, setGoalError] = useState<string | null>(null);
 
-   
     const [successfullyClosedSession, setSuccessfullyClosedSession] = useState(false);
 
 
@@ -190,6 +188,33 @@ const CloseSessionPage = () => {
         }
 
     },[])
+
+    useEffect(() => {
+        if (!session_id) return;
+
+        const fetchSessionDetails = async () => {
+            try {
+                const response = await get(`${APP_ENDPOINTS.SESSIONS.BASE}/${session_id}`, {
+                    requiresAuth: true,
+                });
+                const payload = response?.data?.data;
+                if (payload?.mentee_goal) {
+                    setMenteeGoal(payload.mentee_goal as GoalResource);
+                    setCurrentGoal(payload.mentee_goal.goal ?? "");
+                }
+            } catch (error) {
+                // Non-blocking: detailed errors surface via global handler
+            }
+        };
+
+        fetchSessionDetails();
+    }, [get, session_id]);
+
+    useEffect(() => {
+        if (menteeGoal?.goal) {
+            setCurrentGoal(menteeGoal.goal);
+        }
+    }, [menteeGoal?.goal]);
 
     useEffect(() => {
         if(!mentee || !mentee.mentorSession) return;
@@ -210,12 +235,62 @@ const CloseSessionPage = () => {
     }, [session?.status]);
 
     useEffect(() => {
-        let form: FormField[] = [task, description, feedback];
-        if(currentGoal.length === 0) {
-            form.unshift(goal);
+        if (!displayForm) {
+            return;
         }
+
+        const form: FormField[] = [];
+        form.push({
+            ...goal,
+            defaultValue: currentGoal,
+            order: 1,
+        });
+
+        const objectives = menteeGoal?.objectives ?? [];
+        if (objectives.length === 0) {
+            form.push({
+                ...task,
+                label: TASK,
+                order: 2,
+                defaultValue: "",
+                props: { ...task.props, id: uuidv4() },
+            });
+            form.push({
+                ...description,
+                label: DESCRIPTION,
+                order: 3,
+                defaultValue: "",
+                props: { ...description.props, id: uuidv4() },
+            });
+        } else {
+            objectives.forEach((objective, index) => {
+                const suffix = index === 0 ? "" : `(${index + 1})`;
+                const baseOrder = 2 + index * 2;
+                form.push({
+                    ...task,
+                    label: `${TASK}${suffix}`,
+                    order: baseOrder,
+                    defaultValue: objective.task,
+                    props: { ...task.props, id: uuidv4() },
+                });
+                form.push({
+                    ...description,
+                    label: `${DESCRIPTION}${suffix}`,
+                    order: baseOrder + 1,
+                    defaultValue: objective.description ?? "",
+                    props: { ...description.props, id: uuidv4() },
+                });
+            });
+        }
+
+        form.push({
+            ...feedback,
+            defaultValue: data?.feedback ?? "",
+            order: 200,
+        });
+
         setCloseSessionForm(form);
-    }, [displayForm]);
+    }, [displayForm, menteeGoal, currentGoal, data?.feedback]);
 
     useEffect(() => {
         setDisplayForm(sessionHappened && sessionLongEnough);
@@ -224,12 +299,22 @@ const CloseSessionPage = () => {
         };
     }, [sessionHappened, sessionLongEnough]);
 
+    useEffect(() => {
+        if (menteeGoal) {
+            setIsSecondaryGoal(false);
+        }
+    }, [menteeGoal]);
+
     const handleClick = async () => {
-        let data_to_send = {};
+        if (isSubmitting) {
+            return;
+        }
+
+        setGoalError(null);
+
         if(!displayForm) {
-            // session didnt happen
             try{
-                data_to_send = {data: {reason: data.reason, description: data.description}};
+                setIsSubmitting(true);
                 const close_session_response =  put(`${APP_ENDPOINTS.SESSIONS.BASE}/${session_id}/cancelled`, { });
                 const [close_session_result] = await Promise.allSettled([close_session_response]);
                     if(close_session_result.status !== "fulfilled") {
@@ -246,43 +331,82 @@ const CloseSessionPage = () => {
                 } else {
                     updateError('An unknown error occurred');
                 }
+            } finally {
+                setIsSubmitting(false);
             }
 
+            return;
         }
-        const goal = data.goal ?? "";
-        const objectives = [];
-        const feedback = data.feedback ?? "";
-        for(const key in data) {
-            if(!key.includes(TASK)) continue;
-            if(key.includes('(')) {
-                let start = key.indexOf('(');
-                let search_key_num = key.substring(start);
-                let desc_key = `${DESCRIPTION}${search_key_num}`;
-                objectives.push({task: data[key], description: data[desc_key]});
+
+        const goalTitle = (data.goal ?? currentGoal ?? "").trim();
+        const feedbackValue = data.feedback ?? "";
+        const objectives: Array<{ task: string; description?: string | null }> = [];
+
+        for (const key in data) {
+            if (!key.toLowerCase().includes(TASK)) continue;
+            const value = (data as Record<string, string>)[key];
+            if (!value || !value.trim()) continue;
+
+            let descriptionValue: string | undefined;
+            if (key.includes("(")) {
+                const start = key.indexOf("(");
+                const suffix = key.substring(start);
+                const desc_key = `${DESCRIPTION}${suffix}`;
+                descriptionValue = (data as Record<string, string>)[desc_key];
             } else {
-                objectives.push({task: data[key], description: data[DESCRIPTION]});
+                descriptionValue = (data as Record<string, string>)[DESCRIPTION];
             }
+            objectives.push({
+                task: value.trim(),
+                description: descriptionValue?.trim() || undefined,
+            });
         }
-        data_to_send = {data: {goal, objectives, feedback,assigned_by_id: user?.id, assigned_to_id: mentee_id }};
-        
+
+        if (!goalTitle) {
+            const message = "Please provide a goal before closing the session.";
+            setGoalError(message);
+            updateError(message);
+            return;
+        }
+
+        if (objectives.length === 0) {
+            const message = "Please add at least one task for the mentee.";
+            setGoalError(message);
+            updateError(message);
+            return;
+        }
+
+        const objectivePayload = objectives.map((objective, index) => ({
+            task: objective.task,
+            description: objective.description,
+            status: "pending",
+            sequence: index + 1,
+        }));
+
+        const creatingSecondary = Boolean(menteeGoal) && isSecondaryGoal;
+        const goalPayload = {
+            goal: goalTitle,
+            goal_id: creatingSecondary ? undefined : menteeGoal?.id,
+            specialty_id: menteeGoal?.specialty?.id,
+            is_primary: creatingSecondary ? false : menteeGoal?.is_primary ?? true,
+            status: menteeGoal ? menteeGoal.status ?? "in_progress" : "active",
+            objectives: objectivePayload,
+        };
 
         try{
-            const save_tasks_response =  post(APP_ENDPOINTS.GOALS.SINGLE, data_to_send);
-            const close_session_response =  put(`${APP_ENDPOINTS.SESSIONS.BASE}/${session_id}/completed`, { });
-            const [save_tasks_result, close_session_result] = await Promise.allSettled([save_tasks_response, close_session_response]);
-            
-            if(save_tasks_result.status !== "fulfilled") {
-                throw new Error("Failed to save tasks");
-                
-            }
-            if(close_session_result.status !== "fulfilled") {
+            setIsSubmitting(true);
+            const close_session_response = await put(
+                `${APP_ENDPOINTS.SESSIONS.BASE}/${session_id}/complete`,
+                { goal: goalPayload, feedback: feedbackValue },
+                { wrapData: false }
+            );
+
+            if (!close_session_response || close_session_response.status >= 400) {
                 throw new Error("Failed to close session");
-      
             }
 
             setSession((prevState) => ({...prevState, status: "completed"} as MentorSessionDataType));
-   
-
+            setSuccessfullyClosedSession(true);
         }
         catch(error: unknown) {
             if (error instanceof Error) {
@@ -292,11 +416,9 @@ const CloseSessionPage = () => {
                 updateError('An unknown error occurred');
                 console.log('Unknown error:', error);
             }
+        } finally {
+            setIsSubmitting(false);
         }
-
-        // make api call to assign task
-        // on success make api call to close session
-        // make api call for payments
     };
 
     useEffect(() => {
@@ -306,8 +428,16 @@ const CloseSessionPage = () => {
 
     const addTask = () => {
         setCloseSessionForm((prevState) => {
-            const new_task = {...task};
-            const new_description = {...description};
+            const new_task = {
+                ...task,
+                defaultValue: "",
+                props: { ...task.props, id: uuidv4() },
+            };
+            const new_description = {
+                ...description,
+                defaultValue: "",
+                props: { ...description.props, id: uuidv4() },
+            };
             let default_order = 0;
 
 
@@ -362,19 +492,43 @@ const CloseSessionPage = () => {
                 />
             </FormGroup>
 
+            {menteeGoal && (
+                <Stack spacing={1} sx={{ mt: 2 }}>
+                    <Typography variant="body2" color="text.secondary">
+                        Current mentee goal:{" "}
+                        <strong>{menteeGoal.goal}</strong>
+                    </Typography>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isSecondaryGoal}
+                                onChange={() => setIsSecondaryGoal(!isSecondaryGoal)}
+                            />
+                        }
+                        label="Capture as a secondary goal"
+                    />
+                </Stack>
+            )}
+
             {(displayForm && closeSessionForm.length > 0) ? (
                 <>
                     <IgnFormGenerate formStructures={closeSessionForm} />
+                    {goalError && (
+                        <Typography sx={{ color: 'red', mt: 1 }}>
+                            {goalError}
+                        </Typography>
+                    )}
                     <Button 
                         onClick={handleClick} 
-                        sx={{ backgroundColor: "black", margin: "1em 0" }} 
+                        sx={{ backgroundColor: "black", margin: "1em 0" }}
+                        disabled={isSubmitting}
                         variant="contained"
                     >
-                        Close out session
+                        {isSubmitting ? "Saving..." : "Close out session"}
                     </Button>
 
                     <Button 
-                        disabled={taskCount >= 3} 
+                        disabled={taskCount >= 3 || isSubmitting} 
                         onClick={addTask} 
                         sx={{ backgroundColor: "black", margin: "1em 0" }} 
                         variant="contained"
@@ -403,10 +557,11 @@ const CloseSessionPage = () => {
                     />
                     <Button 
                         onClick={handleClick} 
-                        sx={{ backgroundColor: "black", margin: "1em 0" }} 
+                        sx={{ backgroundColor: "black", margin: "1em 0" }}
+                        disabled={isSubmitting}
                         variant="contained"
                     >
-                        Close out session
+                        {isSubmitting ? "Saving..." : "Close out session"}
                     </Button>
                 </>
             )}

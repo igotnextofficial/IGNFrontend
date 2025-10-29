@@ -16,6 +16,7 @@ interface HttpOptions {
     data?: any;
     requiresAuth?: boolean;
     hasMedia?: boolean;
+    wrapData?: boolean;
 }
 
 interface HttpResponse<T = any> {
@@ -96,7 +97,8 @@ export default function useHttp(initialToken?: string) {
             data,
             headers = {},
             hasMedia = false,
-            requiresAuth = true
+            requiresAuth = true,
+            wrapData = true
         } = options;
 
         try {
@@ -112,13 +114,18 @@ export default function useHttp(initialToken?: string) {
             };
 
             // Add body for non-GET requests
-            if (method !== HttpMethods.GET && data) {
-                // Check if data is already wrapped in a data object
-                const isAlreadyWrapped = data && typeof data === 'object' && 'data' in data;
-                
-                // Only wrap data if it's not already wrapped and not a FormData object
-                const requestData = hasMedia || isAlreadyWrapped ? data : { data };
-                requestOptions.data = hasMedia ? requestData : JSON.stringify(requestData);
+            if (method !== HttpMethods.GET && data !== undefined) {
+                const isAlreadyWrapped =
+                    !hasMedia && data && typeof data === "object" && "data" in data;
+
+                if (hasMedia) {
+                    requestOptions.data = data;
+                } else if (!wrapData || isAlreadyWrapped || typeof data === "string") {
+                    requestOptions.data =
+                        typeof data === "string" ? data : JSON.stringify(data);
+                } else {
+                    requestOptions.data = JSON.stringify({ data });
+                }
             }
 
             // Make the request
