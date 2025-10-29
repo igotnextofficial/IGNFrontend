@@ -127,10 +127,12 @@ export const APP_ENDPOINTS = {
     GOALS:{
         BASE: Endpoints.GOALS,
         SINGLE: `${Endpoints.GOALS}`,
-        MENTOR: `${Endpoints.GOALS}/mentor`,
-        MENTEE: `${Endpoints.GOALS}/mentee`,
-        MENTOR_GOALS: `${Endpoints.GOALS}/mentor`,
-        MENTEE_GOALS: `${Endpoints.GOALS}/mentee`,
+        CURRENT: `${Endpoints.GOALS}/current`,
+        STATUS: `${Endpoints.GOALS}/:goal_id/status`,
+        OBJECTIVES: `${Endpoints.GOALS}/:goal_id/objectives`,
+        PROMPT_DISMISS: `${Endpoints.GOALS.replace(/\/goals$/, '')}/goal-prompts/dismiss`,
+        MENTOR_CURRENT: `${Endpoints.GOALS}/mentors/:mentor_id/mentees/:mentee_id/goals/current`,
+        MENTOR_CREATE: `${Endpoints.GOALS}/mentors/:mentor_id/mentees/:mentee_id/goals`,
     },
     PRODUCTS: {
         BASE: Endpoints.PRODUCTS,
