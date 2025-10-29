@@ -1,5 +1,5 @@
 # Stage 1: Build the React application
-FROM node:18-alpine
+ FROM node:25.1-alpine3.21
 
 # Install Python and build dependencies (if needed for some native modules)
 RUN apk add --update --no-cache python3 python3-dev py3-setuptools make g++ && ln -sf python3 /usr/bin/python

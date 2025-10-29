@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS build
+ FROM node:25.1-alpine3.21
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN yarn install
 
 # Add .env for CRA to inline
 COPY tsconfig.json  ./
-COPY .env.development ./.env
+COPY .env.production ./.env
 
 COPY public ./public
 COPY src ./src
