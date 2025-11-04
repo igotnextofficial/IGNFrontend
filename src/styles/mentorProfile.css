@@ -58,8 +58,6 @@
   border: 3px solid #fbfaf9;
   overflow: hidden;
   cursor: pointer;
-  /* When image is loaded, fade/scale in smoothly */
-  /* Hover: remove most of the tint and show the crisp image */
 }
 .profile-avatar::before {
   content: "";
@@ -85,9 +83,15 @@
   mix-blend-mode: normal;
   filter: saturate(1) contrast(1);
 }
+.profile-avatar {
+  /* When image is loaded, fade/scale in smoothly */
+}
 .profile-avatar.is-loaded .profile-avatar-img {
   opacity: 0.95;
   transform: scale(1);
+}
+.profile-avatar {
+  /* Hover: remove most of the tint and show the crisp image */
 }
 .profile-avatar:hover::before {
   opacity: 0.08;

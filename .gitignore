@@ -48,3 +48,4 @@ checklist.md
 audit.md
 yarn-old.lock
 package-backup.json
+.DS_Store

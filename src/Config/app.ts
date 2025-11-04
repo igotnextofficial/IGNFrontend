@@ -16,15 +16,16 @@ export const Endpoints = {
     PAYMENT: process.env.REACT_APP_PAYMENT_API || "",
     PAYMENT_BASE: process.env.REACT_APP_BASE_PAYMENT_API|| "",
     HOME: process.env.REACT_APP_HOME_URL || "",
-   VIDEO_LINK: process.env.REACT_APP_GENERATE_MEETING_LINK_API || "",
-   GOALS: process.env.REACT_APP_GOALS_API || "",
-   SCHEDULE: process.env.REACT_APP_SCHEDULE_API || "",
-   CATEGORIES: process.env.REACT_APP_CATEGORIES_API || "",
-   TAGS: process.env.REACT_APP_TAGS_API || "",
-   FEATURE_SUBMISSIONS: process.env.REACT_APP_FEATURE_SUBMISSIONS || "",
-   REACT_APP_MENTOR_INVITE: process.env.REACT_APP_MENTOR_INVITE || "",
-   REACT_APP_MENTOR_INVITE_VALIDATE: process.env.REACT_APP_MENTOR_INVITE_VALIDATE || "",
-   VIDEO_CALL: process.env.REACT_APP_VIDEO_CALL_API || ""
+    VIDEO_LINK: process.env.REACT_APP_GENERATE_MEETING_LINK_API || "",
+    GOALS: process.env.REACT_APP_GOALS_API || "",
+    SCHEDULE: process.env.REACT_APP_SCHEDULE_API || "",
+    CATEGORIES: process.env.REACT_APP_CATEGORIES_API || "",
+    TAGS: process.env.REACT_APP_TAGS_API || "",
+    FEATURE_SUBMISSIONS: process.env.REACT_APP_FEATURE_SUBMISSIONS || "",
+    REACT_APP_MENTOR_INVITE: process.env.REACT_APP_MENTOR_INVITE || "",
+    REACT_APP_MENTOR_INVITE_VALIDATE: process.env.REACT_APP_MENTOR_INVITE_VALIDATE || "",
+    VIDEO_CALL: process.env.REACT_APP_VIDEO_CALL_API || "",
+    AI_SERVICE: process.env.REACT_APP_AI_SERVICE_API || ""
    
 }
 
@@ -57,6 +58,12 @@ export const APP_ENDPOINTS = {
         FEATURE_SUBMISSIONS: Endpoints.FEATURE_SUBMISSIONS
 
     },
+    AI: {
+        BASE: Endpoints.AI_SERVICE,
+        ENTERTAINMENT_NEWS: `${Endpoints.AI_SERVICE}/api/entertainment/news`,
+        ENTERTAINMENT_ARTISTS: `${Endpoints.AI_SERVICE}/api/entertainment/artists`,
+        ENTERTAINMENT_ARTICLES: `${Endpoints.AI_SERVICE}/api/entertainment/articles`
+    },
     VIDEOCALL:{
         ICE_SERVERS:`${Endpoints.VIDEO_CALL}/ice-servers/:user_id`,
         USER_HAS_ACCESS_TO_SESSION:`${Endpoints.VIDEO_CALL}/user-has-access-to-session/:user_id`
@@ -67,7 +74,7 @@ export const APP_ENDPOINTS = {
         SINGLE: `${Endpoints.USER}`,
         MENTORS: `${Endpoints.USER}/role/mentor`,
         ADMIN: `${Endpoints.USER}/admin`,
-        ALL: `${Endpoints.USER}/all`,
+        ALL: `${Endpoints.USER}`,
         BATCH: `${Endpoints.USER}/batch`,
         LOGIN:  Endpoints.LOGIN,
         LOGOUT:  Endpoints.LOGOUT,
