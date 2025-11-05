@@ -29,7 +29,7 @@ export const mockArticles: ArticleDataType[] = [
       bio: "Breaking news and exclusive coverage in the music industry"
     },
     published: "2024-03-15",
-    category: "featured-artist",
+    category: "spotlight-and-industry-moves",
     user_id: "1",
     created_at: "2024-03-15T10:00:00Z",
     is_featured: true
@@ -41,7 +41,7 @@ export const mockArticles: ArticleDataType[] = [
     content: `A new voice emerges in the music industry, bringing fresh perspective and undeniable talent...`,
     author: {id:'2',fullname:'Marcus Chen',role:{id:'2',type:Roles.ADMIN}},
     published: "2024-03-14",
-    category: "whos-next"
+    category: "rising-stars"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440002",
@@ -50,7 +50,7 @@ export const mockArticles: ArticleDataType[] = [
     content: `From analog to digital, exploring how recording studios have transformed over the decades...`,
     author: {id:'3',fullname:'Sarah Johnson',role:{id:'3',type:Roles.ADMIN}},
     published: "2024-03-13",
-    category: "entertainment-news"
+    category: "culture-and-commentary"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440003",
@@ -59,7 +59,7 @@ export const mockArticles: ArticleDataType[] = [
     content: `An exclusive look into the creative process behind this year's breakthrough album...`,
     author: {id:'4',fullname:'David Williams',role:{id:'4',type:Roles.ADMIN}},
     published: "2024-03-12",
-    category: "featured-artist"
+    category: "spotlight-and-industry-moves"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440004",
@@ -68,7 +68,7 @@ export const mockArticles: ArticleDataType[] = [
     content: `This month's featured artist is revolutionizing the industry with their unique approach...`,
     author: {id:'5',fullname:'Rachel Thompson',role:{id:'5',type:Roles.ADMIN}},
     published: "2024-03-11",
-    category: "artist-of-the-month"
+    category: "tutorials-and-mentorship"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440005",
@@ -77,7 +77,7 @@ export const mockArticles: ArticleDataType[] = [
     content: `How social platforms are reshaping the way artists connect with their audience...`,
     author: {id:'6',fullname:'Alex Rivera',role:{id:'6',type:Roles.ADMIN}},
     published: "2024-03-10",
-    category: "entertainment-news"
+    category: "beyond-the-stage"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440007",
@@ -88,7 +88,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published:"06/21/2023",
-    category: "whos-next"
+    category: "rising-stars"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440008",
@@ -99,7 +99,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published:"06/23/2023",
-    category: "entertainment-news"
+    category: "beyond-the-stage"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440009",
@@ -110,7 +110,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published:"06/23/2023",
-    category: "featured-artist"
+    category: "spotlight-and-industry-moves"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440010",
@@ -121,7 +121,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published:"06/23/2023",
-    category: "artist-of-the-month"
+    category: "tutorials-and-mentorship"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440011",
@@ -132,7 +132,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published:"06/23/2023",
-    category: "entertainment-news"
+    category: "culture-and-commentary"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440005",
@@ -143,7 +143,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published: "06/21/2023",
-    category: "whos-next"
+    category: "rising-stars"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440006",
@@ -154,7 +154,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published: "06/23/2023",
-    category: "entertainment-news"
+    category: "ign-games"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440012",
@@ -165,7 +165,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published: "06/23/2023",
-    category: "featured-artist"
+    category: "spotlight-and-industry-moves"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440013",
@@ -176,7 +176,7 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published: "06/23/2023",
-    category: "artist-of-the-month"
+    category: "tutorials-and-mentorship"
   },
   {
     id: "550e8400-e29b-41d4-a716-446655440014",
@@ -187,6 +187,6 @@ export const mockArticles: ArticleDataType[] = [
     Cum ipsum voluptates nesciunt fugiat! Enim nihil illum id!`,
     author: {id:'',fullname:'Cierra Bellamy',role:{id:'',type:Roles.ADMIN}},
     published:"06/21/2023",
-    category: "whos-next"
+    category: "rising-stars"
   }
 ]; 

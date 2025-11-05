@@ -109,7 +109,7 @@ const ArticleCategoryPrepareList = ({ category }: { category: string }) => {
         <Fade in={showContent} timeout={800}>
             <Box>
                 {articles  && articles.length > 0? (
-                    <ArticleCategoryDisplay title={category.replaceAll("-", " ")} data={articles} />
+                    <ArticleCategoryDisplay category={category} data={articles} />
                 ) : (
                     <NoArticles />
                 )}

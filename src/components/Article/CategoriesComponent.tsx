@@ -1,11 +1,14 @@
 
 import {  FormControl, FormControlLabel, Radio, RadioGroup, FormLabel  } from '@mui/material';
 
-import { ArticleCategories } from '../../types/ArticleCategories';
+import { ArticleCategories, ARTICLE_CATEGORY_LABELS } from '../../types/ArticleCategories';
 import { useEditorFormContext } from '../../contexts/EditorFormContext';
 
 const CategoriesComponent = () => {
-    const { data,updateData } = useEditorFormContext()
+    const { data,updateData } = useEditorFormContext();
+    const categoryOptions = Object.entries(ARTICLE_CATEGORY_LABELS)
+        .filter(([value]) => value !== ArticleCategories.DEFAULT && value !== '')
+        .map(([value, label]) => ({ value, label }));
     return <>
 
     <FormControl>
@@ -14,8 +17,8 @@ const CategoriesComponent = () => {
         const {value } = event.target;
         updateData('category', value)
       }}>
-        {Object.values(ArticleCategories).map(category => (
-          category !== "" ? <FormControlLabel key={category} value={category} control={<Radio />} label={category} /> : null
+        {categoryOptions.map(category => (
+          <FormControlLabel key={category.value} value={category.value} control={<Radio />} label={category.label} />
         ))}
       </RadioGroup>
     </FormControl>

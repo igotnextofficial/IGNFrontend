@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
 import { ArticleDataType } from '../../types/DataTypes';
 import { useNavigate } from 'react-router-dom';
+import { getArticleCategoryLabel } from '../../types/ArticleCategories';
 
 interface ArticleCardProps {
   article: ArticleDataType;
@@ -9,6 +10,8 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const navigate = useNavigate();
+
+  const categoryLabel = getArticleCategoryLabel(article.category);
 
   return (
     <Card 
@@ -41,7 +44,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           }} 
           gutterBottom
         >
-          {article.category}
+          {categoryLabel}
         </Typography>
         <Typography 
           variant="h6" 

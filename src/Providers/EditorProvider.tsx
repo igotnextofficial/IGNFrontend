@@ -1,52 +1,45 @@
-import { ReactNode, useEffect, useState } from "react"
-import { EditorFormContext } from "../contexts/EditorFormContext"
-import { ArticleDataType } from "../types/DataTypes"
-import Article from '../models/users/Article'
+import { ReactNode, useCallback, useMemo, useState } from "react";
+import { EditorFormContext, EditorArticleState } from "../contexts/EditorFormContext";
+import Article from '../models/users/Article';
+
 interface EditorProviderProps {
     children:ReactNode
 }
 
+const createDefaultState = (): EditorArticleState => ({
+    ...Article.defaultResponse,
+    tags: Array.isArray(Article.defaultResponse.tags) ? [...Article.defaultResponse.tags] : [],
+    image: null,
+});
 
 const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
-    const [data,setData] = useState<ArticleDataType>({} as ArticleDataType);
+    const [data, setData] = useState<EditorArticleState>(createDefaultState());
 
-    
-
-    useEffect(() => {
-        console.log("EditorProvider data",data)
-    },[data])
-
- 
-    const updateData = (key: string, value : File | string | Record<string,any>) => {
-        if (value instanceof File){
-            updateFileData(key,value)
-        }
-        else{
-            updateTextData(key,value)
-        }
-    }
-      const updateFileData = (key: string, value:File) => {
-        setData( prev => ({
+    const updateData = useCallback((key: string, value: unknown) => {
+        setData((prev) => ({
             ...prev,
-            [key]:value
-        }))
-      }
+            [key]: value,
+        }));
+    }, []);
 
-      const updateTextData = (key: string, value:string | Record<string,any>) => {
-        setData( prev => ({
-            ...prev,
-            [key]:value
-        }))
-      }
+    const resetData = useCallback((payload: Partial<EditorArticleState> = {}) => {
+        setData({
+            ...createDefaultState(),
+            ...payload,
+        });
+    }, []);
 
-
+    const contextValue = useMemo(() => ({
+        data,
+        updateData,
+        resetData,
+    }), [data, updateData, resetData]);
 
     return (
-        <EditorFormContext.Provider value={{data,updateData:updateData}}>
+        <EditorFormContext.Provider value={contextValue}>
             { children }
         </EditorFormContext.Provider>
-    )
-
+    );
 }
 
-export default EditorProvider
+export default EditorProvider;

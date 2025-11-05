@@ -151,7 +151,7 @@ const UserDirectoryPanel = () => {
         const normalizedSearch = searchTerm.trim().toLowerCase();
 
         return users.filter((user) => {
-            const roleType = user.role?.type ?? (user.role as unknown as string) ?? '';
+            const roleType = user.role?.type.toLocaleLowerCase() ?? (user.role as unknown as string) ?? '';
             const status = getUserStatus(user);
             const lastActivity = getLastActivityDate(user);
 
@@ -161,7 +161,7 @@ const UserDirectoryPanel = () => {
                 (user.username?.toLowerCase().includes(normalizedSearch) ?? false) ||
                 (user.email?.toLowerCase().includes(normalizedSearch) ?? false);
 
-            const matchesRole = roleFilter === 'all' || roleType === roleFilter;
+            const matchesRole = roleFilter === 'all' || roleType === roleFilter.toLowerCase();
             const matchesStatus = statusFilter === 'all' || status === statusFilter;
             const matchesActivity = matchesActivityFilter(activityFilter, lastActivity);
 

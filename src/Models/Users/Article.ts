@@ -17,6 +17,7 @@ class Article{
         content:"",
         category:ArticleCategories.DEFAULT,
         image:null,
+        tags:[],
     }
     static readonly defaultResponse:ArticleDataType = {
         id: "",
@@ -24,6 +25,7 @@ class Article{
         image_url:"",
         content:"",
         category:ArticleCategories.DEFAULT,
+        tags:[],
         author: {id:'',fullname:' ',role:{id:'',type:Roles.ADMIN}},
         published:"",
         drafts:[]

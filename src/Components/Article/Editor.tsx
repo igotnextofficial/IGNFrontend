@@ -7,7 +7,10 @@ import {
   TextField,
   Typography,
   Divider,
+  Chip,
+  CircularProgress,
 } from "@mui/material";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 
 import ReactQuill, { UnprivilegedEditor } from "react-quill";
 import { DeltaStatic, Sources } from "quill";
@@ -28,6 +31,8 @@ import {
   EditorRangeSelectorDataType,
 } from "../../types/DataTypes";
 import CategoriesComponent from "./CategoriesComponent";
+import useHttp from "../../customhooks/useHttp";
+import { APP_ENDPOINTS } from "../../config/app";
 
 const RANGE_LIMITS: EditorRangeLimitsDataType = {
   title: {
@@ -60,7 +65,46 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
   // const [status, setStatus] = useState("draft");
   const [errors, ] = useState({ message: "" });
   const [canPublish, setCanPublish] = useState(false);
-  const { user } = useUser()
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>(Array.isArray(data.tags) ? data.tags : []);
+  const { user } = useUser();
+  const { get } = useHttp();
+
+  const tagFilter = createFilterOptions<string>();
+
+  const normaliseTagList = (tags: (string | undefined | null)[], limit = 15): string[] => {
+    const map = new Map<string, string>();
+
+    tags.forEach((tag) => {
+      if (!tag) {
+        return;
+      }
+ 
+      const trimmed = tag.trim();
+      if (!trimmed) {
+        return;
+      }
+      const lower = trimmed.toLowerCase();
+      if (!map.has(lower)) {
+        map.set(lower, trimmed);
+      }
+    });
+
+    return Array.from(map.values()).slice(0, limit);
+  };
+
+  const handleTagsUpdate = (tags: (string | undefined | null)[]) => {
+    const normalised = normaliseTagList(tags);
+    if (
+      normalised.length === selectedTags.length &&
+      normalised.every((tag, index) => tag === selectedTags[index])
+    ) {
+      return;
+    }
+    setSelectedTags(normalised);
+    updateData("tags", normalised);
+  };
   // const [category, setCategory] = useState<ArticleCategories | string>(
   //   ArticleCategories.FEATURED_ARTIST
   // );
@@ -92,22 +136,65 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
     }
   };
 
-  const saveDraft = () => {
-
- 
- 
-    handleDraft(data)
-
-      //TODO: remove this functions. not needed
-    //update the draft contenßt
-    //update with image
-    // handleDraft({ ...Article.defaultResponse, title, content,category });
-  }
-
   const ReadyForReview = () => {
     // setStatus("pending");
     // handleReview(status);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadTags = async () => {
+      if (!APP_ENDPOINTS.ARTICLES.TAGS) {
+        return;
+      }
+
+      try {
+        setTagsLoading(true);
+        const response = await get(APP_ENDPOINTS.ARTICLES.TAGS, { requiresAuth: false });
+        if (!isMounted) {
+          return;
+        }
+
+        const payload = response?.data;
+        const raw = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.data)
+            ? payload.data
+            : [];
+        
+
+          const tags_list = raw.map((item: any) => {
+            if (typeof item === "string") {
+              return item;
+            }
+            if (item && typeof item.name === "string") {
+              return item.name;
+            }
+            return "";
+          })
+ 
+        const tagNames = normaliseTagList(tags_list,200);
+
+
+
+        setAvailableTags(tagNames);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("Unable to load tags", error);
+      } finally {
+        if (isMounted) {
+          setTagsLoading(false);
+        }
+      }
+    };
+
+    loadTags();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [get]);
 
   useEffect(() => {
     const author = {
@@ -121,8 +208,47 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
   useEffect(() => {
     
   
-    setCanPublish(withinRange(Article.TITLE,data,content) && withinRange(Article.CONTENT,data,content));
+    const hasCategory = Boolean(data.category);
+    setCanPublish(
+      hasCategory &&
+      withinRange(Article.TITLE,data,content) &&
+      withinRange(Article.CONTENT,data,content)
+    );
   }, [data,content]);
+
+  useEffect(() => {
+    if (Array.isArray(data.tags)) {
+  
+ 
+      const synchronised = normaliseTagList(data.tags);
+      setSelectedTags(synchronised);
+    }
+  }, [data.tags]);
+
+  useEffect(() => {
+    setAvailableTags((prev) => {
+      const merged = normaliseTagList([...prev, ...selectedTags], 200);
+      const isSameLength = merged.length === prev.length;
+      if (isSameLength && merged.every((tag, index) => tag === prev[index])) {
+        return prev;
+      }
+      return merged;
+    });
+  }, [selectedTags]);
+
+  useEffect(() => {
+    if (typeof data.content !== "string") {
+      return;
+    }
+
+    if (data.content === content) {
+      return;
+    }
+
+    setContent(data.content);
+    const plainText = data.content.replace(/<[^>]+>/g, "") || "";
+    setContentWithoutTags(plainText);
+  }, [data.content, content]);
 
   const Errors = () =>
     errors.message !== "" ? (
@@ -168,6 +294,65 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
           <Grid item xs={12} md={3}>
             <CategoriesComponent />
             <Divider sx={{ mt: "2em", mb: "2em" }} />
+            <Autocomplete
+              multiple
+              freeSolo
+              disableCloseOnSelect
+              filterSelectedOptions
+              limitTags={4}
+              options={availableTags}
+              value={selectedTags}
+              onChange={(_, newValue) => handleTagsUpdate(newValue)}
+              filterOptions={(options, params) => {
+                const filtered = tagFilter(options, params);
+                const { inputValue } = params;
+                const lowerInput = inputValue.toLowerCase();
+                const hasReachedLimit = selectedTags.length >= 15;
+                const existsInSelection = selectedTags.some(
+                  (tag) => tag.toLowerCase() === lowerInput
+                );
+                const existsInOptions = options.some(
+                  (option) => option.toLowerCase() === lowerInput
+                );
+
+                if (!hasReachedLimit && inputValue !== "" && !existsInSelection && !existsInOptions) {
+                  filtered.push(inputValue);
+                }
+
+                return filtered;
+              }}
+              getOptionLabel={(option) => option}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    variant="filled"
+                    label={option}
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Tags"
+                  variant="outlined"
+                  placeholder={selectedTags.length >= 15 ? "Tag limit reached" : "Type and press enter"}
+                  helperText={selectedTags.length >= 15 ? "Maximum of 15 tags" : "Add up to 15 tags"}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {tagsLoading ? <CircularProgress color="inherit" size={16} /> : null}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
+                />
+              )}
+              loading={tagsLoading}
+              loadingText="Loading tags..."
+              sx={{ mb: 3 }}
+            />
             <UploadImageComponent />
           </Grid>
         </Grid>
@@ -187,7 +372,7 @@ const Editor = ({handleDraft} : {handleDraft:(data:ArticleDataType) => void}) =>
             <Button
               disabled={!canPublish}
               variant="contained"
-              onClick={saveDraft}
+              onClick={() => handleDraft(data)}
             >
               Save Draft
             </Button>

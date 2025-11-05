@@ -16,27 +16,39 @@ const MainPageList = ()=>{
           order: 6,
         },
         {
-          slug: "whos-next",
-          name: "Who's Next",
+          slug: "rising-stars",
+          name: "Rising Stars",
           order: 2,
           display: true,
         },
         {
-          slug: "featured-artists",
-          name: "Featured Artists",
+          slug: "spotlight-and-industry-moves",
+          name: "Spotlight & Industry Moves",
           order: 3,
           display: true,
         },
         {
-          slug: "entertainment-news",
-          name: "Entertainment News",
+          slug: "culture-and-commentary",
+          name: "Culture & Commentary",
           order: 4,
           display: true,
         },
         {
-          slug: "artist-of-the-month",
-          name: "Artist of the Month",
+          slug: "tutorials-and-mentorship",
+          name: "Tutorials & Mentorship",
           order: 5,
+          display: true,
+        },
+        {
+          slug: "beyond-the-stage",
+          name: "Beyond the Stage",
+          order: 6,
+          display: true,
+        },
+        {
+          slug: "ign-games",
+          name: "IGN Games",
+          order: 7,
           display: true,
         },
       ];
@@ -73,4 +85,3 @@ const MainPageList = ()=>{
 }
 
 export default MainPageList
-

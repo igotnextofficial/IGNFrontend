@@ -137,10 +137,16 @@ export interface ArticleDataType {
     author:UserDataType,
     published:string,
     category?:string,
+    tags?:string[],
     user_id?:string,
     drafts?:ArticleDataType[], 
     created_at?:string,
+    updated_at?:string,
+    status?:string,
+    featured?:boolean,
+    deleted_at?:string | null,
     is_featured?:boolean,
+    image?:string,
 }
 
 export interface ArticleSavedDataType {
@@ -148,6 +154,7 @@ export interface ArticleSavedDataType {
     content:string,
     category:ArticleCategories,
     image:File | null,
+    tags:string[],
 }
 export interface Settings {
     title:string,

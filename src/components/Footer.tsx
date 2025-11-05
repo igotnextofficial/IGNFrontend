@@ -32,11 +32,14 @@ const Footer = () => {
               <Link component={RouterLink} to="/" color="inherit" sx={{ textDecoration: 'none', '&:hover': { color: '#ff6347' } }}>
                 Discover
               </Link>
-              <Link component={RouterLink} to="/articles/whos-next" color="inherit" sx={{ textDecoration: 'none', '&:hover': { color: '#ff6347' } }}>
+              <Link component={RouterLink} to="/articles/rising-stars" color="inherit" sx={{ textDecoration: 'none', '&:hover': { color: '#ff6347' } }}>
                 Rising Stars
               </Link>
-              <Link component={RouterLink} to="/articles/featured-artists" color="inherit" sx={{ textDecoration: 'none', '&:hover': { color: '#ff6347' } }}>
-                Spotlight
+              <Link component={RouterLink} to="/articles/spotlight-and-industry-moves" color="inherit" sx={{ textDecoration: 'none', '&:hover': { color: '#ff6347' } }}>
+                Spotlight & Industry Moves
+              </Link>
+              <Link component={RouterLink} to="/articles/culture-and-commentary" color="inherit" sx={{ textDecoration: 'none', '&:hover': { color: '#ff6347' } }}>
+                Culture & Commentary
               </Link>
             </Box>
           </Grid>
