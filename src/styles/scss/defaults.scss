@@ -53,31 +53,30 @@ a,p,h1,h2,h3,h4,h5,h6{
     max-width:600px;
     box-shadow: #1d1917 3px 3px 3px 3px ;
   }
-  .pull-out-quote {
-    position: relative;
-    display: block;
-    font-family: 'Georgia', serif;
-    font-size: 2rem;
-    font-style: italic;
-    font-weight: bold;
-    color: #1a1a1a;
-    text-align: center;
-    margin: 4rem auto;
-    padding: 3rem;
-    background-color: #f9f9f9;
-    border-top: 4px solid #F52549;
-    border-bottom: 4px solid #F52549;
-   line-height: 2.5;
-  }
-  
-  .pull-out-quote::before,
-  .pull-out-quote::after {
-    font-family: serif;
-    font-size: 8rem;
-    color: #F52549;
-    position: absolute;
-    top: -20px;
-  }
+ 
+.pull-out-quote {
+	position: relative;
+	display: block;
+	font-size: 2rem;
+	color: #1a1a1a;
+	text-align: center;
+	margin: 4rem auto;
+	padding: 3rem;
+	background-color: #f9f9f9;
+	line-height: 1.5;
+	border-left: 5px solid #f74c4c;
+	border-radius: 50px;
+	max-width: 800px;
+}
+
+.pull-out-quote::before,
+.pull-out-quote::after {
+  position: absolute;
+  font-family: serif;
+  font-size: 3rem;
+  color: #1d1917;
+  top: -20px;
+}
   
   .pull-out-quote::before {
     content: "“";

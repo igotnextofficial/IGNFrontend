@@ -50,39 +50,49 @@ a, p, h1, h2, h3, h4, h5, h6 {
 .pull-out-quote {
   position: relative;
   display: block;
-  font-family: "Georgia", serif;
-  font-size: 2rem;
+  max-width: 960px;
+  margin: 3.5rem auto;
+  padding: 3.5rem 3.25rem;
+  color: #171717;
+  font-family: "Playfair Display", "Georgia", serif;
+  font-size: 1.75rem;
   font-style: italic;
-  font-weight: bold;
-  color: #1a1a1a;
+  font-weight: 600;
+  line-height: 1.9;
   text-align: center;
-  margin: 4rem auto;
-  padding: 3rem;
-  background-color: #f9f9f9;
-  border-top: 4px solid #F52549;
-  border-bottom: 4px solid #F52549;
-  line-height: 2.5;
+  background: linear-gradient(135deg, rgba(245, 37, 73, 0.08), rgba(255, 255, 255, 0.95));
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(24, 21, 45, 0.12), 0 0 0 1px rgba(245, 37, 73, 0.18) inset;
+  overflow: hidden;
 }
 
-.pull-out-quote::before,
 .pull-out-quote::after {
-  font-family: serif;
-  font-size: 8rem;
-  color: #F52549;
+  content: "“";
   position: absolute;
-  top: -20px;
+  top: -48px;
+  left: 32px;
+  font-size: 9rem;
+  font-family: "Playfair Display", serif;
+  color: rgba(245, 37, 73, 0.12);
+  line-height: 1;
+  pointer-events: none;
 }
 
 .pull-out-quote::before {
-  content: "“";
-  left: -20px;
-  top: 0;
+  content: "”";
+  position: absolute;
+  bottom: -56px;
+  right: 36px;
+  font-size: 9rem;
+  font-family: "Playfair Display", serif;
+  color: rgba(245, 37, 73, 0.12);
+  line-height: 1;
+  pointer-events: none;
 }
 
-.pull-out-quote::after {
-  content: "”";
-  right: -20px;
-  bottom: 0;
+.pull-out-quote > * {
+  position: relative;
+  z-index: 1;
 }
 
 .add-shadow {

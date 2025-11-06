@@ -147,6 +147,7 @@ export interface ArticleDataType {
     deleted_at?:string | null,
     is_featured?:boolean,
     image?:string,
+    template?:string,
 }
 
 export interface ArticleSavedDataType {
