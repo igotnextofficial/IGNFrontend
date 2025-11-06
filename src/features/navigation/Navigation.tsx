@@ -37,10 +37,12 @@ const pages: Page[] = [
     order: 2,
     display: true,
     children: [
-      { slug: "/articles/whos-next", name: "Rising Stars", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=100&h=100&fit=crop" },
-      { slug: "/articles/featured-artists", name: "Spotlight", image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=100&h=100&fit=crop" },
-      { slug: "/articles/entertainment-news", name: "Beyond the Stage", image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=100&h=100&fit=crop" },
-      { slug: "/articles/artist-of-the-month", name: "Artist of the Month", image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=100&h=100&fit=crop" },
+      { slug: "/articles/rising-stars", name: "Rising Stars", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=100&h=100&fit=crop" },
+      { slug: "/articles/spotlight-and-industry-moves", name: "Spotlight & Industry Moves", image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=100&h=100&fit=crop" },
+      { slug: "/articles/culture-and-commentary", name: "Culture & Commentary", image: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=100&h=100&fit=crop" },
+      { slug: "/articles/tutorials-and-mentorship", name: "Tutorials & Mentorship", image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=100&h=100&fit=crop" },
+      { slug: "/articles/beyond-the-stage", name: "Beyond the Stage", image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=100&h=100&fit=crop" },
+      { slug: "/articles/ign-games", name: "IGN Games", image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100&h=100&fit=crop" },
     ]
   },
   { slug: '/mentors', name: "Mentorship", order: 3, display: true },

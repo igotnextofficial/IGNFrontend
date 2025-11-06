@@ -1,9 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { Roles } from "../types/Roles";
 import { useUser } from "../contexts/UserContext";
 import LoadingComponent from "../components/common/LoadingComponent";
-import { ArticleContext } from "../contexts/ArticleContext";
  
 
 const defaultAccess = Array.from(Object.values(Roles));
@@ -21,14 +20,12 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
    grantedAccess = [...defaultAccess],
    children
  }) => {
-  const {user, isLoggedin, loading: userLoading} = useUser();
+  const { isLoggedin, loading: authMutationLoading, loadingUser } = useUser();
   // const hasAccess = user?.role?.type && grantedAccess.includes(user.role.type as Roles);
   
-  // Check if there's an ArticleContext available
-  const articleContext = useContext(ArticleContext);
-  
-  // Show loading component only when userLoading is true
-  if (userLoading) {
+  const isLoading = loadingUser || authMutationLoading;
+
+  if (isLoading) {
     return <LoadingComponent />;
   }
  

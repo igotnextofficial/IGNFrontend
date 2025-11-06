@@ -11,12 +11,13 @@ export enum FetchMode {
 
   
 export enum Categories {
-    WHOS_NEXT = "whos-next",
-    FEATURED_ARTIST = "featured-artist",
-    ENTERTAINMENT_NEWS = "entertainment-news",
-    ARTIST_OF_THE_MONTH = "artist-of-the-month",
-    // Add other modes here as needed
-  }
+    RISING_STARS = "rising-stars",
+    SPOTLIGHT_AND_INDUSTRY_MOVES = "spotlight-and-industry-moves",
+    CULTURE_AND_COMMENTARY = "culture-and-commentary",
+    TUTORIALS_AND_MENTORSHIP = "tutorials-and-mentorship",
+    BEYOND_THE_STAGE = "beyond-the-stage",
+    IGN_GAMES = "ign-games",
+}
 
   
   

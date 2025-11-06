@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { ArticleDataType } from '../../types/DataTypes';
+import { getArticleCategoryLabel } from '../../types/ArticleCategories';
 
 const ArticleGridComponent = ({ articles } : {articles:ArticleDataType[]}) => {
   const theme = useTheme();
@@ -61,7 +62,7 @@ const ArticleGridComponent = ({ articles } : {articles:ArticleDataType[]}) => {
                   fontSize: '1rem',
                 }}
               >
-                {article.author.fullname} | {article.title} - {article.category}
+                {article.author.fullname} | {article.title} - {getArticleCategoryLabel(article.category)}
               </Typography>
             </Box>
           </Box>

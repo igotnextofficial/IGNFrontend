@@ -45,6 +45,21 @@ export const HealthChecksEndpoints = {
     GENRE: process.env.REACT_APP_GENRE_API ?? "",
 }
 
+
+const deriveArticlesApiRoot = (articlesEndpoint: string) => {
+    if (!articlesEndpoint) {
+        return "";
+    }
+
+    const trimmed = articlesEndpoint.endsWith('/articles')
+        ? articlesEndpoint.slice(0, -'/articles'.length)
+        : articlesEndpoint.replace(/\/$/, "");
+
+    return trimmed || articlesEndpoint;
+};
+
+const ARTICLES_API_ROOT = deriveArticlesApiRoot(Endpoints.ARTICLES || "");
+
 export const APP_ENDPOINTS = {
     GENERIC:{
         SPECIALTIES: Endpoints.SPECIALTIES,
@@ -104,12 +119,13 @@ export const APP_ENDPOINTS = {
         BASE: Endpoints.ARTICLES,
         CREATE: Endpoints.ARTICLES,
         UPDATE: `${Endpoints.ARTICLES}/:id`,
-        ALL: `${Endpoints.ARTICLES}/all`,
+        ALL: `${Endpoints.ARTICLES}`,
         SINGLE: `${Endpoints.ARTICLES}`,
         USER: `${Endpoints.ARTICLES}/user`,
-        DRAFTS: `${Endpoints.ARTICLES}/drafts`,
+        DRAFTS: `${Endpoints.ARTICLES}/:id/drafts`,
         FEATURED: `${Endpoints.ARTICLES}/category/featured`,
-        CATEGORY: `${Endpoints.ARTICLES}/category`
+        CATEGORY: `${Endpoints.ARTICLES}/category`,
+        TAGS: Endpoints.TAGS || (ARTICLES_API_ROOT ? `${ARTICLES_API_ROOT}/tags` : "")
     },
     MEDIA: {
         BASE: Endpoints.MEDIA,

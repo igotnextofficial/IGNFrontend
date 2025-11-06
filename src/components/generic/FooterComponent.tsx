@@ -54,18 +54,18 @@ const FooterComponent: React.FC = () => {
                             </Link>
                         </Grid>
                         <Grid item xs={12}>
-                            <Link  href="/articles/whos-next" sx={styles.links}>
-                                Who's Next
+                            <Link  href="/articles/rising-stars" sx={styles.links}>
+                                Rising Stars
                             </Link>
                         </Grid>
                         <Grid item xs={12}>
-                            <Link  href="/articles/feature-artist" sx={styles.links}>
-                                Feature Artist
+                            <Link  href="/articles/spotlight-and-industry-moves" sx={styles.links}>
+                                Spotlight & Industry Moves
                             </Link>
                         </Grid>
                         <Grid item xs={12}>
-                            <Link  href="/articles/entertainment-news" sx={styles.links}>
-                                Entertainment News
+                            <Link  href="/articles/culture-and-commentary" sx={styles.links}>
+                                Culture & Commentary
                             </Link>
                         </Grid>
                     </Grid>

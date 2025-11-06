@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Stack, Divider, useTheme, useMediaQuery, Link } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime'; // Import an icon for timestamp
 import { ArticleDataType } from '../../types/DataTypes';
+import { getArticleCategoryLabel } from '../../types/ArticleCategories';
 import { timeAgo } from '../../utils/helpers';
 import { Link as RouterLink } from 'react-router-dom'; // Assuming you're using react-router for navigation
 
@@ -81,7 +82,7 @@ const ArticleSideListComponent = ({ articles, headline = "Latest News" }: Articl
                     textTransform: 'uppercase',
                     fontSize: '0.875rem',
                   }}>
-                    {article.category}
+                    {getArticleCategoryLabel(article.category)}
                   </Typography>
                   <Typography gutterBottom variant="subtitle1" component="div" sx={{
                     fontWeight: 'bold',

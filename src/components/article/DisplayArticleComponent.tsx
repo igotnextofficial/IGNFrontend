@@ -2,6 +2,7 @@ import BackgroundCoverImage from "../BackgroundCoverImage";
 import { Box,Typography } from "@mui/material";
 import IgnPillComponent from "../../helpers/IgnPillComponent";
 import { ArticleDataType } from "../../types/DataTypes";
+import { getArticleCategoryLabel } from "../../types/ArticleCategories";
 
 const DisplayArticleComponent = ({article, height=50,featured=false} : {article:ArticleDataType,height: number, featured:boolean}) => {
     
@@ -9,7 +10,7 @@ const DisplayArticleComponent = ({article, height=50,featured=false} : {article:
  
         <BackgroundCoverImage xs={12} sm={12} md={12} sx={{height:`${height}vh`,position:"relative"}} url={`${article.image_url}`}>
         <Box sx={featured ? styles.featuredArticleHolder : styles.ArticleHolder}>
-            <IgnPillComponent description={article.category} link="/" />
+            <IgnPillComponent description={getArticleCategoryLabel(article.category)} link="/" />
           
             <Typography sx={styles.title} variant="h5">{article.title}</Typography>
         </Box>

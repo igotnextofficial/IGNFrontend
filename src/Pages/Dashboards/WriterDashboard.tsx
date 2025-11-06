@@ -1,7 +1,3 @@
-import { ArticleDataType } from "../../types/DataTypes";
-import { mockArticles } from "../../data/mockArticles";
-
-import { Roles } from "../../types/Roles";
 import DashboardSectionComponent from "../../components/DashboardSectionComponent";
 
 import Grid from '@mui/material/Grid';
@@ -11,14 +7,12 @@ import DisplayTasks from "../../components/DisplayTasks";
 import {tasksData}  from "../../data";
 import Chart from "../../components/Charts";
 import ToDo from "../../components/ToDo";
-import ListArticlesComponent from "../../components/article/ListAritclesComponent ";
 import DisplayTextEditor from "../../components/article/DisplayTextEditor";
 import EditorProvider from "../../providers/EditorProvider";
+import WriterArticlesPanel from "../../components/article/WriterArticlesPanel";
 
 
 const WriterDashboard = () => {
-    let userArticles: ArticleDataType[] = mockArticles;
-
     return (
         <>
             <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -39,10 +33,8 @@ const WriterDashboard = () => {
                 </Grid>
 
                 <Grid className="add-shadow" item xs={6} md={4}>
-                    <DashboardSectionComponent title="Published  Articles" >
-                       
-                            <ListArticlesComponent articles={userArticles}/>
-                      
+                    <DashboardSectionComponent title="Your Articles" >
+                        <WriterArticlesPanel />
                     </DashboardSectionComponent>
                 </Grid>
 

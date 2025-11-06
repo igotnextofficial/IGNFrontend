@@ -1,14 +1,10 @@
 import { ListDataType } from '../../types/DataTypes'
-import MainHolderComponent from '../../helpers/MainHolderComponent';
 import PaginatedPage from '../../components/generic/PaginatePageComponent';
 import { Box, Typography } from '@mui/material';
+import { getArticleCategoryLabel } from '../../types/ArticleCategories';
 
-const ArticleCategoryDisplay = ({title, data}: {title: string, data: ListDataType[]}) => {
-    // Convert title to proper case (e.g., "who's next" -> "Who's Next")
-    const formattedTitle = title
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
+const ArticleCategoryDisplay = ({category, data}: {category: string, data: ListDataType[]}) => {
+    const formattedTitle = getArticleCategoryLabel(category);
 
     return (
         <Box>

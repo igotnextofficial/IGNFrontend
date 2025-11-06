@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArticleContext } from "../../contexts/ArticleContext";
-import { Box, Grid, Typography, Container, Button, Skeleton, Fade } from "@mui/material";
+import { Box, Grid, Typography, Container, Button, Skeleton, Fade, Chip } from "@mui/material";
 import ArticleProvider from "../../providers/ArticleProvider";
 import { FetchMode } from "../../types/ArticleFetchMode";
 import ArticleSideListComponent from "./ArticleSideListComponent";
@@ -9,8 +9,6 @@ import { useTheme } from '@mui/material/styles';
 import { ArticleDataType } from "../../types/DataTypes";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 import ArticleCard from './ArticleCard';
-import useHttp from "../../customhooks/useHttp";
-import { APP_ENDPOINTS } from "../../config/app";
 import CircularImage from "../../utils/CircularImage";
 import LoadingComponent from "../../components/common/LoadingComponent";
 
@@ -79,6 +77,9 @@ const ArticlePageComponent = () => {
     const ReadArticle = () => {
         const { article, loading: articleLoading } = useContext(ArticleContext);
         const article_date = article?.created_at ? new Date(article.created_at).toLocaleDateString() : '';
+        const authorName = article?.author?.fullname ?? 'IGN Contributor';
+        const authorImage = article?.author?.profile_photo_path ?? "";
+        const articleTags = Array.isArray(article?.tags) ? article?.tags : [];
 
         useEffect(() => {
             if (!articleLoading && article && showSkeleton) {
@@ -137,16 +138,16 @@ const ArticlePageComponent = () => {
                                             {article.title}
                                         </Typography>
                                         <span style={styles.seperator} />
-                                        <CircularImage image={article.author.profile_photo_path || ""} size={80} />
+                                        <CircularImage image={authorImage} size={80} />
                                         <Typography variant="subtitle1" sx={styles.authorDateContainer}>
-                                            Written By: {article.author.fullname} | {article_date}
+                                            Written By: {authorName} | {article_date}
                                         </Typography>
                                     </Box>
                                 </Grid>
                                 <Grid item xs={12} md={8}>
                                     <Box display="flex" justifyContent="center">
                                         <img
-                                            src={article.image_url}
+                                            src={article.image_url || ""}
                                             alt={article.title}
                                             style={{
                                                 width: '100%',
@@ -163,6 +164,13 @@ const ArticlePageComponent = () => {
                                 sx={{ ...styles.content, padding: theme.spacing(3) }} 
                                 dangerouslySetInnerHTML={{ __html: article.content }} 
                             />
+                            {articleTags.length > 0 && (
+                                <Box sx={{ mt: 3, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                    {articleTags.map((tag) => (
+                                        <Chip key={tag} label={tag} size="small" />
+                                    ))}
+                                </Box>
+                            )}
                         </>
                     )}
                 </Box>
