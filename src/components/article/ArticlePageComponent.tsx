@@ -1,21 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ArticleContext } from "../../contexts/ArticleContext";
-import { Box, Grid, Typography, Container, Button, Skeleton, Fade, Chip } from "@mui/material";
+import { Box, Grid, Typography, Button, Skeleton, Fade } from "@mui/material";
 import ArticleProvider from "../../providers/ArticleProvider";
 import { FetchMode } from "../../types/ArticleFetchMode";
-import ArticleSideListComponent from "./ArticleSideListComponent";
-import { useTheme } from '@mui/material/styles';
 import { ArticleDataType } from "../../types/DataTypes";
-import DisplayArticleComponent from "./DisplayArticleComponent";
 import ArticleCard from './ArticleCard';
-import CircularImage from "../../utils/CircularImage";
 import LoadingComponent from "../../components/common/LoadingComponent";
+import ArticleContentDisplay from "./ArticleContentDisplay";
 
 const ArticlePageComponent = () => {
     const { article_id } = useParams();
     const navigate = useNavigate();
-    const theme = useTheme();
     const [isLoading, setIsLoading] = useState(true);
     const [showSkeleton, setShowSkeleton] = useState(false);
     const [showContent, setShowContent] = useState(false);
@@ -76,10 +72,6 @@ const ArticlePageComponent = () => {
 
     const ReadArticle = () => {
         const { article, loading: articleLoading } = useContext(ArticleContext);
-        const article_date = article?.created_at ? new Date(article.created_at).toLocaleDateString() : '';
-        const authorName = article?.author?.fullname ?? 'IGN Contributor';
-        const authorImage = article?.author?.profile_photo_path ?? "";
-        const articleTags = Array.isArray(article?.tags) ? article?.tags : [];
 
         useEffect(() => {
             if (!articleLoading && article && showSkeleton) {
@@ -129,50 +121,7 @@ const ArticlePageComponent = () => {
         return (
             <Fade in={showContent} timeout={800}>
                 <Box>
-                    {article && (
-                        <>
-                            <Grid container spacing={4} alignItems="center">
-                                <Grid item xs={12} md={4}>
-                                    <Box display="flex" flexDirection="column" alignItems="center" textAlign="center">
-                                        <Typography variant="h3" sx={styles.title}>
-                                            {article.title}
-                                        </Typography>
-                                        <span style={styles.seperator} />
-                                        <CircularImage image={authorImage} size={80} />
-                                        <Typography variant="subtitle1" sx={styles.authorDateContainer}>
-                                            Written By: {authorName} | {article_date}
-                                        </Typography>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} md={8}>
-                                    <Box display="flex" justifyContent="center">
-                                        <img
-                                            src={article.image_url || ""}
-                                            alt={article.title}
-                                            style={{
-                                                width: '100%',
-                                                maxHeight: '500px',
-                                                objectFit: 'cover' as const,
-                                                borderRadius: '8px'
-                                            }}
-                                        />
-                                    </Box>
-                                </Grid>
-                            </Grid>
-                            <Box 
-                                className="articleContent" 
-                                sx={{ ...styles.content, padding: theme.spacing(3) }} 
-                                dangerouslySetInnerHTML={{ __html: article.content }} 
-                            />
-                            {articleTags.length > 0 && (
-                                <Box sx={{ mt: 3, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                    {articleTags.map((tag) => (
-                                        <Chip key={tag} label={tag} size="small" />
-                                    ))}
-                                </Box>
-                            )}
-                        </>
-                    )}
+                    {article && <ArticleContentDisplay article={article} />}
                 </Box>
             </Fade>
         );
@@ -220,30 +169,9 @@ const ArticlePageComponent = () => {
 
 const styles = {
     articleContainer: {
-        maxWidth: '1200px',
+        maxWidth: '3200px',
         margin: '0 auto',
         padding: '2rem',
-    },
-    title: {
-        fontSize: '2.5rem',
-        fontWeight: 600,
-        marginBottom: '1rem',
-        textAlign: 'center',
-    },
-    seperator: {
-        width: '50px',
-        height: '2px',
-        backgroundColor: '#fd2f30',
-        margin: '1rem auto',
-    },
-    authorDateContainer: {
-        color: '#666',
-        marginTop: '1rem',
-    },
-    content: {
-        marginTop: '2rem',
-        lineHeight: 1.8,
-        fontSize: '1.1rem',
     },
     readMore: {
         marginTop: '3rem',
