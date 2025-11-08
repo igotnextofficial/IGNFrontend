@@ -18,10 +18,10 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
 import { GoalResource, ObjectiveStatus } from "../../types/GoalTypes";
 import { useEffect } from "react";
 
+dayjs.extend(relativeTime);
 interface GoalOverviewCardProps {
   goal: GoalResource;
   onEdit: () => void;

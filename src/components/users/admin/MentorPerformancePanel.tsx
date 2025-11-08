@@ -125,7 +125,7 @@ const MentorPerformancePanel = () => {
                                     <TableCell>
                                         <Typography variant="subtitle2">{mentor.fullname}</Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {(mentor as Record<string, unknown>).email ?? 'No email'}
+                                            {typeof mentor.email === 'string' && mentor.email.length > 0 ? mentor.email : 'No email'}
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="center">

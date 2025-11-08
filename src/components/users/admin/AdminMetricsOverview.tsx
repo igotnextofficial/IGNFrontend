@@ -4,6 +4,7 @@ import { APP_ENDPOINTS } from '../../../config/app';
 import useHttp from '../../../customhooks/useHttp';
 
 type PrimitiveRecord = Record<string, unknown>;
+type SessionMetrics = { completed: number; pending: number };
 
 const extractCollection = (payload: unknown): PrimitiveRecord[] => {
     if (!payload) return [];
@@ -21,8 +22,8 @@ const extractCollection = (payload: unknown): PrimitiveRecord[] => {
     return [];
 };
 
-const computeSessionsByStatus = (sessions: PrimitiveRecord[]) => {
-    return sessions.reduce(
+const computeSessionsByStatus = (sessions: PrimitiveRecord[]): SessionMetrics => {
+    return sessions.reduce<SessionMetrics>(
         (acc, session) => {
             const status = (session?.status ?? session?.session_status) as string | undefined;
             const normalized = status?.toLowerCase();

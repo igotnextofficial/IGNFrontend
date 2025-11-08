@@ -21,7 +21,8 @@ import { motion } from "framer-motion";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { ArticleDataType } from "../../types/DataTypes";
-import GoogleAdBlock from "../generic/googleAdBlock";
+import GoogleAdBlock from "../generic/GoogleAdBlock";
+  
 
 
 // ---------- helpers (no hardcoded content) ----------

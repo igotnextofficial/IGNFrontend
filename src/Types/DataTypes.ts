@@ -146,7 +146,7 @@ export interface ArticleDataType {
     featured?:boolean,
     deleted_at?:string | null,
     is_featured?:boolean,
-    image?:string,
+    image?:File | null,
     template?:string,
 }
 
