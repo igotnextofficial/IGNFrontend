@@ -1,47 +1,68 @@
-import { QueryClient, QueryClientProvider as ReactQueryClientProvider } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider as ReactQueryClientProvider,
+  type MutationKey,
+  type QueryKey,
+} from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { captureSentryException } from '../utils/sentryHelpers';
 import { SafeFetchError } from '../utils/safeFetch';
 
+const formatKey = (key?: QueryKey | MutationKey): string => {
+  if (Array.isArray(key)) {
+    return key.join('::');
+  }
+  if (typeof key === 'string' || typeof key === 'number') {
+    return String(key);
+  }
+  return 'unknown';
+};
+
+const shouldReportError = (error: unknown) => !(error instanceof SafeFetchError && error.isValidationError);
+
+const queryCache = new QueryCache({
+  onError: (error, query) => {
+    if (!shouldReportError(error)) {
+      return;
+    }
+
+    const queryKey = formatKey(query.queryKey);
+    captureSentryException({
+      error,
+      url: `react-query:${queryKey}`,
+      extras: { queryKey },
+    });
+  },
+});
+
+const mutationCache = new MutationCache({
+  onError: (error, _variables, _context, mutation) => {
+    if (!shouldReportError(error)) {
+      return;
+    }
+
+    const mutationKey = formatKey(mutation.options?.mutationKey);
+    captureSentryException({
+      error,
+      url: `react-mutation:${mutationKey}`,
+      extras: { mutationKey },
+    });
+  },
+});
+
 const queryClient = new QueryClient({
+  queryCache,
+  mutationCache,
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      onError: (error, query) => {
-        if (error instanceof SafeFetchError && error.isValidationError) {
-          return;
-        }
-
-        const queryKey = Array.isArray(query.queryKey) ? query.queryKey.join('::') : String(query.queryKey ?? 'unknown');
-        captureSentryException({
-          error,
-          url: `react-query:${queryKey}`,
-          extras: {
-            queryKey
-          }
-        });
-      },
     },
     mutations: {
-      onError: (error, _variables, _context, mutation) => {
-        if (error instanceof SafeFetchError && error.isValidationError) {
-          return;
-        }
-
-        const mutationKey = Array.isArray(mutation.options.mutationKey)
-          ? mutation.options.mutationKey.join('::')
-          : String(mutation.options.mutationKey ?? 'unknown');
-
-        captureSentryException({
-          error,
-          url: `react-mutation:${mutationKey}`,
-          extras: {
-            mutationKey
-          }
-        });
-      }
-    }
+      retry: 1,
+    },
   },
 });
 

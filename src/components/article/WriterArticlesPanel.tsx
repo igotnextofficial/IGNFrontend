@@ -228,7 +228,7 @@ const WriterArticlesPanel = () => {
           ) : (
             <Stack spacing={1.5} py={1}>
               {filteredArticles.map((article) => {
-                const imageSource = article.image_url || article.image || "";
+                const imageSource = article.image_url  || "";
                 const statusLabel = article.status ?? "unknown";
                 return (
                   <Stack
