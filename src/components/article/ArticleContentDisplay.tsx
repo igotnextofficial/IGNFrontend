@@ -229,7 +229,7 @@ const ArticleTemplateAurora = (
     if (index === 1) {
       elements.push(
         <Box key="aurora-inline-ad" sx={{ my: 5 }}>
-          {renderAdSlot("[In-Article Ad 300x250 Placeholder]", { height: 220, variant: "rectangle" })}
+          {renderAdSlot("[In-Article Ad 300x250 Placeholder]", { height: 220, variant: "rectangle",slot:'2125713885' })}
         </Box>
       );
     }
@@ -284,7 +284,7 @@ const ArticleTemplateAurora = (
       </Box>
 
       <Container maxWidth="lg">
-        <Box sx={{ mb: 3 }}>{renderAdSlot("[728x90 / 970x250 Banner Ad]", { height: 96, variant: "banner" })}</Box>
+        <Box sx={{ mb: 3 }}>{renderAdSlot("[728x90 / 970x250 Banner Ad]", { height: 96, variant: "banner",slot:'2125713885' })}</Box>
 
         <Grid container spacing={{ xs: 6, md: 8 }}>
           <Grid item xs={12}>

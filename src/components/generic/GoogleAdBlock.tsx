@@ -38,10 +38,24 @@ export default function GoogleAdBlock({
         style={{ display: "block" }}
         data-ad-client="ca-pub-6497160008225356"
         data-ad-slot={slot}
-        data-ad-format="auto"
+        data-ad-format="auto" // or fluid
         data-full-width-responsive="true"
         {...(test ? { "data-adtest": "on" } : {})}
       />
     </div>
   );
 }
+
+
+
+/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6497160008225356"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6497160008225356"
+     data-ad-slot="2125713885"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script> */
