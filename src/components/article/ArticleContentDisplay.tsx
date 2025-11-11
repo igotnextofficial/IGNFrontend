@@ -289,7 +289,7 @@ const ArticleTemplateAurora = (
         <Grid container spacing={{ xs: 6, md: 8 }}>
           <Grid item xs={12}>
             <Stack spacing={4}>
-              <Box sx={{ borderRadius: 4, bgcolor: 'var(--paper)', boxShadow: `0 30px 70px var(--shadow)`, backdropFilter: "blur(8px)", px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 }, color: 'var(--text)' }}>
+              <Box sx={{ borderRadius: 4, bgcolor: 'var(--paper)', boxShadow: `0 30px 70px var(--shadow)`, backdropFilter: "blur(8px)", px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 }, color: 'var(--text)' }}> 
                 <Stack spacing={3}>{bodyContent}</Stack>
               </Box>
 

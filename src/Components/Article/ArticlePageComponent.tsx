@@ -132,7 +132,7 @@ const ArticlePageComponent = () => {
             <ArticleProvider mode={FetchMode.SINGLE} id={article_id}>
                 <ReadArticle />
             </ArticleProvider>
-
+            <Box id="bottom-section">
             <Typography sx={styles.readMore} variant="h5">READ MORE</Typography>
             <ArticleProvider mode={FetchMode.FEATURED} id={article_id}>
                 <FeaturedArticleList />
@@ -163,6 +163,7 @@ const ArticlePageComponent = () => {
             <ArticleProvider mode={FetchMode.FEATURED} id={article_id}>
                 <RecentStoriesList />
             </ArticleProvider>
+            </Box>
         </Box>
     );
 };
